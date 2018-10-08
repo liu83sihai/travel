@@ -24,6 +24,30 @@ public class AboutUsController {
 	@Resource
 	private IAboutusService aboutusService;
 	
+	/** 
+	 * @api {GET} /aboutUs/index.do 项目介绍列表
+	 * @apiName ysAboutList
+	 * @apiGroup YsAbout 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 项目介绍列表
+	 *  
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} model 返回成功信息
+	 *  @apiSuccess {String}  url 介绍地址
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "result": {
+	 *	"model": {
+	 *		
+	 * 	},
+	 *	  "status": {
+	 *	    "code": 200,
+	 *	    "msg": "请求成功"
+	 *	  }
+	 *	}
+	 */ 
 	 @RequestMapping("/index")
 	 public Result<?> list() {
 		 logger.info("查询关于湘信.....");
