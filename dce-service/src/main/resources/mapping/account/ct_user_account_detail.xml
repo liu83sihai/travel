@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dce.business.dao.account.IUserAccountDetailDao">
+	<resultMap type="com.dce.business.entity.account.UserAccountDetailDo"
+		id="userAccountDetailResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="amount" column="amount" />
+		<result property="moreOrLess" column="moreOrLess" />
+		<result property="incomeType" column="incomeType" />
+		<result property="createTime" column="createTime" />
+		<result property="accountType" column="accountType" />
+		<result property="remark" column="remark" />
+		<result property="userName" column="userName" />
+		<result property="balanceAmount" column="balanceAmount" />
+		<result property="seqId" column="seqId" />
+		<result property="transactionObject" column="transactionObject" />
+		<result property="relevantUser" column="relevantUser" />
+	</resultMap>
+
+	<select id="getById" parameterType="Long" resultMap="userAccountDetailResultMap">
+		SELECT *
+		FROM ct_user_account_detail WHERE id = #{id}
+	</select>
+
+	<select id="selectUserAccountDetailByUserId" parameterType="Map"
+		resultMap="userAccountDetailResultMap">
+		select d.id, d.userId, d.amount, d.balanceAmount, d.moreOrLess,
+		d.incomeType, d.createTime, date_format(d.createTime,'%Y-%m-%d
+		%H:%i:%s') createTime, d.accountType, d.remark, d.relevantUser, d.relevantUserid,
+		d.seqId from ct_user_account_detail d
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND d.id = #{id}
+			</if>
+			<if test="userId != null">
+				AND d.userId = #{userId}
+			</if>
+			<if test="amount != null">
+				AND d.amount = #{amount}
+			</if>
+			<if test="moreOrLess != null">
+				AND d.moreOrLess = #{moreOrLess}
+			</if>
+			<if test="incomeType != null">
+				AND d.incomeType = #{incomeType}
+			</if>
+			<if test="accountType != null">
+				AND d.accountType = #{accountType}
+			</if>
+			<if test="remark != null">
+				AND d.remark = #{remark}
+			</if>
+			<if test="createTime != null">
+				AND date_format(d.createTime,'%Y-%m-%d') = #{createTime}
+			</if>
+			<if test="startTime != null">  
+			    <![CDATA[AND d.createTime >= str_to_date(#{startTime},'%Y-%m-%d %H') ]]>
+			</if>
+			<if test="endTime != null">  
+                <![CDATA[AND d.createTime <= str_to_date(#{endTime},'%Y-%m-%d %H') ]]>
+			</if>
+		</trim>
+		order by d.id desc
+	</select>
+
+	<select id="selectUserAccountDetail" parameterType="Map"
+		resultMap="userAccountDetailResultMap">
+		SELECT d.*, u.user_name as userName, d.relevantUser as
+		transactionObject
+		FROM ct_user_account_detail d
+		left join ct_user u on d.userId = u.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND d.id = #{id}
+			</if>
+			<if test="userId != null">
+				AND d.userId = #{userId}
+			</if>
+			<if test="amount != null">
+				AND d.amount = #{amount}
+			</if>
+			<if test="moreOrLess != null">
+				AND d.moreOrLess = #{moreOrLess}
+			</if>
+			<if test="incomeType != null">
+				AND d.incomeType = #{incomeType}
+			</if>
+			<if test="accountType != null">
+				AND d.accountType = #{accountType}
+			</if>
+			<if test="remark != null">
+				AND d.remark = #{remark}
+			</if>
+			<if test="createTime != null">
+				AND date_format(d.createTime,'%Y-%m-%d') = #{createTime}
+			</if>
+			<if test="startTime != null">  
+			    <![CDATA[AND d.createTime >= str_to_date(#{startTime},'%Y-%m-%d %H') ]]>
+			</if>
+			<if test="endTime != null">  
+                <![CDATA[AND d.createTime <= str_to_date(#{endTime},'%Y-%m-%d %H') ]]>
+			</if>
+		</trim>
+		order by d.id desc
+	</select>
+
+	<select id="selectUserTransPoint" parameterType="Map"
+		resultType="BigDecimal">
+		SELECT sum(ifnull(amount,0)) as amount
+		FROM ct_user_account_detail
+		where userId = #{userId}
+		AND accountType = 'point'
+
+		<if test="startDate != null"> 
+			    <![CDATA[ 
+				AND createTime  >= #{startDate}
+				]]>
+		</if>
+		<if test="endDate != null"> 
+			    <![CDATA[ 
+				AND createTime  < #{endDate}
+				]]>
+		</if>
+	</select>
+
+	<update id="updateUserAccountDetailById" parameterType="com.dce.business.entity.account.UserAccountDetailDo">
+		UPDATE ct_user_account_detail
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="userId != null">
+				userId = #{userId},
+			</if>
+			<if test="amount != null">
+				amount = #{amount},
+			</if>
+			<if test="moreOrLess != null">
+				moreOrLess = #{moreOrLess},
+			</if>
+			<if test="incomeType != null">
+				incomeType = #{incomeType},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="accountType != null">
+				accountType = #{accountType},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="relevantUser != null">
+				relevantUser = #{relevantUser},
+			</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+
+	<insert id="addUserAccountDetail" parameterType="com.dce.business.entity.account.UserAccountDetailDo"
+		keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		ct_user_account_detail( userId
+		,amount
+		,moreOrLess
+		,incomeType
+		,createTime
+		,accountType
+		,remark
+		,balanceAmount
+		,seqId
+		,relevantUser
+		)
+		VALUES (#{userId}
+		,#{amount}
+		,#{moreOrLess}
+		,#{incomeType}
+		,#{createTime}
+		,#{accountType}
+		,#{remark}
+		,#{balanceAmount}
+		,#{seqId}
+		,#{relevantUser}
+		)
+	</insert>
+
+
+	<insert id="insertPointTranRec" parameterType="Map">
+		INSERT INTO
+		t_user_account_point_log(
+		endDate,
+		createTime,
+		userId,
+		totalPoint,
+		tranPoint
+		)
+		VALUES(
+		#{endDate},
+		now(),
+		#{userId},
+		#{totalPoint},
+		#{tranPoint}
+		)
+	</insert>
+
+	<insert id="insertPointTranRecJjd" parameterType="Map">
+		INSERT
+		INTO t_user_account_jjd_log(
+		endDate,
+		createTime,
+		userId,
+		totalPoint,
+		tranPoint,
+		optType
+		)
+		VALUES(
+		now(),
+		now(),
+		#{userId},
+		#{totalPoint},
+		#{tranPoint},
+		#{optType}
+		)
+	</insert>
+
+
+
+	<insert id="addAccountTranLog" parameterType="Map">
+		INSERT INTO
+		t_user_account_detai_log(
+		seqId,
+		sourceUserId,
+		targetUserId,
+		amount,
+		fromAccount,
+		toAccount,
+		sourceMsg,
+		createTime
+		)
+		VALUES(
+		#{seqId},
+		#{sourceUserId},
+		#{targetUserId},
+		#{amount},
+		#{fromAccount},
+		#{toAccount},
+		#{sourceMsg},
+		now()
+		)
+	</insert>
+
+
+
+	<delete id="deleteById" parameterType="Long">
+		DELETE FROM
+		ct_user_account_detail WHERE id = #{id}
+	</delete>
+
+	<select id="selectUserAccountDetailByPage" parameterType="Map"
+		resultMap="userAccountDetailResultMap">
+		SELECT d.*, u.user_name as userName,u.user_level as userLevel
+		FROM ct_user_account_detail d
+		left join ct_user u on d.userId = u.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND d.id = #{id}
+			</if>
+			<if test="userId != null">
+				AND d.userId = #{userId}
+			</if>
+			<if test="userName != null">
+				AND u.user_name = #{userName}
+			</if>
+			<if test="amount != null">
+				AND d.amount = #{amount}
+			</if>
+			<if test="moreOrLess != null">
+				AND d.moreOrLess = #{moreOrLess}
+			</if>
+			<if test="incomeType != null">
+				AND d.incomeType = #{incomeType}
+			</if>
+			<if test="accountType != null">
+				AND d.accountType = #{accountType}
+			</if>
+			<if test="remark != null">
+				AND d.remark = #{remark}
+			</if>
+			<if test="createTime != null">
+				AND date_format(d.createTime,'%Y-%m-%d') = #{createTime}
+			</if>
+			<if test="startDate != null">  
+			    <![CDATA[AND d.createTime >= str_to_date(#{startDate},'%Y-%m-%d %H') ]]>
+			</if>
+			<if test="endDate != null">  
+                <![CDATA[AND d.createTime <= str_to_date(#{endDate},'%Y-%m-%d %H') ]]>
+			</if>
+		</trim>
+		order by d.id desc
+	</select>
+</mapper>
+

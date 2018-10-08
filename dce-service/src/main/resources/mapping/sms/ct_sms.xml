@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.sms.ISmsDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.sms.SmsDo">
+		<id column="message_id" jdbcType="BIGINT" property="messageId" />
+		<result column="message" jdbcType="VARCHAR" property="message" />
+		<result column="sender" jdbcType="VARCHAR" property="sender" />
+		<result column="recievers" jdbcType="VARCHAR" property="recievers" />
+		<result column="cc_list" jdbcType="VARCHAR" property="ccList" />
+		<result column="subject" jdbcType="VARCHAR" property="subject" />
+		<result column="send_flag" jdbcType="VARCHAR" property="sendFlag" />
+		<result column="message_template" jdbcType="VARCHAR" property="messageTemplate" />
+		<result column="message_type" jdbcType="VARCHAR" property="messageType" />
+		<result column="sms_type" jdbcType="VARCHAR" property="smsType" />
+		<result column="is_validate" jdbcType="VARCHAR" property="isValidate" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="send_id" jdbcType="VARCHAR" property="sendId" />
+		<result column="business_type" jdbcType="VARCHAR" property="businessType" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		message_id, message, sender, recievers, cc_list, subject, send_flag, message_template,
+		message_type, sms_type, is_validate, create_time, update_time, send_id, business_type
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_sms
+		where message_id = #{messageId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ct_sms
+		where message_id = #{messageId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" keyColumn="message_id" keyProperty="messageId" parameterType="com.dce.business.entity.sms.SmsDo"
+		useGeneratedKeys="true">
+		insert into ct_sms (message, sender, recievers,
+		cc_list, subject, send_flag,
+		message_template, message_type, sms_type,
+		is_validate, create_time, update_time,
+		send_id, business_type)
+		values (#{message,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR}, #{recievers,jdbcType=VARCHAR},
+		#{ccList,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{sendFlag,jdbcType=VARCHAR},
+		#{messageTemplate,jdbcType=VARCHAR}, #{messageType,jdbcType=VARCHAR}, #{smsType,jdbcType=VARCHAR},
+		#{isValidate,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{sendId,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" keyColumn="message_id" keyProperty="messageId" parameterType="com.dce.business.entity.sms.SmsDo"
+		useGeneratedKeys="true">
+		insert into ct_sms
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="message != null">
+				message,
+			</if>
+			<if test="sender != null">
+				sender,
+			</if>
+			<if test="recievers != null">
+				recievers,
+			</if>
+			<if test="ccList != null">
+				cc_list,
+			</if>
+			<if test="subject != null">
+				subject,
+			</if>
+			<if test="sendFlag != null">
+				send_flag,
+			</if>
+			<if test="messageTemplate != null">
+				message_template,
+			</if>
+			<if test="messageType != null">
+				message_type,
+			</if>
+			<if test="smsType != null">
+				sms_type,
+			</if>
+			<if test="isValidate != null">
+				is_validate,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="sendId != null">
+				send_id,
+			</if>
+			<if test="businessType != null">
+				business_type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="message != null">
+				#{message,jdbcType=VARCHAR},
+			</if>
+			<if test="sender != null">
+				#{sender,jdbcType=VARCHAR},
+			</if>
+			<if test="recievers != null">
+				#{recievers,jdbcType=VARCHAR},
+			</if>
+			<if test="ccList != null">
+				#{ccList,jdbcType=VARCHAR},
+			</if>
+			<if test="subject != null">
+				#{subject,jdbcType=VARCHAR},
+			</if>
+			<if test="sendFlag != null">
+				#{sendFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="messageTemplate != null">
+				#{messageTemplate,jdbcType=VARCHAR},
+			</if>
+			<if test="messageType != null">
+				#{messageType,jdbcType=VARCHAR},
+			</if>
+			<if test="smsType != null">
+				#{smsType,jdbcType=VARCHAR},
+			</if>
+			<if test="isValidate != null">
+				#{isValidate,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sendId != null">
+				#{sendId,jdbcType=VARCHAR},
+			</if>
+			<if test="businessType != null">
+				#{businessType,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.sms.SmsDo">
+		update ct_sms
+		<set>
+			<if test="message != null">
+				message = #{message,jdbcType=VARCHAR},
+			</if>
+			<if test="sender != null">
+				sender = #{sender,jdbcType=VARCHAR},
+			</if>
+			<if test="recievers != null">
+				recievers = #{recievers,jdbcType=VARCHAR},
+			</if>
+			<if test="ccList != null">
+				cc_list = #{ccList,jdbcType=VARCHAR},
+			</if>
+			<if test="subject != null">
+				subject = #{subject,jdbcType=VARCHAR},
+			</if>
+			<if test="sendFlag != null">
+				send_flag = #{sendFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="messageTemplate != null">
+				message_template = #{messageTemplate,jdbcType=VARCHAR},
+			</if>
+			<if test="messageType != null">
+				message_type = #{messageType,jdbcType=VARCHAR},
+			</if>
+			<if test="smsType != null">
+				sms_type = #{smsType,jdbcType=VARCHAR},
+			</if>
+			<if test="isValidate != null">
+				is_validate = #{isValidate,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sendId != null">
+				send_id = #{sendId,jdbcType=VARCHAR},
+			</if>
+			<if test="businessType != null">
+				business_type = #{businessType,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where message_id = #{messageId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.sms.SmsDo">
+		update ct_sms
+		set message = #{message,jdbcType=VARCHAR},
+		sender = #{sender,jdbcType=VARCHAR},
+		recievers = #{recievers,jdbcType=VARCHAR},
+		cc_list = #{ccList,jdbcType=VARCHAR},
+		subject = #{subject,jdbcType=VARCHAR},
+		send_flag = #{sendFlag,jdbcType=VARCHAR},
+		message_template = #{messageTemplate,jdbcType=VARCHAR},
+		message_type = #{messageType,jdbcType=VARCHAR},
+		sms_type = #{smsType,jdbcType=VARCHAR},
+		is_validate = #{isValidate,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		send_id = #{sendId,jdbcType=VARCHAR},
+		business_type = #{businessType,jdbcType=VARCHAR}
+		where message_id = #{messageId,jdbcType=BIGINT}
+	</update>
+	
+	<!-- 查询最后一次发送的短信验证码 -->
+	<select id="getLastIdentifyCode" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_sms
+        where
+        message_type = 'SMS'
+        AND is_validate = 'T'
+        AND business_type = #{businessType}
+        AND recievers = #{recievers}
+                
+        ORDER BY message_id DESC  LIMIT  1
+    </select>
+    
+    <!-- 查询今天发送的短信验证码 -->
+    <select id="getTodayNotifyCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+        COUNT(message_id)
+        from ct_sms
+        where
+        message_type = 'SMS'
+        AND is_validate = 'T'
+        AND send_flag = 'T'
+        AND recievers = #{recievers}
+        AND create_time>DATE_FORMAT(now(),'%Y-%m-%d')
+    </select>
+    
+    <!-- 分页查询 -->
+    <select id="getNotifyMessageList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ct_sms
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+	        <if test="messageType != null">
+	            AND message_type = #{messageType}
+	        </if>
+	        <if test="validate != null">
+	            AND validate = #{validate}
+	        </if>
+	        <if test="recievers != null">
+	            AND recievers like concat('%', #{recievers}, '%')
+	        </if>
+	        <if test="sendFlag != null">
+	            AND send_flag = #{sendFlag}
+	        </if>
+	        <if test="businessType != null">
+	            AND business_type = #{businessType}
+	        </if>
+         </trim>
+        <!-- ORDER BY  update_time DESC -->
+        order by message_id desc
+        limit #{offset}, #{rows}
+    </select>
+    
+    <!-- 分页查询统计总数 -->
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(message_id) 
+        FROM ct_sms
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+            <if test="messageType != null">
+                AND message_type = #{messageType}
+            </if>
+            <if test="validate != null">
+                AND validate = #{validate}
+            </if>
+            <if test="recievers != null">
+                AND recievers like concat('%', #{recievers}, '%')
+            </if>
+            <if test="sendFlag != null">
+                AND send_flag = #{sendFlag}
+            </if>
+            <if test="businessType != null">
+                AND business_type = #{businessType}
+            </if>
+         </trim>
+    </select>
+</mapper>

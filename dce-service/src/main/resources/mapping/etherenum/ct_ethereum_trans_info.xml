@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.etherenum.IEthereumTransInfoDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.etherenum.EthereumTransInfoDo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="userId" jdbcType="INTEGER" property="userid" />
+		<result column="fromAccount" jdbcType="VARCHAR" property="fromaccount" />
+		<result column="toAccount" jdbcType="VARCHAR" property="toaccount" />
+		<result column="amount" jdbcType="VARCHAR" property="amount" />
+		<result column="actualAmount" jdbcType="VARCHAR" property="actualamount" />
+		<result column="pointAmount" jdbcType="VARCHAR" property="pointamount" />
+		<result column="gas" jdbcType="VARCHAR" property="gas" />
+		<result column="gasLimit" jdbcType="VARCHAR" property="gaslimit" />
+		<result column="ActualGas" jdbcType="VARCHAR" property="actualgas" />
+		<result column="confirmed" jdbcType="VARCHAR" property="confirmed" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="hash" jdbcType="VARCHAR" property="hash" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+		<result column="withdrawFee" jdbcType="VARCHAR" property="withdrawFee" />
+		<result column="withdrawalsId" jdbcType="INTEGER" property="withdrawalsId" />
+		
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userId, fromAccount, toAccount, amount, actualAmount, pointAmount, gas, gasLimit,
+		ActualGas, confirmed, status, hash, type, createTime, updateTime,withdrawFee,withdrawalsId
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_ethereum_trans_info
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ct_ethereum_trans_info
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.etherenum.EthereumTransInfoDo"
+		useGeneratedKeys="true">
+		insert into ct_ethereum_trans_info (userId, fromAccount, toAccount,
+		amount, actualAmount, pointAmount,
+		gas, gasLimit, ActualGas,
+		confirmed, status, hash,
+		type, createTime, updateTime,withdrawFee,withdrawalsId
+		)
+		values (#{userid,jdbcType=INTEGER}, #{fromaccount,jdbcType=VARCHAR}, #{toaccount,jdbcType=VARCHAR},
+		#{amount,jdbcType=VARCHAR}, #{actualamount,jdbcType=VARCHAR}, #{pointamount,jdbcType=VARCHAR},
+		#{gas,jdbcType=VARCHAR}, #{gaslimit,jdbcType=VARCHAR}, #{actualgas,jdbcType=VARCHAR},
+		#{confirmed,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{hash,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
+		,#{withdrawFee,jdbcType=VARCHAR}
+		,#{withdrawalsId,jdbcType=INTEGER}
+		
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.etherenum.EthereumTransInfoDo"
+		useGeneratedKeys="true">
+		insert into ct_ethereum_trans_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="fromaccount != null">
+				fromAccount,
+			</if>
+			<if test="toaccount != null">
+				toAccount,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="actualamount != null">
+				actualAmount,
+			</if>
+			<if test="pointamount != null">
+				pointAmount,
+			</if>
+			<if test="gas != null">
+				gas,
+			</if>
+			<if test="gaslimit != null">
+				gasLimit,
+			</if>
+			<if test="actualgas != null">
+				ActualGas,
+			</if>
+			<if test="confirmed != null">
+				confirmed,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="hash != null">
+				hash,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="createtime != null">
+				createTime,
+			</if>
+			<if test="updatetime != null">
+				updateTime,
+			</if>
+			<if test="withdrawFee != null">
+				withdrawFee,
+			</if>
+			<if test="withdrawalsId != null">
+				withdrawalsId,
+			</if>
+			
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fromaccount != null">
+				#{fromaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="toaccount != null">
+				#{toaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="actualamount != null">
+				#{actualamount,jdbcType=VARCHAR},
+			</if>
+			<if test="pointamount != null">
+				#{pointamount,jdbcType=VARCHAR},
+			</if>
+			<if test="gas != null">
+				#{gas,jdbcType=VARCHAR},
+			</if>
+			<if test="gaslimit != null">
+				#{gaslimit,jdbcType=VARCHAR},
+			</if>
+			<if test="actualgas != null">
+				#{actualgas,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmed != null">
+				#{confirmed,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="hash != null">
+				#{hash,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="withdrawFee != null">
+				#{withdrawFee,jdbcType=VARCHAR},
+			</if>
+			<if test="withdrawalsId != null">
+				#{withdrawalsId,jdbcType=INTEGER},
+			</if>
+			
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.etherenum.EthereumTransInfoDo">
+		update ct_ethereum_trans_info
+		<set>
+			<if test="userid != null">
+				userId = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fromaccount != null">
+				fromAccount = #{fromaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="toaccount != null">
+				toAccount = #{toaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="actualamount != null">
+				actualAmount = #{actualamount,jdbcType=VARCHAR},
+			</if>
+			<if test="pointamount != null">
+				pointAmount = #{pointamount,jdbcType=VARCHAR},
+			</if>
+			<if test="gas != null">
+				gas = #{gas,jdbcType=VARCHAR},
+			</if>
+			<if test="gaslimit != null">
+				gasLimit = #{gaslimit,jdbcType=VARCHAR},
+			</if>
+			<if test="actualgas != null">
+				ActualGas = #{actualgas,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmed != null">
+				confirmed = #{confirmed,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="hash != null">
+				hash = #{hash,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				createTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				updateTime = #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="withdrawFee != null">
+				withdrawFee = #{withdrawFee,jdbcType=VARCHAR},
+			</if>
+			<if test="withdrawalsId != null">
+				withdrawalsId = #{withdrawalsId,jdbcType=INTEGER},
+			</if>
+			
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByWithdrawId" parameterType="com.dce.business.entity.etherenum.EthereumTransInfoDo">
+		update ct_ethereum_trans_info
+		<set>
+			<if test="userid != null">
+				userId = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fromaccount != null">
+				fromAccount = #{fromaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="toaccount != null">
+				toAccount = #{toaccount,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="actualamount != null">
+				actualAmount = #{actualamount,jdbcType=VARCHAR},
+			</if>
+			<if test="pointamount != null">
+				pointAmount = #{pointamount,jdbcType=VARCHAR},
+			</if>
+			<if test="gas != null">
+				gas = #{gas,jdbcType=VARCHAR},
+			</if>
+			<if test="gaslimit != null">
+				gasLimit = #{gaslimit,jdbcType=VARCHAR},
+			</if>
+			<if test="actualgas != null">
+				ActualGas = #{actualgas,jdbcType=VARCHAR},
+			</if>
+			<if test="confirmed != null">
+				confirmed = #{confirmed,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="hash != null">
+				hash = #{hash,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				createTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				updateTime = #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="withdrawFee != null">
+				withdrawFee = #{withdrawFee,jdbcType=VARCHAR},
+			</if>		
+		</set>
+		where withdrawalsId = #{withdrawalsId,jdbcType=BIGINT}
+	</update>
+	
+	<update id="updateByPrimaryByStatus" parameterType="Map">
+		UPDATE ct_ethereum_trans_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="newStatus != null">
+				status = #{newStatus},
+			</if>
+		</trim>
+		WHERE withdrawalsId = #{withdrawalsId} and status = #{oldStatus}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.etherenum.EthereumTransInfoDo">
+		update ct_ethereum_trans_info
+		set userId = #{userid,jdbcType=INTEGER},
+		fromAccount = #{fromaccount,jdbcType=VARCHAR},
+		toAccount = #{toaccount,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=VARCHAR},
+		actualAmount = #{actualamount,jdbcType=VARCHAR},
+		pointAmount = #{pointamount,jdbcType=VARCHAR},
+		gas = #{gas,jdbcType=VARCHAR},
+		gasLimit = #{gaslimit,jdbcType=VARCHAR},
+		ActualGas = #{actualgas,jdbcType=VARCHAR},
+		confirmed = #{confirmed,jdbcType=VARCHAR},
+		status = #{status,jdbcType=VARCHAR},
+		hash = #{hash,jdbcType=VARCHAR},
+		type = #{type,jdbcType=INTEGER},
+		createTime = #{createtime,jdbcType=TIMESTAMP},
+		updateTime = #{updatetime,jdbcType=TIMESTAMP},
+		withdrawFee = #{withdrawFee,jdbcType=VARCHAR},
+		withdrawalsId = #{withdrawalsId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<!-- 自定义查询 -->
+    <select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_ethereum_trans_info u
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="status != null">  
+               AND u.status = #{status}
+           </if>
+           <if test="confirmed != null">  
+               AND u.confirmed = #{confirmed}
+           </if>
+           <if test="withdrawalsId != null">  
+               AND u.withdrawalsId = #{withdrawalsId}
+           </if>
+           and hash <![CDATA[ <> ]]> ''
+        </trim> 
+        order by createTime
+        <if test="offset != null">  
+            limit #{offset}, #{rows}
+        </if>
+    </select>
+    <!-- 自定义查询 -->
+    <select id="selectParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_ethereum_trans_info u
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="status != null">  
+               AND u.status = #{status}
+           </if>
+           <if test="confirmed != null">  
+               AND u.confirmed = #{confirmed}
+           </if>
+           <if test="withdrawalsId != null">  
+               AND u.withdrawalsId = #{withdrawalsId}
+           </if>
+           and hash <![CDATA[ <> ]]> '' and u.status='true'
+        </trim> 
+        order by createTime
+        <if test="offset != null">  
+            limit #{offset}, #{rows}
+        </if>
+    </select>
+	<!-- 自定义查询 -->
+    <select id="queryEthTrans" parameterType="java.util.Map" resultType="map">
+        select  
+				u.id,
+				u.userId,
+				u.fromAccount,
+				u.toAccount,
+				u.amount,
+				u.actualAmount,
+				u.pointAmount,
+				u.gas,
+				u.gasLimit,
+				u.ActualGas,
+				u.confirmed,
+				case u.status when 'true' then '已到账' else '未到账' end status,
+				u.hash,
+				u.type,
+				case u.type when '1' then '充值' when '2' then '提现'  when '3' then '平台外转账-会员转出'  when '4' then '平台外转账-平台转出' end `typeDesc`,
+				u.createTime,
+				u.updateTime,
+				u.withdrawFee
+				, b.user_name
+        from ct_ethereum_trans_info u left join ct_user b on u.userid = b.id 
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="status != null">  
+               AND u.status = #{status}
+           </if>
+           <if test="userId != null">  
+               AND u.userId = #{userId}
+           </if>
+           <if test="confirmed != null">  
+               AND u.confirmed = #{confirmed}
+           </if>
+           <if test="userName != null">  
+               AND b.user_name = #{userName}
+           </if>
+           <if test="startDate != null">  
+               AND <![CDATA[u.createTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[u.createTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+        </trim> 
+        order by createTime
+        <if test="offset != null">  
+            limit #{offset}, #{rows}
+        </if>
+    </select>
+    <select id="queryEthTransCount" parameterType="java.util.Map" resultType="int">
+        select count(1)
+        from ct_ethereum_trans_info u left join ct_user b on u.userid = b.id 
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="status != null">  
+               AND u.status = #{status}
+           </if>
+           <if test="userId != null">  
+               AND u.userId = #{userId}
+           </if>
+           <if test="confirmed != null">  
+               AND u.confirmed = #{confirmed}
+           </if>
+           <if test="userName != null">  
+               AND b.user_name = #{userName}
+           </if>
+           <if test="startDate != null">  
+               AND <![CDATA[u.createTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[u.createTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+        </trim> 
+    </select>
+    
+    <select id="selectEthTransByPage" parameterType="java.util.Map" resultType="map">
+        select  
+				u.id,
+				u.userId,
+				u.fromAccount,
+				u.toAccount,
+				u.amount,
+				u.actualAmount,
+				u.pointAmount,
+				u.gas,
+				u.gasLimit,
+				u.ActualGas,
+				u.confirmed,
+				case u.status when 'true' then '已到账' else '未到账' end status,
+				u.hash,
+				case u.type when '1' then '充值' when '2' then '提现'  when '3' then '平台外转账-会员转出'  when '4' then '平台外转账-平台转出' end `type`,
+				u.createTime,
+				u.updateTime,
+				u.withdrawFee
+				, b.user_name
+        from ct_ethereum_trans_info u left join ct_user b on u.userid = b.id 
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="status != null">  
+               AND u.status = #{status}
+           </if>
+           <if test="userId != null">  
+               AND u.userId = #{userId}
+           </if>
+           <if test="confirmed != null">  
+               AND u.confirmed = #{confirmed}
+           </if>
+           <if test="userName != null">  
+               AND b.user_name = #{userName}
+           </if>
+           <if test="startDate != null">  
+               AND <![CDATA[u.createTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[u.createTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+        </trim> 
+        order by createTime desc
+    </select>
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.user.IUserPromoteDo">
+  <resultMap id="BaseResultMap" type="com.dce.business.entity.user.UserPromoteDo">
+    
+    <id column="promote_id" jdbcType="INTEGER" property="promoteId" />
+    <result column="user_level" jdbcType="VARCHAR" property="userLevel" />
+    <result column="promote_level" jdbcType="VARCHAR" property="promoteLevel" />
+    <result column="min_qty" jdbcType="INTEGER" property="minQty" />
+    <result column="max_qty" jdbcType="INTEGER" property="maxQty" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    
+    promote_id, user_level, promote_level, min_qty, max_qty
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    
+    select 
+    <include refid="Base_Column_List" />
+    from ct_user_promote
+    where promote_id = #{promoteId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    
+    delete from ct_user_promote
+    where promote_id = #{promoteId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.dce.business.entity.user.UserPromoteDo">
+   
+    insert into ct_user_promote (promote_id, user_level, promote_level, 
+      min_qty, max_qty)
+    values (#{promoteId,jdbcType=INTEGER}, #{userLevel,jdbcType=VARCHAR}, #{promoteLevel,jdbcType=VARCHAR}, 
+      #{minQty,jdbcType=INTEGER}, #{maxQty,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dce.business.entity.user.UserPromoteDo">
+   
+    insert into ct_user_promote
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="promoteId != null">
+        promote_id,
+      </if>
+      <if test="userLevel != null">
+        user_level,
+      </if>
+      <if test="promoteLevel != null">
+        promote_level,
+      </if>
+      <if test="minQty != null">
+        min_qty,
+      </if>
+      <if test="maxQty != null">
+        max_qty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="promoteId != null">
+        #{promoteId,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="promoteLevel != null">
+        #{promoteLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="minQty != null">
+        #{minQty,jdbcType=INTEGER},
+      </if>
+      <if test="maxQty != null">
+        #{maxQty,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.user.UserPromoteDo">
+   
+    update ct_user_promote
+    <set>
+      <if test="userLevel != null">
+        user_level = #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="promoteLevel != null">
+        promote_level = #{promoteLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="minQty != null">
+        min_qty = #{minQty,jdbcType=INTEGER},
+      </if>
+      <if test="maxQty != null">
+        max_qty = #{maxQty,jdbcType=INTEGER},
+      </if>
+    </set>
+    where promote_id = #{promoteId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dce.business.entity.user.UserPromoteDo">
+   
+    update ct_user_promote
+    set user_level = #{userLevel,jdbcType=VARCHAR},
+      promote_level = #{promoteLevel,jdbcType=VARCHAR},
+      min_qty = #{minQty,jdbcType=INTEGER},
+      max_qty = #{maxQty,jdbcType=INTEGER}
+    where promote_id = #{promoteId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+	<!-- 自定义查询 -->
+	<select id="selectUserLevelAntBuyQty" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_promote
+		<![CDATA[
+		where  	user_level = #{userLevel,jdbcType=VARCHAR} and  max_qty>#{buyQty} and min_qty<= #{buyQty}
+		]]>
+	</select>
+
+	<!-- 自定义分页查询 -->
+	<select id="queryListPage" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_promote
+		where 0=0 
+		<if test="userLevel!=null">
+		  and user_level=#{userLevel,jdbcType=VARCHAR} 
+		</if>
+		<if test="promoteLevel!=null">
+		promote_level = #{promoteLevel,jdbcType=VARCHAR} 
+		</if>
+		
+		<if test="currentPage!=null and pageSize!=null">
+			limit currentPage,pageSize
+		</if>
+	</select>
+	
+  
+  
+</mapper>

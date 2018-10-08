@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dce.business.dao.secrety.IAuthorityresourcesDao">
+	<resultMap type="authorityresourcesDo" id="authorityresourcesResultMap">
+		<result property="id" column="id" />
+		<result property="authorityId" column="authorityId" />
+		<result property="resourceId" column="resourceId" />
+		<result property="enabled" column="enabled" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="authorityresourcesResultMap">
+		SELECT * 
+		  FROM authorityresources WHERE id = #{id}
+	</select>
+
+	<select id="selectAuthorityresources" parameterType="map" resultMap="authorityresourcesResultMap">
+		SELECT *
+		  FROM authorityresources
+		  <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND id like #{id}
+			</if>
+			<if test="authorityId != null">
+				AND authorityId like #{authorityId}
+			</if>
+			<if test="resourceId != null">
+				AND resourceId like #{resourceId}
+			</if>
+			<if test="enabled != null">
+				AND enabled like #{enabled}
+			</if>
+         </trim>
+
+	</select>
+
+	<update id="updateAuthorityresourcesById" parameterType="authorityresourcesDo">
+		UPDATE authorityresources
+		<trim prefix="SET" suffixOverrides=",">
+		<if test="authorityId != null">
+				authorityId = #{authorityId},
+		</if>
+		<if test="resourceId != null">
+				resourceId = #{resourceId},
+		</if>
+		<if test="enabled != null">
+				enabled = #{enabled},
+		</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+
+	<insert id="addAuthorityresources" parameterType="authorityresourcesDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO authorityresources(		authorityId
+		,resourceId
+		,enabled
+)
+		     VALUES (		#{authorityId}
+		,#{resourceId}
+		,#{enabled}
+)
+	</insert>
+
+	<delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM authorityresources WHERE id = #{id}
+	</delete>
+
+	<delete id="deleteRelationById" parameterType="authorityresourcesDo" >
+		delete from authorityresources where authorityId=#{authorityId} and resourceId=#{resourceId}
+	</delete>
+
+
+	<select id="getAuthorities" resultType="java.util.Map">
+	SELECT r.resourceStr RESOURCESTR,a.id ID,a.name NAME,r.id RESOURCEID,r.name RESOURCENAME FROM authorities a INNER JOIN authorityresources ar ON a.id=ar.authorityId 
+	 INNER JOIN resources r ON r.id=ar.resourceId WHERE a.enabled=1
+	</select>
+	<select id="checkRelationExist" parameterType="authorityresourcesDo" resultType="int">
+		select count(1) from authorityresources where authorityId=#{authorityId} and resourceId =#{resourceId} 
+	</select>
+	<insert id="addRelation" parameterType="java.util.Map" keyProperty="id"
+		useGeneratedKeys="true">
+		insert into authorityresources(authorityId,resourceId,enabled) values(#{authorityId},#{resourceId},#{enabled})
+	</insert>
+</mapper>
+

@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.alipaymentOrder.AlipaymentOrderMapper">
+	<resultMap id="BaseResultMap"
+		type="com.dce.business.entity.alipaymentOrder.AlipaymentOrder">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="orderId" jdbcType="INTEGER" property="orderid" />
+		<result column="orderCode" jdbcType="VARCHAR" property="ordercode" />
+		<result column="orderStatus" jdbcType="INTEGER" property="orderstatus" />
+		<result column="totalAmount" jdbcType="DECIMAL" property="totalamount" />
+		<result column="receptAmount" jdbcType="DECIMAL" property="receptamount" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="notifyTime" jdbcType="TIMESTAMP" property="notifytime" />
+		<result column="gmtCreateTime" jdbcType="TIMESTAMP" property="gmtcreatetime" />
+		<result column="gmtRefundTime" jdbcType="TIMESTAMP" property="gmtrefundtime" />
+		<result column="gmtCloseTime" jdbcType="TIMESTAMP" property="gmtclosetime" />
+		<result column="tradeNo" jdbcType="VARCHAR" property="tradeno" />
+		<result column="buyerLogonId" jdbcType="VARCHAR" property="buyerlogonid" />
+		<result column="sellerId" jdbcType="VARCHAR" property="sellerid" />
+		<result column="sellerEmail" jdbcType="VARCHAR" property="selleremail" />
+		<result column="invoiceAmount" jdbcType="DOUBLE" property="invoiceamount" />
+		<result column="buyerPayAmount" jdbcType="DOUBLE" property="buyerpayamount" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, orderId, orderCode, orderStatus, totalAmount,
+		receptAmount,
+		createTime, notifyTime,
+		gmtCreateTime, gmtRefundTime,
+		gmtCloseTime, tradeNo, buyerLogonId, sellerId,
+		sellerEmail,
+		invoiceAmount, buyerPayAmount, remark
+	</sql>
+	<select id="selectByExample"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrderExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from ct_alipay_trade
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_alipay_trade
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByOrderCode" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_alipay_trade
+		where orderCode = #{orderCode,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		ct_alipay_trade
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrderExample">
+		delete from ct_alipay_trade
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrder">
+		insert into ct_alipay_trade (id, orderId, orderCode,
+		orderStatus, totalAmount, receptAmount,
+		createTime, notifyTime,
+		gmtCreateTime,
+		gmtRefundTime, gmtCloseTime, tradeNo,
+		buyerLogonId,
+		sellerId, sellerEmail,
+		invoiceAmount, buyerPayAmount, remark)
+		values
+		(#{id,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER},
+		#{ordercode,jdbcType=VARCHAR},
+		#{orderstatus,jdbcType=INTEGER},
+		#{totalamount,jdbcType=DECIMAL}, #{receptamount,jdbcType=DECIMAL},
+		#{createtime,jdbcType=TIMESTAMP}, #{notifytime,jdbcType=TIMESTAMP},
+		#{gmtcreatetime,jdbcType=TIMESTAMP},
+		#{gmtrefundtime,jdbcType=TIMESTAMP},
+		#{gmtclosetime,jdbcType=TIMESTAMP}, #{tradeno,jdbcType=VARCHAR},
+		#{buyerlogonid,jdbcType=VARCHAR}, #{sellerid,jdbcType=VARCHAR},
+		#{selleremail,jdbcType=VARCHAR},
+		#{invoiceamount,jdbcType=DOUBLE},
+		#{buyerpayamount,jdbcType=DOUBLE},
+		#{remark,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrder">
+		insert into ct_alipay_trade
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orderid != null">
+				orderId,
+			</if>
+			<if test="ordercode != null">
+				orderCode,
+			</if>
+			<if test="orderstatus != null">
+				orderStatus,
+			</if>
+			<if test="totalamount != null">
+				totalAmount,
+			</if>
+			<if test="receptamount != null">
+				receptAmount,
+			</if>
+			<if test="createtime != null">
+				createTime,
+			</if>
+			<if test="notifytime != null">
+				notifyTime,
+			</if>
+			<if test="gmtcreatetime != null">
+				gmtCreateTime,
+			</if>
+			<if test="gmtrefundtime != null">
+				gmtRefundTime,
+			</if>
+			<if test="gmtclosetime != null">
+				gmtCloseTime,
+			</if>
+			<if test="tradeno != null">
+				tradeNo,
+			</if>
+			<if test="buyerlogonid != null">
+				buyerLogonId,
+			</if>
+			<if test="sellerid != null">
+				sellerId,
+			</if>
+			<if test="selleremail != null">
+				sellerEmail,
+			</if>
+			<if test="invoiceamount != null">
+				invoiceAmount,
+			</if>
+			<if test="buyerpayamount != null">
+				buyerPayAmount,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="orderid != null">
+				#{orderid,jdbcType=INTEGER},
+			</if>
+			<if test="ordercode != null">
+				#{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="orderstatus != null">
+				#{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="totalamount != null">
+				#{totalamount,jdbcType=DECIMAL},
+			</if>
+			<if test="receptamount != null">
+				#{receptamount,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="notifytime != null">
+				#{notifytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtcreatetime != null">
+				#{gmtcreatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtrefundtime != null">
+				#{gmtrefundtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtclosetime != null">
+				#{gmtclosetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tradeno != null">
+				#{tradeno,jdbcType=VARCHAR},
+			</if>
+			<if test="buyerlogonid != null">
+				#{buyerlogonid,jdbcType=VARCHAR},
+			</if>
+			<if test="sellerid != null">
+				#{sellerid,jdbcType=VARCHAR},
+			</if>
+			<if test="selleremail != null">
+				#{selleremail,jdbcType=VARCHAR},
+			</if>
+			<if test="invoiceamount != null">
+				#{invoiceamount,jdbcType=DOUBLE},
+			</if>
+			<if test="buyerpayamount != null">
+				#{buyerpayamount,jdbcType=DOUBLE},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrderExample"
+		resultType="java.lang.Long">
+		select count(*) from ct_alipay_trade
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update ct_alipay_trade
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.orderid != null">
+				orderId = #{record.orderid,jdbcType=INTEGER},
+			</if>
+			<if test="record.ordercode != null">
+				orderCode = #{record.ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.orderstatus != null">
+				orderStatus = #{record.orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="record.totalamount != null">
+				totalAmount = #{record.totalamount,jdbcType=DECIMAL},
+			</if>
+			<if test="record.receptamount != null">
+				receptAmount = #{record.receptamount,jdbcType=DECIMAL},
+			</if>
+			<if test="record.createtime != null">
+				createTime = #{record.createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.notifytime != null">
+				notifyTime = #{record.notifytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.gmtcreatetime != null">
+				gmtCreateTime =
+				#{record.gmtcreatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.gmtrefundtime != null">
+				gmtRefundTime =
+				#{record.gmtrefundtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.gmtclosetime != null">
+				gmtCloseTime = #{record.gmtclosetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.tradeno != null">
+				tradeNo = #{record.tradeno,jdbcType=VARCHAR},
+			</if>
+			<if test="record.buyerlogonid != null">
+				buyerLogonId = #{record.buyerlogonid,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sellerid != null">
+				sellerId = #{record.sellerid,jdbcType=VARCHAR},
+			</if>
+			<if test="record.selleremail != null">
+				sellerEmail = #{record.selleremail,jdbcType=VARCHAR},
+			</if>
+			<if test="record.invoiceamount != null">
+				invoiceAmount = #{record.invoiceamount,jdbcType=DOUBLE},
+			</if>
+			<if test="record.buyerpayamount != null">
+				buyerPayAmount =
+				#{record.buyerpayamount,jdbcType=DOUBLE},
+			</if>
+			<if test="record.remark != null">
+				tradeNo = #{record.remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update ct_alipay_trade
+		set id = #{record.id,jdbcType=INTEGER},
+		orderId =
+		#{record.orderid,jdbcType=INTEGER},
+		orderCode =
+		#{record.ordercode,jdbcType=VARCHAR},
+		orderStatus =
+		#{record.orderstatus,jdbcType=INTEGER},
+		totalAmount =
+		#{record.totalamount,jdbcType=DECIMAL},
+		receptAmount =
+		#{record.receptamount,jdbcType=DECIMAL},
+		createTime =
+		#{record.createtime,jdbcType=TIMESTAMP},
+		notifyTime =
+		#{record.notifytime,jdbcType=TIMESTAMP},
+		gmtCreateTime =
+		#{record.gmtcreatetime,jdbcType=TIMESTAMP},
+		gmtRefundTime =
+		#{record.gmtrefundtime,jdbcType=TIMESTAMP},
+		gmtCloseTime =
+		#{record.gmtclosetime,jdbcType=TIMESTAMP},
+		tradeNo =
+		#{record.tradeno,jdbcType=VARCHAR},
+		buyerLogonId =
+		#{record.buyerlogonid,jdbcType=VARCHAR},
+		sellerId =
+		#{record.sellerid,jdbcType=VARCHAR},
+		sellerEmail =
+		#{record.selleremail,jdbcType=VARCHAR},
+		invoiceAmount =
+		#{record.invoiceamount,jdbcType=DOUBLE},
+		buyerPayAmount =
+		#{record.buyerpayamount,jdbcType=DOUBLE}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrder">
+		update ct_alipay_trade
+		<set>
+			<if test="orderid != null">
+				orderId = #{orderid,jdbcType=INTEGER},
+			</if>
+			<if test="ordercode != null">
+				orderCode = #{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="orderstatus != null">
+				orderStatus = #{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="totalamount != null">
+				totalAmount = #{totalamount,jdbcType=DECIMAL},
+			</if>
+			<if test="receptamount != null">
+				receptAmount = #{receptamount,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				createTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="notifytime != null">
+				notifyTime = #{notifytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtcreatetime != null">
+				gmtCreateTime = #{gmtcreatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtrefundtime != null">
+				gmtRefundTime = #{gmtrefundtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="gmtclosetime != null">
+				gmtCloseTime = #{gmtclosetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tradeno != null">
+				tradeNo = #{tradeno,jdbcType=VARCHAR},
+			</if>
+			<if test="buyerlogonid != null">
+				buyerLogonId = #{buyerlogonid,jdbcType=VARCHAR},
+			</if>
+			<if test="sellerid != null">
+				sellerId = #{sellerid,jdbcType=VARCHAR},
+			</if>
+			<if test="selleremail != null">
+				sellerEmail = #{selleremail,jdbcType=VARCHAR},
+			</if>
+			<if test="invoiceamount != null">
+				invoiceAmount = #{invoiceamount,jdbcType=DOUBLE},
+			</if>
+			<if test="buyerpayamount != null">
+				buyerPayAmount = #{buyerpayamount,jdbcType=DOUBLE},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.dce.business.entity.alipaymentOrder.AlipaymentOrder">
+		update ct_alipay_trade
+		set orderId =
+		#{orderid,jdbcType=INTEGER},
+		orderCode = #{ordercode,jdbcType=VARCHAR},
+		orderStatus = #{orderstatus,jdbcType=INTEGER},
+		totalAmount =
+		#{totalamount,jdbcType=DECIMAL},
+		receptAmount =
+		#{receptamount,jdbcType=DECIMAL},
+		createTime =
+		#{createtime,jdbcType=TIMESTAMP},
+		notifyTime =
+		#{notifytime,jdbcType=TIMESTAMP},
+		gmtCreateTime =
+		#{gmtcreatetime,jdbcType=TIMESTAMP},
+		gmtRefundTime =
+		#{gmtrefundtime,jdbcType=TIMESTAMP},
+		gmtCloseTime =
+		#{gmtclosetime,jdbcType=TIMESTAMP},
+		tradeNo =
+		#{tradeno,jdbcType=VARCHAR},
+		buyerLogonId =
+		#{buyerlogonid,jdbcType=VARCHAR},
+		sellerId =
+		#{sellerid,jdbcType=VARCHAR},
+		sellerEmail =
+		#{selleremail,jdbcType=VARCHAR},
+		invoiceAmount =
+		#{invoiceamount,jdbcType=DOUBLE},
+		buyerPayAmount =
+		#{buyerpayamount,jdbcType=DOUBLE},
+		remark =
+		#{remark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

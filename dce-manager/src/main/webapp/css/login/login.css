@@ -1,0 +1,119 @@
+@charset "utf-8";
+
+/* 框架 */
+body {
+    font-family:"Microsoft Yahei";
+    font-size:12px;
+    margin:0;
+    background: #fff url(../../images/basebg.jpg) 50% 0 no-repeat;
+}
+h1{margin:80px auto 50px auto;text-align:center;color:#fff;margin-left:-25px;font-size:35px;font-weight: bold;text-shadow: 0px 1px 1px #555;}
+#main{float:right;width:100%;margin-left:-230px;height:auto!important;min-height:600px;height:600px;}
+.content{background:#EAEAEB;margin:0 0 0 230px;padding:1px 10px 15px 15px;height:auto!important;min-height:600px;height:600px;border-left:#BFBFBF 1px solid;}
+#footer{position:relative;z-index:100;width:100%;height:60px;padding-top:10px;line-height:20px;color:#A9AFB7;text-align:center;}
+
+
+
+/* 输入框 */
+.input-text{background:white;border:1px solid #AAAAAA;height:23px;line-height:23px;color:#666666;padding:0 5px;border-radius:1px;box-shadow:2px 2px 3px rgba(0, 0, 0, .1) inset;}
+.input-text1{background:white;border:1px solid #AAAAAA;height:25px;line-height:25px;color:#666666;padding:0 5px;width:330px;border-radius:1px;box-shadow:2px 2px 3px rgba(0, 0, 0, .1) inset;}
+.input-text2{background:white;border:1px solid #AAAAAA;height:35px;line-height:35px;color:#666666;padding:0 5px;width:330px;border-radius:1px;box-shadow:2px 2px 3px rgba(0, 0, 0, .1) inset;}
+.input-text-user{border:#D8D8D8 1px solid;border-radius:3px;width:290px;height:36px;line-height:36px;text-indent:10px;float:left;border:none;outline: none;}
+.input-text-password{border:#D8D8D8 1px solid;border-radius:3px;width:290px;height:36px;line-height:36px;text-indent:10px;float:left;border:none;outline: none;}
+.input-text-user.error{background:#FFD2D2 url(../../images/icons.png) no-repeat 0px top;border-width:3px;}
+.input-text-password.error{background:#FFD2D2 url(../../images/icons.png) no-repeat 0px -50px;border-width:3px;}
+.input-text-code{border:#D8D8D8 1px solid;border-radius:3px;width:140px;height:36px;line-height:36px;text-indent:10px;float:left;border:none;outline: none;}
+
+.input-text-user-label{background:url(../../images/icons.png) no-repeat ;width:38px;height:38px;float:left;background-position:-6px -6px;border-right:1px solid #bdbdbd;}
+.input-text-password-label{background:url(../../images/icons.png) no-repeat ;width:38px;height:38px;float:left;background-position:-6px -41px;border-right:1px solid #bdbdbd;}
+.input-text-code-label{background:url(../../images/icons.png) no-repeat ;width:38px;height:38px;float:left;background-position:-6px -76px;border-right:1px solid #bdbdbd;}
+.item-focus{
+    border-color:#63bee8 !important;
+}
+.item-focus label{
+    background-position-x:-40px !important;
+    border-color:#63bee8 !important;
+}
+
+
+/* 公用 */
+.overflow{overflow:hidden;}
+.public-content{padding:30px 80px;}
+.dblock{font-size:0;/* 所有浏览器 */letter-spacing:0;*letter-spacing:normal;}
+.inline-block{font-size:14px;display:inline-block;*display:inline;*zoom:1;letter-spacing: normal;}
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+    .dblock{letter-spacing:-5px;/* Safari 等不支持字体大小为 0 的浏览器 */}
+}  
+
+/* 按钮 */ 
+/**
+button,a.btn{background:#3D6AA2;border:1px solid #3D6AA2;border-radius:2px;padding:1px 10px;height:38px;line-height:20px;cursor:pointer;color:#FFFFFF;}
+a.btn{display:block;float:left;line-height:24px;}
+.login-btn{display:block;width:330px;text-align:center;height:39px;background:#3D6AA2;line-height:39px;color:white;font-size:16px;border-radius:3px;border:1px solid #215A8D;color:#FFFFFF;} **/
+a.button {
+    /**font: bold 12px Helvetica, Arial, sans-serif;*/
+    text-decoration: none;
+    position: relative;
+    display:block;
+    width:330px;
+    text-align:center;
+    height:39px;
+    background:#6880AE;
+    line-height:39px;
+    color:#FFFFFF;
+    /**font-size:16px;*/
+    cursor:pointer;
+    /**text-shadow: 0 1px 0 #fff;*/
+    -webkit-transition: border-color .218s;
+    -moz-transition: border .218s;
+    -o-transition: border-color .218s;
+    transition: border-color .218s;
+    /**background: -webkit-gradient(linear,0% 40%,0% 70%,from(#3D6AA2),to(#3D6AA2));*/
+    /**background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#F5F5F5),to(#EE0E2B));*/
+    border: solid 1px #215A8D;
+    border-radius: 3px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+a.button:hover {
+    color: #CBD2D5;
+    background:#465574;
+    border-color: #999;
+    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+a.button:active {
+    color: #000;
+    border-color: #444;
+}
+
+
+/* rows */
+.row{height:38px;line-height:22px;position:relative;border:1px solid #dbdbdb}
+.row .relative-box{margin:0 10px 0 10px;}
+.rows:after{clear: both;content: ".";display: block;font-size: 0;height: 0;overflow: hidden;}
+.rows{line-height:18px;zoom:1;letter-spacing:1px;position:relative;padding:10px 50px 10px 0;}
+.rows .field{position:absolute;left:0;top:10px;font-size:14px;line-height:18px;text-align:right;font-weight:bold;}
+
+
+/* 底部 */
+#footer .copyright{text-align:left;padding:10px 0 10px 15px;margin-left:15px;vertical-align:top;}
+#footer a{color:#737C8C;}
+#footer a:hover{color:#333333;text-decoration:underline;}
+
+/* login */
+.loginbox,.not-box{width:400px;margin:150px auto 50px auto;}
+.loginbox .logo-a,.not-box .logo-a{height:150px; text-align:center;}
+.loginbox .loginbox-title{background:#FFFFFF;height:70px;border-radius:3px 3px 0 0;text-align:center;}
+.loginbox .loginbox-title .logo{padding:12px 20px;}
+.loginbox .loginbox-title h3{color:#666666;padding:0 20px; line-height:50px;font-size:16px;border-bottom:1px solid #F2F2F2;}
+.loginbox .login-content{border:1px solid #CCCCCC;border-radius:3px;padding-bottom:20px;}
+.loginbox .login-content .text{width:330px;margin:0 auto;line-height:25px;}
+.loginbox .login-content .text h5{font-size:14px;}
+.loginbox .login-content{background:#FFFFFF;height:auto!important;min-height:100px;height:100px;font-size:14px;margin-top:200px}
+.loginbox .login-content .row{width:330px;margin:0 auto;padding:0px 0;position:relative;margin-bottom:20px;}
+.loginbox .login-content .row .field{position:absolute;left:40px;top:23px;height:38px;line-height:35px;pointer-events:none;}
+.loginbox .login-content .tips{padding:5px 0;height:25px;font-size:14px;}
+.loginbox .login-content .tips input{margin-right:5px;}
+.loginbox .login-content .btnArea{padding:0;margin:15px auto 5px auto;}
+.loginbox .login-content .row .noPic{background-image:none;padding:0 15px;width:300px;height:34px;line-height:34px;}

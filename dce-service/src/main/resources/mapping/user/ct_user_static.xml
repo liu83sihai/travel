@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.user.IUserStaticDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.user.UserStaticDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="money" jdbcType="DECIMAL" property="money" />
+		<result column="totalMoney" jdbcType="DECIMAL" property="totalmoney" />
+		<result column="yf_bonus" jdbcType="DECIMAL" property="yfBonus" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+		<result column="type" jdbcType="TINYINT" property="type" />
+		<result column="staticTime" jdbcType="INTEGER" property="statictime" />
+		<result column="endDate" jdbcType="TIMESTAMP" property="endDate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userid, money, totalMoney, yf_bonus, status, type, staticTime,endDate
+	</sql>
+	
+	
+	
+	<select id="selectSepicStatic" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		     u.*
+		from ct_user_static u , static_error e
+		 where  u.userid = e.userid
+				AND u.type in(1,2,3)
+				and u.status = '1'
+			
+		<if test="offset != null">
+			limit #{offset}, #{rows}
+		</if>
+	</select>
+	
+	
+	<select id="selectUnStaticByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select userid		 
+		from static_0506
+		where userid = #{userId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_static
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_user_static
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.user.UserStaticDo"
+		useGeneratedKeys="true">
+		insert into ct_user_static (userid, money, totalMoney,
+		yf_bonus, status, type,
+		staticTime,endDate)
+		values
+		(#{userid,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, #{totalmoney,jdbcType=DECIMAL},
+		#{yfBonus,jdbcType=DECIMAL},
+		#{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT},
+		#{statictime,jdbcType=INTEGER},#{endDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.user.UserStaticDo"
+		useGeneratedKeys="true">
+		insert into ct_user_static
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="money != null">
+				money,
+			</if>
+			<if test="totalmoney != null">
+				totalMoney,
+			</if>
+			<if test="yfBonus != null">
+				yf_bonus,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="statictime != null">
+				staticTime,
+			</if>
+			<if test="endDate != null">
+                endDate,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=DECIMAL},
+			</if>
+			<if test="totalmoney != null">
+				#{totalmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="yfBonus != null">
+				#{yfBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=TINYINT},
+			</if>
+			<if test="statictime != null">
+				#{statictime,jdbcType=INTEGER},
+			</if>
+			<if test="endDate != null">
+                #{endDate,jdbcType=TIMESTAMP},
+            </if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.user.UserStaticDo">
+		update ct_user_static
+		<set>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="money != null">
+				money = #{money,jdbcType=DECIMAL},
+			</if>
+			<if test="totalmoney != null">
+				totalMoney = #{totalmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="yfBonus != null">
+				yf_bonus = #{yfBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=TINYINT},
+			</if>
+			<if test="statictime != null">
+				staticTime = #{statictime,jdbcType=INTEGER},
+			</if>
+			<if test="endDate != null">
+                endDate = #{endDate,jdbcType=TIMESTAMP},
+            </if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.user.UserStaticDo">
+		update ct_user_static
+		set userid = #{userid,jdbcType=INTEGER},
+		money = #{money,jdbcType=DECIMAL},
+		totalMoney = #{totalmoney,jdbcType=DECIMAL},
+		yf_bonus = #{yfBonus,jdbcType=DECIMAL},
+		status = #{status,jdbcType=TINYINT},
+		type = #{type,jdbcType=TINYINT},
+		staticTime = #{statictime,jdbcType=INTEGER},
+		endDate = #{endDate,jdbcType=TIMESTAMP}
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 自定义查询 -->
+	<select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_static u
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userid != null">
+				AND u.userid = #{userid}
+			</if>
+			<if test="type != null">
+				AND u.type = #{type}
+			</if>
+			<if test="status != null">
+				AND u.status = #{status}
+			</if>
+			<if test="typeList != null">
+				AND u.type in
+				<foreach item="item" index="index" collection="typeList" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="startTime != null">  
+             <![CDATA[  AND u.staticTime <= '${startTime}' ]]>
+			</if>
+			<if test="endDate != null">  
+             <![CDATA[  AND u.endDate <= '${endDate}' ]]>
+            </if>
+		</trim>
+		<if test="offset != null">
+			limit #{offset}, #{rows}
+		</if>
+	</select>
+
+	<update id="updateStaticMoney" parameterType="java.lang.Integer">
+		update ct_user_static set yf_bonus=yf_bonus+money, status=(case when yf_bonus >= totalMoney then 2 else status end ),staticTime=unix_timestamp(now())
+		where id= #{id}
+	</update>
+</mapper>

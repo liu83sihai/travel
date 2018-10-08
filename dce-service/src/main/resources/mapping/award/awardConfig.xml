@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.award.AwardConfigDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.award.AwardConfig">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="userLevel" jdbcType="INTEGER" property="userlevel" />
+		<result column="rate1" jdbcType="DECIMAL" property="rate1" />
+		<result column="rate2" jdbcType="DECIMAL" property="rate2" />
+		<result column="rate3" jdbcType="DECIMAL" property="rate3" />
+		<result column="rate4" jdbcType="DECIMAL" property="rate4" />
+		<result column="rate5" jdbcType="DECIMAL" property="rate5" />
+		<result column="rate6" jdbcType="DECIMAL" property="rate6" />
+		<result column="rate7" jdbcType="DECIMAL" property="rate7" />
+		<result column="rate8" jdbcType="DECIMAL" property="rate8" />
+		<result column="awardTypeName" jdbcType="VARCHAR" property="awardtypename" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userLevel, rate1, rate2, rate3, rate4, rate5, rate6,
+		rate7, rate8,
+		awardTypeName
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_award_config
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<!-- 自定义查询 -->
+	<select id="selectAward" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_award_config
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		ct_award_config
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.dce.business.entity.award.AwardConfig">
+		insert into ct_award_config
+		(id, userLevel, rate1,
+		rate2, rate3, rate4,
+		rate5, rate6, rate7,
+		rate8,
+		awardTypeName)
+		values (#{id,jdbcType=BIGINT},
+		#{userlevel,jdbcType=INTEGER},
+		#{rate1,jdbcType=DECIMAL},
+		#{rate2,jdbcType=DECIMAL}, #{rate3,jdbcType=DECIMAL},
+		#{rate4,jdbcType=DECIMAL},
+		#{rate5,jdbcType=DECIMAL},
+		#{rate6,jdbcType=DECIMAL},
+		#{rate7,jdbcType=DECIMAL},
+		#{rate8,jdbcType=DECIMAL}, #{awardtypename,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dce.business.entity.award.AwardConfig">
+		insert into ct_award_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userlevel != null">
+				userLevel,
+			</if>
+			<if test="rate1 != null">
+				rate1,
+			</if>
+			<if test="rate2 != null">
+				rate2,
+			</if>
+			<if test="rate3 != null">
+				rate3,
+			</if>
+			<if test="rate4 != null">
+				rate4,
+			</if>
+			<if test="rate5 != null">
+				rate5,
+			</if>
+			<if test="rate6 != null">
+				rate6,
+			</if>
+			<if test="rate7 != null">
+				rate7,
+			</if>
+			<if test="rate8 != null">
+				rate8,
+			</if>
+			<if test="awardtypename != null">
+				awardTypeName,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="userlevel != null">
+				#{userlevel,jdbcType=INTEGER},
+			</if>
+			<if test="rate1 != null">
+				#{rate1,jdbcType=DECIMAL},
+			</if>
+			<if test="rate2 != null">
+				#{rate2,jdbcType=DECIMAL},
+			</if>
+			<if test="rate3 != null">
+				#{rate3,jdbcType=DECIMAL},
+			</if>
+			<if test="rate4 != null">
+				#{rate4,jdbcType=DECIMAL},
+			</if>
+			<if test="rate5 != null">
+				#{rate5,jdbcType=DECIMAL},
+			</if>
+			<if test="rate6 != null">
+				#{rate6,jdbcType=DECIMAL},
+			</if>
+			<if test="rate7 != null">
+				#{rate7,jdbcType=DECIMAL},
+			</if>
+			<if test="rate8 != null">
+				#{rate8,jdbcType=DECIMAL},
+			</if>
+			<if test="awardtypename != null">
+				#{awardtypename,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.award.AwardConfig">
+		update ct_award_config
+		<set>
+			<if test="userlevel != null">
+				userLevel = #{userlevel,jdbcType=INTEGER},
+			</if>
+			<if test="rate1 != null">
+				rate1 = #{rate1,jdbcType=DECIMAL},
+			</if>
+			<if test="rate2 != null">
+				rate2 = #{rate2,jdbcType=DECIMAL},
+			</if>
+			<if test="rate3 != null">
+				rate3 = #{rate3,jdbcType=DECIMAL},
+			</if>
+			<if test="rate4 != null">
+				rate4 = #{rate4,jdbcType=DECIMAL},
+			</if>
+			<if test="rate5 != null">
+				rate5 = #{rate5,jdbcType=DECIMAL},
+			</if>
+			<if test="rate6 != null">
+				rate6 = #{rate6,jdbcType=DECIMAL},
+			</if>
+			<if test="rate7 != null">
+				rate7 = #{rate7,jdbcType=DECIMAL},
+			</if>
+			<if test="rate8 != null">
+				rate8 = #{rate8,jdbcType=DECIMAL},
+			</if>
+			<if test="awardtypename != null">
+				awardTypeName = #{awardtypename,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.award.AwardConfig">
+		update
+		ct_award_config
+		set userLevel = #{userlevel,jdbcType=INTEGER},
+		rate1 =
+		#{rate1,jdbcType=DECIMAL},
+		rate2 = #{rate2,jdbcType=DECIMAL},
+		rate3 =
+		#{rate3,jdbcType=DECIMAL},
+		rate4 = #{rate4,jdbcType=DECIMAL},
+		rate5 =
+		#{rate5,jdbcType=DECIMAL},
+		rate6 = #{rate6,jdbcType=DECIMAL},
+		rate7 =
+		#{rate7,jdbcType=DECIMAL},
+		rate8 = #{rate8,jdbcType=DECIMAL},
+		awardTypeName = #{awardtypename,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=BIGINT}
+	</update>
+
+</mapper>

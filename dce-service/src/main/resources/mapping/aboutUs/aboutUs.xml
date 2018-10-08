@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.aboutUs.IAboutusDao">
+	<resultMap type="com.dce.business.entity.aboutUs.AboutusDo" id="aboutusResultMap">
+		<result property="id" column="id" jdbcType="INTEGER"/>
+		<result property="url" column="url" jdbcType="VARCHAR"/>
+		<result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<select id="getById" parameterType="INTEGER" resultMap="aboutusResultMap">
+		SELECT * 
+		  FROM aboutus WHERE id = #{id}
+	</select>
+
+	<select id="selectAboutUsByPage" parameterType="Map" resultMap="aboutusResultMap">
+		SELECT * 
+		  FROM aboutus
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="url != null">  
+				AND url like #{url}
+			</if>
+         </trim> 
+		order by createTime desc
+	</select>
+	
+	<update id="updateAboutusById" parameterType="aboutusDo">
+		UPDATE aboutus 
+		   SET 		<if test="url != null">  
+				url = #{url}
+		</if>		
+
+		WHERE id = #{id}
+	</update>	
+	
+	<insert id="addAboutus" parameterType="aboutusDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO aboutus(url)
+		     VALUES (#{url});
+	</insert>
+	
+	<delete id="deleteById" parameterType="INTEGER" >
+		DELETE FROM aboutus WHERE id = #{id}
+	</delete>
+	
+	<select id="getAllAboutUs" parameterType="INTEGER" resultMap="aboutusResultMap">
+		SELECT *  FROM aboutus order by createTime desc
+	</select>
+</mapper>
+

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.award.AwardlistMapper">
+  <resultMap id="BaseResultMap" type="com.dce.business.entity.award.Awardlist">
+    
+    <id column="awardId" jdbcType="INTEGER" property="awardid" />
+    <result column="buyer_lecel" jdbcType="INTEGER" property="buyerLecel" />
+    <result column="p1_level0" jdbcType="VARCHAR" property="p1Level0" />
+    <result column="p1_level1" jdbcType="VARCHAR" property="p1Level1" />
+    <result column="p1_level2" jdbcType="VARCHAR" property="p1Level2" />
+    <result column="p1_level3" jdbcType="VARCHAR" property="p1Level3" />
+    <result column="p1_level4" jdbcType="VARCHAR" property="p1Level4" />
+    <result column="p2_level0" jdbcType="VARCHAR" property="p2Level0" />
+    <result column="p2_level1" jdbcType="VARCHAR" property="p2Level1" />
+    <result column="p2_level2" jdbcType="VARCHAR" property="p2Level2" />
+    <result column="p2_level3" jdbcType="VARCHAR" property="p2Level3" />
+    <result column="p2_level4" jdbcType="VARCHAR" property="p2Level4" />
+    <result column="buyer_award" jdbcType="VARCHAR" property="buyerAward" />
+    <result column="buy_qty" jdbcType="INTEGER" property="buyQty" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    awardId, buyer_lecel, p1_level0, p1_level1, p1_level2, p1_level3, p1_level4, p2_level0, 
+    p2_level1, p2_level2, p2_level3, p2_level4, buyer_award, buy_qty
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+   
+    select 
+    <include refid="Base_Column_List" />
+    from awardlist
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+   
+    delete from awardlist
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.dce.business.entity.award.Awardlist">
+   
+    insert into awardlist (awardId, buyer_lecel, p1_level0, 
+      p1_level1, p1_level2, p1_level3, 
+      p1_level4, p2_level0, p2_level1, 
+      p2_level2, p2_level3, p2_level4, 
+      buyer_award, buy_qty)
+    values (#{awardid,jdbcType=INTEGER}, #{buyerLecel,jdbcType=INTEGER}, #{p1Level0,jdbcType=VARCHAR}, 
+      #{p1Level1,jdbcType=VARCHAR}, #{p1Level2,jdbcType=VARCHAR}, #{p1Level3,jdbcType=VARCHAR}, 
+      #{p1Level4,jdbcType=VARCHAR}, #{p2Level0,jdbcType=VARCHAR}, #{p2Level1,jdbcType=VARCHAR}, 
+      #{p2Level2,jdbcType=VARCHAR}, #{p2Level3,jdbcType=VARCHAR}, #{p2Level4,jdbcType=VARCHAR}, 
+      #{buyerAward,jdbcType=VARCHAR}, #{buyQty,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dce.business.entity.award.Awardlist">
+    
+    insert into awardlist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="buyerLecel != null">
+        buyer_lecel,
+      </if>
+      <if test="p1Level0 != null">
+        p1_level0,
+      </if>
+      <if test="p1Level1 != null">
+        p1_level1,
+      </if>
+      <if test="p1Level2 != null">
+        p1_level2,
+      </if>
+      <if test="p1Level3 != null">
+        p1_level3,
+      </if>
+      <if test="p1Level4 != null">
+        p1_level4,
+      </if>
+      <if test="p2Level0 != null">
+        p2_level0,
+      </if>
+      <if test="p2Level1 != null">
+        p2_level1,
+      </if>
+      <if test="p2Level2 != null">
+        p2_level2,
+      </if>
+      <if test="p2Level3 != null">
+        p2_level3,
+      </if>
+      <if test="p2Level4 != null">
+        p2_level4,
+      </if>
+      <if test="buyerAward != null">
+        buyer_award,
+      </if>
+      <if test="buyQty != null">
+        buy_qty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="buyerLecel != null">
+        #{buyerLecel,jdbcType=INTEGER},
+      </if>
+      <if test="p1Level0 != null">
+        #{p1Level0,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level1 != null">
+        #{p1Level1,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level2 != null">
+        #{p1Level2,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level3 != null">
+        #{p1Level3,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level4 != null">
+        #{p1Level4,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level0 != null">
+        #{p2Level0,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level1 != null">
+        #{p2Level1,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level2 != null">
+        #{p2Level2,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level3 != null">
+        #{p2Level3,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level4 != null">
+        #{p2Level4,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerAward != null">
+        #{buyerAward,jdbcType=VARCHAR},
+      </if>
+      <if test="buyQty != null">
+        #{buyQty,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.award.Awardlist">
+   
+    update awardlist
+    <set>
+      <if test="buyerLecel != null">
+        buyer_lecel = #{buyerLecel,jdbcType=INTEGER},
+      </if>
+      <if test="p1Level0 != null">
+        p1_level0 = #{p1Level0,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level1 != null">
+        p1_level1 = #{p1Level1,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level2 != null">
+        p1_level2 = #{p1Level2,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level3 != null">
+        p1_level3 = #{p1Level3,jdbcType=VARCHAR},
+      </if>
+      <if test="p1Level4 != null">
+        p1_level4 = #{p1Level4,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level0 != null">
+        p2_level0 = #{p2Level0,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level1 != null">
+        p2_level1 = #{p2Level1,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level2 != null">
+        p2_level2 = #{p2Level2,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level3 != null">
+        p2_level3 = #{p2Level3,jdbcType=VARCHAR},
+      </if>
+      <if test="p2Level4 != null">
+        p2_level4 = #{p2Level4,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerAward != null">
+        buyer_award = #{buyerAward,jdbcType=VARCHAR},
+      </if>
+      <if test="buyQty != null">
+        buy_qty = #{buyQty,jdbcType=INTEGER},
+      </if>
+    </set>
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dce.business.entity.award.Awardlist">
+    update awardlist
+    set buyer_lecel = #{buyerLecel,jdbcType=INTEGER},
+      p1_level0 = #{p1Level0,jdbcType=VARCHAR},
+      p1_level1 = #{p1Level1,jdbcType=VARCHAR},
+      p1_level2 = #{p1Level2,jdbcType=VARCHAR},
+      p1_level3 = #{p1Level3,jdbcType=VARCHAR},
+      p1_level4 = #{p1Level4,jdbcType=VARCHAR},
+      p2_level0 = #{p2Level0,jdbcType=VARCHAR},
+      p2_level1 = #{p2Level1,jdbcType=VARCHAR},
+      p2_level2 = #{p2Level2,jdbcType=VARCHAR},
+      p2_level3 = #{p2Level3,jdbcType=VARCHAR},
+      p2_level4 = #{p2Level4,jdbcType=VARCHAR},
+      buyer_award = #{buyerAward,jdbcType=VARCHAR},
+      buy_qty = #{buyQty,jdbcType=INTEGER}
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  <!-- 自定义多条件分页查询 -->
+	<select id="queryListPage" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		SELECT *
+		FROM awardlist
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test=" awardId != null">
+				AND awardId = #{ awardId}
+			</if>
+			<if test="buyerLecel != null">
+				AND buyer_lecel = #{buyerLecel}
+			</if>
+			<if test="p1Level0 != null">
+				AND p1_level0 = #{p1Level0}
+			</if>
+			<if test="p1Level1 != null">
+				AND p1_level1 = #{p1Level1}
+			</if>
+			<if test="p1Level2 != null">
+				AND p1_level2 = #{p1Level2}
+			</if>
+			<if test="p1Level3 != null">
+				AND p1_level3 = #{p1Level3}
+			</if>
+			<if test="p1Level4 != null">
+				AND p1_level4 = #{p1Level4}
+			</if>
+			<if test="p2Level0 != null">
+				AND p2_level0 = #{p2Level0}
+			</if>
+			<if test="p2Level1 != null">
+				AND p2_level1 = #{p2Level1}
+			</if>
+			<if test="p2Level2 != null">
+				AND p2_level2 = #{p2Level2}
+			</if>
+			<if test="p2Level3 != null">
+				AND p2_level3 = #{p2Level3}
+			</if>
+			<if test="p2Level4 != null">
+				AND p2_level4 = #{p2Level4}
+			</if>
+			<if test="buyerAward != null">
+				AND buyer_award = #{buyerAward}
+			</if>
+			<if test="buyQty != null">
+				AND buy_qty = #{buyQty}
+			</if>
+			<if test="minQty != null">
+				AND min_qty = #{minQty},
+			</if>
+			<if test="maxQty != null">
+				AND max_qty = #{maxQty},
+			</if>
+			<if test="currentPage!=null and pageSize!=null">
+				limit currentPage,pageSize
+			</if>
+		</trim>
+	</select>
+
+
+
+	<!-- 自定义查询 -->
+	<select id="conditionQueryAward" parameterType="java.util.Map"
+		resultType="map">
+
+		select
+		<if test="buyerLecel != null">
+			buyer_lecel,
+		</if>
+		<if test="p1Level0 != null">
+			p1_level0,
+		</if>
+		<if test="p1Level1 != null">
+			p1_level1,
+		</if>
+		<if test="p1Level2 != null">
+			p1_level2,
+		</if>
+		<if test="p1Level3 != null">
+			p1_level3,
+		</if>
+		<if test="p1Level4 != null">
+			p1_level4,
+		</if>
+		<if test="p2Level0 != null">
+			p2_level0,
+		</if>
+		<if test="p2Level1 != null">
+			p2_level1,
+		</if>
+		<if test="p2Level2 != null">
+			p2_level2,
+		</if>
+		<if test="p2Level3 != null">
+			p2_level3,
+		</if>
+		<if test="p2Level4 != null">
+			p2_level4,
+		</if>
+		<if test="buyerAward != null">
+			buyer_award,
+		</if>
+		as award1 
+		FROM awardlist
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test=" awardId != null">
+				AND awardId = #{ awardId}
+			</if>
+			<if test="buyerLecel != null">
+				AND buyer_lecel = #{buyerLecel}
+			</if>
+			<if test="p1Level0 != null">
+				AND p1_level0 = #{p1Level0}
+			</if>
+			<if test="p1Level1 != null">
+				AND p1_level1 = #{p1Level1}
+			</if>
+			<if test="p1Level2 != null">
+				AND p1_level2 = #{p1Level2}
+			</if>
+			<if test="p1Level3 != null">
+				AND p1_level3 = #{p1Level3}
+			</if>
+			<if test="p1Level4 != null">
+				AND p1_level4 = #{p1Level4}
+			</if>
+			<if test="p2Level0 != null">
+				AND p2_level0 = #{p2Level0}
+			</if>
+			<if test="p2Level1 != null">
+				AND p2_level1 = #{p2Level1}
+			</if>
+			<if test="p2Level2 != null">
+				AND p2_level2 = #{p2Level2}
+			</if>
+			<if test="p2Level3 != null">
+				AND p2_level3 = #{p2Level3}
+			</if>
+			<if test="p2Level4 != null">
+				AND p2_level4 = #{p2Level4}
+			</if>
+			<if test="buyerAward != null">
+				AND buyer_award = #{buyerAward}
+			</if>
+			<if test="buyQty != null">
+				AND buy_qty = #{buyQty}
+			</if>
+			<if test="minQty != null">
+				AND min_qty = #{minQty},
+			</if>
+			<if test="maxQty != null">
+				AND max_qty = #{maxQty},
+			</if>
+		</trim>
+
+
+	</select>
+	
+	
+	<select id="selectAwardByUserLevelAntBuyQty"  parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from awardlist
+		<![CDATA[
+		where  	buyer_lecel = #{buyerLecel,jdbcType=INTEGER} and  max_qty>#{buyQty} and min_qty<= #{buyQty}
+		]]>
+	</select>
+  
+  
+  
+</mapper>

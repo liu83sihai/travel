@@ -1,0 +1,110 @@
+@charset "utf-8";
+
+/* 分页   */
+.pagin {
+	position: relative;
+        height: auto;
+         width: 100%;
+         margin: 0px auto;
+}
+.pagin .blue {
+	color:#056dae;
+	font-style:normal;
+}
+.pagin .paginList {
+	  height: 46px;
+      margin: 12px 0px;
+}
+.pagin .paginList li {
+	float:left;
+	background:#fff;
+	margin-left: 5px;
+	 border:1px solid #DDD;  
+	border-radius:5px;
+	list-style:none;
+}
+.pagin .paginList li a {
+	float:left;
+	width:25px;
+	height:30px;
+	text-align:center;
+	line-height:30px;
+	border-left:none;
+	color:#000;
+	font-size:15px;
+	vertical-align:middle;
+}
+.pagin .paginList li a:hover{
+	text-decoration: none;
+}
+.pagin .paginList li.current,.pagin .paginList li.current a {
+	background:#d32700;
+	cursor:default;
+	color:#fff;
+}
+.pagin .paginList li:hover {
+	background:#f5f5f5;
+}
+.pagin .paginList li.more,.pagin .paginList li.more a:hover {
+	cursor:default;
+}
+.pagin .paginList li.more:hover {
+	background:#FFF;
+}
+.pagin .paginList li.more a {
+	color:#737373;
+}
+.pagepre,.pagenxt {
+	width:36px;
+	height:36px;
+	display:block;
+}
+.pagepre {
+	background:url(../images/pre.png) no-repeat center center;
+}
+.pagenxt {
+	background:url(../images/next.png) no-repeat center center;
+}
+/* 编辑按钮 */
+
+.editbt{ 
+	color:#FFF; 
+	width:40px;
+	font:bold 12px/18px 宋体;
+	background-color:#287DDE; 
+	border:none;
+	border-radius:3px;
+}
+.delbt{ 
+	color:#FFF; 
+	width:40px;
+	font:bold 12px/18px 宋体;
+	background-color:#D9534F; 
+	border:none;
+	border-radius:3px;
+}
+
+.checkbt{ 
+	color:#FFF; 
+	width:40px;
+	font:bold 12px/18px 宋体;
+	background-color:#A1C973; 
+	border:none;
+	border-radius:3px;
+}
+.azbt{
+	color:#FFF; 
+	width:40px;
+	font:bold 12px/18px 宋体;
+	background-color:#A1CC73; 
+	border:none;
+	border-radius:3px;
+}
+.chakanbt{
+	color:#FFF; 
+	width:40px;
+	font:bold 12px/18px 宋体;
+	background-color:#FFAA25; 
+	border:none;
+	border-radius:3px;
+}

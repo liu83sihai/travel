@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.secrety.IResourcesDao">
+	<resultMap type="resourcesDo" id="resourcesResultMap">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="resourceDesc" column="resourceDesc" />
+		<result property="resourceStr" column="resourceStr" />
+		<result property="enabled" column="enabled" />
+		<result property="issys" column="issys" />
+		<result property="module" column="module" />
+		<result property="icon" column="icon" />
+		<result property="imgUrl" column="imgUrl" />
+		<result property="resouceType" column="resouceType" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="resourcesResultMap">
+		SELECT * 
+		  FROM resources WHERE id = #{id}
+	</select>
+
+	<select id="selectResources" parameterType="map" resultMap="resourcesResultMap">
+		SELECT * 
+		  FROM resources
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="name != null">  
+				AND name like #{name}
+			</if>
+			<if test="resourceDesc != null">  
+				AND resourceDesc like #{resourceDesc}
+			</if>
+			<if test="resourceStr != null">  
+				AND resourceStr like #{resourceStr}
+			</if>
+			<if test="enabled != null">  
+				AND enabled like #{enabled}
+			</if>
+			<if test="issys != null">  
+				AND issys like #{issys}
+			</if>
+			<if test="module != null">  
+				AND module like #{module}
+			</if>
+			<if test="icon != null">  
+				AND icon like #{icon}
+			</if>
+			<if test="imgUrl != null">  
+				AND imgUrl like #{imgUrl}
+			</if>
+			<if test="resouceType != null">  
+				AND resouceType like #{resouceType}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateResourcesById" parameterType="resourcesDo">
+		UPDATE resources 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="name != null">  
+				name = #{name},
+		</if>				
+		<if test="resourceDesc != null">  
+				resourceDesc = #{resourceDesc},
+		</if>				
+		<if test="resourceStr != null">  
+				resourceStr = #{resourceStr},
+		</if>				
+		<if test="enabled != null">  
+				enabled = #{enabled},
+		</if>				
+		<if test="issys != null">  
+				issys = #{issys},
+		</if>				
+		<if test="module != null">  
+				module = #{module},
+		</if>				
+		<if test="icon != null">  
+				icon = #{icon},
+		</if>				
+		<if test="imgUrl != null">  
+				imgUrl = #{imgUrl},
+		</if>				
+		<if test="resouceType != null">  
+				resouceType = #{resouceType},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addResources" parameterType="resourcesDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO resources(		
+		
+		name
+		,resourceDesc
+		,resourceStr
+		,enabled
+		,issys
+		,module
+		,icon
+		,imgUrl
+		,resouceType
+)
+		VALUES (#{name}
+		,#{resourceDesc}
+		,#{resourceStr}
+		,#{enabled}
+		,#{issys}
+		,#{module}
+		,#{icon}
+		,#{imgUrl}
+		,#{resouceType}
+)
+	</insert>
+	<insert id="addResourcesSelective" parameterType="resourcesDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO resources(		
+			name
+		<if test="resourceDesc!=null and resourceDesc!=''">
+		,resourceDesc
+		</if>
+		<if test="resourceStr!=null and resourceStr!=''">
+		,resourceStr
+		</if>
+		<if test="enabled!=null">
+		,enabled
+		</if>
+		<if test="issys!=null">
+		,issys
+		</if>
+		<if test="module!=null">
+		,module
+		</if>
+		<if test="icon!=null">
+		,icon
+		</if>
+		<if test="imgUrl!=null">
+		,imgUrl
+		</if>
+		<if test="resouceType!=null">
+		,resouceType
+		</if>
+)
+		VALUES (
+		#{name}
+		<if test="resourceDesc!=null and resourceDesc!=''">
+		,#{resourceDesc}
+		</if>
+		<if test="resourceStr!=null and resourceStr!=''">
+		,#{resourceStr}
+		</if>
+		<if test="enabled!=null">
+		,#{enabled}
+		</if>
+		<if test="issys!=null">
+		,#{issys}
+		</if>
+		<if test="module!=null">
+		,#{module}
+		</if>
+		<if test="icon!=null">
+		,#{icon}
+		</if>
+		<if test="imgUrl!=null">
+		,#{imgUrl}
+		</if>
+		<if test="resouceType!=null">
+		,#{resouceType}
+		</if>
+)
+	</insert>
+	<delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM resources WHERE id = #{id}
+	</delete>
+	<select id="selectByUsersId" parameterType="long" resultType="map">
+		SELECT res.resourceStr RESOURCESTR,a.id ID,a.name NAME, res.id RESOURCEID,res.name RESOURCENAME 
+		FROM managers m INNER JOIN usersroles u ON m.id=u.userId 
+		INNER JOIN roles r ON u.roleId=r.id 
+		INNER JOIN rolesauthority ra ON r.id=ra.roleId 
+		INNER JOIN authorities a ON ra.authorityId=a.id 
+		INNER JOIN authorityresources ar ON a.id=ar.authorityId 
+		INNER JOIN resources res ON res.id=ar.resourceId 
+		WHERE m.id=#{userId}
+	</select>
+	
+	<select id="getResourcesInInAuthorityPage" resultType="resourcesDo" parameterType="map">
+		SELECT r.id ID,r.name NAME,r.resourceStr RESOURCESTR,r.module MODULE FROM resources r,authorityresources ar 
+	 	 WHERE r.id=ar.resourceId AND ar.authorityId = #{authorityId}
+	 	 <if test="name!=null">
+	 	 	and r.name like concat('%',#{name},'%')
+	 	 </if>
+	 	  <if test="resourceStr!=null">
+	 	 	and r.resourceStr like concat('%',#{resourceStr},'%')
+	 	 </if>
+	</select>
+	<select id="getResourceNotInAuthorityPage" resultType="resourcesDo" parameterType="map">
+		SELECT r.id ID,r.name NAME,r.resourceStr RESOURCESTR,r.module MODULE 
+		FROM resources r WHERE r.id NOT IN (SELECT ar.resourceId FROM authorityresources ar 
+											WHERE   ar.authorityId=#{authorityId}
+											)
+	    <if test="name!=null">
+	 	 	and r.name like concat('%',#{name},'%')
+	 	 </if>
+	 	  <if test="resourceStr!=null">
+	 	 	and r.resourceStr like concat('%',#{resourceStr},'%')
+	 	 </if>
+	         
+	</select>
+</mapper>
+

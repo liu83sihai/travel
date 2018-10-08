@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.touch.ITouchBonusRecordDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.touch.TouchBonusRecordDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="balance" jdbcType="DECIMAL" property="balance" />
+		<result column="balance_left" jdbcType="DECIMAL" property="balanceLeft" />
+		<result column="balance_right" jdbcType="DECIMAL" property="balanceRight" />
+		<result column="touch_number" jdbcType="DECIMAL" property="touchNumber" />
+		<result column="bonus" jdbcType="DECIMAL" property="bonus" />
+		<result column="relevant_userid" jdbcType="INTEGER" property="relevantUserid" />
+		<result column="dis" jdbcType="INTEGER" property="dis" />
+		<result column="ctime" jdbcType="INTEGER" property="ctime" />
+		<result column="income_left" jdbcType="DECIMAL" property="incomeLeft" />
+		<result column="income_right" jdbcType="DECIMAL" property="incomeRight" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userid, balance, balance_left, balance_right, touch_number, bonus, relevant_userid,
+		dis, ctime,
+		income_left, income_right
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_touch_bonus_record
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_touch_bonus_record
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.touch.TouchBonusRecordDo"
+		useGeneratedKeys="true">
+		insert into ct_touch_bonus_record (userid, balance, balance_left,
+		balance_right, touch_number, bonus,
+		relevant_userid, dis, ctime,
+		income_left, income_right)
+		values (#{userid,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL},
+		#{balanceLeft,jdbcType=DECIMAL},
+		#{balanceRight,jdbcType=DECIMAL}, #{touchNumber,jdbcType=DECIMAL},
+		#{bonus,jdbcType=DECIMAL},
+		#{relevantUserid,jdbcType=INTEGER}, #{dis,jdbcType=INTEGER}, #{ctime,jdbcType=INTEGER},
+		#{incomeLeft,jdbcType=DECIMAL}, #{incomeRight,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.touch.TouchBonusRecordDo"
+		useGeneratedKeys="true">
+		insert into ct_touch_bonus_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="balance != null">
+				balance,
+			</if>
+			<if test="balanceLeft != null">
+				balance_left,
+			</if>
+			<if test="balanceRight != null">
+				balance_right,
+			</if>
+			<if test="touchNumber != null">
+				touch_number,
+			</if>
+			<if test="bonus != null">
+				bonus,
+			</if>
+			<if test="relevantUserid != null">
+				relevant_userid,
+			</if>
+			<if test="dis != null">
+				dis,
+			</if>
+			<if test="incomeLeft != null">
+				income_left,
+			</if>
+			<if test="incomeRight != null">
+				income_right,
+			</if>
+			ctime
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceLeft != null">
+				#{balanceLeft,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceRight != null">
+				#{balanceRight,jdbcType=DECIMAL},
+			</if>
+			<if test="touchNumber != null">
+				#{touchNumber,jdbcType=DECIMAL},
+			</if>
+			<if test="bonus != null">
+				#{bonus,jdbcType=DECIMAL},
+			</if>
+			<if test="relevantUserid != null">
+				#{relevantUserid,jdbcType=INTEGER},
+			</if>
+			<if test="dis != null">
+				#{dis,jdbcType=INTEGER},
+			</if>
+			<if test="incomeLeft != null">
+				#{incomeLeft,jdbcType=DECIMAL},
+			</if>
+			<if test="incomeRight != null">
+				#{incomeRight,jdbcType=DECIMAL},
+			</if>
+			unix_timestamp(now())
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.touch.TouchBonusRecordDo">
+		update ct_touch_bonus_record
+		<set>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				balance = #{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceLeft != null">
+				balance_left = #{balanceLeft,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceRight != null">
+				balance_right = #{balanceRight,jdbcType=DECIMAL},
+			</if>
+			<if test="touchNumber != null">
+				touch_number = #{touchNumber,jdbcType=DECIMAL},
+			</if>
+			<if test="bonus != null">
+				bonus = #{bonus,jdbcType=DECIMAL},
+			</if>
+			<if test="relevantUserid != null">
+				relevant_userid = #{relevantUserid,jdbcType=INTEGER},
+			</if>
+			<if test="dis != null">
+				dis = #{dis,jdbcType=INTEGER},
+			</if>
+			<if test="ctime != null">
+				ctime = #{ctime,jdbcType=INTEGER},
+			</if>
+			<if test="incomeLeft != null">
+				income_left = #{incomeLeft,jdbcType=DECIMAL},
+			</if>
+			<if test="incomeRight != null">
+				income_right = #{incomeRight,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.touch.TouchBonusRecordDo">
+		update ct_touch_bonus_record
+		set userid =
+		#{userid,jdbcType=INTEGER},
+		balance = #{balance,jdbcType=DECIMAL},
+		balance_left = #{balanceLeft,jdbcType=DECIMAL},
+		balance_right = #{balanceRight,jdbcType=DECIMAL},
+		touch_number = #{touchNumber,jdbcType=DECIMAL},
+		bonus =
+		#{bonus,jdbcType=DECIMAL},
+		relevant_userid = #{relevantUserid,jdbcType=INTEGER},
+		dis = #{dis,jdbcType=INTEGER},
+		ctime =
+		#{ctime,jdbcType=INTEGER},
+		income_left = #{incomeLeft,jdbcType=DECIMAL},
+		income_right = #{incomeRight,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 自定义查询 -->
+	<select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_touch_bonus_record u
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="relevantUserid != null">
+				AND u.relevant_userid = #{relevantUserid}
+			</if>
+		</trim>
+		<if test="offset != null">
+			limit #{offset}, #{rows}
+		</if>
+	</select>
+	
+	<!-- 自定义查询 -->
+	<select id="selectList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_touch_bonus_record u
+		where id in (select max(id) from ct_touch_bonus_record group by userid)
+		limit #{offset}, #{rows}
+	</select>
+	
+    <select id="getUserTouchBonusRecord" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_touch_bonus_record u
+        where u.userid = #{userId}
+        order by id desc limit 1
+    </select>
+
+	<select id="calTotalPerformance" parameterType="java.lang.Integer" resultType="java.util.Map">
+	select t.balance_left as leftPerformance,
+	t.balance_right as rightPerformance, (select sum(touch_number) from ct_touch_bonus_record a where a.userid =t.userid ) as touchPerformance
+	from ct_touch_bonus_record t where t.userid =#{userId} order by t.id desc limit 1
+</select>
+</mapper>

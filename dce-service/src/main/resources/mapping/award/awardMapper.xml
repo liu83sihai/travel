@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.award.AwardDao">
+  <resultMap id="BaseResultMap" type="com.dce.business.entity.award.Award">
+    <id column="awardId" jdbcType="INTEGER" property="awardid" />
+    <result column="awardTime" jdbcType="TIMESTAMP" property="awardtime" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="awardMoney" jdbcType="DOUBLE" property="awardmoney" />
+    <result column="awardReason" jdbcType="VARCHAR" property="awardreason" />
+    <result column="awardUsedStatus" jdbcType="INTEGER" property="awardusedstatus" />
+    <result column="awardStatus" jdbcType="INTEGER" property="awardstatus" />
+    <result column="awardType" jdbcType="INTEGER" property="awardtype" />
+    <result column="awardUsedTime" jdbcType="TIMESTAMP" property="awardusedtime" />
+    <result column="awardUpdateTime" jdbcType="TIMESTAMP" property="awardupdatetime" />
+    <result column="awardCreateTime" jdbcType="TIMESTAMP" property="awardcreatetime" />
+    <result column="awardOperationName" jdbcType="VARCHAR" property="awardoperationname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    awardId, awardTime, userId, awardMoney, awardReason, awardUsedStatus, awardStatus, 
+    awardType, awardUsedTime, awardUpdateTime, awardCreateTime, awardOperationName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ct_award
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </select>
+  
+   <!-- 自定义查询 -->
+  <select id="selectAward" parameterType="java.util.Map"  resultMap="BaseResultMap">
+      select 
+     <include refid="Base_Column_List" />
+      from ct_award 
+      where 0=0 
+      <if test="userId!=null">
+       and userId={#userId,jdbcType=INTEGER}
+      </if>
+      
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ct_award
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dce.business.entity.award.Award">
+    insert into ct_award (awardId, awardTime, userId, 
+      awardMoney, awardReason, awardUsedStatus, 
+      awardStatus, awardType, awardUsedTime, 
+      awardUpdateTime, awardCreateTime, awardOperationName
+      )
+    values (#{awardid,jdbcType=INTEGER}, #{awardtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
+      #{awardmoney,jdbcType=DOUBLE}, #{awardreason,jdbcType=VARCHAR}, #{awardusedstatus,jdbcType=INTEGER}, 
+      #{awardstatus,jdbcType=INTEGER}, #{awardtype,jdbcType=INTEGER}, #{awardusedtime,jdbcType=TIMESTAMP}, 
+      #{awardupdatetime,jdbcType=TIMESTAMP}, #{awardcreatetime,jdbcType=TIMESTAMP}, #{awardoperationname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dce.business.entity.award.Award">
+    insert into ct_award
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="awardid != null">
+        awardId,
+      </if>
+      <if test="awardtime != null">
+        awardTime,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="awardmoney != null">
+        awardMoney,
+      </if>
+      <if test="awardreason != null">
+        awardReason,
+      </if>
+      <if test="awardusedstatus != null">
+        awardUsedStatus,
+      </if>
+      <if test="awardstatus != null">
+        awardStatus,
+      </if>
+      <if test="awardtype != null">
+        awardType,
+      </if>
+      <if test="awardusedtime != null">
+        awardUsedTime,
+      </if>
+      <if test="awardupdatetime != null">
+        awardUpdateTime,
+      </if>
+      <if test="awardcreatetime != null">
+        awardCreateTime,
+      </if>
+      <if test="awardoperationname != null">
+        awardOperationName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="awardid != null">
+        #{awardid,jdbcType=INTEGER},
+      </if>
+      <if test="awardtime != null">
+        #{awardtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="awardmoney != null">
+        #{awardmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="awardreason != null">
+        #{awardreason,jdbcType=VARCHAR},
+      </if>
+      <if test="awardusedstatus != null">
+        #{awardusedstatus,jdbcType=INTEGER},
+      </if>
+      <if test="awardstatus != null">
+        #{awardstatus,jdbcType=INTEGER},
+      </if>
+      <if test="awardtype != null">
+        #{awardtype,jdbcType=INTEGER},
+      </if>
+      <if test="awardusedtime != null">
+        #{awardusedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardupdatetime != null">
+        #{awardupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardcreatetime != null">
+        #{awardcreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardoperationname != null">
+        #{awardoperationname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.award.Award">
+    update ct_award
+    <set>
+      <if test="awardtime != null">
+        awardTime = #{awardtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="awardmoney != null">
+        awardMoney = #{awardmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="awardreason != null">
+        awardReason = #{awardreason,jdbcType=VARCHAR},
+      </if>
+      <if test="awardusedstatus != null">
+        awardUsedStatus = #{awardusedstatus,jdbcType=INTEGER},
+      </if>
+      <if test="awardstatus != null">
+        awardStatus = #{awardstatus,jdbcType=INTEGER},
+      </if>
+      <if test="awardtype != null">
+        awardType = #{awardtype,jdbcType=INTEGER},
+      </if>
+      <if test="awardusedtime != null">
+        awardUsedTime = #{awardusedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardupdatetime != null">
+        awardUpdateTime = #{awardupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardcreatetime != null">
+        awardCreateTime = #{awardcreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardoperationname != null">
+        awardOperationName = #{awardoperationname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dce.business.entity.award.Award">
+    update ct_award
+    set awardTime = #{awardtime,jdbcType=TIMESTAMP},
+      userId = #{userid,jdbcType=INTEGER},
+      awardMoney = #{awardmoney,jdbcType=DOUBLE},
+      awardReason = #{awardreason,jdbcType=VARCHAR},
+      awardUsedStatus = #{awardusedstatus,jdbcType=INTEGER},
+      awardStatus = #{awardstatus,jdbcType=INTEGER},
+      awardType = #{awardtype,jdbcType=INTEGER},
+      awardUsedTime = #{awardusedtime,jdbcType=TIMESTAMP},
+      awardUpdateTime = #{awardupdatetime,jdbcType=TIMESTAMP},
+      awardCreateTime = #{awardcreatetime,jdbcType=TIMESTAMP},
+      awardOperationName = #{awardoperationname,jdbcType=VARCHAR}
+    where awardId = #{awardid,jdbcType=INTEGER}
+  </update>
+</mapper>

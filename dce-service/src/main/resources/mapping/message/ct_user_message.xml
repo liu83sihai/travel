@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.message.IMessageDao">
+
+	<sql id="Base_Column_List">
+		id, pid, title, content, type, to_uid, from_uid, is_read, ctime, utime, sort,status
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.dce.business.entity.message.MessageAndNewsDo">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_message
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from ct_user_message
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.message.MessageAndNewsDo"
+		useGeneratedKeys="true">
+		insert into ct_user_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="to_uid != null">
+				to_uid,
+			</if>
+			<if test="from_uid != null">
+				from_uid,
+			</if>
+			<if test="is_read != null">
+				is_read,
+			</if>
+			<if test="ctime != null">
+				ctime,
+			</if>
+			<if test="utime != null">
+				utime,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">
+				#{pid},
+			</if>
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="to_uid != null">
+				#{to_uid},
+			</if>
+			<if test="from_uid != null">
+				#{from_uid},
+			</if>
+			<if test="is_read != null">
+				#{is_read},
+			</if>
+			<if test="utime != null">
+				#{utime},
+			</if>
+			<if test="sort != null">
+				#{sort},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+		</trim>
+	</insert>
+	<update id="update" parameterType="com.dce.business.entity.message.MessageAndNewsDo">
+		update ct_user_message
+		<set>
+			<if test="pid != null">
+				pid = #{pid},
+			</if>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="to_uid != null">
+				to_uid = #{to_uid},
+			</if>
+			<if test="from_uid != null">
+				from_uid = #{from_uid},
+			</if>
+			<if test="is_read != null">
+				is_read = #{is_read},
+			</if>
+			<if test="utime != null">
+				utime = #{utime},
+			</if>
+			<if test="sort != null">
+				sort = #{sort},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 自定义查询 -->
+    <select id="select" parameterType="java.util.Map" resultType="com.dce.business.entity.message.MessageAndNewsDo">
+        select
+        <include refid="Base_Column_List" />
+        from ct_user_message
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="pid != null">  
+               AND pid = #{pid}
+           </if>
+           <if test="type != null">  
+               AND type = #{type}
+           </if>
+           <if test="to_uid != null">  
+               AND to_uid = #{to_uid}
+           </if>
+           <if test="from_uid != null">  
+               AND from_uid = #{from_uid}
+           </if>
+           <if test="is_read != null">  
+               AND is_read = #{is_read}
+           </if>
+        </trim> 
+        ORDER BY ctime,utime DESC LIMIT #{offset},#{rows}
+    </select>
+</mapper>

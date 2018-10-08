@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.bonus.IBonusDailyDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.bonus.BonusDailyDo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="userId" jdbcType="INTEGER" property="userId" />
+		<result column="incomeType" jdbcType="VARCHAR" property="incomeType" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userId, incomeType, amount, date, updateTime
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_bonus_daily
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ct_bonus_daily
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bonus.BonusDailyDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_daily (userId, incomeType,
+		amount, date, updateTime
+		)
+		values
+		(#{userId,jdbcType=INTEGER}, #{incomeType,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL}, #{date,jdbcType=DATE},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bonus.BonusDailyDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_daily
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				userId,
+			</if>
+
+			<if test="incomeType != null">
+				incomeType,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+
+			<if test="incomeType != null">
+				#{incomeType,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.bonus.BonusDailyDo">
+		update ct_bonus_daily
+		<set>
+			<if test="userId != null">
+				userId = #{userId,jdbcType=INTEGER},
+			</if>
+
+			<if test="incomeType != null">
+				incomeType = #{incomeType,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.bonus.BonusDailyDo">
+		update ct_bonus_daily
+		set userId = #{userId,jdbcType=INTEGER},
+
+		incomeType = #{incomeType,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=DECIMAL},
+		date = #{date,jdbcType=DATE},
+		updateTime = #{updateTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- 更新账户统计值 -->
+	<update id="updateAmount" parameterType="java.util.Map">
+		update ct_bonus_daily
+		set amount = amount + #{amount}, updateTime = now()
+		where userId = #{userId} and incomeType=#{incomeType} and date = #{date}
+	</update>
+	
+	<!-- 自定义查询 -->
+    <select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_bonus_daily u
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="userId != null">  
+               AND u.userId = #{userId}
+           </if>
+           <if test="incomeType != null">  
+               AND u.incomeType = #{incomeType}
+           </if>
+        </trim> 
+    </select>
+</mapper>

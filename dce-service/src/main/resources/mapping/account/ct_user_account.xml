@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.account.IUserAccountDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.account.UserAccountDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="userId" jdbcType="INTEGER" property="userId" />
+		<result column="accountType" jdbcType="VARCHAR" property="accountType" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="totalConsumeAmount" jdbcType="VARCHAR"
+			property="totalConsumeAmount" />
+		<result column="totalInocmeAmount" jdbcType="DECIMAL" property="totalInocmeAmount" />
+		<result column="incomeAmount" jdbcType="DECIMAL" property="incomeAmount" />
+		<result column="consumeAmount" jdbcType="DECIMAL" property="consumeAmount" />
+		<result column="withdrawTotalDeposit" jdbcType="VARCHAR"
+			property="withdrawTotalDeposit" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userId, accountType, amount,
+		totalConsumeAmount,
+		totalInocmeAmount, incomeAmount, consumeAmount, withdrawTotalDeposit,
+		updateTime
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_account
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		ct_user_account
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.account.UserAccountDo"
+		useGeneratedKeys="true">
+		insert into ct_user_account (userId, accountType,
+		amount,
+		totalConsumeAmount, totalInocmeAmount,
+		incomeAmount,
+		consumeAmount, withdrawTotalDeposit,
+		updateTime)
+		values
+		(#{userId,jdbcType=INTEGER},
+		#{accountType,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL},
+		#{totalConsumeAmount,jdbcType=VARCHAR},
+		#{totalInocmeAmount,jdbcType=DECIMAL},
+		#{incomeAmount,jdbcType=DECIMAL}, #{consumeAmount,jdbcType=DECIMAL},
+		#{withdrawTotalDeposit,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.account.UserAccountDo"
+		useGeneratedKeys="true">
+		insert into ct_user_account
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="accountType != null">
+				accountType,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+
+			<if test="totalConsumeAmount != null">
+				totalConsumeAmount,
+			</if>
+			<if test="totalInocmeAmount != null">
+				totalInocmeAmount,
+			</if>
+			<if test="incomeAmount != null">
+				incomeAmount,
+			</if>
+			<if test="consumeAmount != null">
+				consumeAmount,
+			</if>
+			<if test="withdrawTotalDeposit != null">
+				withdrawTotalDeposit,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="accountType != null">
+				#{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+
+			<if test="totalConsumeAmount != null">
+				#{totalConsumeAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="totalInocmeAmount != null">
+				#{totalInocmeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="incomeAmount != null">
+				#{incomeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="consumeAmount != null">
+				#{consumeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="withdrawTotalDeposit != null">
+				#{withdrawTotalDeposit,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.account.UserAccountDo">
+		update ct_user_account
+		<set>
+			<if test="userId != null">
+				userId = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="accountType != null">
+				accountType = #{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+
+			<if test="totalConsumeAmount != null">
+				totalConsumeAmount =
+				#{totalConsumeAmount,jdbcType=VARCHAR},
+			</if>
+			<if test="totalInocmeAmount != null">
+				totalInocmeAmount =
+				#{totalInocmeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="incomeAmount != null">
+				incomeAmount = #{incomeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="consumeAmount != null">
+				consumeAmount = #{consumeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="withdrawTotalDeposit != null">
+				withdrawTotalDeposit =
+				#{withdrawTotalDeposit,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.account.UserAccountDo">
+		update
+		ct_user_account
+		set userId = #{userId,jdbcType=INTEGER},
+		accountType =
+		#{accountType,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=DECIMAL},
+		totalConsumeAmount =
+		#{totalConsumeAmount,jdbcType=VARCHAR},
+		totalInocmeAmount = #{totalInocmeAmount,jdbcType=DECIMAL},
+		incomeAmount =
+		#{incomeAmount,jdbcType=DECIMAL},
+		consumeAmount =
+		#{consumeAmount,jdbcType=DECIMAL},
+		withdrawTotalDeposit =
+		#{withdrawTotalDeposit,jdbcType=VARCHAR},
+		updateTime =
+		#{updateTime,jdbcType=TIMESTAMP}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 自定义查询 -->
+	<select id="selectAccount" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_account
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND userId = #{userId}
+			</if>
+			<if test="accountType != null">
+				AND accountType = #{accountType}
+			</if>
+		</trim>
+		<if test="offset != null">
+			limit #{offset}, #{rows}
+		</if>
+	</select>
+
+	<update id="updateUserAmountById" parameterType="com.dce.business.entity.account.UserAccountDo">
+		UPDATE ct_user_account
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="amount != null">
+				amount = ifnull(amount,0) + #{amount},
+			</if>
+
+			<if test="amount != null">
+				totalConsumeAmount = ifnull(totalConsumeAmount,0) +
+				#{amount},
+			</if>
+			<if test="totalInocmeAmount != null">
+				totalInocmeAmount = ifnull(totalInocmeAmount,0) +
+				#{totalInocmeAmount},
+			</if>
+			<if test="incomeAmount != null">
+				incomeAmount = ifnull(incomeAmount,0) + #{incomeAmount},
+			</if>
+			<if test="consumeAmount != null">
+				consumeAmount = ifnull(consumeAmount,0) +
+				#{consumeAmount},
+			</if>
+			<if test="withdrawTotalDeposit != null">
+				withdrawTotalDeposit = ifnull(withdrawTotalDeposit,0) +
+				#{withdrawTotalDeposit},
+			</if>
+			<if test="userId != null">
+				updateTime = now(),
+			</if>
+		</trim>
+		WHERE userId = #{userId} and accountType=#{accountType} and
+		(ifnull(amount,0) + #{amount})>=0
+	</update>
+
+
+	<select id="getMyQRCode" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		select qrcode
+		from ct_user_qrcode
+		where userid =
+		#{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="getUserIdByQRCode" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select userId
+		from ct_user_qrcode
+		where qrcode =
+		#{qrcode,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insertQRCode" parameterType="Map">
+		insert into
+		ct_user_qrcode (userId, qrcode,createTime)
+		values
+		(#{userId,jdbcType=INTEGER}, #{qrcode,jdbcType=VARCHAR},now())
+	</insert>
+
+	<select id="selectAccountInfoByPage" parameterType="Map"
+		resultType="Map">
+		SELECT CONCAT(b.user_name,'[',b.true_name,']') AS userName, a.userId,
+
+		MAX(CASE a.accountType WHEN 'wallet_original' THEN a.amount ELSE 0 END
+		) wallet_original,
+
+		MAX(CASE a.accountType WHEN
+		'wallet_original_release' THEN a.amount ELSE 0
+		END)
+		wallet_original_release ,
+
+		MAX(CASE a.accountType WHEN 'wallet_interest'
+		THEN a.amount ELSE 0 END)
+		wallet_interest ,
+
+		MAX(CASE a.accountType WHEN
+		'wallet_bonus' THEN a.amount ELSE 0 END)
+		wallet_bonus ,
+
+		MAX(CASE
+		a.accountType WHEN 'wallet_release_release' THEN a.amount ELSE 0 END)
+		wallet_release_release ,
+
+		MAX(CASE a.accountType WHEN 'wallet_score'
+		THEN a.amount ELSE 0 END)
+		wallet_score ,
+
+		MAX(CASE a.accountType WHEN
+		'wallet_cash' THEN a.amount ELSE 0 END)
+		wallet_cash
+
+		FROM ct_user_account
+		a LEFT JOIN ct_user b on a.userId=b.id
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userName != null">
+				AND (b.user_name = #{userName} OR
+				b.true_name=#{userName})
+			</if>
+			<if test="trueName != null">
+				AND b.true_name = #{trueName}
+			</if>
+		</trim>
+		GROUP BY a.userId
+
+	</select>
+	<select id="selectAccountInfomByPage" parameterType="Map"
+		resultType="Map">
+		SELECT CONCAT(b.user_name,'[',b.true_name,']') AS userName, a.userId,
+
+		MAX(CASE a.accountType WHEN 'wallet_money' THEN a.amount ELSE 0 END )
+		wallet_money,
+
+		MAX(CASE a.accountType WHEN 'wallet_travel' THEN a.amount
+		ELSE 0 END)
+		wallet_travel ,
+
+		MAX(CASE a.accountType WHEN 'wallet_goods'
+		THEN a.amount ELSE 0 END)
+		wallet_goods ,
+
+		MAX(CASE a.accountType WHEN
+		'wallet_active' THEN a.amount ELSE 0 END)
+		wallet_active
+
+		FROM
+		ct_user_account a LEFT JOIN ct_user b on a.userId=b.id
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userName != null">
+				AND (b.user_name = #{userName} OR
+				b.true_name=#{userName})
+			</if>
+			<if test="trueName != null">
+				AND b.true_name = #{trueName}
+			</if>
+		</trim>
+		GROUP BY a.userId
+
+	</select>
+	<select id="selectAmountByAccountType" parameterType="Map"
+		resultType="com.dce.business.entity.account.UserAccountDo">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM ct_user_account
+		<where>
+			<if test="userId != null">
+				userId = #{userId}
+			</if>
+			<if test="id != null">
+				AND id = #{orderStatus}
+			</if>
+			<if test="accountType != null">
+				AND accountType = #{accountType}
+			</if>
+			<if test="amount != null">
+				AND orderType = #{orderType}
+			</if>
+		</where>
+		order by updateTime desc limit 0,1
+	</select>
+	<select id="sumAccount" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT SUM(amount) AS amount, accountType FROM ct_user_account GROUP
+		BY accountType
+	</select>
+
+	<!-- 修改用户余额 -->
+	<update id="updateMoney" parameterType="java.util.Map">
+		update ct_user_account
+		<set>
+			<if test="qty !=null">
+				amount =
+				amount-#{qty,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userId != null">
+				AND userId=#{userId,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</update>
+	
+	<select id="exportQuery" parameterType="map"
+		resultType="map">
+		SELECT CONCAT(b.user_name,'[',b.true_name,']') AS userName, a.userId,
+
+		MAX(CASE a.accountType WHEN 'wallet_money' THEN a.amount ELSE 0 END )
+		wallet_money,
+
+		MAX(CASE a.accountType WHEN 'wallet_travel' THEN a.amount
+		ELSE 0 END)
+		wallet_travel ,
+
+		MAX(CASE a.accountType WHEN 'wallet_goods'
+		THEN a.amount ELSE 0 END)
+		wallet_goods ,
+
+		MAX(CASE a.accountType WHEN
+		'wallet_active' THEN a.amount ELSE 0 END)
+		wallet_active
+
+		FROM
+		ct_user_account a LEFT JOIN ct_user b on a.userId=b.id
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userName != null">
+				AND (b.user_name = #{userName} OR
+				b.true_name=#{userName})
+			</if>
+			<if test="trueName != null">
+				AND b.true_name = #{trueName}
+			</if>
+		</trim>
+		GROUP BY a.userId
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>

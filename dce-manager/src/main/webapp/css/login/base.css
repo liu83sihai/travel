@@ -1,0 +1,127 @@
+html,html body {
+    _background-image:url('about:blank');
+    _background-attachment:fixed;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+html,body,header,footer,section,table,thead,tbody,tfoot,tr,th,td,h1,h2,h3,h4,h5,h6,ul,li,ol,nav,b,strong,p,area,a,abbr,sub,sup,big,br,button,input,form,select,canvas,caption,cite,aside,audio,article,address,acronym,dd,dt,dl,del,dd,datalist,col,code,details,dfn,dialog,em,figure,fieldset,frame,frameset,figcaption,colgroup,i,img,hr,iframe,ins,link,map,mark,menu,meta,meter,noframes,noscript,script,ol,option,optgroup,output,param,pre,q,rp,rt,ruby,s,samp,s,span,label,summary,source,textarea,title,time,var,pre,xmp,video,wbr{margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+html, body, h1, h2, h3, h4, h5, h6, div, dl, dt, dd, ul, ol, li, p, blockquote, pre, hr, figure, table, caption, th, td, form, fieldset, legend, input, button, textarea, menu {
+    margin: 0;
+    padding: 0;
+}
+body, textarea, input, button, select, keygen, legend {
+    font: 14px/1.5 "Microsoft Yahei", "Tahoma", "SimSun";
+    color: #333b46;
+    outline: 0;
+}
+header, footer, section, article, aside, nav, hgroup, address, figure, figcaption, menu, details {
+    display: block;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+caption, th {
+    text-align: left;
+    font-weight: normal;
+}
+
+html, body, fieldset, img, iframe, abbr {
+    border: 0;
+}
+i, cite, em, var, address, dfn {
+    font-style: normal;
+}
+[hidefocus], summary,:focus {
+    outline: 0;
+}
+*:disabled{
+    pointer-events:none;
+}
+li {
+    list-style: none;
+}
+h1, h2, h3, h4, h5, h6, small {
+    font-size: 100%;
+}
+sup, sub {
+    font-size: 83%;
+}
+pre, code, kbd, samp {
+    font-family: inherit;
+}
+q:before, q:after {
+    content: none;
+}
+textarea {
+    overflow: auto;
+    resize: none;
+}
+label, summary {
+    cursor: default;
+}
+a, button {
+    cursor: pointer;
+}
+h1, h2, h3, h4, h5, h6, em, strong, b {
+     font-weight: normal;
+}
+del, ins, u, s, a {
+    text-decoration: none;
+}
+a,a:visited {
+    -webkit-touch-callout: none;
+    text-decoration: none;
+    outline: 0;
+    color:inherit;
+}
+a{
+    outline: 0;
+}
+
+a:hover {
+    /* text-decoration: underline; */
+}
+a, a:hover {
+    /*color: #333;*/
+}
+img {
+    vertical-align: top;
+}
+ul,li,ol{list-style:none; list-style-type: none;list-style-image: none;}
+/*单选活复选框的样式*/
+input[type='radio'] ,
+input[type='checkbox']{    
+    position: relative;
+    width: 17px;
+    height: 17px;
+    background: url(http://rec.hehuayidai.com/res/images/app/renhang/check-ico.png) no-repeat;
+    background-size: 16px auto;
+    background-position: 0px 1px;
+    top: 3px;
+    -webkit-appearance : none ;  /*解决iphone safari上的圆角问题*/
+}
+/*单选活复选框的选中样式*/
+input[type='radio']:checked ,
+input[type='checkbox']:checked {
+    background-position: 0px -18px;
+}
+
+.formpanel{ text-align: left;}
+.formpanel .form-group-lr {min-height: 37px;}
+.formpanel .form-group-lr .control-label{float: left;text-align: right;width: 270px;display: block;line-height: 35px;padding-right: 15px;color: #3c3c3c;}
+.formpanel .form-group-lr .inputgroup, .formpanel .form-group-lr .ckbox,.formpanel .form-group-lr .ckforlabel ,.formpanel .form-group-lr .radbox{float: left;}
+.formpanel .form-group-lr .ckforlabel{    line-height: 35px; padding-right: 35px;}
+.formpanel .form-group-lr .ckbox ,.formpanel .form-group-lr .radbox{-webkit-appearance: none;width: 18px;  height: 18px;background-image: url(../img/check-ico.png);-webkit-background-size: 14px auto;background-size: 14px auto;background-position: 1px 2px;background-repeat: no-repeat;position: relative;top: 9px;left: 0px;margin-right: 4px;}
+.formpanel .form-group-lr .ckbox:checked,.formpanel .form-group-lr .radbox:checked{background-position: 1px -15px;}
+.formpanel .form-group-lr .inputgroup .mutarea{padding-top:4px;height: 90px; border: 1px solid #cccccc;width: 438px;line-height: 20px;border-radius: 1px;padding-left: 12px;color: #3c3c3c;}
+.formpanel .form-group-lr .inputgroup .form-control,.formpanel .form-group-lr .inputgroup .selcls{background-color: #fff; height: 35px; border: 1px solid #cccccc;width: 240px;line-height: 35px;border-radius: 1px;padding-left: 12px;color: #3c3c3c;}
+.formpanel .form-group-lr .inputgroup input[type='number']{width: 240px;width: 240px !important;}
+.formpanel .form-group-lr .inputgroup .helplable{display: block;margin-top: 5px;clear: both;font-size: 12px;color: #a0a0a0;}
+.formpanel .form-group-lr .inputgroup .inptis{font-size: 12px;color: #a0a0a0;  line-height: 35px;}
+.formpanel .form-group-lr .inputgroup .textcls{font-size: 14px;color: #3c3c3c; display: block;  line-height: 37px;}
+.formpanel .form-group-lr .inputgroup .danwei{color: #3c3c3c;font-size: 14px;padding-left: 14px;}                  
+.formpanel .form-group-lr .inputgroup .form-control::-webkit-input-placeholder , .formpanel .form-group-lr .inputgroup .mutarea::-webkit-input-placeholder{color:#a0a0a0; font-size: 14px; }
+.formpanel .form-group-lr .inputgroup .form-control::-moz-placeholder , .formpanel .form-group-lr .inputgroup .mutarea::-moz-placeholder{color:#a0a0a0; font-size: 14px;opacity: 1; }
+.formpanel .form-group-lr .inputgroup .form-control::-ms-input-placeholder , .formpanel .form-group-lr .inputgroup .mutarea::-ms-input-placeholder {color:#a0a0a0; font-size: 14px;}
+.formpanel .form-group-lr .inputgroup .validiptw{width: 140px;}
+.formpanel .form-group-lr .inputgroup .getvalcodbtn{background-color: #e3e3e3; height: 35px; border: 1px solid #cccccc;width: 100px;line-height: 35px;border-radius: 1px;color: #3c3c3c; border-left: 0px;}

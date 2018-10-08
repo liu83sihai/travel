@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dce.business.dao.secrety.IAuthoritiesDao">
+	<resultMap type="authoritiesDo" id="authoritiesResultMap">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="authDesc" column="authDesc" />
+		<result property="enabled" column="enabled" />
+		<result property="issys" column="issys" />
+		<result property="module" column="module" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="authoritiesResultMap">
+		SELECT * 
+		  FROM authorities WHERE id = #{id}
+	</select>
+
+	<select id="selectAuthorities" parameterType="map" resultMap="authoritiesResultMap">
+		SELECT * 
+		  FROM authorities
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="name != null">  
+				AND name like #{name}
+			</if>
+			<if test="authDesc != null">  
+				AND authDesc like #{authDesc}
+			</if>
+			<if test="enabled != null">  
+				AND enabled like #{enabled}
+			</if>
+			<if test="issys != null">  
+				AND issys like #{issys}
+			</if>
+			<if test="module != null">  
+				AND module like #{module}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateAuthoritiesById" parameterType="authoritiesDo">
+		UPDATE authorities 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="name != null">  
+				name = #{name},
+		</if>				
+		<if test="authDesc != null">  
+				authDesc = #{authDesc},
+		</if>				
+		<if test="enabled != null">  
+				enabled = #{enabled},
+		</if>				
+		<if test="issys != null">  
+				issys = #{issys},
+		</if>				
+		<if test="module != null">  
+				module = #{module},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addAuthorities" parameterType="authoritiesDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO authorities(		name
+		,authDesc
+		,enabled
+		,issys
+		,module
+)
+		     VALUES (		#{name}
+		,#{authDesc}
+		,#{enabled}
+		,#{issys}
+		,#{module}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM authorities WHERE id = #{id}
+	</delete>
+	
+	
+	<select id="getAuthorityPage" parameterType="map" resultType="authoritiesDo">
+		select id,name,authDesc,enabled,issys from authorities where 1=1 
+		<if test="name!=null and name!=''">
+			and name like concat('%',#{name},'%')
+		</if>
+		<if test="authDesc!=null and authDesc!=''">
+			and authDesc like concat('%',#{authDesc},'%')
+		</if>
+	</select>
+	
+	<select id="getGrantedAuthority" parameterType="long" resultMap="authoritiesResultMap">
+		SELECT a.name NAME FROM managers m INNER JOIN usersroles u
+        ON m.id=u.userId INNER JOIN roles r ON u.roleId=r.id INNER JOIN rolesauthority ra 
+        ON r.id=ra.roleId INNER JOIN authorities a ON ra.authorityId=a.id WHERE m.id=#{id}
+    </select>
+        
+</mapper>

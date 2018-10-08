@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.secrety.IModuleDao">
+	<resultMap type="moduleDo" id="moduleResultMap">
+		<result property="id" column="id" />
+		<result property="module" column="module" />
+		<result property="name" column="name" />
+		<result property="moduleDesc" column="moduleDesc" />
+		<result property="imgUrl" column="imgUrl" />
+		<result property="createTime" column="createTime" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="moduleResultMap">
+		SELECT * 
+		  FROM module WHERE id = #{id}
+	</select>
+
+	<select id="selectModule" parameterType="map" resultMap="moduleResultMap">
+		SELECT * 
+		  FROM module
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="module != null">  
+				AND module like #{module}
+			</if>
+			<if test="name != null">  
+				AND name like #{name}
+			</if>
+			<if test="moduleDesc != null">  
+				AND moduleDesc like #{moduleDesc}
+			</if>
+			<if test="imgUrl != null">  
+				AND imgUrl like #{imgUrl}
+			</if>
+			<if test="createTime != null">  
+				AND createTime like #{createTime}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateModuleById" parameterType="moduleDo">
+		UPDATE module 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="module != null">  
+				module = #{module},
+		</if>				
+		<if test="name != null">  
+				name = #{name},
+		</if>				
+		<if test="moduleDesc != null">  
+				moduleDesc = #{moduleDesc},
+		</if>				
+		<if test="imgUrl != null">  
+				imgUrl = #{imgUrl},
+		</if>				
+		<if test="createTime != null">  
+				createTime = #{createTime},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addModule" parameterType="moduleDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO module(		module
+		,name
+		,moduleDesc
+		,imgUrl
+		,createTime
+)
+		     VALUES (		#{module}
+		,#{name}
+		,#{moduleDesc}
+		,#{imgUrl}
+		,#{createTime}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM module WHERE id = #{id}
+	</delete>
+	<!--  @author tangkmf 
+		@time 2017年8月31日09:46:18 重构
+	-->
+	<select id="getUserModules" parameterType="int" resultType="com.dce.business.entity.secrety.ResourcesDo" >
+		SELECT r.*  FROM resources r 
+		INNER JOIN authorityresources ar 
+		ON r.id=ar.resourceId and r.resoucetype='menu'
+		INNER JOIN rolesauthority ra 
+		ON ra.authorityId=ar.authorityId 
+		INNER JOIN usersroles ur
+		ON ra.roleId=ur.roleId WHERE userId=#{userId}
+	</select>
+	
+	<select id="getAllModule" resultMap="moduleResultMap" >
+		select * from module
+	</select>
+	
+	<select id="getResourcesInModulePage" resultType="com.dce.business.entity.secrety.ResourcesDo" parameterType="map">
+		select id,name,resourceDesc,resourceStr,enabled,module,icon from resources where 1=1
+		<if test="name != null and name!=''">
+			and name like #{name}
+		</if>
+		<if test="resourceStr != null and resourceStr!=''">
+			or resourceStr like #{resourceStr}
+		</if>
+	</select>
+</mapper>
+

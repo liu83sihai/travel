@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.trade.IKLineDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.trade.KLineDo">
+		<!-- <id column="id" jdbcType="BIGINT" property="id" /> -->
+		<result column="price" jdbcType="DECIMAL" property="price" />
+		<result column="qty" jdbcType="DECIMAL" property="qty" />
+		<result column="totalAmount" jdbcType="DECIMAL" property="totalAmount" />
+		<result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+	</resultMap>
+	<resultMap id="MABaseResultMap" type="com.dce.business.entity.trade.MADo">
+		<result column="volume" jdbcType="DECIMAL" property="volume" />
+		<result column="avgPrice" jdbcType="DECIMAL" property="avgPrice" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, price, qty, ctime
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_kline
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ct_kline
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.trade.KLineDo"
+		useGeneratedKeys="true">
+		insert into ct_kline (price, qty,totalAmount, ctime
+		)
+		values (#{price,jdbcType=DECIMAL},
+		#{qty,jdbcType=DECIMAL},#{totalAmount,jdbcType=DECIMAL},
+		#{ctime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.trade.KLineDo"
+		useGeneratedKeys="true">
+		insert into ct_kline
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="price != null">
+				price,
+			</if>
+			<if test="qty != null">
+				qty,
+			</if>
+			<if test="totalAmount != null">
+				totalAmount,
+			</if>
+			<if test="ctime != null">
+				ctime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="qty != null">
+				#{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalAmount != null">
+				#{totalAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="ctime != null">
+				#{ctime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.trade.KLineDo">
+		update ct_kline
+		<set>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="qty != null">
+				qty = #{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalAmount != null">
+				totalAmount = #{totalAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="ctime != null">
+				ctime = #{ctime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.trade.KLineDo">
+		update ct_kline
+		set price = #{price,jdbcType=DECIMAL},
+		qty =
+		#{qty,jdbcType=DECIMAL},totalAmount =
+		#{totalAmount,jdbcType=DECIMAL},
+		ctime = #{ctime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="selectQty" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select max(t.price) as high, min(t.price) as low, sum(qty) as volume
+		from ct_kline t
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="startDate != null">  
+               <![CDATA[    AND DATE_FORMAT(t.ctime,'%Y-%m-%d %H:%i:%s') >=
+                '${startDate}']]>
+			</if>
+			<if test="endDate != null">  
+               <![CDATA[    AND DATE_FORMAT(t.ctime,'%Y-%m-%d %H:%i:%s') <
+                '${endDate}']]>
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectPrice" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select price as price
+		from ct_kline t
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="startDate != null">  
+               <![CDATA[    AND DATE_FORMAT(t.ctime,'%Y-%m-%d %H:%i:%s') >=
+                '${startDate}']]>
+			</if>
+			<if test="endDate != null">  
+               <![CDATA[    AND DATE_FORMAT(t.ctime,'%Y-%m-%d %H:%i:%s') <
+                '${endDate}']]>
+			</if>
+		</trim>
+		order by ctime
+		<if test="open != null">
+			asc
+		</if>
+		<if test="close != null">
+			desc
+		</if>
+		limit 1
+	</select>
+
+	<select id="selectMA" parameterType="java.util.Map" resultMap="MABaseResultMap">
+		select sum(qty) volume, sum(totalAmount)/sum(qty) as avgPrice 
+		from ct_kline t
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="startDate != null">  
+               <![CDATA[    AND DATE_FORMAT(t.ctime,'%Y-%m-%d %H:%i:%s') >=
+                '${startDate}']]>
+			</if>
+			<if test="endDate != null">  
+               <![CDATA[    AND DATE_FORMAT(t.ctime,'%Y-%m-%d %H:%i:%s') <
+                '${endDate}']]>
+			</if>
+		</trim>
+		order by ctime
+		<if test="open != null">
+			asc
+		</if>
+		<if test="close != null">
+			desc
+		</if>
+		limit 1
+	</select>
+</mapper>

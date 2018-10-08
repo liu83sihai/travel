@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.goods.ICTUserAddressDao">
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.dce.business.entity.goods.CTUserAddressDo">
+		select * from ct_user_address where addressId=#{addressId}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_user_address where addressId = #{addressId}
+	</delete>
+	<insert id="insert" keyColumn="addressId" keyProperty="addressId" parameterType="com.dce.business.entity.goods.CTUserAddressDo"
+		useGeneratedKeys="true">
+		insert into ct_user_address
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="userName != null">
+				userName,
+			</if>
+			<if test="userPhone != null">
+				userPhone,
+			</if>
+			<if test="userTel != null">
+				userTel,
+			</if>
+			<if test="areaId1 != null">
+				areaId1,
+			</if>
+			<if test="areaId2 != null">
+				areaId2,
+			</if>
+			<if test="areaId3 != null">
+				areaId3,
+			</if>
+			<if test="communityId != null">
+				communityId,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="postCode != null">
+				postCode,
+			</if>
+			<if test="isDefault != null">
+				isDefault,
+			</if>
+			<if test="addressFlag != null">
+				addressFlag,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userPhone != null">
+				#{userPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="userTel != null">
+				#{userTel,jdbcType=VARCHAR},
+			</if>
+			<if test="areaId1 != null">
+				#{areaId1,jdbcType=INTEGER},
+			</if>
+			<if test="areaId2 != null">
+				#{areaId2,jdbcType=INTEGER},
+			</if>
+			<if test="areaId3 != null">
+				#{areaId3,jdbcType=INTEGER},
+			</if>
+			<if test="communityId != null">
+				#{communityId,jdbcType=INTEGER},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="postCode != null">
+				#{postCode,jdbcType=CHAR},
+			</if>
+			<if test="isDefault != null">
+				#{isDefault,jdbcType=TINYINT},
+			</if>
+			<if test="addressFlag != null">
+				#{addressFlag,jdbcType=TINYINT},
+			</if>
+			<if test="createTime != null">
+				now(),
+			</if>
+			<if test="updateTime != null">
+				now(),
+			</if>
+		</trim>
+	</insert>
+	<update id="update" parameterType="com.dce.business.entity.goods.CTUserAddressDo">
+		update ct_user_address
+		<set>
+			<if test="userId != null">
+				userId = #{userId},
+			</if>
+			<if test="userName != null">
+				userName = #{userName},
+			</if>
+			<if test="userPhone != null">
+				userPhone = #{userPhone},
+			</if>
+			<if test="userTel != null">
+				userTel = #{userTel},
+			</if>
+			<if test="areaId1 != null">
+				areaId1 = #{areaId1},
+			</if>
+			<if test="areaId2 != null">
+				areaId2 = #{areaId2},
+			</if>
+			<if test="areaId3 != null">
+				areaId3 = #{areaId3},
+			</if>
+			<if test="communityId != null">
+				communityId = #{communityId},
+			</if>
+			<if test="address != null">
+				address = #{address},
+			</if>
+			<if test="postCode != null">
+				postCode = #{postCode},
+			</if>
+			<if test="isDefault != null">
+				isDefault = #{isDefault},
+			</if>
+			<if test="addressFlag != null">
+				addressFlag = #{addressFlag},
+			</if>
+			<if test="updateTime != null">
+				updateTime = now(),
+			</if>
+		</set>
+		where addressId = #{addressId}
+	</update>
+	
+	<!-- 自定义查询 -->
+    <select id="select" parameterType="java.util.Map" resultType="com.dce.business.entity.goods.CTUserAddressDo">
+        select 
+        addressId,
+        userId, 
+		userName, 
+		userPhone,
+		userTel, 
+		areaId1, 
+		areaId2,
+		areaId3, 
+		communityId, 
+		address,
+		postCode, 
+		isDefault, 
+		addressFlag, 
+		createTime 
+        from ct_user_address
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="addressId != null">  
+               AND addressId = #{addressId}
+           </if>
+           <if test="userId != null">  
+               AND userId = #{userId}
+           </if>
+           <if test="isDefault != null">  
+               AND isDefault = #{isDefault}
+           </if>
+           <if test="addressFlag != null">  
+               AND addressFlag = #{addressFlag}
+           </if>
+        </trim> 
+        order by updateTime desc;
+    </select>
+</mapper>

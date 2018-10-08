@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.secrety.IRolesDao">
+	<resultMap type="rolesDo" id="rolesResultMap">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="roleDesc" column="roleDesc" />
+		<result property="enabled" column="enabled" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="rolesResultMap">
+		SELECT * 
+		  FROM roles WHERE id = #{id}
+	</select>
+	
+	<select id="getOneRoleById" parameterType="int" resultMap="rolesResultMap">
+		SELECT * 
+		  FROM roles WHERE id = #{roleId}
+	</select>
+
+	<select id="selectRoles" parameterType="map" resultMap="rolesResultMap">
+		SELECT * 
+		  FROM roles
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="name != null">  
+				AND name like #{name}
+			</if>
+			<if test="roleDesc != null">  
+				AND roleDesc like #{roleDesc}
+			</if>
+			<if test="enabled != null">  
+				AND enabled like #{enabled}
+			</if>
+			<!--  
+			<if test="userId != null">  
+				AND id like #{userId}
+			</if>
+			-->
+         </trim> 
+
+	</select>
+	
+	<update id="updateRolesById" parameterType="rolesDo">
+		UPDATE roles 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="name != null">  
+				name = #{name},
+		</if>				
+		<if test="roleDesc != null">  
+				roleDesc = #{roleDesc},
+		</if>				
+		<if test="enabled != null">  
+				enabled = #{enabled},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addRoles" parameterType="rolesDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO roles(		name
+		,roleDesc
+		,enabled
+)
+		     VALUES (		#{name}
+		,#{roleDesc}
+		,#{enabled}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM roles WHERE id = #{id}
+	</delete>
+	
+
+	<select id="getRolesInAuthorityByPage" parameterType="map" resultType="rolesDo">
+		select r.id ID,r.name NAME,r.roleDesc ROLEDESC 
+		from roles r,rolesauthority ra 
+		where r.id=ra.roleId and ra.authorityId=#{authId}
+		<if test="roleName != null">  
+			AND r.name like '%${roleName}%'
+		</if>
+		<if test="roleDesc != null">  
+			AND r.roleDesc like '%${roleDesc}%'
+		</if> 
+	</select>
+	
+	<select id="getRolesNotInAuthorityByPage" parameterType="map" resultType="rolesDo">
+		select r.id ID,r.name NAME,r.roleDesc ROLEDESC 
+		from roles r 
+		where r.id not in (select ra.roleId from 
+							rolesAuthority ra 
+							where ra.authorityId=#{authId})
+		<if test="roleName != null">  
+			AND r.name like '%${roleName}%'
+		</if>
+		<if test="roleDesc != null">
+			AND r.roleDesc like '%${roleDesc}%'
+		</if> 
+	</select>
+	
+	
+	<select id="getRolesByPage" parameterType="map" resultType="rolesDo">
+		select id,name,roleDesc,enabled 
+		from roles 
+		<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="roleName != null">  
+				AND name like CONCAT('%',#{roleName},'%')
+			</if>
+         </trim> 
+	</select>
+	
+	<select id="getDeptRolesByPage" parameterType="map" resultType="rolesDo">
+		select a.id,a.name,a.roleDesc,a.enabled 
+		from roles a
+		inner join deptrole  b on a.id = b.roleid and b.deptId = #{deptId}
+		<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="roleName != null">  
+				AND name like CONCAT('%',#{roleName},'%')
+			</if>
+         </trim> 
+	</select>
+	
+	
+	
+	<select id="getRolesByUserId" parameterType="map" resultType="rolesDo">
+		SELECT  m.id ID, r.name NAME,r.roleDesc ROLEDESC,r.enabled 
+		FROM roles r, managers m,usersroles ur 
+		WHERE r.id=ur.roleId AND m.id=ur.userId AND r.enabled = ur.enabled AND m.id = #{userId};
+	</select>
+	
+	<delete id ="deleteRole" parameterType="int">
+		delete from roles where id = #{id}
+	</delete>
+	
+</mapper>
+

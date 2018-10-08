@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.common.IBonusConfigDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.common.BonusConfigDDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="bonus_type" jdbcType="VARCHAR" property="bonusType" />
+		<result column="config_type" jdbcType="VARCHAR" property="configType" />
+		<result column="min_layer" jdbcType="VARCHAR" property="minLayer" />
+		<result column="max_layer" jdbcType="VARCHAR" property="maxLayer" />
+		<result column="value_type" jdbcType="BIT" property="valueType" />
+		<result column="user_level" jdbcType="TINYINT" property="userLevel" />
+		<result column="cap" jdbcType="DECIMAL" property="cap" />
+		<result column="cap_type" jdbcType="TINYINT" property="capType" />
+		<result column="sort" jdbcType="TINYINT" property="sort" />
+		<result column="ext" jdbcType="VARCHAR" property="ext" />
+		<result column="exts" jdbcType="VARCHAR" property="exts" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dce.business.entity.common.BonusConfigDDo">
+		<result column="value" jdbcType="LONGVARCHAR" property="value" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, bonus_type, config_type, min_layer, max_layer, value_type, user_level,
+		cap, cap_type, sort, ext, exts
+	</sql>
+	<sql id="Blob_Column_List">
+		value
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from ct_bonus_config
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_bonus_config
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.common.BonusConfigDDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_config (name, bonus_type, config_type,
+		min_layer, max_layer, value_type,
+		user_level, cap, cap_type,
+		sort, ext, exts, value
+		)
+		values (#{name,jdbcType=VARCHAR}, #{bonusType,jdbcType=VARCHAR}, #{configType,jdbcType=VARCHAR},
+		#{minLayer,jdbcType=VARCHAR}, #{maxLayer,jdbcType=VARCHAR}, #{valueType,jdbcType=BIT},
+		#{userLevel,jdbcType=TINYINT}, #{cap,jdbcType=DECIMAL}, #{capType,jdbcType=TINYINT},
+		#{sort,jdbcType=TINYINT}, #{ext,jdbcType=VARCHAR}, #{exts,jdbcType=VARCHAR}, #{value,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.common.BonusConfigDDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				name,
+			</if>
+			<if test="bonusType != null">
+				bonus_type,
+			</if>
+			<if test="configType != null">
+				config_type,
+			</if>
+			<if test="minLayer != null">
+				min_layer,
+			</if>
+			<if test="maxLayer != null">
+				max_layer,
+			</if>
+			<if test="valueType != null">
+				value_type,
+			</if>
+			<if test="userLevel != null">
+				user_level,
+			</if>
+			<if test="cap != null">
+				cap,
+			</if>
+			<if test="capType != null">
+				cap_type,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="ext != null">
+				ext,
+			</if>
+			<if test="exts != null">
+				exts,
+			</if>
+			<if test="value != null">
+				value,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="bonusType != null">
+				#{bonusType,jdbcType=VARCHAR},
+			</if>
+			<if test="configType != null">
+				#{configType,jdbcType=VARCHAR},
+			</if>
+			<if test="minLayer != null">
+				#{minLayer,jdbcType=VARCHAR},
+			</if>
+			<if test="maxLayer != null">
+				#{maxLayer,jdbcType=VARCHAR},
+			</if>
+			<if test="valueType != null">
+				#{valueType,jdbcType=BIT},
+			</if>
+			<if test="userLevel != null">
+				#{userLevel,jdbcType=TINYINT},
+			</if>
+			<if test="cap != null">
+				#{cap,jdbcType=DECIMAL},
+			</if>
+			<if test="capType != null">
+				#{capType,jdbcType=TINYINT},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=TINYINT},
+			</if>
+			<if test="ext != null">
+				#{ext,jdbcType=VARCHAR},
+			</if>
+			<if test="exts != null">
+				#{exts,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				#{value,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.common.BonusConfigDDo">
+		update ct_bonus_config
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="bonusType != null">
+				bonus_type = #{bonusType,jdbcType=VARCHAR},
+			</if>
+			<if test="configType != null">
+				config_type = #{configType,jdbcType=VARCHAR},
+			</if>
+			<if test="minLayer != null">
+				min_layer = #{minLayer,jdbcType=VARCHAR},
+			</if>
+			<if test="maxLayer != null">
+				max_layer = #{maxLayer,jdbcType=VARCHAR},
+			</if>
+			<if test="valueType != null">
+				value_type = #{valueType,jdbcType=BIT},
+			</if>
+			<if test="userLevel != null">
+				user_level = #{userLevel,jdbcType=TINYINT},
+			</if>
+			<if test="cap != null">
+				cap = #{cap,jdbcType=DECIMAL},
+			</if>
+			<if test="capType != null">
+				cap_type = #{capType,jdbcType=TINYINT},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=TINYINT},
+			</if>
+			<if test="ext != null">
+				ext = #{ext,jdbcType=VARCHAR},
+			</if>
+			<if test="exts != null">
+				exts = #{exts,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				value = #{value,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dce.business.entity.common.BonusConfigDDo">
+		update ct_bonus_config
+		set name = #{name,jdbcType=VARCHAR},
+		bonus_type = #{bonusType,jdbcType=VARCHAR},
+		config_type = #{configType,jdbcType=VARCHAR},
+		min_layer = #{minLayer,jdbcType=VARCHAR},
+		max_layer = #{maxLayer,jdbcType=VARCHAR},
+		value_type = #{valueType,jdbcType=BIT},
+		user_level = #{userLevel,jdbcType=TINYINT},
+		cap = #{cap,jdbcType=DECIMAL},
+		cap_type = #{capType,jdbcType=TINYINT},
+		sort = #{sort,jdbcType=TINYINT},
+		ext = #{ext,jdbcType=VARCHAR},
+		exts = #{exts,jdbcType=VARCHAR},
+		value = #{value,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.common.BonusConfigDDo">
+		update ct_bonus_config
+		set name = #{name,jdbcType=VARCHAR},
+		bonus_type = #{bonusType,jdbcType=VARCHAR},
+		config_type = #{configType,jdbcType=VARCHAR},
+		min_layer = #{minLayer,jdbcType=VARCHAR},
+		max_layer = #{maxLayer,jdbcType=VARCHAR},
+		value_type = #{valueType,jdbcType=BIT},
+		user_level = #{userLevel,jdbcType=TINYINT},
+		cap = #{cap,jdbcType=DECIMAL},
+		cap_type = #{capType,jdbcType=TINYINT},
+		sort = #{sort,jdbcType=TINYINT},
+		ext = #{ext,jdbcType=VARCHAR},
+		exts = #{exts,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

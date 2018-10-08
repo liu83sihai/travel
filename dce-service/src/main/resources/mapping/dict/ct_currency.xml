@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.dict.ICtCurrencyDao">
+
+	<select id="selectByName" parameterType="Map" resultType="com.dce.business.entity.dict.CtCurrencyDo">
+		select * from ct_currency where currency_name=#{currency_name}
+	</select>
+
+	<update id="update" parameterType="com.dce.business.entity.dict.CtCurrencyDo">
+		update ct_currency
+		<set>
+			<if test="price_open != null">
+				price_open = #{price_open},
+			</if>
+			<if test="price_up != null">
+				price_up = #{price_up},
+			</if>
+			<if test="price_down != null">
+				price_down = #{price_down},
+			</if>
+			<if test="is_ctstatus != null">
+				is_ctstatus = #{is_ctstatus},
+			</if>
+			<if test="is_lock != null">
+				is_lock = #{is_lock},
+			</if>
+			<if test="currency_sell_fee != null">
+				currency_sell_fee = #{currency_sell_fee},
+			</if>
+			<if test="with_fee != null">
+				with_fee = #{with_fee},
+			</if>
+			<if test="is_award_switch != null">
+				is_award_switch = #{is_award_switch},
+			</if>
+			<if test="is_shifang_switch != null">
+				is_shifang_switch = #{is_shifang_switch},
+			</if>
+			<if test="is_tbstatus != null">
+				is_tbstatus = #{is_tbstatus},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

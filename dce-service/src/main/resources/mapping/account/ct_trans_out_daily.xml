@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.account.ITransOutDailyDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.account.TransOutDailyDo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="userId" jdbcType="INTEGER" property="userId" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="maxAmount" jdbcType="DECIMAL" property="maxAmount" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="accountType" jdbcType="VARCHAR" property="accountType" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userId, date, amount, maxAmount, updateTime,accountType
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_trans_out_daily
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ct_trans_out_daily
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.account.TransOutDailyDo" useGeneratedKeys="true">
+		insert into ct_trans_out_daily
+		(userId, date, amount,
+		maxAmount, updateTime,accountType)
+		values (#{userId,jdbcType=INTEGER}, #{date,jdbcType=DATE},
+		#{amount,jdbcType=DECIMAL},
+		#{maxAmount,jdbcType=DECIMAL}, #{updateTime,jdbcType=TIMESTAMP},
+		#{accountType,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.account.TransOutDailyDo" useGeneratedKeys="true">
+		insert into ct_trans_out_daily
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="maxAmount != null">
+				maxAmount,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+			<if test="accountType != null">
+				accountType,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="maxAmount != null">
+				#{maxAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="accountType != null">
+				#{accountType,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.account.TransOutDailyDo">
+		update ct_trans_out_daily
+		<set>
+			<if test="userId != null">
+				userId = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="maxAmount != null">
+				maxAmount = #{maxAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="accountType != null">
+				accountType = #{accountType,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.account.TransOutDailyDo">
+		update ct_trans_out_daily
+		set userId = #{userId,jdbcType=INTEGER},
+		date = #{date,jdbcType=DATE},
+		amount = #{amount,jdbcType=DECIMAL},
+		maxAmount = #{maxAmount,jdbcType=DECIMAL},
+		updateTime
+		= #{updateTime,jdbcType=TIMESTAMP},
+		accountType = #{accountType,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- 更新账户统计值 -->
+	<update id="updateAmount" parameterType="java.util.Map">
+		update ct_trans_out_daily
+		set amount = amount + #{amount}, updateTime = now()
+		where userId = #{userId} and date = #{date} and accountType = #{accountType}
+		and (ifnull(amount,0) + #{amount}) <![CDATA[ <= ]]> maxAmount
+	</update>
+
+	<!-- 自定义查询 -->
+	<select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_trans_out_daily u
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND u.userId = #{userId}
+			</if>
+			<if test="date != null">
+				AND u.date = #{date}
+			</if>
+			<if test="accountType != null">
+				AND u.accountType = #{accountType}
+			</if>
+		</trim>
+	</select>
+</mapper>

@@ -1,0 +1,2017 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.user.IUserDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.user.UserDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="true_name" jdbcType="VARCHAR" property="trueName" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="mobile" jdbcType="CHAR" property="mobile" />
+		<result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+		<result column="two_password" jdbcType="VARCHAR" property="twoPassword" />
+		<result column="user_face" jdbcType="INTEGER" property="userFace" />
+		<result column="balance_integral" jdbcType="DECIMAL" property="balanceIntegral" />
+		<result column="sex" jdbcType="CHAR" property="sex" />
+		<result column="login_times" jdbcType="BIGINT" property="loginTimes" />
+		<result column="last_login_time" jdbcType="BIGINT" property="lastLoginTime" />
+		<result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+		<result column="reg_ip" jdbcType="VARCHAR" property="regIp" />
+		<result column="reg_time" jdbcType="BIGINT" property="regTime" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+		<result column="balance_bonus" jdbcType="DECIMAL" property="balanceBonus" />
+		<result column="balance_repeat" jdbcType="DECIMAL" property="balanceRepeat" />
+		<result column="balance_cash" jdbcType="DECIMAL" property="balanceCash" />
+		<result column="balance_dongjie" jdbcType="DECIMAL" property="balanceDongjie" />
+		<result column="balance_shopping" jdbcType="DECIMAL" property="balanceShopping" />
+		<result column="forzen_shopping" jdbcType="DECIMAL" property="forzenShopping" />
+		<result column="total_bonus" jdbcType="DECIMAL" property="totalBonus" />
+		<result column="total_repeat" jdbcType="DECIMAL" property="totalRepeat" />
+		<result column="total_cash" jdbcType="DECIMAL" property="totalCash" />
+		<result column="total_integral" jdbcType="DECIMAL" property="totalIntegral" />
+		<result column="total_shopping" jdbcType="DECIMAL" property="totalShopping" />
+		<result column="refereeid" jdbcType="INTEGER" property="refereeid" />
+		<result column="parentid" jdbcType="INTEGER" property="parentid" />
+		<result column="referee_number" jdbcType="INTEGER" property="refereeNumber" />
+		<result column="referee_status" jdbcType="TINYINT" property="refereeStatus" />
+		<result column="son_number" jdbcType="INTEGER" property="sonNumber" />
+		<result column="is_server_center" jdbcType="TINYINT" property="isServerCenter" />
+		<result column="my_server_center" jdbcType="INTEGER" property="myServerCenter" />
+		<result column="userScore" jdbcType="INTEGER" property="userscore" />
+		<result column="user_type" jdbcType="TINYINT" property="userType" />
+		<result column="user_group" jdbcType="TINYINT" property="userGroup" />
+		<result column="user_level" jdbcType="TINYINT" property="userLevel" />
+		<result column="user_post" jdbcType="TINYINT" property="userPost" />
+		<result column="reg_money" jdbcType="DECIMAL" property="regMoney" />
+		<result column="yf_money" jdbcType="DECIMAL" property="yfMoney" />
+		<result column="fd_money" jdbcType="DECIMAL" property="fdMoney" />
+		<result column="total_performance" jdbcType="DECIMAL" property="totalPerformance" />
+		<result column="touched_performance" jdbcType="DECIMAL"
+			property="touchedPerformance" />
+		<result column="activation_time" jdbcType="BIGINT" property="activationTime" />
+		<result column="user_qq" jdbcType="INTEGER" property="userQq" />
+		<result column="user_wechat" jdbcType="VARCHAR" property="userWechat" />
+		<result column="openid" jdbcType="VARCHAR" property="openid" />
+		<result column="register" jdbcType="VARCHAR" property="register" />
+		<result column="express_password" jdbcType="VARCHAR" property="expressPassword" />
+		<result column="total_dividends" jdbcType="DECIMAL" property="totalDividends" />
+		<result column="dividends_days" jdbcType="INTEGER" property="dividendsDays" />
+		<result column="country" jdbcType="INTEGER" property="country" />
+		<result column="province" jdbcType="INTEGER" property="province" />
+		<result column="city" jdbcType="INTEGER" property="city" />
+		<result column="darea" jdbcType="INTEGER" property="darea" />
+		<result column="balance_et" jdbcType="DECIMAL" property="balanceEt" />
+		<result column="idnumber" jdbcType="VARCHAR" property="idnumber" />
+		<result column="banktype" jdbcType="VARCHAR" property="banktype" />
+		<result column="bank_user_name" jdbcType="VARCHAR" property="bankUserName" />
+		<result column="banknumber" jdbcType="VARCHAR" property="banknumber" />
+		<result column="bank_content" jdbcType="VARCHAR" property="bankContent" />
+		<result column="question1" jdbcType="VARCHAR" property="question1" />
+		<result column="question2" jdbcType="VARCHAR" property="question2" />
+		<result column="question3" jdbcType="VARCHAR" property="question3" />
+		<result column="answer1" jdbcType="VARCHAR" property="answer1" />
+		<result column="answer2" jdbcType="VARCHAR" property="answer2" />
+		<result column="answer3" jdbcType="VARCHAR" property="answer3" />
+		<result column="groupid" jdbcType="INTEGER" property="groupid" />
+		<result column="ticket" jdbcType="VARCHAR" property="ticket" />
+		<result column="balance_gouwu" jdbcType="DECIMAL" property="balanceGouwu" />
+		<result column="qrcode_status" jdbcType="TINYINT" property="qrcodeStatus" />
+		<result column="bonus_time" jdbcType="BIGINT" property="bonusTime" />
+		<result column="is_empty" jdbcType="TINYINT" property="isEmpty" />
+		<result column="balance_heart" jdbcType="DECIMAL" property="balanceHeart" />
+		<result column="kuo_level" jdbcType="INTEGER" property="kuoLevel" />
+		<result column="backfill_status" jdbcType="TINYINT" property="backfillStatus" />
+		<result column="backfill_money" jdbcType="DECIMAL" property="backfillMoney" />
+		<result column="backfill_sheng" jdbcType="DECIMAL" property="backfillSheng" />
+		<result column="guadan_num" jdbcType="INTEGER" property="guadanNum" />
+		<result column="allStatic" jdbcType="DECIMAL" property="allstatic" />
+		<result column="dis" jdbcType="INTEGER" property="dis" />
+		<result column="release_time" jdbcType="BIGINT" property="releaseTime" />
+		<result column="isShop" jdbcType="TINYINT" property="isshop" />
+		<result column="isImport" jdbcType="TINYINT" property="isimport" />
+		<result column="pos" jdbcType="TINYINT" property="pos" />
+		<result column="isOut" jdbcType="TINYINT" property="isout" />
+		<result column="ethAccount" jdbcType="VARCHAR" property="ethAccount" />
+		<result column="baodan_amount" jdbcType="DECIMAL" property="baodan_amount" />
+		<result column="undo_opts" jdbcType="VARCHAR" property="undoOpts" />
+		<result column="tran_direct" jdbcType="VARCHAR" property="tranDirect" />
+		<result column="identity" jdbcType="VARCHAR" property="identity" />
+		<result column="isActivated" jdbcType="INTEGER" property="isActivated" />
+		<result column="certification" jdbcType="INTEGER" property="certification" />
+		<result column="district" jdbcType="VARCHAR" property="district" />
+		<result column="refereeUserMobile" jdbcType="VARCHAR" property="refereeUserMobile" />
+	</resultMap>
+
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="com.dce.business.entity.user.UserDo">
+		<result column="touch_distance" jdbcType="LONGVARCHAR"
+			property="touchDistance" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		u.id, u.user_name, u.true_name, u.email, u.mobile,
+		u.user_password, u.two_password, u.user_face,
+		u.balance_integral,
+		u.sex, u.login_times, u.last_login_time, u.last_login_ip, u.reg_ip,
+		u.reg_time,
+		u.status, u.balance_bonus, u.balance_repeat,
+		u.balance_cash, u.balance_dongjie, u.balance_shopping,
+		u.forzen_shopping, u.total_bonus, u.total_repeat, u.total_cash,
+		u.total_integral, u.total_shopping,
+		u.refereeid, u.parentid,
+		u.referee_number, u.referee_status, u.son_number, u.is_server_center,
+		u.my_server_center, u.userScore, u.user_type, u.user_group,
+		u.user_level, u.user_post, u.reg_money,
+		u.yf_money, u.fd_money,
+		u.total_performance,u.touched_performance, u.activation_time,
+		u.user_qq, u.user_wechat,
+		u.openid, u.register, u.express_password,
+		u.total_dividends, u.dividends_days, u.country, u.province,
+		u.city,
+		u.darea, u.balance_et, u.idnumber, u.banktype, u.bank_user_name,
+		u.banknumber, u.bank_content,
+		u.question1, u.question2, u.question3,
+		u.answer1, u.answer2, u.answer3, u.groupid, u.ticket, u.balance_gouwu,
+		u.qrcode_status, u.bonus_time, u.is_empty, u.balance_heart,
+		u.kuo_level, u.backfill_status, u.backfill_money,
+		u.backfill_sheng,
+		u.guadan_num, u.allStatic, u.dis, u.release_time, u.isShop,
+		u.isImport, u.pos,
+		u.isOut,u.baodan_amount,u.undo_opts,u.tran_direct,
+		identity,isActivated,certification,district,refereeUserMobile
+	</sql>
+
+	<sql id="Blob_Column_List">
+		u.touch_distance
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from ct_user u
+		where u.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		ct_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.user.UserDo" useGeneratedKeys="true">
+		insert into ct_user (user_name, true_name, email,
+		mobile,
+		user_password, two_password,
+		user_face, balance_integral, sex,
+		login_times, last_login_time, last_login_ip,
+		reg_ip, reg_time, status,
+		balance_bonus, balance_repeat, balance_cash,
+		balance_dongjie,
+		balance_shopping, forzen_shopping,
+		total_bonus, total_repeat,
+		total_cash,
+		total_integral, total_shopping, refereeid,
+		parentid,
+		referee_number, referee_status,
+		son_number, is_server_center,
+		my_server_center,
+		userScore, user_type, user_group,
+		user_level,
+		user_post, reg_money,
+		yf_money, fd_money,
+		total_performance,touched_performance,
+		activation_time, user_qq,
+		user_wechat,
+		openid, register, express_password,
+		total_dividends,
+		dividends_days, country,
+		province, city, darea,
+		balance_et, idnumber,
+		banktype,
+		bank_user_name, banknumber, bank_content,
+		question1,
+		question2, question3,
+		answer1, answer2, answer3,
+		groupid, ticket,
+		balance_gouwu,
+		qrcode_status, bonus_time, is_empty,
+		balance_heart,
+		kuo_level, backfill_status,
+		backfill_money, backfill_sheng, guadan_num,
+		allStatic, dis, release_time,
+		isShop, isImport, pos,
+		isOut,touch_distance,baodan_amount,undo_opts,tran_direct,
+		identity,isActivated,
+		certification,district,refereeUserMobile)
+		values
+		(#{userName,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{mobile,jdbcType=CHAR},
+		#{userPassword,jdbcType=VARCHAR}, #{twoPassword,jdbcType=VARCHAR},
+		#{userFace,jdbcType=INTEGER}, #{balanceIntegral,jdbcType=DECIMAL},
+		#{sex,jdbcType=CHAR},
+		#{loginTimes,jdbcType=BIGINT},
+		#{lastLoginTime,jdbcType=BIGINT}, #{lastLoginIp,jdbcType=VARCHAR},
+		#{regIp,jdbcType=VARCHAR}, #{regTime,jdbcType=BIGINT},
+		#{status,jdbcType=TINYINT},
+		#{balanceBonus,jdbcType=DECIMAL},
+		#{balanceRepeat,jdbcType=DECIMAL}, #{balanceCash,jdbcType=DECIMAL},
+		#{balanceDongjie,jdbcType=DECIMAL},
+		#{balanceShopping,jdbcType=DECIMAL},
+		#{forzenShopping,jdbcType=DECIMAL},
+		#{totalBonus,jdbcType=DECIMAL},
+		#{totalRepeat,jdbcType=DECIMAL}, #{totalCash,jdbcType=DECIMAL},
+		#{totalIntegral,jdbcType=DECIMAL}, #{totalShopping,jdbcType=DECIMAL},
+		#{refereeid,jdbcType=INTEGER},
+		#{parentid,jdbcType=INTEGER},
+		#{refereeNumber,jdbcType=INTEGER}, #{refereeStatus,jdbcType=TINYINT},
+		#{sonNumber,jdbcType=INTEGER}, #{isServerCenter,jdbcType=TINYINT},
+		#{myServerCenter,jdbcType=INTEGER},
+		#{userscore,jdbcType=INTEGER},
+		#{userType,jdbcType=TINYINT}, #{userGroup,jdbcType=TINYINT},
+		#{userLevel,jdbcType=TINYINT}, #{userPost,jdbcType=TINYINT},
+		#{regMoney,jdbcType=DECIMAL},
+		#{yfMoney,jdbcType=DECIMAL},
+		#{fdMoney,jdbcType=DECIMAL}, #{totalPerformance,jdbcType=DECIMAL},
+		#{touchedPerformance,jdbcType=DECIMAL},
+		#{activationTime,jdbcType=BIGINT}, #{userQq,jdbcType=INTEGER},
+		#{userWechat,jdbcType=VARCHAR},
+		#{openid,jdbcType=VARCHAR},
+		#{register,jdbcType=VARCHAR}, #{expressPassword,jdbcType=VARCHAR},
+		#{totalDividends,jdbcType=DECIMAL}, #{dividendsDays,jdbcType=INTEGER},
+		#{country,jdbcType=INTEGER},
+		#{province,jdbcType=INTEGER},
+		#{city,jdbcType=INTEGER}, #{darea,jdbcType=INTEGER},
+		#{balanceEt,jdbcType=DECIMAL}, #{idnumber,jdbcType=VARCHAR},
+		#{banktype,jdbcType=VARCHAR},
+		#{bankUserName,jdbcType=VARCHAR},
+		#{banknumber,jdbcType=VARCHAR}, #{bankContent,jdbcType=VARCHAR},
+		#{question1,jdbcType=VARCHAR}, #{question2,jdbcType=VARCHAR},
+		#{question3,jdbcType=VARCHAR},
+		#{answer1,jdbcType=VARCHAR},
+		#{answer2,jdbcType=VARCHAR}, #{answer3,jdbcType=VARCHAR},
+		#{groupid,jdbcType=INTEGER}, #{ticket,jdbcType=VARCHAR},
+		#{balanceGouwu,jdbcType=DECIMAL},
+		#{qrcodeStatus,jdbcType=TINYINT},
+		#{bonusTime,jdbcType=BIGINT}, #{isEmpty,jdbcType=TINYINT},
+		#{balanceHeart,jdbcType=DECIMAL}, #{kuoLevel,jdbcType=INTEGER},
+		#{backfillStatus,jdbcType=TINYINT},
+		#{backfillMoney,jdbcType=DECIMAL},
+		#{backfillSheng,jdbcType=DECIMAL}, #{guadanNum,jdbcType=INTEGER},
+		#{allstatic,jdbcType=DECIMAL}, #{dis,jdbcType=INTEGER},
+		#{releaseTime,jdbcType=BIGINT},
+		#{isshop,jdbcType=TINYINT},
+		#{isimport,jdbcType=TINYINT}, #{pos,jdbcType=TINYINT},
+		#{isout,jdbcType=TINYINT}, #{touchDistance,jdbcType=LONGVARCHAR},
+		#{baodan_amount,jdbcType=DECIMAL},#{undoOpts,jdbcType=VARCHAR},#{tranDirect,jdbcType=VARCHAR},
+		#{identity,jdbcType=VARCHAR},#{isActivated,jdbcType=INTEGER},
+		#{certification,jdbcType=INTEGER},#{district,jdbcType=VARCHAR},#{refereeUserMobile,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 下单购买商品之后，用户状态激活 -->
+	<update id="updateUserStatus" parameterType="map">
+		update ct_user
+		<set>
+			<if test="isActivated != null">
+				isActivated = #{isActivated,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 后台：新增会员 -->
+	<insert id="insertSelective" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.user.UserDo" useGeneratedKeys="true">
+		insert into ct_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="trueName != null">
+				true_name,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="userPassword != null">
+				user_password,
+			</if>
+			<if test="twoPassword != null">
+				two_password,
+			</if>
+			<if test="userFace != null">
+				user_face,
+			</if>
+			<if test="balanceIntegral != null">
+				balance_integral,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="loginTimes != null">
+				login_times,
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time,
+			</if>
+			<if test="lastLoginIp != null">
+				last_login_ip,
+			</if>
+			<if test="regIp != null">
+				reg_ip,
+			</if>
+			<if test="regTime != null">
+				reg_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="balanceBonus != null">
+				balance_bonus,
+			</if>
+			<if test="balanceRepeat != null">
+				balance_repeat,
+			</if>
+			<if test="balanceCash != null">
+				balance_cash,
+			</if>
+			<if test="balanceDongjie != null">
+				balance_dongjie,
+			</if>
+			<if test="balanceShopping != null">
+				balance_shopping,
+			</if>
+			<if test="forzenShopping != null">
+				forzen_shopping,
+			</if>
+			<if test="totalBonus != null">
+				total_bonus,
+			</if>
+			<if test="totalRepeat != null">
+				total_repeat,
+			</if>
+			<if test="totalCash != null">
+				total_cash,
+			</if>
+			<if test="totalIntegral != null">
+				total_integral,
+			</if>
+			<if test="totalShopping != null">
+				total_shopping,
+			</if>
+			<if test="refereeid != null">
+				refereeid,
+			</if>
+			<if test="parentid != null">
+				parentid,
+			</if>
+			<if test="refereeNumber != null">
+				referee_number,
+			</if>
+			<if test="refereeStatus != null">
+				referee_status,
+			</if>
+			<if test="sonNumber != null">
+				son_number,
+			</if>
+			<if test="isServerCenter != null">
+				is_server_center,
+			</if>
+			<if test="myServerCenter != null">
+				my_server_center,
+			</if>
+			<if test="userscore != null">
+				userScore,
+			</if>
+			<if test="userType != null">
+				user_type,
+			</if>
+			<if test="userGroup != null">
+				user_group,
+			</if>
+			<if test="userLevel != null">
+				user_level,
+			</if>
+			<if test="userPost != null">
+				user_post,
+			</if>
+			<if test="regMoney != null">
+				reg_money,
+			</if>
+			<if test="yfMoney != null">
+				yf_money,
+			</if>
+			<if test="fdMoney != null">
+				fd_money,
+			</if>
+			<if test="totalPerformance != null">
+				total_performance,
+			</if>
+			<if test="touchedPerformance != null">
+				touched_performance,
+			</if>
+			<if test="activationTime != null">
+				activation_time,
+			</if>
+			<if test="userQq != null">
+				user_qq,
+			</if>
+			<if test="userWechat != null">
+				user_wechat,
+			</if>
+			<if test="openid != null">
+				openid,
+			</if>
+			<if test="register != null">
+				register,
+			</if>
+			<if test="expressPassword != null">
+				express_password,
+			</if>
+			<if test="totalDividends != null">
+				total_dividends,
+			</if>
+			<if test="dividendsDays != null">
+				dividends_days,
+			</if>
+			<if test="country != null">
+				country,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="darea != null">
+				darea,
+			</if>
+			<if test="balanceEt != null">
+				balance_et,
+			</if>
+			<if test="idnumber != null">
+				idnumber,
+			</if>
+			<if test="banktype != null">
+				banktype,
+			</if>
+			<if test="bankUserName != null">
+				bank_user_name,
+			</if>
+			<if test="banknumber != null">
+				banknumber,
+			</if>
+			<if test="bankContent != null">
+				bank_content,
+			</if>
+			<if test="question1 != null">
+				question1,
+			</if>
+			<if test="question2 != null">
+				question2,
+			</if>
+			<if test="question3 != null">
+				question3,
+			</if>
+			<if test="answer1 != null">
+				answer1,
+			</if>
+			<if test="answer2 != null">
+				answer2,
+			</if>
+			<if test="answer3 != null">
+				answer3,
+			</if>
+			<if test="groupid != null">
+				groupid,
+			</if>
+			<if test="ticket != null">
+				ticket,
+			</if>
+			<if test="balanceGouwu != null">
+				balance_gouwu,
+			</if>
+			<if test="qrcodeStatus != null">
+				qrcode_status,
+			</if>
+			<if test="bonusTime != null">
+				bonus_time,
+			</if>
+			<if test="isEmpty != null">
+				is_empty,
+			</if>
+			<if test="balanceHeart != null">
+				balance_heart,
+			</if>
+			<if test="kuoLevel != null">
+				kuo_level,
+			</if>
+			<if test="backfillStatus != null">
+				backfill_status,
+			</if>
+			<if test="backfillMoney != null">
+				backfill_money,
+			</if>
+			<if test="backfillSheng != null">
+				backfill_sheng,
+			</if>
+			<if test="guadanNum != null">
+				guadan_num,
+			</if>
+			<if test="allstatic != null">
+				allStatic,
+			</if>
+			<if test="dis != null">
+				dis,
+			</if>
+			<if test="releaseTime != null">
+				release_time,
+			</if>
+			<if test="isshop != null">
+				isShop,
+			</if>
+			<if test="isimport != null">
+				isImport,
+			</if>
+			<if test="pos != null">
+				pos,
+			</if>
+			<if test="isout != null">
+				isOut,
+			</if>
+			<if test="touchDistance != null">
+				touch_distance,
+			</if>
+			<if test="baodan_amount != null">
+				baodan_amount,
+			</if>
+			<if test="undoOpts != null">
+				undo_opts,
+			</if>
+			<if test="tranDirect != null">
+				tran_direct,
+			</if>
+			<if test="identity != null">
+				identity,
+			</if>
+			<if test="isActivated != null">
+				isActivated,
+			</if>
+			<if test="certification != null">
+				certification,
+			</if>
+			<if test="district != null">
+				district,
+			</if>
+			<if test="refereeUserMobile">
+				refereeUserMobile
+			</if>
+		</trim>
+
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				#{trueName,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=CHAR},
+			</if>
+			<if test="userPassword != null">
+				#{userPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="twoPassword != null">
+				#{twoPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="userFace != null">
+				#{userFace,jdbcType=INTEGER},
+			</if>
+			<if test="balanceIntegral != null">
+				#{balanceIntegral,jdbcType=DECIMAL},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=CHAR},
+			</if>
+			<if test="loginTimes != null">
+				#{loginTimes,jdbcType=BIGINT},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime,jdbcType=BIGINT},
+			</if>
+			<if test="lastLoginIp != null">
+				#{lastLoginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="regIp != null">
+				#{regIp,jdbcType=VARCHAR},
+			</if>
+			<if test="regTime != null">
+				#{regTime,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+			<if test="balanceBonus != null">
+				#{balanceBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceRepeat != null">
+				#{balanceRepeat,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceCash != null">
+				#{balanceCash,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceDongjie != null">
+				#{balanceDongjie,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceShopping != null">
+				#{balanceShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="forzenShopping != null">
+				#{forzenShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="totalBonus != null">
+				#{totalBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="totalRepeat != null">
+				#{totalRepeat,jdbcType=DECIMAL},
+			</if>
+			<if test="totalCash != null">
+				#{totalCash,jdbcType=DECIMAL},
+			</if>
+			<if test="totalIntegral != null">
+				#{totalIntegral,jdbcType=DECIMAL},
+			</if>
+			<if test="totalShopping != null">
+				#{totalShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="refereeid != null">
+				#{refereeid,jdbcType=INTEGER},
+			</if>
+			<if test="parentid != null">
+				#{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="refereeNumber != null">
+				#{refereeNumber,jdbcType=INTEGER},
+			</if>
+			<if test="refereeStatus != null">
+				#{refereeStatus,jdbcType=TINYINT},
+			</if>
+			<if test="sonNumber != null">
+				#{sonNumber,jdbcType=INTEGER},
+			</if>
+			<if test="isServerCenter != null">
+				#{isServerCenter,jdbcType=TINYINT},
+			</if>
+			<if test="myServerCenter != null">
+				#{myServerCenter,jdbcType=INTEGER},
+			</if>
+			<if test="userscore != null">
+				#{userscore,jdbcType=INTEGER},
+			</if>
+			<if test="userType != null">
+				#{userType,jdbcType=TINYINT},
+			</if>
+			<if test="userGroup != null">
+				#{userGroup,jdbcType=TINYINT},
+			</if>
+			<if test="userLevel != null">
+				#{userLevel,jdbcType=TINYINT},
+			</if>
+			<if test="userPost != null">
+				#{userPost,jdbcType=TINYINT},
+			</if>
+			<if test="regMoney != null">
+				#{regMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="yfMoney != null">
+				#{yfMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="fdMoney != null">
+				#{fdMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="totalPerformance != null">
+				#{totalPerformance,jdbcType=DECIMAL},
+			</if>
+			<if test="touchedPerformance != null">
+				#{touchedPerformance,jdbcType=DECIMAL},
+			</if>
+			<if test="activationTime != null">
+				#{activationTime,jdbcType=BIGINT},
+			</if>
+			<if test="userQq != null">
+				#{userQq,jdbcType=INTEGER},
+			</if>
+			<if test="userWechat != null">
+				#{userWechat,jdbcType=VARCHAR},
+			</if>
+			<if test="openid != null">
+				#{openid,jdbcType=VARCHAR},
+			</if>
+			<if test="register != null">
+				#{register,jdbcType=VARCHAR},
+			</if>
+			<if test="expressPassword != null">
+				#{expressPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="totalDividends != null">
+				#{totalDividends,jdbcType=DECIMAL},
+			</if>
+			<if test="dividendsDays != null">
+				#{dividendsDays,jdbcType=INTEGER},
+			</if>
+			<if test="country != null">
+				#{country,jdbcType=INTEGER},
+			</if>
+			<if test="province != null">
+				#{province,jdbcType=INTEGER},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=INTEGER},
+			</if>
+			<if test="darea != null">
+				#{darea,jdbcType=INTEGER},
+			</if>
+			<if test="balanceEt != null">
+				#{balanceEt,jdbcType=DECIMAL},
+			</if>
+			<if test="idnumber != null">
+				#{idnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="banktype != null">
+				#{banktype,jdbcType=VARCHAR},
+			</if>
+			<if test="bankUserName != null">
+				#{bankUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="banknumber != null">
+				#{banknumber,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				#{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="question1 != null">
+				#{question1,jdbcType=VARCHAR},
+			</if>
+			<if test="question2 != null">
+				#{question2,jdbcType=VARCHAR},
+			</if>
+			<if test="question3 != null">
+				#{question3,jdbcType=VARCHAR},
+			</if>
+			<if test="answer1 != null">
+				#{answer1,jdbcType=VARCHAR},
+			</if>
+			<if test="answer2 != null">
+				#{answer2,jdbcType=VARCHAR},
+			</if>
+			<if test="answer3 != null">
+				#{answer3,jdbcType=VARCHAR},
+			</if>
+			<if test="groupid != null">
+				#{groupid,jdbcType=INTEGER},
+			</if>
+			<if test="ticket != null">
+				#{ticket,jdbcType=VARCHAR},
+			</if>
+			<if test="balanceGouwu != null">
+				#{balanceGouwu,jdbcType=DECIMAL},
+			</if>
+			<if test="qrcodeStatus != null">
+				#{qrcodeStatus,jdbcType=TINYINT},
+			</if>
+			<if test="bonusTime != null">
+				#{bonusTime,jdbcType=BIGINT},
+			</if>
+			<if test="isEmpty != null">
+				#{isEmpty,jdbcType=TINYINT},
+			</if>
+			<if test="balanceHeart != null">
+				#{balanceHeart,jdbcType=DECIMAL},
+			</if>
+			<if test="kuoLevel != null">
+				#{kuoLevel,jdbcType=INTEGER},
+			</if>
+			<if test="backfillStatus != null">
+				#{backfillStatus,jdbcType=TINYINT},
+			</if>
+			<if test="backfillMoney != null">
+				#{backfillMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="backfillSheng != null">
+				#{backfillSheng,jdbcType=DECIMAL},
+			</if>
+			<if test="guadanNum != null">
+				#{guadanNum,jdbcType=INTEGER},
+			</if>
+			<if test="allstatic != null">
+				#{allstatic,jdbcType=DECIMAL},
+			</if>
+			<if test="dis != null">
+				#{dis,jdbcType=INTEGER},
+			</if>
+			<if test="releaseTime != null">
+				#{releaseTime,jdbcType=BIGINT},
+			</if>
+			<if test="isshop != null">
+				#{isshop,jdbcType=TINYINT},
+			</if>
+			<if test="isimport != null">
+				#{isimport,jdbcType=TINYINT},
+			</if>
+			<if test="pos != null">
+				#{pos,jdbcType=TINYINT},
+			</if>
+			<if test="isout != null">
+				#{isout,jdbcType=TINYINT},
+			</if>
+			<if test="touchDistance != null">
+				#{touchDistance,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="baodan_amount != null">
+				#{baodan_amount,jdbcType=DECIMAL},
+			</if>
+			<if test="undoOpts != null">
+				#{undoOpts,jdbcType=VARCHAR},
+			</if>
+			<if test="tranDirect != null">
+				#{tranDirect,jdbcType=VARCHAR},
+			</if>
+			<if test="identity != null">
+				#{identity,jdbcType=VARCHAR},
+			</if>
+			<if test="isActivated != null">
+				#{isActivated,jdbcType=INTEGER},
+			</if>
+			<if test="certification != null">
+				#{certification,jdbcType=INTEGER},
+			</if>
+			<if test="district != null">
+				#{district,jdbcType=VARCHAR},
+			</if>
+			<if test="refereeUserMobile">
+				#{refereeUserMobile}
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 后台：编辑用户信息 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.user.UserDo">
+		update ct_user
+		<set>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="trueName != null">
+				true_name = #{trueName,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile,jdbcType=CHAR},
+			</if>
+			<if test="userPassword != null">
+				user_password = #{userPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="twoPassword != null">
+				two_password = #{twoPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="userFace != null">
+				user_face = #{userFace,jdbcType=INTEGER},
+			</if>
+			<if test="balanceIntegral != null">
+				balance_integral = #{balanceIntegral,jdbcType=DECIMAL},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=CHAR},
+			</if>
+			<if test="loginTimes != null">
+				login_times = #{loginTimes,jdbcType=BIGINT},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime,jdbcType=BIGINT},
+			</if>
+			<if test="lastLoginIp != null">
+				last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="regIp != null">
+				reg_ip = #{regIp,jdbcType=VARCHAR},
+			</if>
+			<if test="regTime != null">
+				reg_time = #{regTime,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="balanceBonus != null">
+				balance_bonus = #{balanceBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceRepeat != null">
+				balance_repeat = #{balanceRepeat,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceCash != null">
+				balance_cash = #{balanceCash,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceDongjie != null">
+				balance_dongjie = #{balanceDongjie,jdbcType=DECIMAL},
+			</if>
+			<if test="balanceShopping != null">
+				balance_shopping = #{balanceShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="forzenShopping != null">
+				forzen_shopping = #{forzenShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="totalBonus != null">
+				total_bonus = #{totalBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="totalRepeat != null">
+				total_repeat = #{totalRepeat,jdbcType=DECIMAL},
+			</if>
+			<if test="totalCash != null">
+				total_cash = #{totalCash,jdbcType=DECIMAL},
+			</if>
+			<if test="totalIntegral != null">
+				total_integral = #{totalIntegral,jdbcType=DECIMAL},
+			</if>
+			<if test="totalShopping != null">
+				total_shopping = #{totalShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="refereeid != null">
+				refereeid = #{refereeid,jdbcType=INTEGER},
+			</if>
+			<if test="parentid != null">
+				parentid = #{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="refereeNumber != null">
+				referee_number = #{refereeNumber,jdbcType=INTEGER},
+			</if>
+			<if test="refereeStatus != null">
+				referee_status = #{refereeStatus,jdbcType=TINYINT},
+			</if>
+			<if test="sonNumber != null">
+				son_number = #{sonNumber,jdbcType=INTEGER},
+			</if>
+			<if test="isServerCenter != null">
+				is_server_center = #{isServerCenter,jdbcType=TINYINT},
+			</if>
+			<if test="myServerCenter != null">
+				my_server_center = #{myServerCenter,jdbcType=INTEGER},
+			</if>
+			<if test="userscore != null">
+				userScore = #{userscore,jdbcType=INTEGER},
+			</if>
+			<if test="userType != null">
+				user_type = #{userType,jdbcType=TINYINT},
+			</if>
+			<if test="userGroup != null">
+				user_group = #{userGroup,jdbcType=TINYINT},
+			</if>
+			<if test="userLevel != null">
+				user_level = #{userLevel,jdbcType=TINYINT},
+			</if>
+			<if test="userPost != null">
+				user_post = #{userPost,jdbcType=TINYINT},
+			</if>
+			<if test="regMoney != null">
+				reg_money = #{regMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="yfMoney != null">
+				yf_money = #{yfMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="fdMoney != null">
+				fd_money = #{fdMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="totalPerformance != null">
+				total_performance = #{totalPerformance,jdbcType=DECIMAL},
+			</if>
+			<if test="touchedPerformance != null">
+				touched_performance =
+				#{touchedPerformance,jdbcType=DECIMAL},
+			</if>
+			<if test="activationTime != null">
+				activation_time = #{activationTime,jdbcType=BIGINT},
+			</if>
+			<if test="userQq != null">
+				user_qq = #{userQq,jdbcType=INTEGER},
+			</if>
+			<if test="userWechat != null">
+				user_wechat = #{userWechat,jdbcType=VARCHAR},
+			</if>
+			<if test="openid != null">
+				openid = #{openid,jdbcType=VARCHAR},
+			</if>
+			<if test="register != null">
+				register = #{register,jdbcType=VARCHAR},
+			</if>
+			<if test="expressPassword != null">
+				express_password = #{expressPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="totalDividends != null">
+				total_dividends = #{totalDividends,jdbcType=DECIMAL},
+			</if>
+			<if test="dividendsDays != null">
+				dividends_days = #{dividendsDays,jdbcType=INTEGER},
+			</if>
+			<if test="country != null">
+				country = #{country,jdbcType=INTEGER},
+			</if>
+			<if test="province != null">
+				province = #{province,jdbcType=INTEGER},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=INTEGER},
+			</if>
+			<if test="darea != null">
+				darea = #{darea,jdbcType=INTEGER},
+			</if>
+			<if test="balanceEt != null">
+				balance_et = #{balanceEt,jdbcType=DECIMAL},
+			</if>
+			<if test="idnumber != null">
+				idnumber = #{idnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="banktype != null">
+				banktype = #{banktype,jdbcType=VARCHAR},
+			</if>
+			<if test="bankUserName != null">
+				bank_user_name = #{bankUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="banknumber != null">
+				banknumber = #{banknumber,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				bank_content = #{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="question1 != null">
+				question1 = #{question1,jdbcType=VARCHAR},
+			</if>
+			<if test="question2 != null">
+				question2 = #{question2,jdbcType=VARCHAR},
+			</if>
+			<if test="question3 != null">
+				question3 = #{question3,jdbcType=VARCHAR},
+			</if>
+			<if test="answer1 != null">
+				answer1 = #{answer1,jdbcType=VARCHAR},
+			</if>
+			<if test="answer2 != null">
+				answer2 = #{answer2,jdbcType=VARCHAR},
+			</if>
+			<if test="answer3 != null">
+				answer3 = #{answer3,jdbcType=VARCHAR},
+			</if>
+			<if test="groupid != null">
+				groupid = #{groupid,jdbcType=INTEGER},
+			</if>
+			<if test="ticket != null">
+				ticket = #{ticket,jdbcType=VARCHAR},
+			</if>
+			<if test="balanceGouwu != null">
+				balance_gouwu = #{balanceGouwu,jdbcType=DECIMAL},
+			</if>
+			<if test="qrcodeStatus != null">
+				qrcode_status = #{qrcodeStatus,jdbcType=TINYINT},
+			</if>
+			<if test="bonusTime != null">
+				bonus_time = #{bonusTime,jdbcType=BIGINT},
+			</if>
+			<if test="isEmpty != null">
+				is_empty = #{isEmpty,jdbcType=TINYINT},
+			</if>
+			<if test="balanceHeart != null">
+				balance_heart = #{balanceHeart,jdbcType=DECIMAL},
+			</if>
+			<if test="kuoLevel != null">
+				kuo_level = #{kuoLevel,jdbcType=INTEGER},
+			</if>
+			<if test="backfillStatus != null">
+				backfill_status = #{backfillStatus,jdbcType=TINYINT},
+			</if>
+			<if test="backfillMoney != null">
+				backfill_money = #{backfillMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="backfillSheng != null">
+				backfill_sheng = #{backfillSheng,jdbcType=DECIMAL},
+			</if>
+			<if test="guadanNum != null">
+				guadan_num = #{guadanNum,jdbcType=INTEGER},
+			</if>
+			<if test="allstatic != null">
+				allStatic = #{allstatic,jdbcType=DECIMAL},
+			</if>
+			<if test="dis != null">
+				dis = #{dis,jdbcType=INTEGER},
+			</if>
+			<if test="releaseTime != null">
+				release_time = #{releaseTime,jdbcType=BIGINT},
+			</if>
+			<if test="isshop != null">
+				isShop = #{isshop,jdbcType=TINYINT},
+			</if>
+			<if test="isimport != null">
+				isImport = #{isimport,jdbcType=TINYINT},
+			</if>
+			<if test="pos != null">
+				pos = #{pos,jdbcType=TINYINT},
+			</if>
+			<if test="isout != null">
+				isOut = #{isout,jdbcType=TINYINT},
+			</if>
+			<if test="touchDistance != null">
+				touch_distance = #{touchDistance,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="baodan_amount != null">
+				baodan_amount = #{baodan_amount,jdbcType=DECIMAL},
+			</if>
+			<if test="undoOpts != null">
+				undo_opts = #{undoOpts,jdbcType=VARCHAR},
+			</if>
+			<if test="tranDirect != null">
+				tran_direct = #{tranDirect,jdbcType=DECIMAL},
+			</if>
+			<if test="identity != null">
+				identity = #{identity,jdbcType=VARCHAR},
+			</if>
+			<if test="isActivated != null">
+				isActivated = #{isActivated,jdbcType=INTEGER},
+			</if>
+			<if test="certification != null">
+				certification = #{certification,jdbcType=INTEGER},
+			</if>
+			<if test="district != null">
+				district = #{district,jdbcType=VARCHAR},
+			</if>
+			<if test="refereeUserMobile != null">
+				refereeUserMobile = #{refereeUserMobile,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dce.business.entity.user.UserDo">
+		update
+		ct_user
+		set user_name = #{userName,jdbcType=VARCHAR},
+		true_name =
+		#{trueName,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		mobile
+		= #{mobile,jdbcType=CHAR},
+		user_password =
+		#{userPassword,jdbcType=VARCHAR},
+		two_password =
+		#{twoPassword,jdbcType=VARCHAR},
+		user_face =
+		#{userFace,jdbcType=INTEGER},
+		balance_integral =
+		#{balanceIntegral,jdbcType=DECIMAL},
+		sex = #{sex,jdbcType=CHAR},
+		login_times = #{loginTimes,jdbcType=BIGINT},
+		last_login_time =
+		#{lastLoginTime,jdbcType=BIGINT},
+		last_login_ip =
+		#{lastLoginIp,jdbcType=VARCHAR},
+		reg_ip = #{regIp,jdbcType=VARCHAR},
+		reg_time = #{regTime,jdbcType=BIGINT},
+		status =
+		#{status,jdbcType=TINYINT},
+		balance_bonus =
+		#{balanceBonus,jdbcType=DECIMAL},
+		balance_repeat =
+		#{balanceRepeat,jdbcType=DECIMAL},
+		balance_cash =
+		#{balanceCash,jdbcType=DECIMAL},
+		balance_dongjie =
+		#{balanceDongjie,jdbcType=DECIMAL},
+		balance_shopping =
+		#{balanceShopping,jdbcType=DECIMAL},
+		forzen_shopping =
+		#{forzenShopping,jdbcType=DECIMAL},
+		total_bonus =
+		#{totalBonus,jdbcType=DECIMAL},
+		total_repeat =
+		#{totalRepeat,jdbcType=DECIMAL},
+		total_cash =
+		#{totalCash,jdbcType=DECIMAL},
+		total_integral =
+		#{totalIntegral,jdbcType=DECIMAL},
+		total_shopping =
+		#{totalShopping,jdbcType=DECIMAL},
+		refereeid =
+		#{refereeid,jdbcType=INTEGER},
+		parentid = #{parentid,jdbcType=INTEGER},
+		referee_number = #{refereeNumber,jdbcType=INTEGER},
+		referee_status =
+		#{refereeStatus,jdbcType=TINYINT},
+		son_number =
+		#{sonNumber,jdbcType=INTEGER},
+		is_server_center =
+		#{isServerCenter,jdbcType=TINYINT},
+		my_server_center =
+		#{myServerCenter,jdbcType=INTEGER},
+		userScore =
+		#{userscore,jdbcType=INTEGER},
+		user_type =
+		#{userType,jdbcType=TINYINT},
+		user_group =
+		#{userGroup,jdbcType=TINYINT},
+		user_level =
+		#{userLevel,jdbcType=TINYINT},
+		user_post =
+		#{userPost,jdbcType=TINYINT},
+		reg_money = #{regMoney,jdbcType=DECIMAL},
+		yf_money = #{yfMoney,jdbcType=DECIMAL},
+		fd_money =
+		#{fdMoney,jdbcType=DECIMAL},
+		total_performance =
+		#{totalPerformance,jdbcType=DECIMAL},
+		touched_performance =
+		#{touchedPerformance,jdbcType=DECIMAL},
+		activation_time =
+		#{activationTime,jdbcType=BIGINT},
+		user_qq =
+		#{userQq,jdbcType=INTEGER},
+		user_wechat =
+		#{userWechat,jdbcType=VARCHAR},
+		openid = #{openid,jdbcType=VARCHAR},
+		register = #{register,jdbcType=VARCHAR},
+		express_password =
+		#{expressPassword,jdbcType=VARCHAR},
+		total_dividends =
+		#{totalDividends,jdbcType=DECIMAL},
+		dividends_days =
+		#{dividendsDays,jdbcType=INTEGER},
+		country =
+		#{country,jdbcType=INTEGER},
+		province = #{province,jdbcType=INTEGER},
+		city = #{city,jdbcType=INTEGER},
+		darea = #{darea,jdbcType=INTEGER},
+		balance_et = #{balanceEt,jdbcType=DECIMAL},
+		idnumber =
+		#{idnumber,jdbcType=CHAR},
+		banktype = #{banktype,jdbcType=VARCHAR},
+		bank_user_name = #{bankUserName,jdbcType=VARCHAR},
+		banknumber =
+		#{banknumber,jdbcType=VARCHAR},
+		bank_content =
+		#{bankContent,jdbcType=VARCHAR},
+		question1 =
+		#{question1,jdbcType=VARCHAR},
+		question2 =
+		#{question2,jdbcType=VARCHAR},
+		question3 =
+		#{question3,jdbcType=VARCHAR},
+		answer1 = #{answer1,jdbcType=VARCHAR},
+		answer2 = #{answer2,jdbcType=VARCHAR},
+		answer3 =
+		#{answer3,jdbcType=VARCHAR},
+		groupid = #{groupid,jdbcType=INTEGER},
+		ticket = #{ticket,jdbcType=VARCHAR},
+		balance_gouwu =
+		#{balanceGouwu,jdbcType=DECIMAL},
+		qrcode_status =
+		#{qrcodeStatus,jdbcType=TINYINT},
+		bonus_time =
+		#{bonusTime,jdbcType=BIGINT},
+		is_empty = #{isEmpty,jdbcType=TINYINT},
+		balance_heart = #{balanceHeart,jdbcType=DECIMAL},
+		kuo_level =
+		#{kuoLevel,jdbcType=INTEGER},
+		backfill_status =
+		#{backfillStatus,jdbcType=TINYINT},
+		backfill_money =
+		#{backfillMoney,jdbcType=DECIMAL},
+		backfill_sheng =
+		#{backfillSheng,jdbcType=DECIMAL},
+		guadan_num =
+		#{guadanNum,jdbcType=INTEGER},
+		allStatic =
+		#{allstatic,jdbcType=DECIMAL},
+		dis = #{dis,jdbcType=INTEGER},
+		release_time = #{releaseTime,jdbcType=BIGINT},
+		isShop =
+		#{isshop,jdbcType=TINYINT},
+		isImport = #{isimport,jdbcType=TINYINT},
+		pos = #{pos,jdbcType=TINYINT},
+		isOut = #{isout,jdbcType=TINYINT},
+		baodan_amount = #{baodan_amount,jdbcType=DECIMAL},
+		touch_distance
+		=#{touchDistance,jdbcType=LONGVARCHAR},
+		identity =
+		#{identity,jdbcType=VARCHAR},
+		isActivated =
+		#{isActivated,jdbcType=INTEGER},
+		certification =
+		#{certification,jdbcType=INTEGER},
+		district =
+		#{district,jdbcType=VARCHAR},
+		refereeUserMobile =
+		#{refereeUserMobile,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.user.UserDo">
+		update ct_user
+		set
+		user_name = #{userName,jdbcType=VARCHAR},
+		true_name =
+		#{trueName,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		mobile
+		= #{mobile,jdbcType=CHAR},
+		user_password =
+		#{userPassword,jdbcType=VARCHAR},
+		two_password =
+		#{twoPassword,jdbcType=VARCHAR},
+		user_face =
+		#{userFace,jdbcType=INTEGER},
+		balance_integral =
+		#{balanceIntegral,jdbcType=DECIMAL},
+		sex = #{sex,jdbcType=CHAR},
+		login_times = #{loginTimes,jdbcType=BIGINT},
+		last_login_time =
+		#{lastLoginTime,jdbcType=BIGINT},
+		last_login_ip =
+		#{lastLoginIp,jdbcType=VARCHAR},
+		reg_ip = #{regIp,jdbcType=VARCHAR},
+		reg_time = #{regTime,jdbcType=BIGINT},
+		status =
+		#{status,jdbcType=TINYINT},
+		balance_bonus =
+		#{balanceBonus,jdbcType=DECIMAL},
+		balance_repeat =
+		#{balanceRepeat,jdbcType=DECIMAL},
+		balance_cash =
+		#{balanceCash,jdbcType=DECIMAL},
+		balance_dongjie =
+		#{balanceDongjie,jdbcType=DECIMAL},
+		balance_shopping =
+		#{balanceShopping,jdbcType=DECIMAL},
+		forzen_shopping =
+		#{forzenShopping,jdbcType=DECIMAL},
+		total_bonus =
+		#{totalBonus,jdbcType=DECIMAL},
+		total_repeat =
+		#{totalRepeat,jdbcType=DECIMAL},
+		total_cash =
+		#{totalCash,jdbcType=DECIMAL},
+		total_integral =
+		#{totalIntegral,jdbcType=DECIMAL},
+		total_shopping =
+		#{totalShopping,jdbcType=DECIMAL},
+		refereeid =
+		#{refereeid,jdbcType=INTEGER},
+		parentid = #{parentid,jdbcType=INTEGER},
+		referee_number = #{refereeNumber,jdbcType=INTEGER},
+		referee_status =
+		#{refereeStatus,jdbcType=TINYINT},
+		son_number =
+		#{sonNumber,jdbcType=INTEGER},
+		is_server_center =
+		#{isServerCenter,jdbcType=TINYINT},
+		my_server_center =
+		#{myServerCenter,jdbcType=INTEGER},
+		userScore =
+		#{userscore,jdbcType=INTEGER},
+		user_type =
+		#{userType,jdbcType=TINYINT},
+		user_group =
+		#{userGroup,jdbcType=TINYINT},
+		user_level =
+		#{userLevel,jdbcType=TINYINT},
+		user_post =
+		#{userPost,jdbcType=TINYINT},
+		reg_money = #{regMoney,jdbcType=DECIMAL},
+		yf_money = #{yfMoney,jdbcType=DECIMAL},
+		fd_money =
+		#{fdMoney,jdbcType=DECIMAL},
+		total_performance =
+		#{totalPerformance,jdbcType=DECIMAL},
+		touched_performance =
+		#{touchedPerformance,jdbcType=DECIMAL},
+		activation_time =
+		#{activationTime,jdbcType=BIGINT},
+		user_qq =
+		#{userQq,jdbcType=INTEGER},
+		user_wechat =
+		#{userWechat,jdbcType=VARCHAR},
+		openid = #{openid,jdbcType=VARCHAR},
+		register = #{register,jdbcType=VARCHAR},
+		express_password =
+		#{expressPassword,jdbcType=VARCHAR},
+		total_dividends =
+		#{totalDividends,jdbcType=DECIMAL},
+		dividends_days =
+		#{dividendsDays,jdbcType=INTEGER},
+		country =
+		#{country,jdbcType=INTEGER},
+		province = #{province,jdbcType=INTEGER},
+		city = #{city,jdbcType=INTEGER},
+		darea = #{darea,jdbcType=INTEGER},
+		balance_et = #{balanceEt,jdbcType=DECIMAL},
+		idnumber =
+		#{idnumber,jdbcType=VARCHAR},
+		banktype = #{banktype,jdbcType=VARCHAR},
+		bank_user_name = #{bankUserName,jdbcType=VARCHAR},
+		banknumber =
+		#{banknumber,jdbcType=VARCHAR},
+		bank_content =
+		#{bankContent,jdbcType=VARCHAR},
+		question1 =
+		#{question1,jdbcType=VARCHAR},
+		question2 =
+		#{question2,jdbcType=VARCHAR},
+		question3 =
+		#{question3,jdbcType=VARCHAR},
+		answer1 = #{answer1,jdbcType=VARCHAR},
+		answer2 = #{answer2,jdbcType=VARCHAR},
+		answer3 =
+		#{answer3,jdbcType=VARCHAR},
+		groupid = #{groupid,jdbcType=INTEGER},
+		ticket = #{ticket,jdbcType=VARCHAR},
+		balance_gouwu =
+		#{balanceGouwu,jdbcType=DECIMAL},
+		qrcode_status =
+		#{qrcodeStatus,jdbcType=TINYINT},
+		bonus_time =
+		#{bonusTime,jdbcType=BIGINT},
+		is_empty = #{isEmpty,jdbcType=TINYINT},
+		balance_heart = #{balanceHeart,jdbcType=DECIMAL},
+		kuo_level =
+		#{kuoLevel,jdbcType=INTEGER},
+		backfill_status =
+		#{backfillStatus,jdbcType=TINYINT},
+		backfill_money =
+		#{backfillMoney,jdbcType=DECIMAL},
+		backfill_sheng =
+		#{backfillSheng,jdbcType=DECIMAL},
+		guadan_num =
+		#{guadanNum,jdbcType=INTEGER},
+		allStatic =
+		#{allstatic,jdbcType=DECIMAL},
+		dis = #{dis,jdbcType=INTEGER},
+		release_time = #{releaseTime,jdbcType=BIGINT},
+		isShop =
+		#{isshop,jdbcType=TINYINT},
+		isImport = #{isimport,jdbcType=TINYINT},
+		pos = #{pos,jdbcType=TINYINT},
+		isOut = #{isout,jdbcType=TINYINT},
+		baodan_amount = #{baodan_amount,jdbcType=DECIMAL},
+		undo_opts =
+		#{undoOpts,jdbcType=VARCHAR},
+		tran_direct =
+		#{tranDirect,jdbcType=VARCHAR},
+		identity =
+		#{identity,jdbcType=VARCHAR},
+		isActivated =
+		#{isActivated,jdbcType=INTEGER},
+		certification =
+		#{certification,jdbcType=INTEGER},
+		district =
+		#{district,jdbcType=VARCHAR},
+		refereeUserMobile =
+		#{refereeUserMobile,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+		<!-- where id = #{id,jdbcType=INTEGER} -->
+	</update>
+
+	<!-- 自定义查询 -->
+	<select id="selectUser" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user u
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userName != null">
+				AND u.user_name = #{userName}
+			</if>
+			<if test="parentid != null">
+				AND u.parentid = #{parentid}
+			</if>
+		</trim>
+	</select>
+
+	<!-- 查询所有电话号码 -->
+	<select id="selectMobile" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user u
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="mobile != null">
+				AND u.mobile = #{mobile}
+			</if>
+
+		</trim>
+	</select>
+
+	<!-- identity VARCHAR isActivated INT certification INT district VARCHAR -->
+	<select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select id, user_name
+		from ct_user
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userName != null">
+				AND user_name like concat('', #{userName}, '%')
+			</if>
+		</trim>
+		limit 10
+	</select>
+
+	<update id="updateStatic" parameterType="java.util.Map">
+		update ct_user set
+		allStatic =
+		allStatic+#{staticAmount},release_time=unix_timestamp(now()) where
+		id=#{userId}
+	</update>
+
+	<update id="updateTouched" parameterType="java.util.Map">
+		update ct_user set
+		touched_performance =
+		touched_performance+#{touchedAmount} where
+		id=#{userId}
+	</update>
+
+	<update id="updatePerformance" parameterType="java.util.Map">
+		update ct_user set
+		total_performance = total_performance+#{performance}
+		where id=#{userId}
+	</update>
+
+	<update id="addRefereeNumber" parameterType="java.lang.Integer">
+		update ct_user set
+		referee_number = referee_number+1 where id=#{id}
+	</update>
+
+	<update id="addSonNumber" parameterType="java.lang.Integer">
+		update ct_user set
+		son_number = son_number+1 where id=#{id}
+	</update>
+
+	<select id="selectPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select u.*, c.account as ethAccount
+		from ct_user u
+		left join
+		ct_ethereum_account c on u.id = c.userId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userName != null">
+				AND u.user_name like concat('', #{userName}, '%')
+			</if>
+			<if test="trueName != null">
+				AND u.true_name like concat('', #{trueName}, '%')
+			</if>
+			<if test="mobile != null">
+				AND u.mobile like concat('', #{mobile}, '%')
+			</if>
+			<if test="keyword != null">
+				AND (u.mobile like concat('', #{keyword}, '%') or
+				u.true_name like
+				concat('', #{keyword}, '%') or u.user_name like
+				concat('',
+				#{keyword}, '%'))
+			</if>
+		</trim>
+		<if test="offset != null">
+			limit #{offset},10
+		</if>
+	</select>
+
+	<select id="selectByPage" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT u.*,u1.user_name AS refereeUserName,a.* FROM
+		ct_user u LEFT JOIN
+		ct_user u1 ON u.refereeid = u1.id LEFT JOIN
+		ct_user_address a on u.id=
+		a.userId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userName != null">
+				AND u.user_name like concat('', #{userName}, '%')
+			</if>
+			<if test="trueName != null">
+				AND u.true_name like concat('', #{trueName}, '%')
+			</if>
+			<if test="mobile != null">
+				AND u.mobile like concat('', #{mobile}, '%')
+			</if>
+			<if test="userLevel != null">
+				AND u.user_level = #{userLevel}
+			</if>
+			<if test="address != null">
+				AND a.address = #{address}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[ u.reg_time >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[ u.reg_time <= #{endDate} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectEthAccountByPage" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select u.*, c.account as ethAccount
+		from ct_user u
+		left join
+		ct_ethereum_account c on u.id = c.userId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userName != null">
+				AND u.user_name like concat('', #{userName}, '%')
+			</if>
+			<if test="trueName != null">
+				AND u.true_name like concat('', #{trueName}, '%')
+			</if>
+			<if test="mobile != null">
+				AND u.mobile like concat('', #{mobile}, '%')
+			</if>
+			<if test="keyword != null">
+				AND (u.mobile like concat('', #{keyword}, '%') or
+				u.true_name like
+				concat('', #{keyword}, '%') or u.user_name like
+				concat('',
+				#{keyword}, '%'))
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectBaoDanAmount" parameterType="java.util.Map"
+		resultType="Long">
+		SELECT sum(u.baodan_amount) as amount
+		FROM ct_user u
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userName != null">
+				AND u.user_name like concat('', #{userName}, '%')
+			</if>
+			<if test="trueName != null">
+				AND u.true_name like concat('', #{trueName}, '%')
+			</if>
+			<if test="mobile != null">
+				AND u.mobile like concat('', #{mobile}, '%')
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[ u.reg_time >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[ u.reg_time <= #{endDate} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 更改登录密码 -->
+	<update id="updateByPrimaryKeyLogPass" parameterType="com.dce.business.entity.user.UserDo">
+		update
+		ct_user
+		set user_password = #{userPassword}
+
+		where id = #{userId}
+	</update>
+
+	<!-- 更改支付密码 -->
+	<update id="updateByPrimaryKeyPayPass" parameterType="com.dce.business.entity.user.UserDo">
+		update
+		ct_user set two_password = #{twoPassword}
+		where id = #{userId}
+	</update>
+
+	<!-- 自定义多条件查询 -->
+	<select id="selectUserCondition" parameterType="Map" resultMap="BaseResultMap">
+		SELECT *
+		FROM ct_user
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND id = #{id}
+			</if>
+			<if test="userName != null">
+				AND user_name = #{userName}
+			</if>
+			<if test="trueName != null">
+				AND true_name = #{trueName}
+			</if>
+			<if test="email != null">
+				AND email = #{email}
+			</if>
+			<if test="mobile != null">
+				AND mobile = #{mobile}
+			</if>
+			<if test="userPassword != null">
+				AND user_password = #{userPassword}
+			</if>
+			<if test="twoPassword != null">
+				AND two_password = #{twoPassword}
+			</if>
+			<if test="userFace != null">
+				AND user_face = #{userFace}
+			</if>
+			<if test="balanceIntegral != null">
+				AND balance_integral = #{balanceIntegral}
+			</if>
+			<if test="sex != null">
+				AND sex = #{sex}
+			</if>
+			<if test="loginTimes != null">
+				AND login_times = #{loginTimes}
+			</if>
+			<if test="lastLoginTime != null">
+				AND last_login_time = #{lastLoginTime}
+			</if>
+			<if test="lastLoginIp != null">
+				AND last_login_ip = #{lastLoginIp}
+			</if>
+			<if test="regIp != null">
+				AND reg_ip = #{regIp}
+			</if>
+			<if test="regTime != null">
+				AND reg_time = #{regTime}
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="balanceBonus != null">
+				AND balance_bonus = #{balanceBonus}
+			</if>
+			<if test="balanceRepeat != null">
+				AND balance_repeat = #{balanceRepeat}
+			</if>
+			<if test="balanceCash != null">
+				AND balance_cash = #{balanceCash}
+			</if>
+			<if test="balanceDongjie != null">
+				AND balance_dongjie = #{balanceDongjie}
+			</if>
+			<if test="balanceShopping != null">
+				AND balance_shopping = #{balanceShopping}
+			</if>
+			<if test="forzenShopping != null">
+				AND forzen_shopping = #{forzenShopping}
+			</if>
+			<if test="totalBonus != null">
+				AND total_bonus = #{totalBonus}
+			</if>
+			<if test="totalRepeat != null">
+				AND total_repeat = #{totalRepeat}
+			</if>
+			<if test="totalCash != null">
+				AND total_cash = #{totalCash}
+			</if>
+			<if test="totalIntegral != null">
+				AND total_integral = #{totalIntegral}
+			</if>
+			<if test="totalShopping != null">
+				AND total_shopping = #{totalShopping}
+			</if>
+			<if test="refereeid != null">
+				AND refereeid = #{refereeid}
+			</if>
+			<if test="parentid != null">
+				AND parentid = #{parentid}
+			</if>
+			<if test="refereeNumber != null">
+				AND referee_number = #{refereeNumber}
+			</if>
+			<if test="refereeStatus != null">
+				AND referee_status = #{refereeStatus}
+			</if>
+			<if test="sonNumber != null">
+				AND son_number = #{sonNumber}
+			</if>
+			<if test="isServerCenter != null">
+				AND is_server_center = #{isServerCenter}
+			</if>
+			<if test="myServerCenter != null">
+				AND my_server_center = #{myServerCenter}
+			</if>
+			<if test="userScore != null">
+				AND userScore = #{userScore}
+			</if>
+			<if test="userType != null">
+				AND user_type = #{userType}
+			</if>
+			<if test="userGroup != null">
+				AND user_group = #{userGroup}
+			</if>
+			<if test="userLevel != null">
+				AND user_level = #{userLevel}
+			</if>
+			<if test="userPost != null">
+				AND user_post = #{userPost}
+			</if>
+			<if test="regMoney != null">
+				AND reg_money = #{regMoney}
+			</if>
+			<if test="yfMoney != null">
+				AND yf_money = #{yfMoney}
+			</if>
+			<if test="fdMoney != null">
+				AND fd_money = #{fdMoney}
+			</if>
+			<if test="totalPerformance != null">
+				AND total_performance = #{totalPerformance}
+			</if>
+			<if test="activationTime != null">
+				AND activation_time = #{activationTime}
+			</if>
+			<if test="userQq != null">
+				AND user_qq = #{userQq}
+			</if>
+			<if test="userWechat != null">
+				AND user_wechat = #{userWechat}
+			</if>
+			<if test="openid != null">
+				AND openid = #{openid}
+			</if>
+			<if test="register != null">
+				AND register = #{register}
+			</if>
+			<if test="expressPassword != null">
+				AND express_password = #{expressPassword}
+			</if>
+			<if test="totalDividends != null">
+				AND total_dividends = #{totalDividends}
+			</if>
+			<if test="dividendsDays != null">
+				AND dividends_days = #{dividendsDays}
+			</if>
+			<if test="country != null">
+				AND country = #{country}
+			</if>
+			<if test="province != null">
+				AND province = #{province}
+			</if>
+			<if test="city != null">
+				AND city = #{city}
+			</if>
+			<if test="darea != null">
+				AND darea = #{darea}
+			</if>
+			<if test="balanceEt != null">
+				AND balance_et = #{balanceEt}
+			</if>
+			<if test="idnumber != null">
+				AND idnumber = #{idnumber}
+			</if>
+			<if test="banktype != null">
+				AND banktype = #{banktype}
+			</if>
+			<if test="bankUserName != null">
+				AND bank_user_name = #{bankUserName}
+			</if>
+			<if test="banknumber != null">
+				AND banknumber = #{banknumber}
+			</if>
+			<if test="bankContent != null">
+				AND bank_content = #{bankContent}
+			</if>
+			<if test="question1 != null">
+				AND question1 = #{question1}
+			</if>
+			<if test="question2 != null">
+				AND question2 = #{question2}
+			</if>
+			<if test="question3 != null">
+				AND question3 = #{question3}
+			</if>
+			<if test="answer1 != null">
+				AND answer1 = #{answer1}
+			</if>
+			<if test="answer2 != null">
+				AND answer2 = #{answer2}
+			</if>
+			<if test="answer3 != null">
+				AND answer3 = #{answer3}
+			</if>
+			<if test="groupid != null">
+				AND groupid = #{groupid}
+			</if>
+			<if test="ticket != null">
+				AND ticket = #{ticket}
+			</if>
+			<if test="balanceGouwu != null">
+				AND balance_gouwu = #{balanceGouwu}
+			</if>
+			<if test="qrcodeStatus != null">
+				AND qrcode_status = #{qrcodeStatus}
+			</if>
+			<if test="bonusTime != null">
+				AND bonus_time = #{bonusTime}
+			</if>
+			<if test="isEmpty != null">
+				AND is_empty = #{isEmpty}
+			</if>
+			<if test="balanceHeart != null">
+				AND balance_heart = #{balanceHeart}
+			</if>
+			<if test="touchDistance != null">
+				AND touch_distance = #{touchDistance}
+			</if>
+			<if test="kuoLevel != null">
+				AND kuo_level = #{kuoLevel}
+			</if>
+			<if test="backfillStatus != null">
+				AND backfill_status = #{backfillStatus}
+			</if>
+			<if test="backfillMoney != null">
+				AND backfill_money = #{backfillMoney}
+			</if>
+			<if test="backfillSheng != null">
+				AND backfill_sheng = #{backfillSheng}
+			</if>
+			<if test="guadanNum != null">
+				AND guadan_num = #{guadanNum}
+			</if>
+			<if test="allStatic != null">
+				AND allStatic = #{allStatic}
+			</if>
+			<if test="dis != null">
+				AND dis = #{dis}
+			</if>
+			<if test="releaseTime != null">
+				AND release_time = #{releaseTime}
+			</if>
+			<if test="isShop != null">
+				AND isShop = #{isShop}
+			</if>
+			<if test="isImport != null">
+				AND isImport = #{isImport}
+			</if>
+			<if test="pos != null">
+				AND pos = #{pos}
+			</if>
+			<if test="isOut != null">
+				AND isOut = #{isOut}
+			</if>
+			<if test="undoOpts != null">
+				AND undo_opts = #{undoOpts}
+			</if>
+			<if test="tranDirect != null">
+				AND tran_direct = #{tranDirect}
+			</if>
+			<if test="touchedPerformance != null">
+				AND touched_performance = #{touchedPerformance}
+			</if>
+			<if test="baodanAmount != null">
+				AND baodan_amount = #{baodanAmount}
+			</if>
+			<if test="rechargeAmount != null">
+				AND rechargeAmount = #{rechargeAmount}
+			</if>
+			<if test="transAmount != null">
+				AND transAmount = #{transAmount}
+			</if>
+			<if test="isLimitTrans != null">
+				AND isLimitTrans = #{isLimitTrans}
+			</if>
+			<if test="isActivated != null">
+				AND isActivated = #{isActivated}
+			</if>
+			<if test="identity != null">
+				AND identity = #{identity}
+			</if>
+			<if test="certification != null">
+				AND certification = #{certification}
+			</if>
+			<if test="district != null">
+				AND district = #{district}
+			</if>
+			<if test="refereeUserMobile != null">
+				AND refereeUserMobile =
+				#{refereeUserMobile,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</select>
+
+	<!-- 自定义方法 -->
+	<update id="updateLevel" parameterType="com.dce.business.entity.user.UserDo">
+		update ct_user
+		<set>
+			<if test="userLevel != null">
+				user_level = #{userLevel,jdbcType=TINYINT},
+			</if>
+			<if test="district !=null">
+				district=#{district,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+
+	</update>
+	<select id="selectDistrictPage" parameterType="com.dce.business.entity.user.UserDo"
+		resultMap="BaseResultMap">
+		<![CDATA[
+			select * from ct_user 
+			where user_level >= 3
+		]]>
+		<if test="district !=null">
+			AND district=#{district,jdbcType=VARCHAR}
+		</if>
+		<if test="trueName !=null">
+			AND true_name=#{trueName,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.secrety.IUsersDao">
+	<resultMap type="managersDo" id="usersResultMap">
+		<result property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="nickname" column="nickname" />
+		<result property="password" column="password" />
+		<result property="salt" column="salt" />
+		<result property="enabled" column="enabled" />
+		<result property="registerTime" column="registerTime" />
+		<result property="mobile" column="mobile" />
+		<result property="deptId" column="deptId" />
+	</resultMap>
+
+	<select id="getUserDetailsByUserName" parameterType="string"  resultType="managersDo">
+		select id,username,nickname,password,salt,enabled,registerTime,mobile ,deptId
+		from managers 
+		where username = #{username}
+		limit 0,1
+	</select>
+	
+	<select id="getUserDetailsByMobile" parameterType="string" resultType="managersDo">
+		select id,username,nickname,password,salt,enabled,registerTime,mobile,deptId
+		from managers 
+		where mobile = #{mobile}
+		limit 0,1
+	</select>
+	
+
+	<update id="updateTimeOfPwd" parameterType="map" >
+		update user_pwd_updateTime 
+		set updateTime = now() 
+		where id = #{id}
+	</update>
+	
+	<insert id="addTimeOfPwd" parameterType="int" keyProperty="id" useGeneratedKeys="true" >
+		insert into user_pwd_updateTime (userId,updateTime,deadLine) 
+	    values(#{userId},now(),90)
+	</insert>
+	
+	<insert id="addDeptUser" parameterType="managersDo" keyProperty="id" useGeneratedKeys="true" >
+		INSERT INTO  `deptuser`(
+			`deptId`, 
+			`userId`, 
+			`enabled`
+			)
+			VALUES
+			(
+			#{deptId}, 
+			#{id},
+			1
+			)	
+	</insert>
+	
+	<insert id="addUser" parameterType="managersDo" keyProperty="id" useGeneratedKeys="true" >
+           INSERT INTO managers(
+           username,nickname,password,salt,enabled,registerTime,lastLoginTime,operator , ip ,remark,mobile
+           )
+           VALUES (
+           #{username},#{nickname},#{password},#{salt},#{enabled},now(),now(),#{operator},#{ip},#{remark},#{mobile}
+           )
+   </insert>
+       
+	
+	<update id="updateUser" parameterType="managersDo">
+		UPDATE managers 
+		<trim prefix="SET" suffixOverrides=","> 			
+		<if test="username != null">  
+				username = #{username},
+		</if>				
+		<if test="nickname != null">  
+				nickname = #{nickname},
+		</if>				
+		<if test="password != null">  
+				password = #{password},
+		</if>				
+		<if test="ip != null">  
+				ip = #{ip},
+		</if>				
+		<if test="operator != null">  
+				operator = #{operator},
+		</if>				
+		<if test="remark != null">  
+				remark = #{remark},
+		</if>				
+		<if test="salt != null">  
+				salt = #{salt},
+		</if>				
+		<if test="mobile != null">  
+				mobile = #{mobile},
+		</if>
+		<if test="deptId != null">  
+				deptId = #{deptId},
+		</if>
+		</trim>
+		WHERE id = #{id} 
+	</update>
+	
+	<select id="getUsersByPage" parameterType="map" resultType="managersDo">
+		SELECT id,username,nickname,password,salt,enabled,registerTime,mobile,deptId
+		from managers 
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userName != null">  
+				AND username like CONCAT('%',#{userName},'%')
+			</if>
+			<if test="nickName != null">  
+				AND nickName like CONCAT('%',#{nickName},'%')
+			</if>
+         </trim> 
+	</select>
+	
+	
+	<select id="getDeptUsersByPage" parameterType="map" resultType="managersDo">
+		SELECT a.id,a.username,a.nickname,a.password,a.salt,a.enabled,a.registerTime,a.mobile,a.deptId
+		from managers a
+		inner join deptuser b on a.id = b.userid and b.deptid = #{deptId}		
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="userName != null">  
+				AND username like CONCAT('%',#{userName},'%')
+			</if>
+			<if test="nickName != null">  
+				AND nickName like CONCAT('%',#{nickName},'%')
+			</if>
+         </trim> 
+	</select>
+	
+	<select id="getUserById" parameterType="int" resultType="managersDo">
+		select id,username,nickname,password,salt,enabled,registerTime,mobile,deptId 
+		from managers 
+		where id = #{id}
+	</select>
+	
+	<select id="getCouldFollowOrderPersons" parameterType="string" resultType="managersDo">
+		SELECT manager.id,manager.username,manager.nickname 
+		FROM managers manager 
+		INNER JOIN usersroles ur ON manager.id = ur.userId
+		INNER JOIN roles role ON role.id = ur.roleId
+		WHERE role.roleDesc = #{roleDesc}
+	</select>
+	
+	<delete id="deleteUser" parameterType="int" >
+		DELETE FROM managers WHERE id = #{id}
+	</delete>
+	
+	<select id="getUsersInRolesByPage" parameterType="map" resultType="managersDo">
+		SELECT m.id ID,m.username USERNAME,m.nickname NICKNAME 
+		FROM managers m,usersroles ur 
+		WHERE m.id=ur.userId AND ur.roleId=#{roleId}
+		<if test="username != null">  
+			AND m.username like CONCAT('%',#{username},'%')
+		</if>
+		<if test="nickname != null">  
+			AND m.nickname like CONCAT('%',#{nickname},'%')
+		</if>
+	</select>
+	
+	<select id="getUsersNotInRolesByPage" parameterType="map" resultType="managersDo">
+		SELECT  m.id ID,m.username USERNAME,m.nickname NICKNAME 
+		FROM managers m WHERE m.id NOT IN (SELECT ur.userId FROM usersroles ur	WHERE ur.roleId = #{roleId})
+		<if test="username != null">  
+			AND m.username like CONCAT('%',#{username},'%')
+		</if>
+		<if test="nickname != null">  
+			AND m.nickname like CONCAT('%',#{nickname},'%')
+		</if>
+	</select>
+	<select id="getDeptUsersInRolesByPage" parameterType="map" resultType="managersDo">
+		SELECT m.id ID,m.username USERNAME,m.nickname NICKNAME 
+		FROM managers m,usersroles ur ,deptuser du
+		WHERE m.id=ur.userId AND ur.roleId=#{roleId} and du.userid=m.id and du.deptId = #{deptId}
+		<if test="username != null">  
+			AND m.username like CONCAT('%',#{username},'%')
+		</if>
+		<if test="nickname != null">  
+			AND m.nickname like CONCAT('%',#{nickname},'%')
+		</if>
+	</select>
+	
+	<select id="getDeptUsersNotInRolesByPage" parameterType="map" resultType="managersDo">
+		SELECT  m.id ID,m.username USERNAME,m.nickname NICKNAME 
+		FROM managers m inner join deptuser du on m.id = du.userid and du.deptId= #{deptId}				
+		WHERE m.id NOT IN (SELECT ur.userId 
+										    FROM usersroles ur 
+											WHERE ur.roleId = #{roleId})
+		<if test="username != null">  
+			AND m.username like CONCAT('%',#{username},'%')
+		</if>
+		<if test="nickname != null">  
+			AND m.nickname like CONCAT('%',#{nickname},'%')
+		</if>
+	</select>
+	
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

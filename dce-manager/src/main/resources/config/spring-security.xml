@@ -1,0 +1,117 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+
+	<!-- 不要过滤图片等静态资源 -->
+	<http pattern="/**/*.jpg" security="none" />
+	<http pattern="/**/*.png" security="none" />
+	<http pattern="/**/*.gif" security="none" />
+	<http pattern="/**/*.css" security="none" />
+	<http pattern="/**/*.js" security="none" />
+	<!-- 登录页面和忘记密码页面不过滤 -->
+	<http pattern="/auth/loginfailed.action" security="none" />
+	<http pattern="/auth/login.action" security="none" />
+	<http pattern="/auth/sendMobileCode.action" security="none" />
+	<http pattern="/auth/accessDenied.action" security="none" />
+	<global-method-security jsr250-annotations="enabled" />
+
+	<http create-session="always" entry-point-ref="authenticationEntryPoint">
+		<access-denied-handler error-page="/homemng/auth/accessDenied.action" />
+		<intercept-url pattern="/**/*.action" access="isAuthenticated()" />
+		<logout logout-success-url="/homemng/auth/logout.action" delete-cookies="JSESSIONID" />
+		<csrf disabled="true" />
+
+		<custom-filter ref="customFilter" before="FILTER_SECURITY_INTERCEPTOR" />
+		<custom-filter ref="captchaAuthenticaionFilter" position="FORM_LOGIN_FILTER" />
+		<custom-filter ref="concurrencySessionFilter" position="CONCURRENT_SESSION_FILTER" />
+		<!-- 运行iframe -->
+		<headers>
+			<frame-options policy="SAMEORIGIN" />
+		</headers>
+	</http>
+
+	<!-- 登录form表单提交EntryPoint -->
+	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:constructor-arg name="loginFormUrl" value="/auth/login.action" />
+	</beans:bean>
+
+	<!-- 自定义验证码认证filter -->
+	<beans:bean id="captchaAuthenticaionFilter" class="com.dce.manager.provider.UsernamePasswordCaptchaAuthenticationFilter">
+		<beans:property name="sessionAuthenticationStrategy" ref="sas" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<!-- 登录认证成功后处理 -->
+		<beans:property name="authenticationSuccessHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+				<beans:property name="defaultTargetUrl" value="/auth/loginsuccess.action" />
+				<beans:property name="alwaysUseDefaultTargetUrl" value="true" />
+			</beans:bean>
+		</beans:property>
+		<!-- 登录认证失败后处理 -->
+		<beans:property name="authenticationFailureHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<beans:property name="defaultFailureUrl" value="/auth/loginfailed.action" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 用户的密码加密或解密 -->
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+	<!-- 盐值 -->
+	<beans:bean id="customSaltSource" class="com.dce.manager.provider.CustomSaltSource" />
+
+	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源。11/3/23 -->
+	<beans:bean id="customAccessDecisionManager" class="com.dce.manager.provider.CustomAccessDecisionManager" />
+
+    <beans:bean id="authenticationProvider" class="com.dce.manager.provider.LimitLoginAuthenticationProvider">
+        <beans:property name="passwordEncoder" ref="passwordEncoder" />
+        <beans:property name="saltSource" ref="customSaltSource" />
+        <beans:property name="userDetailsService" ref="userDetailsService" />
+    </beans:bean>
+	<!-- 注意能够为authentication-manager 设置alias别名 -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="authenticationProvider" />
+	</authentication-manager>
+
+	<!-- 一个自定义的filter，必须包含authenticationManager, accessDecisionManager,securityMetadataSource三个属性。 -->
+	<beans:bean id="customFilter" class="com.dce.manager.provider.CustomFilterSecurityInterceptor">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="accessDecisionManager" ref="customAccessDecisionManager" />
+		<beans:property name="securityMetadataSource" ref="customSecurityMetadataSource" />
+	</beans:bean>
+
+	<!-- 资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色去访问。11/3/23 -->
+	<beans:bean id="customSecurityMetadataSource" class="com.dce.manager.provider.CustomInvocationSecurityMetadataSourceService" />
+
+	<!-- session配置处理 begin -->
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+					<beans:constructor-arg ref="sessionRegistry" />
+					<beans:property name="maximumSessions" value="${manager.maximumSessions}" />
+					<!-- exceptionIfMaximumExceeded, 当超过最大session数时: true: 不允许新session, 保持旧session false: 销毁旧session, 新session生效 -->
+					<beans:property name="exceptionIfMaximumExceeded" value="false" />
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
+				<beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+					<beans:constructor-arg ref="sessionRegistry" />
+				</beans:bean>
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+    <beans:bean id="sessionInformationExpiredStrategy" class="org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy">
+        <beans:constructor-arg name="invalidSessionUrl" value="/auth/login.action" />
+    </beans:bean>
+
+	<beans:bean id="concurrencySessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<beans:constructor-arg name="sessionInformationExpiredStrategy" ref="sessionInformationExpiredStrategy" />
+	</beans:bean>
+	<!-- session配置处理end -->
+</beans:beans>

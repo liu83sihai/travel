@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.bonus.IBonusCountDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.bonus.BonusCountDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="total" jdbcType="DECIMAL" property="total" />
+		<result column="cumulative" jdbcType="DECIMAL" property="cumulative" />
+		<result column="tax" jdbcType="DECIMAL" property="tax" />
+		<result column="repeat_shopping" jdbcType="DECIMAL" property="repeatShopping" />
+		<result column="statistime" jdbcType="INTEGER" property="statistime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="pingji" jdbcType="DECIMAL" property="pingji" />
+		<result column="liangpeng" jdbcType="DECIMAL" property="liangpeng" />
+		<result column="baodan" jdbcType="DECIMAL" property="baodan" />
+		<result column="jiandian" jdbcType="DECIMAL" property="jiandian" />
+		<result column="jiaquan" jdbcType="DECIMAL" property="jiaquan" />
+		<result column="reg_get" jdbcType="DECIMAL" property="regGet" />
+		<result column="tj_bonus" jdbcType="DECIMAL" property="tjBonus" />
+		<result column="touch_bonus" jdbcType="DECIMAL" property="touchBonus" />
+		<result column="help_bonus" jdbcType="DECIMAL" property="helpBonus" />
+		<result column="leader_bonus" jdbcType="DECIMAL" property="leaderBonus" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userid, total, cumulative, tax, repeat_shopping, statistime, status, pingji,
+		liangpeng, baodan, jiandian, jiaquan, reg_get, tj_bonus, touch_bonus, help_bonus,
+		leader_bonus
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_bonus_count
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectBonus" parameterType="Map" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from ct_bonus_count
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_bonus_count
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bonus.BonusCountDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_count (userid, total, cumulative,
+		tax, repeat_shopping, statistime,
+		status, pingji, liangpeng,
+		baodan, jiandian, jiaquan,
+		reg_get, tj_bonus, touch_bonus,
+		help_bonus, leader_bonus)
+		values (#{userid,jdbcType=INTEGER}, #{total,jdbcType=DECIMAL}, #{cumulative,jdbcType=DECIMAL},
+		#{tax,jdbcType=DECIMAL}, #{repeatShopping,jdbcType=DECIMAL}, #{statistime,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER}, #{pingji,jdbcType=DECIMAL}, #{liangpeng,jdbcType=DECIMAL},
+		#{baodan,jdbcType=DECIMAL}, #{jiandian,jdbcType=DECIMAL}, #{jiaquan,jdbcType=DECIMAL},
+		#{regGet,jdbcType=DECIMAL}, #{tjBonus,jdbcType=DECIMAL}, #{touchBonus,jdbcType=DECIMAL},
+		#{helpBonus,jdbcType=DECIMAL}, #{leaderBonus,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bonus.BonusCountDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_count
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="total != null">
+				total,
+			</if>
+			<if test="cumulative != null">
+				cumulative,
+			</if>
+			<if test="tax != null">
+				tax,
+			</if>
+			<if test="repeatShopping != null">
+				repeat_shopping,
+			</if>
+			<if test="statistime != null">
+				statistime,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="pingji != null">
+				pingji,
+			</if>
+			<if test="liangpeng != null">
+				liangpeng,
+			</if>
+			<if test="baodan != null">
+				baodan,
+			</if>
+			<if test="jiandian != null">
+				jiandian,
+			</if>
+			<if test="jiaquan != null">
+				jiaquan,
+			</if>
+			<if test="regGet != null">
+				reg_get,
+			</if>
+			<if test="tjBonus != null">
+				tj_bonus,
+			</if>
+			<if test="touchBonus != null">
+				touch_bonus,
+			</if>
+			<if test="helpBonus != null">
+				help_bonus,
+			</if>
+			<if test="leaderBonus != null">
+				leader_bonus,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="total != null">
+				#{total,jdbcType=DECIMAL},
+			</if>
+			<if test="cumulative != null">
+				#{cumulative,jdbcType=DECIMAL},
+			</if>
+			<if test="tax != null">
+				#{tax,jdbcType=DECIMAL},
+			</if>
+			<if test="repeatShopping != null">
+				#{repeatShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="statistime != null">
+				#{statistime,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="pingji != null">
+				#{pingji,jdbcType=DECIMAL},
+			</if>
+			<if test="liangpeng != null">
+				#{liangpeng,jdbcType=DECIMAL},
+			</if>
+			<if test="baodan != null">
+				#{baodan,jdbcType=DECIMAL},
+			</if>
+			<if test="jiandian != null">
+				#{jiandian,jdbcType=DECIMAL},
+			</if>
+			<if test="jiaquan != null">
+				#{jiaquan,jdbcType=DECIMAL},
+			</if>
+			<if test="regGet != null">
+				#{regGet,jdbcType=DECIMAL},
+			</if>
+			<if test="tjBonus != null">
+				#{tjBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="touchBonus != null">
+				#{touchBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="helpBonus != null">
+				#{helpBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="leaderBonus != null">
+				#{leaderBonus,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.bonus.BonusCountDo">
+		update ct_bonus_count
+		<set>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="total != null">
+				total = #{total,jdbcType=DECIMAL},
+			</if>
+			<if test="cumulative != null">
+				cumulative = #{cumulative,jdbcType=DECIMAL},
+			</if>
+			<if test="tax != null">
+				tax = #{tax,jdbcType=DECIMAL},
+			</if>
+			<if test="repeatShopping != null">
+				repeat_shopping = #{repeatShopping,jdbcType=DECIMAL},
+			</if>
+			<if test="statistime != null">
+				statistime = #{statistime,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="pingji != null">
+				pingji = #{pingji,jdbcType=DECIMAL},
+			</if>
+			<if test="liangpeng != null">
+				liangpeng = #{liangpeng,jdbcType=DECIMAL},
+			</if>
+			<if test="baodan != null">
+				baodan = #{baodan,jdbcType=DECIMAL},
+			</if>
+			<if test="jiandian != null">
+				jiandian = #{jiandian,jdbcType=DECIMAL},
+			</if>
+			<if test="jiaquan != null">
+				jiaquan = #{jiaquan,jdbcType=DECIMAL},
+			</if>
+			<if test="regGet != null">
+				reg_get = #{regGet,jdbcType=DECIMAL},
+			</if>
+			<if test="tjBonus != null">
+				tj_bonus = #{tjBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="touchBonus != null">
+				touch_bonus = #{touchBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="helpBonus != null">
+				help_bonus = #{helpBonus,jdbcType=DECIMAL},
+			</if>
+			<if test="leaderBonus != null">
+				leader_bonus = #{leaderBonus,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.bonus.BonusCountDo">
+		update ct_bonus_count
+		set userid = #{userid,jdbcType=INTEGER},
+		total = #{total,jdbcType=DECIMAL},
+		cumulative = #{cumulative,jdbcType=DECIMAL},
+		tax = #{tax,jdbcType=DECIMAL},
+		repeat_shopping = #{repeatShopping,jdbcType=DECIMAL},
+		statistime = #{statistime,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		pingji = #{pingji,jdbcType=DECIMAL},
+		liangpeng = #{liangpeng,jdbcType=DECIMAL},
+		baodan = #{baodan,jdbcType=DECIMAL},
+		jiandian = #{jiandian,jdbcType=DECIMAL},
+		jiaquan = #{jiaquan,jdbcType=DECIMAL},
+		reg_get = #{regGet,jdbcType=DECIMAL},
+		tj_bonus = #{tjBonus,jdbcType=DECIMAL},
+		touch_bonus = #{touchBonus,jdbcType=DECIMAL},
+		help_bonus = #{helpBonus,jdbcType=DECIMAL},
+		leader_bonus = #{leaderBonus,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

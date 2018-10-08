@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.bonus.IBonusLogDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.bonus.BonusLogDo">
+		<result column="id" jdbcType="BIGINT" property="id" />
+		<result column="userId" jdbcType="INTEGER" property="userId" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="userLevel" jdbcType="INTEGER" property="userLevel" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bonus.BonusLogDo"
+		useGeneratedKeys="true">
+		insert into ct_bonus_log (userId, amount, userLevel,
+		status, createTime, updateTime
+		)
+		values
+		(#{userId,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{userLevel,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id"
+		parameterType="com.dce.business.entity.bonus.BonusLogDo" useGeneratedKeys="true">
+		insert into ct_bonus_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="userLevel != null">
+				userLevel,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="userLevel != null">
+				#{userLevel,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="selectBonusLogById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		   *
+		from ct_bonus_log
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	
+    <update id="updateRedoStatusById" parameterType="Integer">
+    	update ct_bonus_log set status = 1 where id = #{id}
+    </update>
+    
+</mapper>

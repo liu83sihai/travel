@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.user.IUserParentDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.user.UserParentDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="parentid" jdbcType="INTEGER" property="parentid" />
+		<result column="distance" jdbcType="INTEGER" property="distance" />
+		<result column="position" jdbcType="VARCHAR" property="position" />
+		<result column="network" jdbcType="BIT" property="network" />
+		<result column="lr_district" jdbcType="TINYINT" property="lrDistrict" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userid, parentid, distance, position, network, lr_district
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_user_parent
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_user_parent
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.user.UserParentDo"
+		useGeneratedKeys="true">
+		insert into ct_user_parent (userid, parentid, distance,
+		position, network, lr_district
+		)
+		values (#{userid,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER},
+		#{position,jdbcType=VARCHAR}, #{network,jdbcType=BIT}, #{lrDistrict,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.user.UserParentDo"
+		useGeneratedKeys="true">
+		insert into ct_user_parent
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="parentid != null">
+				parentid,
+			</if>
+			<if test="distance != null">
+				distance,
+			</if>
+			<if test="position != null">
+				position,
+			</if>
+			<if test="network != null">
+				network,
+			</if>
+			<if test="lrDistrict != null">
+				lr_district,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="parentid != null">
+				#{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="distance != null">
+				#{distance,jdbcType=INTEGER},
+			</if>
+			<if test="position != null">
+				#{position,jdbcType=VARCHAR},
+			</if>
+			<if test="network != null">
+				#{network,jdbcType=BIT},
+			</if>
+			<if test="lrDistrict != null">
+				#{lrDistrict,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.user.UserParentDo">
+		update ct_user_parent
+		<set>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="parentid != null">
+				parentid = #{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="distance != null">
+				distance = #{distance,jdbcType=INTEGER},
+			</if>
+			<if test="position != null">
+				position = #{position,jdbcType=VARCHAR},
+			</if>
+			<if test="network != null">
+				network = #{network,jdbcType=BIT},
+			</if>
+			<if test="lrDistrict != null">
+				lr_district = #{lrDistrict,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.user.UserParentDo">
+		update ct_user_parent
+		set userid = #{userid,jdbcType=INTEGER},
+		parentid = #{parentid,jdbcType=INTEGER},
+		distance = #{distance,jdbcType=INTEGER},
+		position = #{position,jdbcType=VARCHAR},
+		network = #{network,jdbcType=BIT},
+		lr_district = #{lrDistrict,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<!-- 
+	<select id="selectMyGroup" parameterType="Map" resultType="Map">
+		SELECT 	
+	        CONCAT(b.true_name,'[',b.user_name,']') AS user_name,
+			IFNULL((SELECT amount FROM ct_user_account WHERE accountType='current' AND userId=b.id),0) AS currentAmount,
+			IFNULL((SELECT amount FROM ct_user_account WHERE accountType='point' AND userId=b.id),0) AS pointAmount,
+			IFNULL((SELECT amount FROM ct_user_account WHERE accountType='original' AND userId=b.id),0) AS originalAmount,
+			(SELECT CONCAT(true_name,'[',user_name,']') FROM ct_user WHERE id=b.refereeid) AS refereeName,
+			(SELECT CONCAT(true_name,'[',user_name,']') FROM ct_user WHERE id=b.parentid) AS parentidName,
+	        b.balance_dongjie,
+			b.activation_time,
+			(SELECT `name` FROM t_loan_dict_dtl WHERE dictId=1 AND `code`=b.user_level) AS levelName
+		
+			FROM 
+			 `ct_user_parent` a LEFT JOIN  ct_user b ON a.userid =b.id 
+			 
+			 <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+	           <if test="parentId != null">  
+	               a.parentid = #{parentId}
+	           </if>
+	           <if test="isActivity == '1'.toString()">  
+	               AND <![CDATA[ b.activation_time > 0  ]]>
+	           </if>
+	           <if test="isActivity == '2'.toString()">  
+	               AND <![CDATA[ b.activation_time <= 0 || b.activation_time is null ]]>
+	           </if>
+	           <if test="userName != null">
+	           		AND b.user_name = #{userName}
+	           </if>
+	           <if test="email != null">
+	           		AND b.email = #{email}
+	           </if>
+	           <if test="mobile != null">
+	           		AND b.mobile = #{mobile}
+	           </if>
+	           <if test="startTime != null">
+	           		AND <![CDATA[ b.reg_time >= #{startTime} ]]>
+	           </if>
+	           <if test="endTime != null">
+	           		AND <![CDATA[ b.reg_time <= #{endTime} ]]>
+	           </if>
+	        </trim> 
+			 LIMIT #{offset},#{rows} 
+	</select>
+	 -->
+	 
+	<select id="listMyOrg" parameterType="Map" resultType="Map">
+		select * from (
+		SELECT 	
+			b.id,
+	        b.user_name AS user_name,
+			b.total_performance,
+			b.referee_number,
+			b.user_level,
+			b.reg_time,
+			b.baodan_amount,
+			b.isActivated,
+			a.distance,
+			a.lr_district,
+			a.position,
+			a.parentid,
+			0 as lr_amount,
+			0 as lf_amount
+			FROM 
+			 `ct_user_parent` a LEFT JOIN  ct_user b ON a.userid =b.id 
+			 
+			 <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+	           <if test="parentId != null">  
+	               and a.parentid = #{parentId}
+	           </if>	          
+	           <if test="distance != null">  
+	               and <![CDATA[ a.distance <= #{distance} ]]>
+	           </if>	          
+	        </trim> 
+	        UNION ALL
+	        SELECT 
+	        id,	
+	        user_name AS user_name,
+			total_performance,
+			referee_number,
+			user_level,
+			reg_time,
+			baodan_amount,
+			isActivated,
+			0 as distance,
+			0 as lr_district,
+			0 as position,
+			#{parentId} as parentid,
+			0 as lr_amount,
+			0 as lf_amount
+			from ct_user where id = #{parentId}
+			)aa
+	        order by aa.distance, aa.`lr_district`
+			 
+	</select>
+	
+	
+	
+	<select id="getYJ" parameterType="java.util.Map" resultType="Map">
+		SELECT SUM(totalMoney) AS yj, a.parentid AS yj_userId 
+		FROM ct_user_parent a LEFT JOIN ct_user_static b ON a.userid = b.userid AND b.type=1
+		WHERE a.parentid = #{parentid} and a.lr_district=#{lr_district}
+	</select>
+	
+	<select id="getTodayYJ" parameterType="java.util.Map" resultType="Map">
+		SELECT  SUM(totalMoney) AS yj, a.parentid AS yj_userId  
+		FROM ct_user_parent a LEFT JOIN ct_user_static b ON a.userid = b.userid AND b.type=1
+		WHERE a.parentid = #{parentid} and a.lr_district=#{lr_district}
+		and DATE_FORMAT(date_sub(b.endDate,interval 365 day), '%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+	</select>
+	
+	<!-- 团员查询 -->
+    <select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_user_parent u
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="userid != null">  
+               AND u.userid = #{userid}
+           </if>
+           <if test="parentid != null">  
+               AND u.parentid = #{parentid}
+           </if>
+           <if test="lrDistrict != null">  
+               AND u.lr_district = #{lrDistrict}
+           </if>
+           <if test="distance != null">  
+               AND u.distance = #{distance}
+           </if>
+        </trim> 
+    </select>
+    
+    <!-- 自定义查询 -->
+    <select id="selectPosition" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from ct_user_parent where parentid=#{parentid} and distance=#{distance}
+    </select>
+    
+    <!-- 团队成员详情 -->
+	<select id="TeamDetails" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT id,user_name,true_name,refereeid ,user_level,mobile
+		from ct_user
+		where 1=1
+		<if test="userId!=null">
+			and refereeid=#{userId}
+		</if>
+		
+	</select>
+    
+    <!-- 左右业绩 -->
+    <select id="selectPerformance" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT  u.`total_performance`, a.lr_district, u.id as userid
+		FROM  (SELECT userid , lr_district FROM ct_user_parent WHERE parentid=#{parentid} and distance=1 ) a  left join ct_user u on a.userid = u.id 
+    </select>
+</mapper>

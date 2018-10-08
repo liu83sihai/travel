@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.secrety.IRolesauthorityDao">
+	<resultMap type="rolesauthorityDo" id="rolesauthorityResultMap">
+		<result property="id" column="id" />
+		<result property="roleId" column="roleId" />
+		<result property="authorityId" column="authorityId" />
+		<result property="enabled" column="enabled" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Long" resultMap="rolesauthorityResultMap">
+		SELECT * 
+		  FROM rolesauthority WHERE id = #{id}
+	</select>
+
+	<select id="selectRolesauthority" parameterType="map" resultMap="rolesauthorityResultMap">
+		SELECT * 
+		  FROM rolesauthority
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id like #{id}
+			</if>
+			<if test="roleId != null">  
+				AND roleId like #{roleId}
+			</if>
+			<if test="authorityId != null">  
+				AND authorityId like #{authorityId}
+			</if>
+			<if test="enabled != null">  
+				AND enabled like #{enabled}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateRolesauthorityById" parameterType="rolesauthorityDo">
+		UPDATE rolesauthority 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="roleId != null">  
+				roleId = #{roleId},
+		</if>				
+		<if test="authorityId != null">  
+				authorityId = #{authorityId},
+		</if>				
+		<if test="enabled != null">  
+				enabled = #{enabled},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addRolesauthority" parameterType="rolesauthorityDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO rolesauthority(		roleId
+		,authorityId
+		,enabled
+)
+		     VALUES (		#{roleId}
+		,#{authorityId}
+		,#{enabled}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="int" >
+		DELETE FROM rolesauthority WHERE id = #{id}
+	</delete>
+	<select id="getAuthoritiesInRolesPage" parameterType="map" resultType="authoritiesDo">
+		select  a.name,a.authDesc,a.id FROM authorities a
+		INNER JOIN rolesauthority ra ON a.id=ra.authorityId WHERE ra.roleId=#{roleId}
+	</select>
+	
+	<select id="getAuthoritiesNotInRolesPage" parameterType="map" resultType="authoritiesDo">
+		select a.name NAME,a.authDesc AUTHDESC,a.id ID FROM authorities a 
+		 where a.id not in (select ra.authorityId from rolesauthority ra   WHERE ra.roleId=#{roleId})
+	</select>	
+	
+	<delete id="deleteRolesauthority" parameterType="authoritiesDo" >
+		delete from rolesauthority where roleId=#{roleId} and authorityId=#{authorityId}
+	</delete>
+	
+	
+</mapper>
+

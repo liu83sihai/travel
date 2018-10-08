@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.bank.IBankDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.bank.BankDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="bankName" jdbcType="VARCHAR" property="bankName" />
+		<result column="bankType" jdbcType="TINYINT" property="bankType" />
+		<result column="bankFlag" jdbcType="TINYINT" property="bankFlag" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, bankName, bankType, bankFlag
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_banks
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_banks
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bank.BankDo"
+		useGeneratedKeys="true">
+		insert into ct_banks (bankName, bankType, bankFlag
+		)
+		values (#{bankName,jdbcType=VARCHAR}, #{bankType,jdbcType=TINYINT}, #{bankFlag,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bank.BankDo"
+		useGeneratedKeys="true">
+		insert into ct_banks
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bankName != null">
+				bankName,
+			</if>
+			<if test="bankType != null">
+				bankType,
+			</if>
+			<if test="bankFlag != null">
+				bankFlag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bankName != null">
+				#{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankType != null">
+				#{bankType,jdbcType=TINYINT},
+			</if>
+			<if test="bankFlag != null">
+				#{bankFlag,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.bank.BankDo">
+		update ct_banks
+		<set>
+			<if test="bankName != null">
+				bankName = #{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankType != null">
+				bankType = #{bankType,jdbcType=TINYINT},
+			</if>
+			<if test="bankFlag != null">
+				bankFlag = #{bankFlag,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.bank.BankDo">
+		update ct_banks
+		set bankName = #{bankName,jdbcType=VARCHAR},
+		bankType = #{bankType,jdbcType=TINYINT},
+		bankFlag = #{bankFlag,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 自定义查询 -->
+    <select id="selectBank" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_banks
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="bankFlag != null">  
+               AND bankFlag = #{bankFlag}
+           </if>
+        </trim> 
+    </select>
+</mapper>

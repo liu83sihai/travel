@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.trade.IWithdrawalsDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.trade.WithdrawalsDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="withdraw_date" jdbcType="BIGINT" property="withdrawDate" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="order_id" jdbcType="VARCHAR" property="orderId" />
+		<result column="payment_date" jdbcType="BIGINT" property="paymentDate" />
+		<result column="confirm_date" jdbcType="BIGINT" property="confirmDate" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="fee" jdbcType="DECIMAL" property="fee" />
+		<result column="out_biz_no" jdbcType="VARCHAR" property="outbizno" />
+		<result column="bank" jdbcType="VARCHAR" property="bank" />
+		<result column="bank_content" jdbcType="VARCHAR" property="bankContent" />
+		<result column="bank_no" jdbcType="VARCHAR" property="bankNo" />
+		<result column="process_status" jdbcType="VARCHAR" property="processStatus" />
+		<result column="type" jdbcType="VARCHAR" property="type" />
+		<result column="money_type" jdbcType="VARCHAR" property="moneyType" />
+		<result column="withdraw_status" jdbcType="VARCHAR" property="withdraw_status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, withdraw_date, amount, order_id, payment_date, confirm_date, userid, fee,
+		out_biz_no, bank, bank_content, bank_no, process_status, type, money_type,withdraw_status, remark
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_withdrawals
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<!-- 自定义查询 -->
+    <select id="select" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_withdrawals u
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="withdrawalsId != null">  
+               u.id = #{withdrawalsId}
+           </if>
+           and u.withdraw_status=1 and  process_status=2
+        </trim>
+    </select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_withdrawals
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.trade.WithdrawalsDo"
+		useGeneratedKeys="true">
+		insert into ct_withdrawals (withdraw_date, amount, order_id,
+		payment_date, confirm_date, userid,
+		fee, out_biz_no, bank, bank_content,
+		bank_no, process_status, type,
+		money_type, remark)
+		values (#{withdrawDate,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{orderId,jdbcType=VARCHAR},
+		#{paymentDate,jdbcType=BIGINT}, #{confirmDate,jdbcType=BIGINT}, #{userid,jdbcType=INTEGER},
+		#{fee,jdbcType=DECIMAL}, #{outbizno,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, #{bankContent,jdbcType=VARCHAR},
+		#{bankNo,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+		#{moneyType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.trade.WithdrawalsDo"
+		useGeneratedKeys="true">
+		insert into ct_withdrawals
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="withdrawDate != null">
+				withdraw_date,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="orderId != null">
+				order_Id,
+			</if>
+			<if test="paymentDate != null">
+				payment_date,
+			</if>
+			<if test="confirmDate != null">
+				confirm_date,
+			</if>
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="fee != null">
+				fee,
+			</if>
+			<if test="outbizno != null">
+				out_biz_no,
+			</if>
+			<if test="bank != null">
+				bank,
+			</if>
+			<if test="bankContent != null">
+				bank_content,
+			</if>
+			<if test="bankNo != null">
+				bank_no,
+			</if>
+			<if test="processStatus != null">
+				process_status,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="moneyType != null">
+				money_type,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="withdrawDate != null">
+				#{withdrawDate,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentDate != null">
+				#{paymentDate,jdbcType=BIGINT},
+			</if>
+			<if test="confirmDate != null">
+				#{confirmDate,jdbcType=BIGINT},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fee != null">
+				#{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="outbizno != null">
+				#{outbizno,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null">
+				#{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				#{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				#{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="processStatus != null">
+				#{processStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="moneyType != null">
+				#{moneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.trade.WithdrawalsDo">
+		update ct_withdrawals
+		<set>
+			<if test="withdrawDate != null">
+				withdraw_date = #{withdrawDate,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				order_Id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentDate != null">
+				payment_date = #{paymentDate,jdbcType=BIGINT},
+			</if>
+			<if test="confirmDate != null">
+				confirm_date = #{confirmDate,jdbcType=BIGINT},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fee != null">
+				fee = #{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="outbizno != null">
+				out_biz_no = #{outbizno,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null">
+				bank = #{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				bank_content = #{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				bank_no = #{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="processStatus != null">
+				process_status = #{processStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="moneyType != null">
+				money_type = #{moneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateWithDrawStatus" parameterType="com.dce.business.entity.trade.WithdrawalsDo">
+		update ct_withdrawals
+		<set>
+			<if test="withdraw_status != null">
+				withdraw_status = #{withdraw_status,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentDate != null">
+				payment_date = #{paymentDate,jdbcType=BIGINT},
+			</if>
+			<if test="orderId != null">
+				order_Id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="outbizno != null">
+				out_biz_no = #{outbizno,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="processStatus != null">  
+                process_status=#{processStatus}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.trade.WithdrawalsDo">
+		update ct_withdrawals
+		set withdraw_date = #{withdrawDate,jdbcType=BIGINT},
+		amount = #{amount,jdbcType=DECIMAL},
+		order_Id = #{orderId,jdbcType=VARCHAR},
+		payment_date = #{paymentDate,jdbcType=BIGINT},
+		confirm_date = #{confirmDate,jdbcType=BIGINT},
+		userid = #{userid,jdbcType=INTEGER},
+		fee = #{fee,jdbcType=DECIMAL},
+		out_biz_no = #{outbizno,jdbcType=VARCHAR},
+		bank = #{bank,jdbcType=VARCHAR},
+		bank_content = #{bankContent,jdbcType=VARCHAR},
+		bank_no = #{bankNo,jdbcType=VARCHAR},
+		process_status = #{processStatus,jdbcType=VARCHAR},
+		type = #{type,jdbcType=VARCHAR},
+		money_type = #{moneyType,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectWithdraw" parameterType="map" resultType="map">
+		SELECT a.*, 
+	       b.true_name,
+	       b.user_name,b.mobile, 
+		CASE WHEN a.withdraw_date > 0 THEN FROM_UNIXTIME(a.withdraw_date) ELSE '' END AS withdrawDateStr, 
+		CASE WHEN a.confirm_date > 0 THEN FROM_UNIXTIME(a.confirm_date) ELSE '' END AS confirmDateStr, 
+		CASE a.process_status WHEN 1 THEN '待审批' WHEN 2 THEN '已审批' WHEN 3 THEN '已拒绝' END AS processStatusStr,
+		CASE a.withdraw_status WHEN 1 THEN '已到账' ELSE '未到账' END AS withdrawStatus
+		FROM ct_withdrawals a LEFT JOIN ct_user b  ON a.userid = b.id
+		                      <![CDATA[ <> ]]> ''
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		    
+		    <if test="userid!=null">  
+		    and a.userid=#{userid}    
+		    </if>
+		    
+			<if test="mobile != null">  
+              AND  b.mobile=#{mobile}
+			</if>
+			<if test="userName != null">  
+               AND b.user_name=#{userName}
+			</if>
+			<if test="trueName != null">  
+               AND b.true_name=#{trueName}
+			</if>
+			<if test="processStatus != null">  
+               AND a.process_status=#{processStatus}
+			</if>
+			<if test="startDate != null">  
+               AND <![CDATA[a.withdraw_date >= UNIX_TIMESTAMP(#{startDate})]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[a.withdraw_date <= UNIX_TIMESTAMP(#{endDate})]]>
+           </if>
+		</trim>
+        
+        order by a.withdraw_date desc
+        
+        <if test="offset != null">  
+            limit #{offset}, #{rows}
+        </if>
+        
+	</select>
+	
+	<select id="selectWithdrawCount" parameterType="map" resultType="int">
+		select count(1)
+		from ct_withdrawals a left join ct_user b  on a.userid = b.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="mobile != null">  
+              AND  b.mobile=#{mobile}
+			</if>
+			<if test="userName != null">  
+               AND b.user_name=#{userName}
+			</if>
+			<if test="trueName != null">  
+               AND b.true_name=#{trueName}
+			</if>
+			<if test="processStatus != null">  
+               AND a.process_status=#{processStatus}
+			</if>
+			<if test="startDate != null">  
+               AND <![CDATA[a.withdraw_date >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[a.withdraw_date <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+           </if>
+		</trim>
+	</select>
+	
+	<update id="auditWithdrawById2" parameterType="com.dce.business.entity.trade.WithdrawalsDo">
+		update ct_withdrawals
+		<set>
+			<if test="withdrawDate != null">
+				withdraw_date = #{withdrawDate,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				order_Id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentDate != null">
+				payment_date = #{paymentDate,jdbcType=BIGINT},
+			</if>
+			<if test="confirmDate != null">
+				confirm_date = #{confirmDate,jdbcType=BIGINT},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fee != null">
+				fee = #{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="outbizno != null">
+				out_biz_no = #{outbizno,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null">
+				bank = #{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				bank_content = #{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				bank_no = #{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="processStatus != null">
+				process_status = #{processStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="moneyType != null">
+				money_type = #{moneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER} and process_status = '1'	
+	</update>
+	
+	
+	<update id="auditWithdrawById3" parameterType="com.dce.business.entity.trade.WithdrawalsDo">
+		update ct_withdrawals
+		<set>
+			<if test="withdrawDate != null">
+				withdraw_date = #{withdrawDate,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				order_Id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentDate != null">
+				payment_date = #{paymentDate,jdbcType=BIGINT},
+			</if>
+			<if test="confirmDate != null">
+				confirm_date = #{confirmDate,jdbcType=BIGINT},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fee != null">
+				fee = #{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="outbizno != null">
+				out_biz_no = #{outbizno,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null">
+				bank = #{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				bank_content = #{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				bank_no = #{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="processStatus != null">
+				process_status = #{processStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="moneyType != null">
+				money_type = #{moneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER} and process_status in( '1','4','2')	
+	</update>
+	
+	
+	
+	<update id="auditWithdrawById4" parameterType="com.dce.business.entity.trade.WithdrawalsDo">
+		update ct_withdrawals
+		<set>
+			<if test="withdrawDate != null">
+				withdraw_date = #{withdrawDate,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderId != null">
+				order_Id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentDate != null">
+				payment_date = #{paymentDate,jdbcType=BIGINT},
+			</if>
+			<if test="confirmDate != null">
+				confirm_date = #{confirmDate,jdbcType=BIGINT},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="fee != null">
+				fee = #{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="outbizno != null">
+				out_biz_no = #{outbizno,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null">
+				bank = #{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="bankContent != null">
+				bank_content = #{bankContent,jdbcType=VARCHAR},
+			</if>
+			<if test="bankNo != null">
+				bank_no = #{bankNo,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="moneyType != null">
+				money_type = #{moneyType,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER} and process_status = '2'	
+	</update>
+	
+	<select id="selectWithDrawByPage" parameterType="map" resultType="map">
+		SELECT a.*, 
+	       b.true_name,
+	       b.user_name,b.mobile, 
+		CASE WHEN a.withdraw_date > 0 THEN FROM_UNIXTIME(a.withdraw_date) ELSE '' END AS withdrawDateStr, 
+		CASE WHEN a.confirm_date > 0 THEN FROM_UNIXTIME(a.confirm_date) ELSE '' END AS confirmDateStr, 
+		CASE WHEN a.payment_date > 0 THEN FROM_UNIXTIME(a.payment_date) ELSE '' END AS paymentDateStr, 
+		CASE a.process_status WHEN 1 THEN '待审批' WHEN 2 THEN '已审批' WHEN 3 THEN '已拒绝' END AS processStatusStr,
+		CASE a.withdraw_status WHEN '1' THEN '已到账' ELSE '未到账' END withdrawStatus
+		FROM ct_withdrawals a LEFT JOIN ct_user b  ON a.userid = b.id
+		 <![CDATA[ <> ]]> ''
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="mobile != null">  
+              AND  b.mobile=#{mobile}
+			</if>
+			<if test="userName != null">  
+               AND b.user_name=#{userName}
+			</if>
+			<if test="type != null">  
+               AND a.type=#{type}
+			</if>
+			<if test="trueName != null">  
+               AND b.true_name=#{trueName}
+			</if>
+			<if test="processStatus != null">  
+               AND a.process_status=#{processStatus}
+			</if>
+			<if test="startDate != null">  
+               AND <![CDATA[a.withdraw_date >= UNIX_TIMESTAMP(#{startDate})]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[a.withdraw_date <= UNIX_TIMESTAMP(#{endDate})]]>
+           </if>
+		</trim>
+        order by a.withdraw_date desc
+	</select>
+	
+	<select id="selectWithDrawTotallAmount" parameterType="Map" resultType="Long">
+		select sum(a.amount) as amount 
+		FROM ct_withdrawals a LEFT JOIN ct_user b  ON a.userid = b.id
+		                      LEFT JOIN  ct_ethereum_trans_info c ON a.id = c.withdrawalsId and c.hash <![CDATA[ <> ]]> ''
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="mobile != null">  
+              AND  b.mobile=#{mobile}
+			</if>
+			<if test="userName != null">  
+               AND b.user_name=#{userName}
+			</if>
+			<if test="trueName != null">  
+               AND b.true_name=#{trueName}
+			</if>
+			<if test="processStatus != null">  
+               AND a.process_status=#{processStatus}
+			</if>
+			<if test="type != null">  
+               AND a.type=#{type}
+			</if>
+			<if test="startDate != null">  
+               AND <![CDATA[a.withdraw_date >= UNIX_TIMESTAMP(#{startDate})]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[a.withdraw_date <= UNIX_TIMESTAMP(#{endDate})]]>
+           </if>
+		</trim> 
+	
+	</select>
+	<!-- 导出excel -->
+	<select id="selectByExample" parameterType="com.dce.business.entity.trade.WithdrawalsDo"
+		resultMap="BaseResultMap">
+		SELECT a.*, 
+	       b.true_name,
+	       b.user_name,b.mobile, 
+		CASE WHEN a.withdraw_date > 0 THEN FROM_UNIXTIME(a.withdraw_date) ELSE '' END AS withdrawDateStr, 
+		CASE WHEN a.confirm_date > 0 THEN FROM_UNIXTIME(a.confirm_date) ELSE '' END AS confirmDateStr, 
+		CASE a.process_status WHEN 1 THEN '待审批' WHEN 2 THEN '已审批' WHEN 3 THEN '已拒绝' END AS processStatusStr,
+		CASE a.withdraw_status WHEN 1 THEN '已到账' ELSE '未到账' END AS withdrawStatus
+		FROM ct_withdrawals a LEFT JOIN ct_user b  ON a.userid = b.id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="mobile != null">  
+              AND  b.mobile=#{mobile}
+			</if>
+			<if test="userName != null">  
+               AND b.user_name=#{userName}
+			</if>
+			<if test="type != null">  
+               AND a.type=#{type}
+			</if>
+			<if test="trueName != null">  
+               AND b.true_name=#{trueName}
+			</if>
+			<if test="processStatus != null">  
+               AND a.process_status=#{processStatus}
+			</if>
+			<if test="startDate != null">  
+               AND <![CDATA[a.withdraw_date >= UNIX_TIMESTAMP(#{startDate})]]>
+           </if>
+           <if test="endDate != null">  
+               AND <![CDATA[a.withdraw_date <= UNIX_TIMESTAMP(#{endDate})]]>
+           </if>
+           </trim> 
+        order by a.withdraw_date desc
+	</select>
+</mapper>

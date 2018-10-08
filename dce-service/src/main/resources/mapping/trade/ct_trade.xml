@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.trade.ITradeDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.trade.TradeDo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="orderNo" jdbcType="VARCHAR" property="orderno" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="curid" jdbcType="INTEGER" property="curid" />
+		<result column="tradeid" jdbcType="INTEGER" property="tradeid" />
+		<result column="entrustid" jdbcType="INTEGER" property="entrustid" />
+		<result column="price" jdbcType="DECIMAL" property="price" />
+		<result column="num" jdbcType="DECIMAL" property="num" />
+		<result column="totalMoney" jdbcType="DECIMAL" property="totalmoney" />
+		<result column="fee" jdbcType="DECIMAL" property="fee" />
+		<result column="type" jdbcType="CHAR" property="type" />
+		<result column="ctime" jdbcType="INTEGER" property="ctime" />
+		<result column="utime" jdbcType="INTEGER" property="utime" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dce.business.entity.trade.TradeDo">
+		<result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, orderNo, userid, curid, tradeid, entrustid, price, num, totalMoney, fee, type,
+		ctime, utime, status
+	</sql>
+	<sql id="Blob_Column_List">
+		remark
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from ct_trade
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ct_trade
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.trade.TradeDo"
+		useGeneratedKeys="true">
+		insert into ct_trade (orderNo, userid, curid,
+		tradeid, entrustid, price,
+		num, totalMoney, fee,
+		type, ctime, utime, status,
+		remark)
+		values (#{orderno,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{curid,jdbcType=INTEGER},
+		#{tradeid,jdbcType=INTEGER}, #{entrustid,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL},
+		#{num,jdbcType=DECIMAL}, #{totalmoney,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL},
+		#{type,jdbcType=CHAR}, #{ctime,jdbcType=INTEGER}, #{utime,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
+		#{remark,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.trade.TradeDo"
+		useGeneratedKeys="true">
+		insert into ct_trade
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderno != null">
+				orderNo,
+			</if>
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="curid != null">
+				curid,
+			</if>
+			<if test="tradeid != null">
+				tradeid,
+			</if>
+			<if test="entrustid != null">
+				entrustid,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="totalmoney != null">
+				totalMoney,
+			</if>
+			<if test="fee != null">
+				fee,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="ctime != null">
+				ctime,
+			</if>
+			<if test="utime != null">
+				utime,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderno != null">
+				#{orderno,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="curid != null">
+				#{curid,jdbcType=INTEGER},
+			</if>
+			<if test="tradeid != null">
+				#{tradeid,jdbcType=INTEGER},
+			</if>
+			<if test="entrustid != null">
+				#{entrustid,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=DECIMAL},
+			</if>
+			<if test="totalmoney != null">
+				#{totalmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="fee != null">
+				#{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="ctime != null">
+				#{ctime,jdbcType=INTEGER},
+			</if>
+			<if test="utime != null">
+				#{utime,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.trade.TradeDo">
+		update ct_trade
+		<set>
+			<if test="orderno != null">
+				orderNo = #{orderno,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="curid != null">
+				curid = #{curid,jdbcType=INTEGER},
+			</if>
+			<if test="tradeid != null">
+				tradeid = #{tradeid,jdbcType=INTEGER},
+			</if>
+			<if test="entrustid != null">
+				entrustid = #{entrustid,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=DECIMAL},
+			</if>
+			<if test="totalmoney != null">
+				totalMoney = #{totalmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="fee != null">
+				fee = #{fee,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="ctime != null">
+				ctime = #{ctime,jdbcType=INTEGER},
+			</if>
+			<if test="utime != null">
+				utime = #{utime,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dce.business.entity.trade.TradeDo">
+		update ct_trade
+		set orderNo = #{orderno,jdbcType=VARCHAR},
+		userid = #{userid,jdbcType=INTEGER},
+		curid = #{curid,jdbcType=INTEGER},
+		tradeid = #{tradeid,jdbcType=INTEGER},
+		entrustid = #{entrustid,jdbcType=INTEGER},
+		price = #{price,jdbcType=DECIMAL},
+		num = #{num,jdbcType=DECIMAL},
+		totalMoney = #{totalmoney,jdbcType=DECIMAL},
+		fee = #{fee,jdbcType=DECIMAL},
+		type = #{type,jdbcType=CHAR},
+		ctime = #{ctime,jdbcType=INTEGER},
+		utime = #{utime,jdbcType=INTEGER},
+		status = #{status,jdbcType=TINYINT},
+		remark = #{remark,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.trade.TradeDo">
+		update ct_trade
+		set orderNo = #{orderno,jdbcType=VARCHAR},
+		userid = #{userid,jdbcType=INTEGER},
+		curid = #{curid,jdbcType=INTEGER},
+		tradeid = #{tradeid,jdbcType=INTEGER},
+		entrustid = #{entrustid,jdbcType=INTEGER},
+		price = #{price,jdbcType=DECIMAL},
+		num = #{num,jdbcType=DECIMAL},
+		totalMoney = #{totalmoney,jdbcType=DECIMAL},
+		fee = #{fee,jdbcType=DECIMAL},
+		type = #{type,jdbcType=CHAR},
+		ctime = #{ctime,jdbcType=INTEGER},
+		utime = #{utime,jdbcType=INTEGER},
+		status = #{status,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 自定义查询 -->
+    <select id="selectTrade" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ct_trade
+        <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+           <if test="userid != null">  
+               AND userid = #{userid}
+           </if>
+        </trim> 
+    </select>
+</mapper>

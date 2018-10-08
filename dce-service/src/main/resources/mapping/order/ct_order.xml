@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.order.IOrderDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.order.Order">
+		<id column="orderId" jdbcType="INTEGER" property="orderid" />
+		<result column="orderCode" jdbcType="VARCHAR" property="ordercode" />
+		<result column="userId" jdbcType="INTEGER" property="userid" />
+		<result column="qty" jdbcType="INTEGER" property="qty" />
+		<result column="totalPrice" jdbcType="DECIMAL" property="totalprice" />
+		<result column="recAddress" jdbcType="VARCHAR" property="recaddress" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="orderStatus" jdbcType="INTEGER" property="orderstatus" />
+		<result column="payStatus" jdbcType="INTEGER" property="paystatus" />
+		<result column="payTime" jdbcType="TIMESTAMP" property="paytime" />
+		<result column="orderType" jdbcType="INTEGER" property="ordertype" />
+		<result column="matchOrderId" jdbcType="BIGINT" property="matchorderid" />
+		<result column="salqty" jdbcType="DECIMAL" property="salqty" />
+		<result column="accountType" jdbcType="VARCHAR" property="accounttype" />
+		<result column="goodsId" jdbcType="BIGINT" property="goodsid" />
+		<result column="goodsprice" jdbcType="DECIMAL" property="goodsprice" />
+		<result column="giftAmount" jdbcType="DECIMAL" property="giftAmount" />
+		<result column="addressId" jdbcType="INTEGER" property="addressid" />
+		<result column="alipayStatus" jdbcType="INTEGER" property="alipayStatus" />
+		<result column="awardStatus" jdbcType="VARCHAR" property="awardStatus" />
+		<result column="awardRemark" jdbcType="VARCHAR" property="awardRemark" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		orderId, orderCode, userId, qty, totalPrice, recAddress,
+		date_format(createTime,'%Y-%m-%d %H:%i:%s'), orderStatus,
+		payStatus,
+		date_format(payTime,'%Y-%m-%d %H:%i:%s'), orderType, matchOrderId,
+		salqty, accountType, goodsId,
+		goodsprice,giftAmount,
+		addressId,
+		alipayStatus,awardStatus,awardRemark
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		a.orderId orderid, a.orderCode ordercode, a.userId
+		userid,
+		a.qty qty, a.totalPrice totalprice, a.createTime createtime,
+		a.orderStatus orderstatus,a.payStatus paystatus,a.giftAmount giftAmount,
+		a.payTime
+		paytime,a.orderType ordertype,a.addressId addressid, a.goodsprice goodsprice,
+		a.alipayStatus
+		alipayStatus,a.awardStatus awardStatus,a.awardRemark awardRemark,
+		CONCAT(b.address,b.addressDetails) address
+		from ct_order a left join
+		ct_order_address b on b.addressId = a.addressId
+		where a.orderId =
+		#{orderId,jdbcType=BIGINT}
+
+	</select>
+	
+	<select id="sumAmount" resultMap="BaseResultMap">
+		select sum(totalPrice) totalprice from ct_order where paystatus = 1
+	</select>
+
+	<select id="selectByOrderCode" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from ct_order
+		where orderCode = #{ordercode,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 获取当前用户所有的订单 -->
+	<select id="selectByUesrId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from ct_order
+		where userId = #{userId,jdbcType=INTEGER}
+		order by
+		createTime desc
+	</select>
+
+	<!-- 获取当前用户所有的订单（支付成功），一对多查询 -->
+	<select id="selectByUesrIdOneToMany" parameterType="java.lang.Integer"
+		resultMap="orderMapper">
+		select
+		a.orderId, a.orderCode, a.userId, a.qty, a.totalPrice,
+		date_format(a.createTime,'%Y-%m-%d %H:%i:%s') createtime,
+		a.orderStatus,a.giftAmount,a.goodsprice goodsprice,a.salqty,
+		a.payStatus,
+		date_format(a.payTime,'%Y-%m-%d %H:%i:%s')
+		paytime, a.orderType,a.alipayStatus,a.awardRemark,
+		a.addressId,
+		a.awardStatus, b.orderDetailId,
+		b.orderId, b.goods_id, b.quantity
+		quantity, b.price,
+		b.remark
+		from ct_order a left join 
+		ct_orderdetail b on a.orderId=b.orderId
+		where
+		a.userId =
+		#{userId,jdbcType=INTEGER} and
+		a.payStatus = 1
+		order by
+		a.createTime
+		desc
+	</select>
+	<resultMap type="com.dce.business.entity.order.Order" id="orderMapper">
+		<id column="orderId" jdbcType="INTEGER" property="orderid" />
+		<result column="orderCode" jdbcType="VARCHAR" property="ordercode" />
+		<result column="userId" jdbcType="INTEGER" property="userid" />
+		<result column="qty" jdbcType="INTEGER" property="qty" />
+		<result column="totalPrice" jdbcType="DECIMAL" property="totalprice" />
+		<result column="goodsprice" jdbcType="DECIMAL" property="goodsprice" />
+		<result column="giftAmount" jdbcType="DECIMAL" property="giftAmount" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="orderStatus" jdbcType="INTEGER" property="orderstatus" />
+		<result column="payStatus" jdbcType="INTEGER" property="paystatus" />
+		<result column="payTime" jdbcType="TIMESTAMP" property="paytime" />
+		<result column="orderType" jdbcType="INTEGER" property="ordertype" />
+		<result column="addressId" jdbcType="INTEGER" property="addressid" />
+		<result column="salqty" jdbcType="DECIMAL" property="salqty" />
+		<result column="alipayStatus" jdbcType="INTEGER" property="alipayStatus" />
+		<result column="awardStatus" jdbcType="VARCHAR" property="awardStatus" />
+		<result column="awardRemark" jdbcType="VARCHAR" property="awardRemark" />
+		<collection property="orderDetailList"
+			ofType="com.dce.business.entity.order.OrderDetail">
+			<id column="orderdetailid" jdbcType="INTEGER" property="orderdetailid"></id>
+			<result column="orderid" jdbcType="INTEGER" property="orderid" />
+			<result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+			<result column="quantity" jdbcType="INTEGER" property="quantity" />
+			<result column="price" jdbcType="DOUBLE" property="price" />
+			<result column="remark" jdbcType="VARCHAR" property="remark" />
+		</collection>
+	</resultMap>
+
+	<insert id="insert" parameterType="com.dce.business.entity.order.Order">
+		insert into ct_order (orderId,
+		orderCode, userId,
+		qty, totalPrice, goodsprice, giftAmount, recAddress,
+		createTime, orderStatus,
+		payStatus,
+		orderType, matchOrderId,
+		salqty, accountType,
+		goodsId,
+		addressId, alipayStatus,awardStatus,awardRemark
+		)
+		values
+		(#{orderid,jdbcType=BIGINT},
+		#{ordercode,jdbcType=VARCHAR},
+		#{userid,jdbcType=INTEGER},
+		#{qty,jdbcType=DECIMAL},
+		#{totalprice,jdbcType=DECIMAL},
+		#{goodsprice,jdbcType=DECIMAL},
+		#{giftAmount,jdbcType=DECIMAL},
+		#{recaddress,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{orderStatus,jdbcType=INTEGER},
+		#{payStatus,jdbcType=INTEGER},
+		#{ordertype,jdbcType=INTEGER},
+		#{matchorderid,jdbcType=BIGINT},
+		#{salqty,jdbcType=DECIMAL},
+		#{accounttype,jdbcType=VARCHAR},
+		#{goodsid,jdbcType=BIGINT},
+		#{addressid,jdbcType=INTEGER},
+		#{alipayStatus,jdbcType=VARCHAR},
+		#{awardStatus,jdbcType=VARCHAR},
+		#{awardRemark,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 生成一个订单 -->
+	<insert id="insertSelective" parameterType="com.dce.business.entity.order.Order"
+		useGeneratedKeys="true" keyProperty="orderid">
+		insert into ct_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ordercode != null">
+				orderCode,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="qty != null">
+				qty,
+			</if>
+			<if test="totalprice != null">
+				totalPrice,
+			</if>
+			<if test="goodsprice != null">
+				goodsprice,
+			</if>
+			<if test="giftAmount != null">
+				giftAmount,
+			</if>
+			<if test="createtime != null">
+				createTime,
+			</if>
+			<if test="orderstatus != null">
+				orderStatus,
+			</if>
+			<if test="paystatus != null">
+				payStatus,
+			</if>
+			<if test="paytime != null">
+				payTime,
+			</if>
+			<if test="ordertype != null">
+				orderType,
+			</if>
+			<if test="addressid != null">
+				addressId,
+			</if>
+			<if test="alipayStatus != null">
+				alipayStatus,
+			</if>
+			<if test="awardStatus != null">
+				awardStatus,
+			</if>
+			<if test="awardRemark != null">
+				awardRemark,
+			</if>
+			<if test="salqty != null">
+				salqty,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ordercode != null">
+				#{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="qty != null">
+				#{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalprice != null">
+				#{totalprice,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsprice != null">
+				#{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="giftAmount != null">
+				#{giftAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderstatus != null">
+				#{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="paystatus != null">
+				#{paystatus,jdbcType=INTEGER},
+			</if>
+			<if test="paytime != null">
+				#{paytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ordertype != null">
+				#{ordertype,jdbcType=INTEGER},
+			</if>
+			<if test="addressid != null">
+				#{addressid,jdbcType=INTEGER},
+			</if>
+			<if test="alipayStatus != null">
+				#{alipayStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardStatus != null">
+				#{awardStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardRemark != null">
+				#{awardRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="salqty != null">
+				#{salqty,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.order.Order">
+		update ct_order
+		<set>
+			<if test="ordercode != null">
+				orderCode = #{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				userId = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="qty != null">
+				qty = #{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalprice != null">
+				totalPrice = #{totalprice,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsprice != null">
+				goodsprice = #{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="giftAmount != null">
+				giftAmount = #{giftAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="recaddress != null">
+				recAddress = #{recaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				createTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderstatus != null">
+				orderStatus = #{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="paystatus != null">
+				payStatus = #{paystatus,jdbcType=INTEGER},
+			</if>
+			<if test="paytime != null">
+				payTime = #{paytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ordertype != null">
+				orderType = #{ordertype,jdbcType=INTEGER},
+			</if>
+			<if test="matchorderid != null">
+				matchOrderId = #{matchorderid,jdbcType=BIGINT},
+			</if>
+			<if test="salqty != null">
+				salqty = #{salqty,jdbcType=DECIMAL},
+			</if>
+			<if test="accounttype != null">
+				accountType = #{accounttype,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsid != null">
+				goodsId = #{goodsid,jdbcType=BIGINT},
+			</if>
+			<if test="goodsprice != null">
+				goodsprice = #{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="addressid != null">
+				addressId = #{addressid,jdbcType=INTEGER},
+			</if>
+			<if test="alipayStatus != null">
+				alipayStatus = #{alipayStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardStatus != null">
+				awardStatus = #{awardStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardRemark != null">
+				awardRemark = #{awardRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where orderId = #{orderid,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByOrderCodeSelective" parameterType="com.dce.business.entity.order.Order">
+		update ct_order
+		<set>
+			<if test="ordercode != null">
+				ordercode = #{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="qty != null">
+				qty = #{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalprice != null">
+				totalPrice = #{totalprice,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsprice != null">
+				goodsprice = #{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="giftAmount != null">
+				giftAmount = #{giftAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="recaddress != null">
+				recAddress = #{recaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				createTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderstatus != null">
+				orderStatus = #{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="paystatus != null">
+				payStatus = #{paystatus,jdbcType=INTEGER},
+			</if>
+			<if test="paytime != null">
+				payTime = #{paytime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ordertype != null">
+				orderType = #{ordertype,jdbcType=INTEGER},
+			</if>
+			<if test="matchorderid != null">
+				matchOrderId = #{matchorderid,jdbcType=BIGINT},
+			</if>
+			<if test="salqty != null">
+				salqty = #{salqty,jdbcType=DECIMAL},
+			</if>
+			<if test="accounttype != null">
+				accountType = #{accounttype,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsid != null">
+				goodsId = #{goodsid,jdbcType=BIGINT},
+			</if>
+			<if test="goodsprice != null">
+				goodsprice = #{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="addressid != null">
+				addressId = #{addressid,jdbcType=INTEGER},
+			</if>
+			<if test="alipayStatus != null">
+				alipayStatus = #{alipayStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardStatus != null">
+				awardStatus = #{awardStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardRemark != null">
+				awardRemark = #{awardRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ordercode = #{ordercode,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.order.Order">
+		update ct_order
+		set orderCode = #{ordercode,jdbcType=VARCHAR},
+		userId =
+		#{userid,jdbcType=INTEGER},
+		qty = #{qty,jdbcType=DECIMAL},
+		totalPrice =
+		#{totalprice,jdbcType=DECIMAL},
+		goodsprice =
+		#{goodsprice,jdbcType=DECIMAL},
+		giftAmount =
+		#{giftAmount,jdbcType=DECIMAL},
+		recAddress =
+		#{recaddress,jdbcType=VARCHAR},
+		createTime =
+		#{createtime,jdbcType=TIMESTAMP},
+		orderStatus =
+		#{orderstatus,jdbcType=INTEGER},
+		payStatus =
+		#{paystatus,jdbcType=INTEGER},
+		payTime = #{paytime,jdbcType=TIMESTAMP},
+		orderType = #{ordertype,jdbcType=INTEGER},
+		matchOrderId =
+		#{matchorderid,jdbcType=BIGINT},
+		salqty = #{salqty,jdbcType=DECIMAL},
+		accountType = #{accounttype,jdbcType=VARCHAR},
+		goodsId =
+		#{goodsid,jdbcType=BIGINT},
+		addressId = #{addressid,jdbcType=INTEGER},
+		alipayStatus =
+		#{alipayStatus,jdbcType=VARCHAR},
+		awardStatus =
+		#{awardStatus,jdbcType=VARCHAR},
+		awardRemark =
+		#{awardRemark,jdbcType=VARCHAR}
+		where orderId =
+		#{orderid,jdbcType=BIGINT}
+	</update>
+
+	<!-- 自定义查询 -->
+	<select id="selectOrder" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_order
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND userId = #{userId}
+			</if>
+			<if test="orderStatus != null">
+				AND orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">
+				AND payStatus = #{payStatus}
+			</if>
+		</trim>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		ct_order
+		where orderId = #{orderId,jdbcType=BIGINT}
+	</delete>
+
+	<!-- 自定义查询 -->
+	<select id="selectOrderForReport" parameterType="java.util.Map"
+		resultType="map">
+		SELECT a.*,b.user_name,b.true_name,b.user_level
+		FROM ct_order a LEFT
+		JOIN ct_user b ON a.userid = b.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND a.userId = #{userId}
+			</if>
+			<if test="orderStatus != null">
+				AND a.orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">
+				AND a.payStatus = #{payStatus}
+			</if>
+			<if test="orderType != null">
+				AND a.orderType = #{orderType}
+			</if>
+			<if test="userName != null">
+				AND b.user_name = #{userName}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[a.payTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[a.payTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</trim>
+		order by a.createTime
+		<if test="offset != null">
+			limit #{offset}, #{rows}
+		</if>
+	</select>
+
+	<select id="selectOrderForReportCount" parameterType="java.util.Map"
+		resultType="int">
+		SELECT count(1)
+		FROM ct_order a LEFT JOIN ct_user b ON a.userid = b.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND a.userId = #{userId}
+			</if>
+			<if test="orderStatus != null">
+				AND a.orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">
+				AND a.payStatus = #{payStatus}
+			</if>
+			<if test="orderType != null">
+				AND a.orderType = #{orderType}
+			</if>
+			<if test="userName != null">
+				AND b.user_name = #{userName}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[a.payTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[a.payTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 支付成功更新订单状态 -->
+	<update id="updateOrderStatusByOldStatus" parameterType="Map">
+		update ct_order
+		<set>
+			<if test="ordercode != null">
+				ordercode = #{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="qty != null">
+				qty = #{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalprice != null">
+				totalPrice = #{totalprice,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsprice != null">
+				goodsprice = #{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="giftAmount != null">
+				giftAmount = #{giftAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="recaddress != null">
+				recAddress = #{recaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				createTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderstatus != null">
+				orderStatus = #{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="newStatus != null">
+				payStatus = #{newStatus,jdbcType=INTEGER},
+			</if>
+			<if test="payTime != null">
+				payTime = #{payTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ordertype != null">
+				orderType = #{ordertype,jdbcType=INTEGER},
+			</if>
+			<if test="matchorderid != null">
+				matchOrderId = #{matchorderid,jdbcType=BIGINT},
+			</if>
+			<if test="salqty != null">
+				salqty = #{salqty,jdbcType=DECIMAL},
+			</if>
+			<if test="accounttype != null">
+				accountType = #{accounttype,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsid != null">
+				goodsId = #{goodsid,jdbcType=BIGINT},
+			</if>
+			<if test="goodsprice != null">
+				goodsprice = #{goodsprice,jdbcType=DECIMAL},
+			</if>
+			<if test="addressid != null">
+				addressId = #{addressid,jdbcType=INTEGER},
+			</if>
+			<if test="alipayStatus != null">
+				alipayStatus = #{alipayStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardStatus != null">
+				awardStatus = #{awardStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="awardRemark != null">
+				awardRemark = #{awardRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE orderId = #{orderId} and payStatus = #{oldStatus}
+	</update>
+
+	<update id="updateMatchOrder" parameterType="com.dce.business.entity.order.Order">
+		update ct_order
+		<set>
+			<if test="payStatus != null">
+				payStatus = #{payStatus,jdbcType=INTEGER},
+			</if>
+			<if test="payTime != null">
+				payTime = #{payTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="salqty != null">
+				totalPrice = goodsprice * (ifnull(qty,0) - ifnull(salqty,0) -
+				#{salqty}),
+				salqty = ifnull(salqty,0) + #{salqty},
+			</if>
+		</set>
+		where orderId = #{orderId,jdbcType=BIGINT} AND (ifnull(qty,0) -
+		ifnull(salqty,0) - #{salqty})>=0
+
+	</update>
+
+	<!-- 重新计算奖励更新订单奖励字段状态 -->
+	<update id="updateAwardStatusByOrder" parameterType="com.dce.business.entity.order.Order">
+		update
+		ct_order
+		set awardStatus = null, awardRemark = null
+		where orderId =
+		#{orderid,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="getBaseInfo" resultType="Map">
+		SELECT COUNT(1) AS salnum, MAX(goodsprice) AS maxPrice,MIN(goodsprice) AS
+		minPrice
+		FROM ct_order WHERE payStatus = 1
+		AND <![CDATA[ createTime > STR_TO_DATE(#{queryTime},'%Y-%m-%d') ]]>
+		and orderType IN(1,2);
+	</select>
+
+	<select id="selectOrderByPage" parameterType="Map" resultType="Map">
+		SELECT a.orderId orderid, a.orderCode ordercode, a.userId userid,
+		a.qty qty, a.totalPrice totalprice, date_format(a.createTime,'%Y-%m-%d
+		%H:%i:%s') createtime,
+		a.orderStatus orderstatus,a.payStatus paystatus,
+		date_format(a.payTime,'%Y-%m-%d %H:%i:%s')
+		paytime,a.orderType
+		ordertype,a.addressId addressid,a.awardRemark
+		awardRemark, a.goodsprice goodsprice, a.giftAmount, a.salqty,
+		a.awardStatus awardStatus,
+		a.alipayStatus alipayStatus,
+		c.userName
+		trueName,CONCAT(c.address,c.addressDetails) address,
+		c.userPhone phone
+		FROM
+		ct_order a
+		LEFT
+		JOIN ct_user b ON a.userid = b.id
+		left join
+		ct_order_address c on
+		c.addressId = a.addressId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND a.userId = #{userId}
+			</if>
+			<if test="orderStatus != null">
+				AND a.orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">
+				AND a.payStatus = #{payStatus}
+			</if>
+			<if test="orderType != null">
+				AND a.orderType = #{orderType}
+			</if>
+			<if test="trueName != null">
+				AND b.true_name = #{trueName}
+			</if>
+			<if test="userName != null">
+				AND b.user_name = #{userName}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[a.createTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[a.createTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</trim>
+		order by a.createTime desc
+	</select>
+
+	<!-- 导出订单数据 -->
+	<select id="selectOrderByCondition" parameterType="java.util.Map"
+		resultMap="orderMapper">
+		SELECT a.orderId orderid, a.orderCode ordercode, a.userId userid,
+		a.qty qty, a.totalPrice totalprice, date_format(a.createTime,'%Y-%m-%d
+		%H:%i:%s') createtime,
+		a.orderStatus orderstatus,a.payStatus paystatus, a.goodsprice goodsprice, a.giftAmount,
+		date_format(a.payTime,'%Y-%m-%d %H:%i:%s')
+		paytime,a.orderType,d.remark,
+		ordertype,a.addressId addressid,a.awardRemark
+		awardRemark, a.salqty salqty,
+		a.alipayStatus alipayStatus,
+		c.userName trueName, c.userPhone phone,
+		CONCAT(c.address,c.addressDetails)
+		address,d.orderDetailId,
+		d.orderId,
+		d.goods_id, d.quantity, d.price
+		FROM
+		ct_order a
+		left join
+		ct_user b ON
+		a.userid = b.id
+		left join
+		ct_order_address c on
+		c.addressId = a.addressId
+		left join
+		ct_orderdetail d on
+		a.orderId = d.orderId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND a.userId = #{userId}
+			</if>
+			<if test="orderStatus != null">
+				AND a.orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">
+				AND a.payStatus = #{payStatus}
+			</if>
+			<if test="orderType != null">
+				AND a.orderType = #{orderType}
+			</if>
+			<if test="trueName != null">
+				AND b.true_name = #{trueName}
+			</if>
+			<if test="userName != null">
+				AND b.user_name = #{userName}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[a.createTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[a.createTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 根据订单查询收货人的地址 -->
+	<select id="selectAddressByOrder" parameterType="java.lang.Integer"
+		resultType="com.dce.business.entity.order.OrderAddressDo">
+		select userName username, userPhone userphone,
+		CONCAT(a.address,a.addressDetails) address
+		from ct_order_address a
+		left
+		join ct_order b
+		on a.addressId = b.addressId
+		where b.orderId =
+		#{orderId,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectGuadanAmount" parameterType="Map" resultType="Long">
+		SELECT sum(qty) as qty
+		FROM ct_order a LEFT JOIN ct_user b ON a.userid
+		= b.id
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userId != null">
+				AND a.userId = #{userId}
+			</if>
+			<if test="orderStatus != null">
+				AND a.orderStatus = #{orderStatus}
+			</if>
+			<if test="payStatus != null">
+				AND a.payStatus = #{payStatus}
+			</if>
+			<if test="orderType != null">
+				AND a.orderType = #{orderType}
+			</if>
+			<if test="userName != null">
+				AND b.user_name = #{userName}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[a.createTime >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[a.createTime <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 查询总业绩 -->
+	<select id="selectSum" parameterType="Map" resultType="map">
+		SELECT SUM(goodsprice) as Totalperformance from ct_order where 1=1
+		<if test="userId!=null">
+			and userId=#{userId}
+		</if>
+		and payStatus=1
+	</select>
+</mapper>

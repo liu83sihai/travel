@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.etherenum.IEthAccountPlatformDao">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.etherenum.EthAccountPlatformDo">
+		<result column="account" jdbcType="VARCHAR" property="account" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="balance" jdbcType="VARCHAR" property="balance" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="no" jdbcType="VARCHAR" property="no" />
+		<result column="isDefault" jdbcType="INTEGER" property="isDefault" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	 
+	 
+	<!-- 自定义查询 -->
+	<select id="select" resultMap="BaseResultMap" parameterType="map">
+		select * from ct_ethereum_account_platform where status = 'T'
+		<if test="isDefault != null">
+			AND isDefault = #{isDefault}
+		</if>
+		<if test="no != null">
+            AND no = #{no}
+        </if>
+        <if test="account != null">
+            AND account = #{account}
+        </if>
+		order by updateTime desc;
+	</select> 
+    
+    <select id="invalidPlatformAccount" >
+        update  ct_ethereum_account_platform set status = 'F'
+    </select> 
+    <select id="insertPlatformAccount" parameterType="map">
+        INSERT INTO  `ct_ethereum_account_platform` 
+		(`account`, 
+		`password`, 
+		`balance`, 
+		`status`, 
+		`createTime`, 
+		`updateTime`,
+		no,
+		isDefault
+		)
+		VALUES
+		(#{account}, 
+		 #{password}, 
+		0, 
+		'T', 
+		 now(), 
+		now(),
+		#{no},
+        #{isDefault}
+		)
+    </select> 
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.etherenum.EthAccountPlatformDo">
+        update ct_ethereum_account_platform
+        <set>
+            <if test="isDefault != null">
+                isDefault = #{isDefault,jdbcType=INTEGER},
+            </if>
+        </set>
+        where no = #{no,jdbcType=INTEGER}
+    </update>
+    
+    
+    <select id="selectByPage" resultMap="BaseResultMap" parameterType="map">
+		select * from ct_ethereum_account_platform where status = 'T'
+		<if test="isDefault != null">
+			AND isDefault = #{isDefault}
+		</if>
+		<if test="no != null">
+            AND no = #{no}
+        </if>
+        <if test="account != null">
+            AND account = #{account}
+        </if>
+		order by updateTime desc
+	</select> 
+</mapper>

@@ -1,0 +1,121 @@
+/*小图标公共样式*/
+.person-content-icon {
+	width: 20px;
+	height:22px;
+	display: inline-block; 
+	margin:0 3px 0 5px;
+	background: url(http://rec.hehuayidai.com/res/images/app/renhang/person-icon.png) no-repeat;
+}
+/*公共错误提示图标*/
+.icon_error_tips {
+	margin-right: 5px; 
+	background-position: -30px -109px;
+	top: 18px;
+	position: relative; 
+}
+
+.icon_arrow { 
+	background: url(http://rec.hehuayidai.com/res/images/app/renhang/arrow_top.png) no-repeat;
+	display: inline-block;
+	width:14px;
+	height:10px;
+	position: absolute; 
+	top:-10px;
+	right:10px;
+}
+
+
+.item_icon1{
+	background-position:-30px -4px;
+	top:0;
+	left: 0;
+	position: relative; 
+}
+
+.item_icon2{
+	background-position:-30px -32px;
+	top:0;
+	left: 0;
+	position: relative; 
+}
+
+.item_icon3{
+	background-position:-30px -60px;
+	top:0;
+	left: 0;
+	position: relative; 
+}
+.item-active .item_icon1{
+	background-position:-3px -4px;
+}
+
+.item-active .item_icon2{
+	background-position:-3px -32px;
+}
+
+.item-active .item_icon3{
+	background-position:-3px -60px;
+}
+
+/*=========页面图标==========*/
+/*用户图标*/
+.icon_name { 
+	background-position: -3px -86px;
+	top: 17px;
+	position: relative; 
+}
+.icon_idno { 
+	background-position: -3px -109px;
+	top: 17px;
+	position: relative; 
+}
+.icon_validcode { 
+	background-position: -3px -128px;
+	top: 17px;
+	position: relative; 
+}
+.icon_cancel{
+	float: right;
+	background-position: -30px -109px;
+	top: 19px;
+	position: relative; 
+}
+.icon_name_cancel{
+	background-position:-30px -90px;	
+	display: inline-block; 
+	/*top: 20px;*/
+	position: relative; 
+}
+.icon_email{
+	background-position:-30px -128px;
+	top: 17px;
+    position: relative;
+}
+.icon_tel{
+	background-position:-3px -147px;
+	top: 17px;
+    position: relative;
+}
+/*选择图标*/
+.icon_cks{
+	position: relative;
+	top: 4px;
+	background: url(http://rec.hehuayidai.com/res/images/app/renhang/check-ico.png) no-repeat;
+	background-size: 16px auto;
+	background-position: 1px 2px;
+}
+
+.input:checked, .icon_cks:checked {
+    background-position: 1px -17px;
+}
+
+/*右箭头*/
+.icon_right_arrow { 
+	background: url(http://rec.hehuayidai.com/res/images/app/huaxiaoer/arrow.png) no-repeat;
+	float: right;
+    width: 8px;
+    height: 12px;
+    background-size: 100% 100%;
+    position: relative;
+    top: 24px;
+}

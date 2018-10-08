@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.order.OrderSendOutMapper">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.order.OrderSendOut">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="order_id" jdbcType="BIGINT" property="orderId" />
+		<result column="operator_id" jdbcType="BIGINT" property="operatorId" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="create_time" jdbcType="DATE" property="createTime" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column_List">
+		id, order_id, operator_id, address,
+		date_format(create_time,'%Y-%m-%d %H:%i:%s')
+	</sql>
+
+	<!-- 分页条件查询 -->
+	<select id="selectOrderSendByPage" parameterType="Map"
+		resultType="Map">
+		SELECT
+		a.id, a.order_id orderId, a.operator_id operatorId, a.address
+		address, date_format(a.create_time,'%Y-%m-%d %H:%i:%s') createTime,
+		b.username operator,c.orderCode orderCode
+		FROM ct_order_sendout a left join managers b
+		on a.operator_id = b.id
+		left join ct_order c on a.order_id = c.orderId
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND id = #{id}
+			</if>
+			<if test="order_id != null">
+				AND order_id = #{order_id}
+			</if>
+			<if test="operator_id != null">
+				AND operator_id = #{operator_id}
+			</if>
+			<if test="address != null">
+				AND address = #{address}
+			</if>
+			<if test="startDate != null">
+				AND <![CDATA[a.create_time >= STR_TO_DATE(#{startDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+			<if test="endDate != null">
+				AND <![CDATA[a.create_time <= STR_TO_DATE(#{endDate},'%Y-%m-%d %H:%i:%s')]]>
+			</if>
+		</trim>
+		order by a.create_time desc
+	</select>
+
+	<select id="selectByExample" parameterType="com.dce.business.entity.order.OrderSendOutExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from ct_order_sendout
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ct_order_sendout
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		ct_order_sendout
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.dce.business.entity.order.OrderSendOutExample">
+		delete from ct_order_sendout
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.dce.business.entity.order.OrderSendOut">
+		insert into ct_order_sendout
+		(id, order_id, operator_id,
+		address, create_time)
+		values
+		(#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT},
+		#{operatorId,jdbcType=BIGINT},
+		#{address,jdbcType=VARCHAR},
+		#{createTime,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dce.business.entity.order.OrderSendOut">
+		insert into ct_order_sendout
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="operatorId != null">
+				operator_id,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=BIGINT},
+			</if>
+			<if test="operatorId != null">
+				#{operatorId,jdbcType=BIGINT},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.dce.business.entity.order.OrderSendOutExample"
+		resultType="java.lang.Long">
+		select count(*) from ct_order_sendout
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update ct_order_sendout
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=BIGINT},
+			</if>
+			<if test="record.orderId != null">
+				order_id = #{record.orderId,jdbcType=BIGINT},
+			</if>
+			<if test="record.operatorId != null">
+				operator_id = #{record.operatorId,jdbcType=BIGINT},
+			</if>
+			<if test="record.address != null">
+				address = #{record.address,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=DATE},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update ct_order_sendout
+		set id = #{record.id,jdbcType=BIGINT},
+		order_id
+		= #{record.orderId,jdbcType=BIGINT},
+		operator_id =
+		#{record.operatorId,jdbcType=BIGINT},
+		address =
+		#{record.address,jdbcType=VARCHAR},
+		create_time =
+		#{record.createTime,jdbcType=DATE}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.order.OrderSendOut">
+		update ct_order_sendout
+		<set>
+			<if test="orderId != null">
+				order_id = #{orderId,jdbcType=BIGINT},
+			</if>
+			<if test="operatorId != null">
+				operator_id = #{operatorId,jdbcType=BIGINT},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.order.OrderSendOut">
+		update
+		ct_order_sendout
+		set order_id = #{orderId,jdbcType=BIGINT},
+		operator_id
+		= #{operatorId,jdbcType=BIGINT},
+		address = #{address,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=DATE}
+		where id =
+		#{id,jdbcType=BIGINT}
+	</update>
+</mapper>

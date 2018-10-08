@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.district.districtMapper">
+	<resultMap id="BaseResultMap" type="com.dce.business.entity.district.District">
+
+		<id column="district_id" jdbcType="INTEGER" property="districtId" />
+		<result column="distrct_name" jdbcType="VARCHAR" property="distrctName" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="districtStatus" jdbcType="INTEGER" property="districtStatus" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		district_id, distrct_name, user_id, districtStatus
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from district
+		where district_id = #{districtId,jdbcType=INTEGER}
+	</select>
+
+	<!-- 自定义查询 -->
+	<select id="queryListPage" parameterType="java.util.Map"
+		resultType="map">
+		select a.*,b.id,b.user_name,b.true_name
+		from district a LEFT
+		JOIN
+		ct_user b ON a.user_id = b.id
+		where 0=0
+		<if test="districtId!=null">
+			and district_id = #{districtId,jdbcType=INTEGER}
+		</if>
+		<if test="userId!=null">
+			and user_id= #{userId,jdbcType=INTEGER}
+		</if>
+
+		<if test="districtStatus!=null">
+			and districtStatus=#{districtStatus,jdbcType=INTEGER}
+		</if>
+
+		<if test="distrct_name!=null">
+			and distrct_name=#{distrct_name,jdbcType=VARCHAR}
+		</if>
+		<if test="true_name!=null">
+			and true_name=#{true_name,jdbcType=VARCHAR}
+		</if>
+
+		<if test="currentPage!=null and pageSize!=null">
+			limit currentPage,pageSize
+		</if>
+
+
+	</select>
+	
+	
+	<select id="selectByPrimaryKeySelective"  parameterType="com.dce.business.entity.district.District"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from district 
+		where 0=0
+		<if test="districtId!=null">
+			and district_id = #{districtId,jdbcType=INTEGER}
+		</if>
+		<if test="userId!=null">
+			and user_id= #{userId,jdbcType=INTEGER}
+		</if>
+		<if test="districtStatus!=null">
+			and districtStatus=#{districtStatus,jdbcType=INTEGER}
+		</if>
+		</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+		delete from
+		district
+		where district_id = #{districtId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="com.dce.business.entity.district.District">
+		insert into district
+		(district_id, distrct_name, user_id,
+		districtStatus)
+		values
+		(#{districtId,jdbcType=INTEGER}, #{distrctName,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},
+		#{districtStatus,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dce.business.entity.district.District">
+		insert into district
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="districtId != null">
+				district_id,
+			</if>
+			<if test="distrctName != null">
+				distrct_name,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="districtStatus != null">
+				districtStatus,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="districtId != null">
+				#{districtId,jdbcType=INTEGER},
+			</if>
+			<if test="distrctName != null">
+				#{distrctName,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="districtStatus != null">
+				#{districtStatus,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.district.District">
+
+		update district
+		<set>
+			<if test="distrctName != null">
+				distrct_name = #{distrctName,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="districtStatus != null">
+				districtStatus = #{districtStatus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where district_id = #{districtId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.dce.business.entity.district.District">
+
+		update district
+		set distrct_name = #{distrctName,jdbcType=VARCHAR},
+		user_id =
+		#{userId,jdbcType=INTEGER},
+		districtStatus =
+		#{districtStatus,jdbcType=INTEGER}
+		where district_id =
+		#{districtId,jdbcType=INTEGER}
+	</update>
+</mapper>
