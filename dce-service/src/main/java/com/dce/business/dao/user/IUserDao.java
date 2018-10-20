@@ -136,6 +136,11 @@ public interface IUserDao {
 	 */
 	List<UserDo> selectDistrictPage(Map<String,Object> map);
 	
+	/**
+	 * 分享排榜
+	 */
+	List<Map<String,Object>> shareList(Map<String,Object> map);
+	
 	
 	/**
 	 * 修改有用戶等级方法

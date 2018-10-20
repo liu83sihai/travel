@@ -25,11 +25,11 @@ public class AboutUsController {
 	private IAboutusService aboutusService;
 	
 	/** 
-	 * @api {GET} /aboutUs/index.do 项目介绍列表
-	 * @apiName ysAboutList
-	 * @apiGroup YsAbout 
+	 * @api {GET} /aboutUs/index.do 项目介绍
+	 * @apiName aboutUs
+	 * @apiGroup aboutUs 
 	 * @apiVersion 1.0.0 
-	 * @apiDescription 项目介绍列表
+	 * @apiDescription 项目介绍 
 	 *  
 	 * 
 	 * @apiUse RETURN_MESSAGE

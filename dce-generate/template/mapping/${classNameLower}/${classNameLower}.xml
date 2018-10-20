@@ -1,0 +1,106 @@
+﻿<#assign isFistColumn = 0> 
+<#assign className = table.className>   
+<#assign classNameLower = className?uncap_first> 
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="${basepackage}.business.dao.${classNameLower}.I${className}Dao">
+	<resultMap type="${classNameLower}Do" id="${classNameLower}ResultMap">
+		<@mapColumns/>
+	</resultMap>
+
+	<select id="getById" parameterType="int" resultMap="${classNameLower}ResultMap">
+		SELECT * 
+		  FROM ${table.sqlName} WHERE id = ${r"#{id}"}
+	</select>
+
+	<select id="select${className}" parameterType="Map" resultMap="${classNameLower}ResultMap">
+		SELECT * 
+		  FROM ${table.sqlName}
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+		    <#list table.columns as column> 		
+			<if test="${column.columnNameLower} != null">  
+				AND ${column.sqlName} = ${r"#{"}${column.columnNameLower}${r"}"}
+			</if>
+			</#list>			  
+         </trim> 
+
+	</select>
+	<select id="select${className}ByPage" parameterType="Map" resultMap="${classNameLower}ResultMap">
+		SELECT * 
+		  FROM ${table.sqlName}
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+		    <#list table.columns as column> 		
+			<if test="${column.columnNameLower} != null">  
+				AND ${column.sqlName} = ${r"#{"}${column.columnNameLower}${r"}"}
+			</if>
+			</#list>			  
+         </trim> 
+
+	</select>
+	
+	<update id="update${className}ById" parameterType="${classNameLower}Do">
+		UPDATE ${table.sqlName} 
+		<trim prefix="SET" suffixOverrides=","> 
+			 <@updateSql/>
+		</trim>
+		WHERE id = ${r"#{id}"} 
+	</update>	
+	
+	<insert id="add${className}" parameterType="${classNameLower}Do" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO ${table.sqlName}(<@insertSqlColumns/>)
+		     VALUES (<@insertSqlValues/>)
+	</insert>
+	
+	<delete id="deleteById" parameterType="int" >
+		DELETE FROM ${table.sqlName} WHERE id = ${r"#{id}"}
+	</delete>
+	
+</mapper>
+
+<#macro mapColumns>
+		<#list table.columns as column>		
+		<result property="${column.columnNameLower}" column="${column.sqlName}" />
+		</#list>
+</#macro>
+
+<#macro insertSqlColumns>
+        <#assign isFistColumn = 0> 
+		<#list table.columns as column>
+        <#if !column.pk>
+        <#assign isFistColumn = isFistColumn+1> 		
+		<#if isFistColumn == 1>
+		${column.sqlName}
+		<#else>
+		,${column.sqlName}
+		</#if>
+		</#if>
+		</#list>
+</#macro>
+
+<#macro insertSqlValues>
+        <#assign isFistColumn = 0> 
+		<#list table.columns as column>
+        <#if !column.pk>		
+		<#assign isFistColumn = isFistColumn+1> 		
+		<#if isFistColumn == 1>
+		${r"#{"}${column.columnNameLower}${r"}"}
+		<#else>
+		,${r"#{"}${column.columnNameLower}${r"}"}
+		</#if>
+        </#if>		
+		</#list>
+</#macro>
+
+<#macro updateSql>
+        <#assign isFistColumn = 0> 
+		<#list table.columns as column>
+		<#if !column.pk>
+		<#assign isFistColumn = isFistColumn+1> 		
+		<if test="${column.columnNameLower} != null">  
+				${column.sqlName} = ${r"#{"}${column.columnNameLower}${r"}"},
+		</if>				
+		</#if>
+		</#list>
+</#macro>

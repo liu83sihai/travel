@@ -209,6 +209,59 @@ public class UserController extends BaseController {
 
 		return Result.successResult("查询成功", list);
 	}
+	
+	/** 
+	 * @api {POST} /user/shareList.do 分享排榜
+	 * @apiName shareList
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 分享排榜
+	 * 
+	 * @apiUse pageParam  
+	 * 
+	 * @apiSuccess {String} msg 返回成功信息
+	 * @apiUse RETURN_MESSAGE
+	 
+	 * @apiSuccess {int} id 用户ID
+	 * @apiSuccess {String} userName 用户名称
+	 * @apiSuccess {String} trueName 真名
+	 * @apiSuccess {String} mobile 手机号码
+	 * @apiSuccess {int} refereeNumber 推荐人数
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "result": {
+	 *	"model": {
+	 *		
+	 * 	},
+	 *	  "status": {
+	 *	    "code": 200,
+	 *	    "msg": "请求成功"
+	 *	  }
+	 *	}
+	 */ 
+	@RequestMapping(value = "/shareList", method = RequestMethod.POST)
+	public Result<List<Map<String, Object>>> shareList() {
+		String pageNum = getString("pageNum");
+		String row = getString("rows");
+		// 不传 默认查询第一页
+		if (StringUtils.isBlank(pageNum)) {
+			pageNum = "1";
+		}
+		if (StringUtils.isNotBlank(row)) {
+			rows = Integer.parseInt(row);
+		}
+		
+		int offset = (Integer.parseInt(pageNum) - 1) * rows;
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("offset", offset);
+		paramMap.put("rows", rows);
+
+		List<Map<String, Object>> shareList = userService.shareList(paramMap);
+		
+		return Result.successResult("分享排榜", shareList);
+	}
 
 	/**
 	 * 首页，查询用户基本信息

@@ -29,11 +29,47 @@ public class NoticeController {
 	private final static Logger logger = Logger.getLogger(NoticeController.class);
 	@Resource
 	private INoticeService noticeService;
-	 /** 
-     * 公告列表
-     * @return  
-     */
 	
+	/** 
+	 * @api {GET} /notice/list.do 公告列表
+	 * @apiName notice
+	 * @apiGroup notice 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 公告列表 
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} model 返回成功信息
+	 * @apiSuccess {int}  id 公告id
+	 * @apiSuccess {int}  top_notice 置顶公告（0是/1否)
+	 * @apiSuccess {String}  title 公告标题
+	 * @apiSuccess {String}  content 公告类容
+	 * @apiSuccess {date}  create_date 创建时间
+	 * @apiSuccess {String}  image 列表图
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 * "code": 0,
+	 * "msg": "请求成功"
+	 * "data":{
+	 *   	[
+	 *   	{"id": "1",
+     *   	 "topNotice":"0",
+     *   	 "title": "12154545",
+     *   	 "content": "12321",
+     *   	 "create_date": 2018-8-6 14:55 ,
+     *   	 "image": "c:/img/xx.jpg",
+     *   	},
+     *   	{"id": "1",
+     *   	 "topNotice":"0",
+     *   	 "title": "12154545",
+     *   	 "content": "12321",
+     *   	 "create_date": 2018-8-6 14:55 ,
+     *   	 "image": "c:/img/xx.jpg",
+     *   	}
+     *    ]
+	 *  }
+	 *}
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result<?> list() {
 

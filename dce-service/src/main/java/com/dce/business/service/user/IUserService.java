@@ -169,6 +169,7 @@ public interface IUserService {
 
 	PageDo<UserDo> selectEthAccountByPage(PageDo<UserDo> page, Map<String, Object> params);
 
+	List<Map<String,Object>> shareList(Map<String,Object> map);
 	/**
 	 * 统计报单金额
 	 * 

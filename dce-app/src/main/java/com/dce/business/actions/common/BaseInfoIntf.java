@@ -18,27 +18,18 @@ public class BaseInfoIntf  {
 	 */
 	private static final Logger logger = Logger.getLogger(BaseInfoIntf.class);
 
-	/** 
-	 * @apiDefine CODE_200
-	 * @apiSuccess (Reponse 200) {number} code 200
-	 * @apiSuccess (Reponse 200) {String} msg 操作说明
-	 * @apiSuccessExample {json} Response 200 Example
-	 *   HTTP/1.1 200 OK
-	 *   {
-	 *     "code": 200,
-	 *     "msg": "操作成功"
-	 *   }
+
+	/**
+	 * @apiDefine pageParam
+	 * @apiParam {String} rows 展示的条数
+	 * @apiParam {String} pageNum  页码
 	 */
 	
-	/** 
-	 * @apiDefine LIST_PARAM
-	 * @apiParam {Integer} [page=1] 页码  
-	 * @apiParam {Integer} [rows=10] 每页行数  
-	 * @apiParam {String} [sort=createDate] 排序字段,取实体值  
-	 * @apiParam {String} [order=asc] 排序方式，可取asc,desc  
-	 *
+	/**
+	 * @apiDefine RETURN_MESSAGE
+	 * @apiSuccess {String} msg 返回成功信息
+	 * @apiSuccess {String} code 返回成功编码
 	 */
-	
 	
 	/** 
 	 *  @apiDefine ERROR_309
@@ -118,13 +109,6 @@ public class BaseInfoIntf  {
 	 *		"errorMessage": 对象主键ID找不到实体类型,
 	 *		"resultCode": 407
 	 *   }
-	 */
-	
-	/**
-	 * @apiDefine RETURN_MESSAGE
-	 * @apiSuccess {String} resultCode 结果码 
-     * @apiSuccess {String} errorMessage 错误消息说明 
-     * @apiSuccess {Boolean} success 是否成功 
 	 */
 	
 

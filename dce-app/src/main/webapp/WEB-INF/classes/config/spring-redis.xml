@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+
+	<!-- pool配置 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="500" />
+		<property name="maxIdle" value="100" />
+		<property name="maxWait" value="5000" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+	</bean>
+
+	<!-- jedis pool配置 -->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig" />
+        <constructor-arg name="host" value="${redis.host}" />
+        <constructor-arg name="port" value="${redis.port}" type="int" />
+        <constructor-arg name="timeout" value="${redis.timeout}" type="int" /><!-- 
+        <constructor-arg name="password" value="${redis.password}" /> 
+        <constructor-arg name="database" value="${redis.database}" type="int" />-->
+    </bean>
+
+	<bean id="jedisClient" class="com.dce.business.common.redis.JedisClient">
+		<property name="jedisPool" ref="jedisPool" />
+		<property name="serverName" value="${redis.host}" />
+	</bean>
+
+</beans>

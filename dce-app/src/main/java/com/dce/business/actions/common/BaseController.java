@@ -10,7 +10,9 @@ import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.StringUtil;
 
 public class BaseController {
-
+	
+	
+	public  int rows = 10;
     protected String getString(String name) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String paraVal = request.getParameter(name);

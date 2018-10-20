@@ -68,7 +68,7 @@ public class NewsController extends BaseController {
                 map.put("title", message.getTitle());
                 map.put("content", message.getContent());
                 map.put("create_date", message.getCreateDate());
-                //map.put("image", message.getImage());
+                map.put("image", message.getImage());
                 result.add(map);
             }
         }

@@ -268,4 +268,16 @@ public class BaseAction {
 //        }
         return result;
     }
+    
+	/**
+	 * 读取图片的url	
+	 * @param filePath
+	 * @return
+	 */
+	public String getReadImgUrl(String filePath,String readImgUrl) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(readImgUrl);
+		sb.append(filePath);
+		return sb.toString();
+	}
 }

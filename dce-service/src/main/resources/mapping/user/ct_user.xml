@@ -2012,6 +2012,14 @@
 			AND true_name=#{trueName,jdbcType=VARCHAR}
 		</if>
 	</select>
-
+	<!-- 分享排榜  -->
+	<select id="shareList" parameterType="java.util.Map" resultType="java.util.HashMap" >
+		select id,user_name userName,true_name trueName,mobile,referee_number refereeNumber
+		from ct_user
+		order by  referee_number desc
+		<if test="offset != null">
+			limit #{offset},#{rows}
+		</if>
+	</select>
 
 </mapper>

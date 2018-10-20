@@ -989,4 +989,9 @@ public class UserServiceImpl implements IUserService {
 		}
 		return i;
 	}
+	
+	
+	public List<Map<String,Object>> shareList(Map<String,Object> map){
+		return userDao.shareList(map);
+	}
 }
