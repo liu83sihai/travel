@@ -3,6 +3,9 @@ package com.dce.business.dao.supplier;
 
 import java.util.List;
 import java.util.Map;
+
+import com.dce.business.entity.supplier.SupplierDo;
+
 import com.dce.business.entity.supplier.SupplierDo;
 
 
@@ -19,7 +22,6 @@ public interface ISupplierDao {
 	 *根据条件查询列表
 	 */
 	public List<SupplierDo> selectSupplier(SupplierDo example);
-	
 	/**
 	 * 分面查询
 	 * @param param

@@ -1,5 +1,4 @@
 package com.dce.business.service.impl.supplier;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+
+import com.dce.business.common.util.Constants;
+
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.supplier.SupplierDo;
 import com.dce.business.service.supplier.ISupplierService;
-import com.dce.business.common.util.Constants;
 import com.dce.business.dao.supplier.ISupplierDao;
 
 
@@ -69,9 +70,6 @@ public class SupplierServiceImpl implements ISupplierService {
 	 */
 	public PageDo<SupplierDo> getSupplierPage(Map<String, Object> param, PageDo<SupplierDo> page){
 		logger.info("----getSupplierPage----"+param);
-		if(param == null){
-			param = new HashMap<String,Object>();
-		}
         param.put(Constants.MYBATIS_PAGE, page);
         List<SupplierDo> list =  supplierDao.selectSupplierByPage(param);
         page.setModelList(list);

@@ -9,26 +9,29 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 @Alias("supplierDo")
 public class SupplierDo  implements java.io.Serializable{	
-	
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -39946431062908038L;
 	private java.lang.Integer id;
 	private java.lang.String supplierName;
-	private java.lang.String province;
-	private java.lang.String city;
-	private java.lang.String businessNo;
-	private java.lang.String businessImage;
-	private java.lang.String cooperative;
+	private java.lang.String synopsis;
+	private java.lang.String content;
+	private java.lang.String linkValue;
+	private java.lang.String listImages;
+	private java.lang.String bannerImages;
+	private java.lang.String supplierAddress;
+	private java.lang.String telPhone;
 	private java.lang.String linkMan;
-	private java.lang.String linkPhone;
-	private java.lang.String linkEmail;
+	private java.lang.Integer supplierType;
+	private java.math.BigDecimal grade;
+	private java.math.BigDecimal average;
+	private java.math.BigDecimal longitude;
+	private java.math.BigDecimal latitude;
+	private java.lang.Integer hitNum;
+	private java.sql.Date createDate;
+	private java.lang.String createName;
+	private java.sql.Date modifyDate;
+	private java.lang.String modifyName;
 	private java.lang.Integer status;
-	private java.sql.Timestamp createTime;
-	private java.sql.Timestamp auditTime;
-	private java.lang.String auditInfo;
 	private java.lang.String remark;
 	
 
@@ -51,48 +54,66 @@ public class SupplierDo  implements java.io.Serializable{
 	}
 	
 
-	public void setProvince(java.lang.String province) {
-		this.province = province;
+	public void setSynopsis(java.lang.String synopsis) {
+		this.synopsis = synopsis;
 	}
 	
-	public java.lang.String getProvince() {
-		return this.province;
-	}
-	
-
-	public void setCity(java.lang.String city) {
-		this.city = city;
-	}
-	
-	public java.lang.String getCity() {
-		return this.city;
+	public java.lang.String getSynopsis() {
+		return this.synopsis;
 	}
 	
 
-	public void setBusinessNo(java.lang.String businessNo) {
-		this.businessNo = businessNo;
+	public void setContent(java.lang.String content) {
+		this.content = content;
 	}
 	
-	public java.lang.String getBusinessNo() {
-		return this.businessNo;
-	}
-	
-
-	public void setBusinessImage(java.lang.String businessImage) {
-		this.businessImage = businessImage;
-	}
-	
-	public java.lang.String getBusinessImage() {
-		return this.businessImage;
+	public java.lang.String getContent() {
+		return this.content;
 	}
 	
 
-	public void setCooperative(java.lang.String cooperative) {
-		this.cooperative = cooperative;
+	public void setLinkValue(java.lang.String linkValue) {
+		this.linkValue = linkValue;
 	}
 	
-	public java.lang.String getCooperative() {
-		return this.cooperative;
+	public java.lang.String getLinkValue() {
+		return this.linkValue;
+	}
+	
+
+	public void setListImages(java.lang.String listImages) {
+		this.listImages = listImages;
+	}
+	
+	public java.lang.String getListImages() {
+		return this.listImages;
+	}
+	
+
+	public void setBannerImages(java.lang.String bannerImages) {
+		this.bannerImages = bannerImages;
+	}
+	
+	public java.lang.String getBannerImages() {
+		return this.bannerImages;
+	}
+	
+
+	public void setSupplierAddress(java.lang.String supplierAddress) {
+		this.supplierAddress = supplierAddress;
+	}
+	
+	public java.lang.String getSupplierAddress() {
+		return this.supplierAddress;
+	}
+	
+
+	public void setTelPhone(java.lang.String telPhone) {
+		this.telPhone = telPhone;
+	}
+	
+	public java.lang.String getTelPhone() {
+		return this.telPhone;
 	}
 	
 
@@ -105,21 +126,93 @@ public class SupplierDo  implements java.io.Serializable{
 	}
 	
 
-	public void setLinkPhone(java.lang.String linkPhone) {
-		this.linkPhone = linkPhone;
+	public void setSupplierType(java.lang.Integer supplierType) {
+		this.supplierType = supplierType;
 	}
 	
-	public java.lang.String getLinkPhone() {
-		return this.linkPhone;
+	public java.lang.Integer getSupplierType() {
+		return this.supplierType;
 	}
 	
 
-	public void setLinkEmail(java.lang.String linkEmail) {
-		this.linkEmail = linkEmail;
+	public void setGrade(java.math.BigDecimal grade) {
+		this.grade = grade;
 	}
 	
-	public java.lang.String getLinkEmail() {
-		return this.linkEmail;
+	public java.math.BigDecimal getGrade() {
+		return this.grade;
+	}
+	
+
+	public void setAverage(java.math.BigDecimal average) {
+		this.average = average;
+	}
+	
+	public java.math.BigDecimal getAverage() {
+		return this.average;
+	}
+	
+
+	public void setLongitude(java.math.BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+	
+	public java.math.BigDecimal getLongitude() {
+		return this.longitude;
+	}
+	
+
+	public void setLatitude(java.math.BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+	
+	public java.math.BigDecimal getLatitude() {
+		return this.latitude;
+	}
+	
+
+	public void setHitNum(java.lang.Integer hitNum) {
+		this.hitNum = hitNum;
+	}
+	
+	public java.lang.Integer getHitNum() {
+		return this.hitNum;
+	}
+	
+
+	public void setCreateDate(java.sql.Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	public java.sql.Date getCreateDate() {
+		return this.createDate;
+	}
+	
+
+	public void setCreateName(java.lang.String createName) {
+		this.createName = createName;
+	}
+	
+	public java.lang.String getCreateName() {
+		return this.createName;
+	}
+	
+
+	public void setModifyDate(java.sql.Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+	
+	public java.sql.Date getModifyDate() {
+		return this.modifyDate;
+	}
+	
+
+	public void setModifyName(java.lang.String modifyName) {
+		this.modifyName = modifyName;
+	}
+	
+	public java.lang.String getModifyName() {
+		return this.modifyName;
 	}
 	
 
@@ -129,33 +222,6 @@ public class SupplierDo  implements java.io.Serializable{
 	
 	public java.lang.Integer getStatus() {
 		return this.status;
-	}
-	
-
-	public void setCreateTime(java.sql.Timestamp createTime) {
-		this.createTime = createTime;
-	}
-	
-	public java.sql.Timestamp getCreateTime() {
-		return this.createTime;
-	}
-	
-
-	public void setAuditTime(java.sql.Timestamp auditTime) {
-		this.auditTime = auditTime;
-	}
-	
-	public java.sql.Timestamp getAuditTime() {
-		return this.auditTime;
-	}
-	
-
-	public void setAuditInfo(java.lang.String auditInfo) {
-		this.auditInfo = auditInfo;
-	}
-	
-	public java.lang.String getAuditInfo() {
-		return this.auditInfo;
 	}
 	
 
@@ -173,18 +239,25 @@ public class SupplierDo  implements java.io.Serializable{
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("SupplierName",getSupplierName())
-			.append("Province",getProvince())
-			.append("City",getCity())
-			.append("BusinessNo",getBusinessNo())
-			.append("BusinessImage",getBusinessImage())
-			.append("Cooperative",getCooperative())
+			.append("Synopsis",getSynopsis())
+			.append("Content",getContent())
+			.append("LinkValue",getLinkValue())
+			.append("ListImages",getListImages())
+			.append("BannerImages",getBannerImages())
+			.append("SupplierAddress",getSupplierAddress())
+			.append("TelPhone",getTelPhone())
 			.append("LinkMan",getLinkMan())
-			.append("LinkPhone",getLinkPhone())
-			.append("LinkEmail",getLinkEmail())
+			.append("SupplierType",getSupplierType())
+			.append("Grade",getGrade())
+			.append("Average",getAverage())
+			.append("Longitude",getLongitude())
+			.append("Latitude",getLatitude())
+			.append("HitNum",getHitNum())
+			.append("CreateDate",getCreateDate())
+			.append("CreateName",getCreateName())
+			.append("ModifyDate",getModifyDate())
+			.append("ModifyName",getModifyName())
 			.append("Status",getStatus())
-			.append("CreateTime",getCreateTime())
-			.append("AuditTime",getAuditTime())
-			.append("AuditInfo",getAuditInfo())
 			.append("Remark",getRemark())
 			.toString();
 	}

@@ -66,13 +66,29 @@ public class UserController extends BaseController {
 	// @Resource
 	// private IReleaseService staticAwardService;
 
-	/**
-	 * 用户注册
+	/** 
+	 * @api {POST} /user/reg.do 用户注册
+	 * @apiName reg
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户注册
 	 * 
-	 * @param userDo
-	 * @param bindingResult
-	 * @return
-	 */
+	 * @apiParam {String} userName 手机号码
+	 * @apiParam {String} userPassword 登录密码
+	 * @apiParam {String} refereeId 用户推荐人，填写用户手机号
+	 * @apiParam {String} twoPassword 支付密码
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {int} id 用户ID
+	 * @apiSuccess {String} token 用户token
+	 * @apiSuccess {String} certification 真名
+	 * @apiSuccess {int} refereeNumber 推荐人数
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	}
+	 */ 
 	@RequestMapping(value = "/reg", method = RequestMethod.POST)
 	public Result<?> reg(@Valid UserDo userDo, BindingResult bindingResult) {
 		logger.info("用户注册");
@@ -89,13 +105,28 @@ public class UserController extends BaseController {
 		return result;
 	}
 
-	/**
-	 * 登录
+	/** 
+	 * @api {POST} /user/login.do 用户登录
+	 * @apiName login
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户登录
 	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 */
+	 * @apiParam {String} userName 手机号码
+	 * @apiParam {String} password 用户密码
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {int} id 用户ID
+	 * @apiSuccess {String} token 用户token
+	 * @apiSuccess {String} certification 真名
+	
+	 * @apiSuccess {int} refereeNumber 推荐人数
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	}
+	 */ 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Result<?> login() {
 		// String mobile = getString("mobile");
@@ -130,13 +161,20 @@ public class UserController extends BaseController {
 		return Result.successResult("登录成功", map);
 	}
 
-	/**
-	 * 注销
+	/** 
+	 * @api {POST} /user/logout.do 用户注销
+	 * @apiName logout
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户注销
 	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 */
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} msg 注销成功
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {}
+	 */ 
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public Result<?> logout() {
 		Integer userId = getUserId();
@@ -148,11 +186,23 @@ public class UserController extends BaseController {
 		return Result.successResult("注销成功");
 	}
 
-	/**
-	 * 修改登录密码
+	/** 
+	 * @api {POST} /user/alterpass.do 修改登录密码
+	 * @apiName alterpass
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 修改登录密码
 	 * 
-	 * @return
-	 */
+	 * @apiParam {String} userId 用户ID
+	 * @apiParam {String} userPassword 用户需修改的密码
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} msg 注销成功
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {}
+	 */ 
 	@RequestMapping(value = "/alterpass", method = RequestMethod.POST)
 	public Result<?> alterUser(UserDo userDo) {
 		try {
@@ -166,15 +216,27 @@ public class UserController extends BaseController {
 			}
 			return userService.updateByPrimaryKeyLogPass(userDo);
 		} catch (Exception e) {
-			return Result.failureResult("用户密码修改失败");
+			return Result.failureResult("用户未登录,密码修改失败");
 		}
 	}
 
-	/**
-	 * 修改支付密码
+	/** 
+	 * @api {POST} /user/updPayPass.do 修改支付密码
+	 * @apiName updPayPass
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 修改支付密码
 	 * 
-	 * @return
-	 */
+	 * @apiParam {String} userId 用户ID
+	 * @apiParam {String} twoPassword 用户需修改的密码
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} msg 注销成功
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {}
+	 */ 
 	@RequestMapping(value = "/updPayPass", method = RequestMethod.POST)
 	public Result<?> updPayPass(UserDo userDo) {
 		try {
@@ -188,7 +250,7 @@ public class UserController extends BaseController {
 			}
 			return userService.updateByPrimaryKeyPayPass(userDo);
 		} catch (Exception e) {
-			return Result.failureResult("用户支付密码修改失败");
+			return Result.failureResult("用户未登录,支付密码修改失败");
 		}
 	}
 

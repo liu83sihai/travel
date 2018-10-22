@@ -74,7 +74,7 @@ public class ${className}ServiceImpl implements I${className}Service {
 	public PageDo<${className}Do> get${className}Page(Map<String, Object> param, PageDo<${className}Do> page){
 		logger.info("----get${className}Page----"+param);
         param.put(Constants.MYBATIS_PAGE, page);
-        List<${className}Do> list =  ${classNameLower}Dao.queryListPage(param);
+        List<${className}Do> list =  ${classNameLower}Dao.select${className}ByPage(param);
         page.setModelList(list);
         return page;
 	}

@@ -39,7 +39,6 @@ public class BannerController {
 	 * @apiGroup banner 
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 图标管理列表
-	 *  
 	 * 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {String} msg 返回成功信息

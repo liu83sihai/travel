@@ -178,15 +178,72 @@ function to_editbanner(id){
 }
 
 function save_Banner(){
-	var formdata = $("#editBannerForm").serialize();
-	console.info("formdata");
-	console.info(formdata);
+//	var formdata = $("#editBannerForm").serialize();
+//	console.info("formdata");
+//	console.info(formdata);
+	// 创建表单数据对象
+	
+    var obj = new FormData();
+
+    // 获取框中的数据
+   // var title = $("#editGoodsForm input[name='title']").val();
+//    var title = $("#editGoodsForm #title").val();
+    var icoName = document.getElementById("icoName").value;
+    var icoType = document.getElementById("icoType").value;
+    var linkType =document.getElementById("linkType").value;
+    var linkValue =document.getElementById("linkValue").value;
+    var hintValue =document.getElementById("hintValue").value;
+    var sort =document.getElementById("sort").value;
+    var remark =document.getElementById("remark").value;
+    var icoImages = document.getElementById("icoImages").files[0];
+    
+    var id =document.getElementById("id").value;
+    var createDate =document.getElementById("createDate").value;
+    var createName =document.getElementById("createName").value;
+    var modifyDate =document.getElementById("modifyDate").value;
+    var modifyName =document.getElementById("modifyName").value;
+    var status =document.getElementById("status").value;
+    
+    if(icoName == null || icoName == ""){
+		$.messager.alert("错误", "请填写名称");
+		return;
+	}
+    if(icoType == null || icoType == ""){
+		$.messager.alert("错误", "请填写类型");
+		return;
+	}
+    if(icoImages == null || icoImages == ""){
+		$.messager.alert("错误", "请上传图片");
+		return;
+	}
+ 
+    
+
+    // 将数据添加至表单数据对象中
+    obj.append("icoName", icoName);
+    obj.append("icoImages", icoImages);
+    obj.append("icoType", icoType);
+    obj.append("linkType", linkType);
+    obj.append("linkValue", linkValue);
+    obj.append("sort", sort);
+    obj.append("remark", remark);
+    obj.append("hintValue", hintValue);
+    
+    obj.append("id", id);
+    obj.append("createDate", createDate);
+    obj.append("createName", createName);
+    obj.append("modifyDate", modifyDate);
+    obj.append("modifyName", modifyName);
+    obj.append("status", status);
+    debugger;
 	var  url =httpUrl+"/banner/saveBanner.html?&rand=" + Math.random();
 	 $.ajax({   
 		 type: 'POST',
 		 dataType: 'json',
 		 url: url,  
-		 data:$("#editBannerForm").serialize(),
+		 data:obj,
+		 processData: false,
+		 contentType : false,
 		 success: function(data){ 
 			 if(data.code ==="0"){
 				 $("#editBannerDiv").dialog("close");

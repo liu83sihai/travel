@@ -45,8 +45,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/supplier")
 public class SupplierController extends BaseAction{
-	//默认多列排序,example: username desc,createTime asc
-	//protected static final String DEFAULT_SORT_COLUMNS = null; 
 	@Resource
 	private ISupplierService supplierService;
 
@@ -68,16 +66,16 @@ public class SupplierController extends BaseAction{
         logger.info("----listSupplier----");
         try{
             PageDo<SupplierDo> page = PageDoUtil.getPage(pagination);
-            String supplierName = getString("supplierName");
+            String companyName = getString("searchPolicyName");
             Map<String,Object> param = new HashMap<String,Object>();
-            if(StringUtils.isNotBlank(supplierName)){
-                param.put("supplierName",supplierName);
-                model.addAttribute("supplierName",supplierName);
+            if(StringUtils.isNotBlank(companyName)){
+                param.put("policyName",companyName);
+                model.addAttribute("searchPolicyName",companyName);
             }
-            String linkPhone = getString("linkPhone");
-            if(StringUtils.isNotBlank(linkPhone)){
-                param.put("linkPhone", linkPhone);
-                model.addAttribute("linkPhone",linkPhone);
+            String managerName = getString("searManagerName");
+            if(StringUtils.isNotBlank(managerName)){
+                param.put("managerName", managerName);
+                model.addAttribute("searManagerName",managerName);
             }
             page = supplierService.getSupplierPage(param, page);
             pagination = PageDoUtil.getPageValue(pagination, page);
@@ -117,7 +115,7 @@ public class SupplierController extends BaseAction{
      * 保存更新
      *
      * @return
-     * @date: 2015年4月21日 12:49:05
+     * @date: 2018年10月21日 12:49:05
      */
     @RequestMapping("/saveSupplier")
     @ResponseBody
@@ -131,12 +129,13 @@ public class SupplierController extends BaseAction{
             
             int i = 0;
             if (id != null && id.intValue()>0) {
-            	// supplierDo.setUpdateBy(userId);
-            	// supplierDo.setUpdateTime(new Date());
+            	 //supplierDo.setModifyName(this.getUserName() + ":" + userId);
+            	//supplierDo.setModifyDate(new Date(System.currentTimeMillis()));;
                 i = supplierService.updateSupplierById(supplierDo);
             } else {
-//				supplierDo.setCreateBy(userId);
-//            	supplierDo.setCreateTime(new Date());
+//				supplierDo.setCreateName(this.getUserName() + ":" + userId);
+//				supplierDo.setCreateDate(new Date(System.currentTimeMillis()));
+//				supplierDo.setStatus(1);
                 i = supplierService.addSupplier(supplierDo);
             }
 
@@ -155,8 +154,8 @@ public class SupplierController extends BaseAction{
     /**
      * 删除
      */
-    @RequestMapping("/deletesupplier")
-    public void deletesupplier(String id,HttpServletRequest request,
+    @RequestMapping("/deleteSupplier")
+    public void deleteSupplier(String id,HttpServletRequest request,
             HttpServletResponse response) {
         logger.info("----deletesupplier----");
          try{

@@ -1,7 +1,7 @@
 <#include "/macro.include"/>
 <#include "/java_copyright.include">
-<#assign className = table.className>   
-<#assign classNameLower = className?uncap_first> 
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
 package ${basepackage}.business.entity.${classNameLower};
 
 import org.apache.ibatis.type.Alias;

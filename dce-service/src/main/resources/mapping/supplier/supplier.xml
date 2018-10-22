@@ -4,19 +4,26 @@
 <mapper namespace="com.dce.business.dao.supplier.ISupplierDao">
 	<resultMap type="supplierDo" id="supplierResultMap">
 		<result property="id" column="id" />
-		<result property="supplierName" column="supplierName" />
-		<result property="province" column="province" />
-		<result property="city" column="city" />
-		<result property="businessNo" column="businessNo" />
-		<result property="businessImage" column="businessImage" />
-		<result property="cooperative" column="cooperative" />
-		<result property="linkMan" column="linkMan" />
-		<result property="linkPhone" column="linkPhone" />
-		<result property="linkEmail" column="linkEmail" />
+		<result property="supplierName" column="supplier_name" />
+		<result property="synopsis" column="synopsis" />
+		<result property="content" column="content" />
+		<result property="linkValue" column="link_value" />
+		<result property="listImages" column="list_images" />
+		<result property="bannerImages" column="banner_images" />
+		<result property="supplierAddress" column="supplier_address" />
+		<result property="telPhone" column="tel_phone" />
+		<result property="linkMan" column="link_man" />
+		<result property="supplierType" column="supplier_type" />
+		<result property="grade" column="grade" />
+		<result property="average" column="average" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+		<result property="hitNum" column="hit_num" />
+		<result property="createDate" column="create_date" />
+		<result property="createName" column="create_name" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="modifyName" column="modify_name" />
 		<result property="status" column="status" />
-		<result property="createTime" column="createTime" />
-		<result property="auditTime" column="auditTime" />
-		<result property="auditInfo" column="auditInfo" />
 		<result property="remark" column="remark" />
 	</resultMap>
 
@@ -33,43 +40,64 @@
 				AND id = #{id}
 			</if>
 			<if test="supplierName != null">  
-				AND supplierName = #{supplierName}
+				AND supplier_name = #{supplierName}
 			</if>
-			<if test="province != null">  
-				AND province = #{province}
+			<if test="synopsis != null">  
+				AND synopsis = #{synopsis}
 			</if>
-			<if test="city != null">  
-				AND city = #{city}
+			<if test="content != null">  
+				AND content = #{content}
 			</if>
-			<if test="businessNo != null">  
-				AND businessNo = #{businessNo}
+			<if test="linkValue != null">  
+				AND link_value = #{linkValue}
 			</if>
-			<if test="businessImage != null">  
-				AND businessImage = #{businessImage}
+			<if test="listImages != null">  
+				AND list_images = #{listImages}
 			</if>
-			<if test="cooperative != null">  
-				AND cooperative = #{cooperative}
+			<if test="bannerImages != null">  
+				AND banner_images = #{bannerImages}
+			</if>
+			<if test="supplierAddress != null">  
+				AND supplier_address = #{supplierAddress}
+			</if>
+			<if test="telPhone != null">  
+				AND tel_phone = #{telPhone}
 			</if>
 			<if test="linkMan != null">  
-				AND linkMan = #{linkMan}
+				AND link_man = #{linkMan}
 			</if>
-			<if test="linkPhone != null">  
-				AND linkPhone = #{linkPhone}
+			<if test="supplierType != null">  
+				AND supplier_type = #{supplierType}
 			</if>
-			<if test="linkEmail != null">  
-				AND linkEmail = #{linkEmail}
+			<if test="grade != null">  
+				AND grade = #{grade}
+			</if>
+			<if test="average != null">  
+				AND average = #{average}
+			</if>
+			<if test="longitude != null">  
+				AND longitude = #{longitude}
+			</if>
+			<if test="latitude != null">  
+				AND latitude = #{latitude}
+			</if>
+			<if test="hitNum != null">  
+				AND hit_num = #{hitNum}
+			</if>
+			<if test="createDate != null">  
+				AND create_date = #{createDate}
+			</if>
+			<if test="createName != null">  
+				AND create_name = #{createName}
+			</if>
+			<if test="modifyDate != null">  
+				AND modify_date = #{modifyDate}
+			</if>
+			<if test="modifyName != null">  
+				AND modify_name = #{modifyName}
 			</if>
 			<if test="status != null">  
 				AND status = #{status}
-			</if>
-			<if test="createTime != null">  
-				AND createTime = #{createTime}
-			</if>
-			<if test="auditTime != null">  
-				AND auditTime = #{auditTime}
-			</if>
-			<if test="auditInfo != null">  
-				AND auditInfo = #{auditInfo}
 			</if>
 			<if test="remark != null">  
 				AND remark = #{remark}
@@ -85,43 +113,64 @@
 				AND id = #{id}
 			</if>
 			<if test="supplierName != null">  
-				AND supplierName = #{supplierName}
+				AND supplier_name = #{supplierName}
 			</if>
-			<if test="province != null">  
-				AND province = #{province}
+			<if test="synopsis != null">  
+				AND synopsis = #{synopsis}
 			</if>
-			<if test="city != null">  
-				AND city = #{city}
+			<if test="content != null">  
+				AND content = #{content}
 			</if>
-			<if test="businessNo != null">  
-				AND businessNo = #{businessNo}
+			<if test="linkValue != null">  
+				AND link_value = #{linkValue}
 			</if>
-			<if test="businessImage != null">  
-				AND businessImage = #{businessImage}
+			<if test="listImages != null">  
+				AND list_images = #{listImages}
 			</if>
-			<if test="cooperative != null">  
-				AND cooperative = #{cooperative}
+			<if test="bannerImages != null">  
+				AND banner_images = #{bannerImages}
+			</if>
+			<if test="supplierAddress != null">  
+				AND supplier_address = #{supplierAddress}
+			</if>
+			<if test="telPhone != null">  
+				AND tel_phone = #{telPhone}
 			</if>
 			<if test="linkMan != null">  
-				AND linkMan = #{linkMan}
+				AND link_man = #{linkMan}
 			</if>
-			<if test="linkPhone != null">  
-				AND linkPhone = #{linkPhone}
+			<if test="supplierType != null">  
+				AND supplier_type = #{supplierType}
 			</if>
-			<if test="linkEmail != null">  
-				AND linkEmail = #{linkEmail}
+			<if test="grade != null">  
+				AND grade = #{grade}
+			</if>
+			<if test="average != null">  
+				AND average = #{average}
+			</if>
+			<if test="longitude != null">  
+				AND longitude = #{longitude}
+			</if>
+			<if test="latitude != null">  
+				AND latitude = #{latitude}
+			</if>
+			<if test="hitNum != null">  
+				AND hit_num = #{hitNum}
+			</if>
+			<if test="createDate != null">  
+				AND create_date = #{createDate}
+			</if>
+			<if test="createName != null">  
+				AND create_name = #{createName}
+			</if>
+			<if test="modifyDate != null">  
+				AND modify_date = #{modifyDate}
+			</if>
+			<if test="modifyName != null">  
+				AND modify_name = #{modifyName}
 			</if>
 			<if test="status != null">  
 				AND status = #{status}
-			</if>
-			<if test="createTime != null">  
-				AND createTime = #{createTime}
-			</if>
-			<if test="auditTime != null">  
-				AND auditTime = #{auditTime}
-			</if>
-			<if test="auditInfo != null">  
-				AND auditInfo = #{auditInfo}
 			</if>
 			<if test="remark != null">  
 				AND remark = #{remark}
@@ -134,43 +183,64 @@
 		UPDATE tr_supplier 
 		<trim prefix="SET" suffixOverrides=","> 
 		<if test="supplierName != null">  
-				supplierName = #{supplierName},
+				supplier_name = #{supplierName},
 		</if>				
-		<if test="province != null">  
-				province = #{province},
+		<if test="synopsis != null">  
+				synopsis = #{synopsis},
 		</if>				
-		<if test="city != null">  
-				city = #{city},
+		<if test="content != null">  
+				content = #{content},
 		</if>				
-		<if test="businessNo != null">  
-				businessNo = #{businessNo},
+		<if test="linkValue != null">  
+				link_value = #{linkValue},
 		</if>				
-		<if test="businessImage != null">  
-				businessImage = #{businessImage},
+		<if test="listImages != null">  
+				list_images = #{listImages},
 		</if>				
-		<if test="cooperative != null">  
-				cooperative = #{cooperative},
+		<if test="bannerImages != null">  
+				banner_images = #{bannerImages},
+		</if>				
+		<if test="supplierAddress != null">  
+				supplier_address = #{supplierAddress},
+		</if>				
+		<if test="telPhone != null">  
+				tel_phone = #{telPhone},
 		</if>				
 		<if test="linkMan != null">  
-				linkMan = #{linkMan},
+				link_man = #{linkMan},
 		</if>				
-		<if test="linkPhone != null">  
-				linkPhone = #{linkPhone},
+		<if test="supplierType != null">  
+				supplier_type = #{supplierType},
 		</if>				
-		<if test="linkEmail != null">  
-				linkEmail = #{linkEmail},
+		<if test="grade != null">  
+				grade = #{grade},
+		</if>				
+		<if test="average != null">  
+				average = #{average},
+		</if>				
+		<if test="longitude != null">  
+				longitude = #{longitude},
+		</if>				
+		<if test="latitude != null">  
+				latitude = #{latitude},
+		</if>				
+		<if test="hitNum != null">  
+				hit_num = #{hitNum},
+		</if>				
+		<if test="createDate != null">  
+				create_date = #{createDate},
+		</if>				
+		<if test="createName != null">  
+				create_name = #{createName},
+		</if>				
+		<if test="modifyDate != null">  
+				modify_date = #{modifyDate},
+		</if>				
+		<if test="modifyName != null">  
+				modify_name = #{modifyName},
 		</if>				
 		<if test="status != null">  
 				status = #{status},
-		</if>				
-		<if test="createTime != null">  
-				createTime = #{createTime},
-		</if>				
-		<if test="auditTime != null">  
-				auditTime = #{auditTime},
-		</if>				
-		<if test="auditInfo != null">  
-				auditInfo = #{auditInfo},
 		</if>				
 		<if test="remark != null">  
 				remark = #{remark},
@@ -181,34 +251,48 @@
 	
 	<insert id="addSupplier" parameterType="supplierDo" keyProperty="id"
 		useGeneratedKeys="true" >
-		INSERT INTO tr_supplier(		supplierName
-		,province
-		,city
-		,businessNo
-		,businessImage
-		,cooperative
-		,linkMan
-		,linkPhone
-		,linkEmail
+		INSERT INTO tr_supplier(		supplier_name
+		,synopsis
+		,content
+		,link_value
+		,list_images
+		,banner_images
+		,supplier_address
+		,tel_phone
+		,link_man
+		,supplier_type
+		,grade
+		,average
+		,longitude
+		,latitude
+		,hit_num
+		,create_date
+		,create_name
+		,modify_date
+		,modify_name
 		,status
-		,createTime
-		,auditTime
-		,auditInfo
 		,remark
 )
 		     VALUES (		#{supplierName}
-		,#{province}
-		,#{city}
-		,#{businessNo}
-		,#{businessImage}
-		,#{cooperative}
+		,#{synopsis}
+		,#{content}
+		,#{linkValue}
+		,#{listImages}
+		,#{bannerImages}
+		,#{supplierAddress}
+		,#{telPhone}
 		,#{linkMan}
-		,#{linkPhone}
-		,#{linkEmail}
+		,#{supplierType}
+		,#{grade}
+		,#{average}
+		,#{longitude}
+		,#{latitude}
+		,#{hitNum}
+		,#{createDate}
+		,#{createName}
+		,#{modifyDate}
+		,#{modifyName}
 		,#{status}
-		,#{createTime}
-		,#{auditTime}
-		,#{auditInfo}
 		,#{remark}
 )
 	</insert>

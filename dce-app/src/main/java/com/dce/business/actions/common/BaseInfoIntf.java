@@ -29,6 +29,7 @@ public class BaseInfoIntf  {
 	 * @apiDefine RETURN_MESSAGE
 	 * @apiSuccess {String} msg 返回成功信息
 	 * @apiSuccess {String} code 返回成功编码
+	 * @apiSuccess {String} data 返回成功的数据
 	 */
 	
 	/** 
