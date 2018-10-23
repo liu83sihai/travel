@@ -74,7 +74,7 @@ public class NoticeServiceImpl implements INoticeService {
 	 * @return
 	 */
 	public PageDo<NoticeDo> getNoticePage(Map<String, Object> param, PageDo<NoticeDo> page){
-		logger.info("----getNoticePage----"+param);
+		//logger.info("----getNoticePage----"+param);
         param.put(Constants.MYBATIS_PAGE, page);
         List<NoticeDo> list =  noticeDao.queryListPage(param);
         page.setModelList(list);
