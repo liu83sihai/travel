@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.activity.ActivityDo;
 import com.dce.business.entity.notice.NoticeDo;
+import com.dce.business.entity.page.PageDo;
 
 import ${basepackage}.business.service.${classNameLower}.I${className}Service;
 import ${basepackage}.business.entity.${classNameLower}.${className}Do;
@@ -84,18 +85,33 @@ public class ${className}Controller {
 	 public Result<?> list() {
 		 logger.info("查询${TABLE_INFO}...");
 	
-		 ${className}Do ${classNameLower}Do = new ${className}Do();
-		 List<${className}Do> ${classNameLower}List = ${classNameLower}Service.select${className}(${classNameLower}Do);
-		 List<Map<String, Object>> result = new ArrayList<>();
-	        if (!CollectionUtils.isEmpty(${classNameLower}List)) {
-	            for (${className}Do ${classNameLower} : ${classNameLower}List) {
+		 String pageNums = getString("pageNum");
+		 String row = getString("rows");
+		// 不传 默认查询第一页
+		if (StringUtils.isNotBlank(pageNums)) {
+			pageNum = Long.parseLong(pageNums);
+		}
+		if (StringUtils.isNotBlank(row)) {
+			rows = Long.parseLong(row);
+		}
 
-	                Map<String, Object> map = new HashMap<>();
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		PageDo<${className}Do> ${classNameLower}Page = new PageDo<${className}Do>();
+		${classNameLower}Page.setCurrentPage(pageNum);
+		${classNameLower}Page.setPageSize(rows);
+		PageDo<${className}Do> pageDo = ${classNameLower}Service.get${className}Page(paramMap, ${classNameLower}Page);
+		List<${className}Do> ${classNameLower}List = pageDo.getModelList();
+		 
+		List<Map<String, Object>> result = new ArrayList<>();
+	    if (!CollectionUtils.isEmpty(${classNameLower}List)) {
+	         for (${className}Do ${classNameLower} : ${classNameLower}List) {
+
+	             Map<String, Object> map = new HashMap<>();
 	                <#list table.columns as column>
-	                map.put("${column.columnNameLower}", ${classNameLower}.get${column.columnName}());
+	             map.put("${column.columnNameLower}", ${classNameLower}.get${column.columnName}());
 	                </#list>
 	                result.add(map);
-	            }
+	           }
 	        }
 		 return Result.successResult("查询成功", result);
 	 }

@@ -1,7 +1,7 @@
 define({ "api": [
   {
     "type": "get",
-    "url": "/rest/commonIntf/sendMessage",
+    "url": "/commonIntf/sendMessage.do",
     "title": "获取短信验证码",
     "name": "sendMessage",
     "group": "Common",
@@ -101,13 +101,13 @@ define({ "api": [
     "groupTitle": "Common",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/rest/commonIntf/sendMessage"
+        "url": "http://127.0.0.1:8080/commonIntf/sendMessage.do"
       }
     ]
   },
   {
     "type": "post",
-    "url": "/rest/commonIntf/uploadImg",
+    "url": "/commonIntf/uploadImg.do",
     "title": "上传文件",
     "name": "uploadImg",
     "group": "Common",
@@ -196,7 +196,7 @@ define({ "api": [
     "groupTitle": "Common",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/rest/commonIntf/uploadImg"
+        "url": "http://127.0.0.1:8080/commonIntf/uploadImg.do"
       }
     ]
   },
@@ -396,7 +396,27 @@ define({ "api": [
       {
         "url": "http://127.0.0.1:8080/activity/index.do"
       }
-    ]
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "POST",
@@ -1615,6 +1635,329 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:8080/user/alterpass.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/user/authentication.do",
+    "title": "用户认证",
+    "name": "authentication",
+    "group": "user",
+    "version": "1.0.0",
+    "description": "<p>用户认证</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idnumber",
+            "description": "<p>身份证号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sex",
+            "description": "<p>性别</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "banknumber",
+            "description": "<p>卡号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "banktype",
+            "description": "<p>开户行</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>认证成功</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "groupTitle": "user",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/user/authentication.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/user/getUserInfo.do",
+    "title": "获取用户信息",
+    "name": "getUserInfo",
+    "group": "user",
+    "version": "1.0.0",
+    "description": "<p>获取用户信息</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>用户token</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "userLevel",
+            "description": "<p>用户等级，默认为：0：普通用户；1：会员;2：VIP；3：城市合伙人；4：股东</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>用户姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "idnumber",
+            "description": "<p>身份证号码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "sex",
+            "description": "<p>默认为：0（无）；男为：1；女为：2</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "refereeid",
+            "description": "<p>用户推荐人的手机号码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "banknumber",
+            "description": "<p>银行卡卡号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "banktype",
+            "description": "<p>银行卡开户行</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "certification",
+            "description": "<p>用户认证状态，默认为：0（未认证）</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "groupTitle": "user",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/user/getUserInfo.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/user/infoUser.do",
+    "title": "修改用户",
+    "name": "infoUser",
+    "group": "user",
+    "version": "1.0.0",
+    "description": "<p>修改用户</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idnumber",
+            "description": "<p>身份证号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sex",
+            "description": "<p>性别</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "banknumber",
+            "description": "<p>卡号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "banktype",
+            "description": "<p>开户行</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>修改成功</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "groupTitle": "user",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/user/infoUser.do"
       }
     ]
   },

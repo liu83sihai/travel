@@ -305,17 +305,17 @@ public class UserController extends BaseController {
 	 */ 
 	@RequestMapping(value = "/shareList", method = RequestMethod.POST)
 	public Result<List<Map<String, Object>>> shareList() {
-		String pageNum = getString("pageNum");
+		String pageNums = getString("pageNum");
 		String row = getString("rows");
 		// 不传 默认查询第一页
-		if (StringUtils.isBlank(pageNum)) {
-			pageNum = "1";
+		if (StringUtils.isNotBlank(pageNums)) {
+			pageNum = Integer.parseInt(pageNums);
 		}
 		if (StringUtils.isNotBlank(row)) {
 			rows = Integer.parseInt(row);
 		}
 		
-		int offset = (Integer.parseInt(pageNum) - 1) * rows;
+		int offset = (int) ((pageNum - 1) * rows);
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("offset", offset);
 		paramMap.put("rows", rows);
@@ -325,11 +325,33 @@ public class UserController extends BaseController {
 		return Result.successResult("分享排榜", shareList);
 	}
 
-	/**
-	 * 首页，查询用户基本信息
+	/** 
+	 * @api {POST} /user/getUserInfo.do 获取用户信息
+	 * @apiName getUserInfo
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 获取用户信息
 	 * 
-	 * @return
-	 */
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {int} id 用户ID
+	 * @apiSuccess {String} token 用户token
+	 *
+	 *@apiSuccess {int} userLevel 用户等级，默认为：0：普通用户；1：会员;2：VIP；3：城市合伙人；4：股东
+	 *@apiSuccess {String} mobile 手机号
+	 *@apiSuccess {String} trueName 用户姓名
+	 *@apiSuccess {String} idnumber 身份证号码
+	 *@apiSuccess {String} sex 默认为：0（无）；男为：1；女为：2
+	 *@apiSuccess {String} refereeid 用户推荐人的手机号码
+	 *@apiSuccess {String} banknumber 银行卡卡号
+	 *@apiSuccess {String} banktype 银行卡开户行
+	 *@apiSuccess {String} certification 用户认证状态，默认为：0（未认证）
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	}
+	 */ 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public Result<?> getUserInfo() {
 		Integer userId = getUserId();
@@ -390,13 +412,13 @@ public class UserController extends BaseController {
 		topInfoMap.put("apply", 0);
 
 		// DCE最新消息
-		NewsDo message = newsService.selectLatestNews();
-		if (message != null) {
-			topInfoMap.put("dceMsg", message.getTitle());
-		} else {
-
-			topInfoMap.put("dceMsg", "");
-		}
+//		NewsDo message = newsService.selectLatestNews();
+//		if (message != null) {
+//			topInfoMap.put("dceMsg", message.getTitle());
+//		} else {
+//
+//			topInfoMap.put("dceMsg", "");
+//		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("userInfo", newUserDo);
 		map.put("userAccountDo", accountInfo);
@@ -420,13 +442,29 @@ public class UserController extends BaseController {
 		return BigDecimal.ZERO;
 	}
 
-	/**
-	 * 用户信息认证
+	/** 
+	 * @api {POST} /user/authentication.do 用户认证
+	 * @apiName authentication
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户认证
 	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/Authentication", method = RequestMethod.POST)
-	public Result<?> Authentication() {
+	 * @apiParam {String} trueName 真名
+	 * @apiParam {String} mobile 手机
+	 * @apiParam {String} idnumber 身份证号
+	 * @apiParam {String} sex 性别
+	 * @apiParam {String} banknumber 卡号
+	 * @apiParam {String} banktype 开户行
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} msg 认证成功
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {}
+	 */ 
+	@RequestMapping(value = "/authentication", method = RequestMethod.POST)
+	public Result<?> authentication() {
 		try {
 
 			Integer userId = getUserId();
@@ -686,11 +724,27 @@ public class UserController extends BaseController {
 		return Result.successResult("查询成功", map);
 	}
 
-	/**
-	 * 修改用户信息
+	/** 
+	 * @api {POST} /user/infoUser.do 修改用户
+	 * @apiName infoUser
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 修改用户
 	 * 
-	 * @return
-	 */
+	 * @apiParam {String} trueName 真名
+	 * @apiParam {String} mobile 手机
+	 * @apiParam {String} idnumber 身份证号
+	 * @apiParam {String} sex 性别
+	 * @apiParam {String} banknumber 卡号
+	 * @apiParam {String} banktype 开户行
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} msg 修改成功
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {}
+	 */ 
 	@RequestMapping(value = "/infoUser", method = RequestMethod.POST)
 	public Result<?> updateUser() {
 		try {
