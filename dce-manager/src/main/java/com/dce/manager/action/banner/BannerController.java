@@ -138,31 +138,6 @@ public class BannerController extends BaseAction{
     							  HttpServletRequest request, 
     							  HttpServletResponse response) {
         logger.info("----saveBanner2------");
-        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
-                request.getSession().getServletContext());
-        //检查form中是否有enctype="multipart/form-data"
-        if(multipartResolver.isMultipart(request))
-        {
-            //将request变成多部分request
-            MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
-           //获取multiRequest 中所有的文件名
-            Iterator iter=multiRequest.getFileNames();
-             
-            while(iter.hasNext())
-            {
-                //一次遍历所有文件
-                MultipartFile file=multiRequest.getFile(iter.next().toString());
-                if(file!=null)
-                {
-                    String path="E:/springUpload"+file.getOriginalFilename();
-                    //上传
-//                    file.transferTo(new File(path));
-                }
-                 
-            }
-           
-        }
-        
         if(files != null ){
         	MultipartFile icoImage = files;
 			if (!icoImage.isEmpty()) {

@@ -51,7 +51,7 @@ public class CommonIntf extends BaseController {
 
 	 /** 
      *  
-     * @api {get} /rest/commonIntf/sendMessage 获取短信验证码
+     * @api {get}  /commonIntf/sendMessage.do 获取短信验证码
      * @apiName sendMessage  
      * @apiGroup Common 
      * @apiVersion 1.0.0 
@@ -112,7 +112,7 @@ public class CommonIntf extends BaseController {
 
 	/** 
 	 * 
-	 * @api {post} /rest/commonIntf/uploadImg 上传文件 
+	 * @api {post}  /commonIntf/uploadImg.do 上传文件 
 	 * @apiName uploadImg  
 	 * @apiGroup Common 
 	 * @apiVersion 1.0.0 

@@ -212,10 +212,10 @@ function save_Banner(){
 		$.messager.alert("错误", "请填写类型");
 		return;
 	}
-    if(icoImages == null || icoImages == ""){
-		$.messager.alert("错误", "请上传图片");
-		return;
-	}
+//    if(icoImages == null || icoImages == ""){
+//		$.messager.alert("错误", "请上传图片");
+//		return;
+//	}
  
     
 

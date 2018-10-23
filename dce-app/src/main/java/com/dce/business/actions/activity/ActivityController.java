@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.notice.NoticeDo;
-
+import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.activity.IActivityService;
 import com.dce.business.entity.activity.ActivityDo;
 /**
@@ -32,7 +33,7 @@ import com.dce.business.entity.activity.ActivityDo;
  */
 @RestController
 @RequestMapping("/activity")
-public class ActivityController {
+public class ActivityController extends BaseController{
 	private final static Logger logger = Logger.getLogger(ActivityController.class);
 	@Resource
 	private IActivityService activityService;
@@ -62,6 +63,8 @@ public class ActivityController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 活动风彩列表
 	 *  
+	 * @apiUse pageParam  
+	 *   
 	 * @apiUse activitySucces  
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
@@ -91,33 +94,47 @@ public class ActivityController {
 	 */ 
 	 @RequestMapping("/index")
 	 
-	 public Result<?> list() {
-		 logger.info("查询活动风彩...");
-	
-		 ActivityDo activityDo = new ActivityDo();
-		 List<ActivityDo> activityList = activityService.selectActivity(activityDo);
-		 List<Map<String, Object>> result = new ArrayList<>();
-	        if (!CollectionUtils.isEmpty(activityList)) {
-	            for (ActivityDo activity : activityList) {
+	public Result<?> list() {
+		logger.info("查询活动风彩...");
 
-	                Map<String, Object> map = new HashMap<>();
-	                map.put("id", activity.getId());
-	                map.put("userId", activity.getUserId());
-	                map.put("synopsis", activity.getSynopsis());
-	                map.put("content", activity.getContent());
-	                map.put("images", activity.getImages());
-	                map.put("hitNum", activity.getHitNum());
-	                map.put("createDate", activity.getCreateDate());
-	                map.put("createName", activity.getCreateName());
-	                map.put("modifyDate", activity.getModifyDate());
-	                map.put("modifyName", activity.getModifyName());
-	                map.put("status", activity.getStatus());
-	                map.put("remark", activity.getRemark());
-	                result.add(map);
-	            }
-	        }
-		 return Result.successResult("查询成功", result);
-	 }
+		String pageNums = getString("pageNum");
+		String row = getString("rows");
+		// 不传 默认查询第一页
+		if (StringUtils.isNotBlank(pageNums)) {
+			pageNum = Long.parseLong(pageNums);
+		}
+		if (StringUtils.isNotBlank(row)) {
+			rows = Long.parseLong(row);
+		}
+
+		 Map<String,Object> paramMap = new HashMap<String,Object>();
+		PageDo<ActivityDo> activityPage = new PageDo<ActivityDo>();
+		activityPage.setCurrentPage(pageNum);
+		activityPage.setPageSize(rows);
+		PageDo<ActivityDo> pageDo = activityService.getActivityPage(paramMap, activityPage);
+		List<ActivityDo> activityList = pageDo.getModelList();
+		List<Map<String, Object>> result = new ArrayList<>();
+		if (!CollectionUtils.isEmpty(activityList)) {
+			for (ActivityDo activity : activityList) {
+
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", activity.getId());
+				map.put("userId", activity.getUserId());
+				map.put("synopsis", activity.getSynopsis());
+				map.put("content", activity.getContent());
+				map.put("images", activity.getImages());
+				map.put("hitNum", activity.getHitNum());
+				map.put("createDate", activity.getCreateDate());
+				map.put("createName", activity.getCreateName());
+				map.put("modifyDate", activity.getModifyDate());
+				map.put("modifyName", activity.getModifyName());
+				map.put("status", activity.getStatus());
+				map.put("remark", activity.getRemark());
+				result.add(map);
+			}
+		}
+		return Result.successResult("查询成功", result);
+	}
 	 
 	 /** 
 	  * @api {GET} /activity/getId.do 获取活动风彩

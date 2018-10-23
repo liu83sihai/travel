@@ -12,7 +12,8 @@ import com.dce.business.common.util.StringUtil;
 public class BaseController {
 	
 	
-	public  int rows = 10;
+	public  long rows = 10;
+	public  long pageNum = 1;
     protected String getString(String name) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String paraVal = request.getParameter(name);
