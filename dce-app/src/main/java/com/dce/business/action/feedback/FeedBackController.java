@@ -27,6 +27,32 @@ public class FeedBackController extends BaseController {
 	@Resource
 	private IUserService userService;
 
+	/** 
+	 * @api {POST} /feedBack/addFeedBack.do 用户反馈
+	 * @apiName addFeedBack
+	 * @apiGroup feedBack 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户反馈 
+	 *  
+	 * @apiParam  {java.lang.Integer}  userId 当前用户ID,
+	 * @apiParam  {java.lang.String}  feedBackContent 反馈内容
+	 *  
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} model 返回成功信息
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "result": {
+	 *	"model": {
+	 *		
+	 * 	},
+	 *	  "status": {
+	 *	    "code": 200,
+	 *	    "msg": "请求成功"
+	 *	  }
+	 *	}
+	 */ 
 	@RequestMapping(value = "/addFeedBack", method = RequestMethod.POST)
 	public Result<?> addApply() {
 		logger.info("用户反馈....");

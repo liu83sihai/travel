@@ -15,6 +15,10 @@
 		<result property="modifyName" column="modify_name" />
 		<result property="status" column="status" />
 		<result property="remark" column="remark" />
+		<result property="activityGood" column="activityGood" />
+		<result property="userName" column="user_name" />
+		<result property="trueName" column="true_name" />
+		<result property="userFace" column="user_face" />
 	</resultMap>
 
 	<select id="getById" parameterType="int" resultMap="activityResultMap">
@@ -23,8 +27,11 @@
 	</select>
 
 	<select id="selectActivity" parameterType="Map" resultMap="activityResultMap">
-		SELECT * 
-		  FROM tr_activity
+		SELECT a.*,u.user_name,u.true_name,u.user_face,
+		  (select count(1) from  tr_activity_good g 
+		   where g.activity_id = a.id and g.user_id=#{user_good} ) activityGood
+		  FROM tr_activity a
+		  left join ct_user u on a.user_id = u.id
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
 				AND id = #{id}
@@ -66,8 +73,11 @@
 
 	</select>
 	<select id="selectActivityByPage" parameterType="Map" resultMap="activityResultMap">
-		SELECT * 
-		  FROM tr_activity
+		SELECT a.*,u.user_name,u.true_name,u.user_face,
+		  (select count(1) from  tr_activity_good g 
+		   where g.activity_id = a.id and g.user_id=#{user_good} ) activityGood 
+		  FROM tr_activity a
+		  left join ct_user u on a.user_id = u.id
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
 				AND id = #{id}

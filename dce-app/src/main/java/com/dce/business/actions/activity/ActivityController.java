@@ -22,7 +22,9 @@ import com.dce.business.common.result.Result;
 import com.dce.business.entity.notice.NoticeDo;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.activity.IActivityService;
+import com.dce.business.service.activityGood.IActivityGoodService;
 import com.dce.business.entity.activity.ActivityDo;
+import com.dce.business.entity.activityGood.ActivityGoodDo;
 /**
  * 活动风彩管理授权业务实现类
  *
@@ -37,6 +39,8 @@ public class ActivityController extends BaseController{
 	private final static Logger logger = Logger.getLogger(ActivityController.class);
 	@Resource
 	private IActivityService activityService;
+	 @Resource
+	private IActivityGoodService activityGoodService;
 	
 	/**
 	 *  @apiDefine activitySucces
@@ -44,7 +48,7 @@ public class ActivityController extends BaseController{
 	 *	@apiSuccess {java.lang.Integer}  userId 用户ID
 	 *	@apiSuccess {java.lang.String}  synopsis 描述
 	 *	@apiSuccess {java.lang.String}  content 内容
-	 *	@apiSuccess {java.lang.String}  images 图片
+	 *	@apiSuccess {java.lang.String}  images 图片多张图片以","号相隔 例a.png,b.png
 	 *	@apiSuccess {java.lang.Integer}  hitNum 点赞数
 	 *	@apiSuccess {java.sql.Date}  createDate 创建时间
 	 *	@apiSuccess {java.lang.String}  createName 创建人
@@ -52,6 +56,10 @@ public class ActivityController extends BaseController{
 	 *	@apiSuccess {java.lang.String}  modifyName 更新人
 	 *	@apiSuccess {java.lang.Integer}  status 状态
 	 *	@apiSuccess {java.lang.String}  remark 备注
+	 *	@apiSuccess {java.lang.String}  activityGood 用户是否点赞 0：未点赞 1：已点赞
+	 *	@apiSuccess {java.lang.String}  userName 用户名
+	 *	@apiSuccess {java.lang.String}  trueName 真名
+	 *	@apiSuccess {java.lang.String}  userFace 用户头像
 	 */
 	
 	
@@ -64,6 +72,8 @@ public class ActivityController extends BaseController{
 	 * @apiDescription 活动风彩列表
 	 *  
 	 * @apiUse pageParam  
+	 * @apiParam  {java.lang.Integer}  userId 当前用户ID,用户登录ID,如果未登录为0
+	 * @apiParam  {java.lang.Integer}  getUserId 用户活动风采列表
 	 *   
 	 * @apiUse activitySucces  
 	 * @apiUse RETURN_MESSAGE
@@ -97,6 +107,11 @@ public class ActivityController extends BaseController{
 	public Result<?> list() {
 		logger.info("查询活动风彩...");
 
+		String userId = getString("userId");
+		if(StringUtils.isBlank(userId)){
+			userId = "0";
+		}
+		
 		String pageNums = getString("pageNum");
 		String row = getString("rows");
 		// 不传 默认查询第一页
@@ -108,9 +123,13 @@ public class ActivityController extends BaseController{
 		}
 
 		 Map<String,Object> paramMap = new HashMap<String,Object>();
+		 paramMap.put("user_good", Integer.valueOf(userId));
+		 
 		PageDo<ActivityDo> activityPage = new PageDo<ActivityDo>();
 		activityPage.setCurrentPage(pageNum);
 		activityPage.setPageSize(rows);
+		
+		
 		PageDo<ActivityDo> pageDo = activityService.getActivityPage(paramMap, activityPage);
 		List<ActivityDo> activityList = pageDo.getModelList();
 		List<Map<String, Object>> result = new ArrayList<>();
@@ -130,6 +149,10 @@ public class ActivityController extends BaseController{
 				map.put("modifyName", activity.getModifyName());
 				map.put("status", activity.getStatus());
 				map.put("remark", activity.getRemark());
+				map.put("activityGood", activity.getActivityGood());
+				map.put("userName", activity.getUserName());
+				map.put("trueName", activity.getTrueName());
+				map.put("userFace", activity.getUserFace());
 				result.add(map);
 			}
 		}
@@ -195,7 +218,7 @@ public class ActivityController extends BaseController{
 		 *  
 		 *	@apiParam  {java.lang.Integer}  userId 用户ID
 		 *	@apiParam  {java.lang.String}  content 内容
-		 *	@apiParam  {java.lang.String}  images 图片
+		 *	@apiParam  {java.lang.String}  images 图片多张图片以","号相隔 例a.png,b.png
 		 *
 		 * @apiUse activitySucces  
 		 * @apiUse RETURN_MESSAGE
@@ -320,5 +343,97 @@ public class ActivityController extends BaseController{
 		 activityService.deleteById(activityDo.getId());
 		 return Result.successResult("风采删除成功");
 	 }
+	 
+	
+	 //==========================活动点赞========================================		
+		/**
+		 *  @apiDefine activityGoodSucces
+		 *	@apiSuccess {java.lang.Integer}  id id
+		 *	@apiSuccess {java.lang.Integer}  userId 用户ID
+		 *	@apiSuccess {java.lang.Integer}  activityId 风采ID
+		 *	@apiSuccess {java.sql.Date}  createDate 创建时间
+		 */
+		
+		/**
+		 *  @apiDefine activityGoodParam
+		 *	@apiParam {java.lang.Integer}  userId 用户ID
+		 *	@apiParam {java.lang.Integer}  activityId 风采ID
+		 */
+		
+		 
+		 /** 
+			 * @api {POST} /activity/addGood.do 添加活动点赞
+			 * @apiName addGood
+			 * @apiGroup activity
+			 * @apiVersion 1.0.0 
+			 * @apiDescription 添加活动点赞
+			 *  
+			 * @apiUse  activityGoodParam 
+			 *  
+			 * @apiUse  activityGoodSucces  
+			 * @apiUse RETURN_MESSAGE
+			 * @apiSuccessExample Success-Response: 
+			 *  HTTP/1.1 200 OK 
+			 * {
+			 *  "code": 0
+			 *	"msg": 返回成功,
+			 *	"data": {
+			 *	    []
+			 *	  }
+			 *	}
+			 */ 
+		 @RequestMapping(value = "/addGood", method = RequestMethod.POST)
+		 public Result<?> addGood(ActivityGoodDo  activityGoodDo,HttpServletRequest request, HttpServletResponse response) {
+			 
+			 if(null == activityGoodDo.getUserId() || 0 == activityGoodDo.getUserId()){
+				 return Result.failureResult("用户ID不能为空!");
+			 }
+			 if(null == activityGoodDo.getActivityId() || 0 == activityGoodDo.getActivityId()){
+				 return Result.failureResult("活动ID不能为空!");
+			 }
+			 List<ActivityGoodDo> activityGoodList = activityGoodService.selectActivityGood(activityGoodDo);
+			 if(activityGoodList.size() > 0){
+				 return Result.failureResult("当前活动已点赞!");
+			 }
+			 activityGoodDo.setCreateDate(new Date(System.currentTimeMillis()));
+			 activityGoodService.addActivityGood(activityGoodDo);
+			 return Result.successResult("活动点赞增加成功",activityGoodDo);
+		 }
+		
+		 
+		 /** 
+		  * @api {POST} /activity/delGood.do 删除活动点赞
+		  * @apiName delGood
+		  * @apiGroup activity
+		  * @apiVersion 1.0.0 
+		  * @apiDescription 删除活动点赞
+		  *  
+		  * @apiUse  activityGoodParam 
+		  *  
+		  * @apiUse RETURN_MESSAGE
+		  * @apiSuccessExample Success-Response: 
+		  *  HTTP/1.1 200 OK 
+		  * {
+		  *  "code": 0
+		  *	"msg": 删除成功,
+		  *	"data": {}
+		  *	}
+		  */ 
+		 @RequestMapping(value = "/delGood", method = RequestMethod.POST)
+		 public Result<?> del( ActivityGoodDo  activityGoodDo,HttpServletRequest request, HttpServletResponse response) {
+			 
+			 if(null == activityGoodDo.getUserId() || 0 == activityGoodDo.getUserId()){
+				 return Result.failureResult("用户ID不能为空!");
+			 }
+			 if(null == activityGoodDo.getActivityId() || 0 == activityGoodDo.getActivityId()){
+				 return Result.failureResult("活动ID不能为空!");
+			 }
+			 List<ActivityGoodDo> activityGoodList = activityGoodService.selectActivityGood(activityGoodDo);
+			 if(activityGoodList.size() < 1){
+				 return Result.failureResult("当前活动未点赞!");
+			 }
+			 activityGoodService.deleteById(activityGoodDo);
+			 return Result.successResult("活动点赞删除成功");
+		 }
 
 }

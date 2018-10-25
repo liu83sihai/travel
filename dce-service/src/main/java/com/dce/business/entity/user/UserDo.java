@@ -159,6 +159,11 @@ public class UserDo {
 	// 用户等级
 	private Byte userLevel;
 	private String displayUserLevel;
+	
+	//身份证正反面
+	private String idcardFront;
+	private String idcardBack;
+	private String userImage;
 
 	public String getDisplayUserLevel() {
 		displayUserLevel = null;
@@ -1133,6 +1138,23 @@ public class UserDo {
 		this.isActivated = isActivated;
 	}
 
+	
+	public String getIdcardFront() {
+		return idcardFront;
+	}
+
+	public void setIdcardFront(String idcardFront) {
+		this.idcardFront = idcardFront;
+	}
+
+	public String getIdcardBack() {
+		return idcardBack;
+	}
+
+	public void setIdcardBack(String idcardBack) {
+		this.idcardBack = idcardBack;
+	}
+
 	/**
 	 * 判断是否激活
 	 * 
@@ -1152,6 +1174,16 @@ public class UserDo {
 
 	public void setRefereeUserMobile(String refereeUserMobile) {
 		this.refereeUserMobile = refereeUserMobile;
+	}
+	
+	
+
+	public String getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
 	}
 
 	@Override

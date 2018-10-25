@@ -23,7 +23,10 @@ public class ActivityDo  implements java.io.Serializable{
 	private java.lang.String modifyName;
 	private java.lang.Integer status;
 	private java.lang.String remark;
-	
+	private java.lang.Integer activityGood;
+	private String userName;
+	private String trueName;
+	private java.lang.Integer userFace;
 
 
 	public void setId(java.lang.Integer id) {
@@ -134,6 +137,39 @@ public class ActivityDo  implements java.io.Serializable{
 	}
 	
 	
+
+	public java.lang.Integer getActivityGood() {
+		return activityGood;
+	}
+
+	public void setActivityGood(java.lang.Integer activityGood) {
+		this.activityGood = activityGood;
+	}
+
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getTrueName() {
+		return trueName;
+	}
+
+	public void setTrueName(String trueName) {
+		this.trueName = trueName;
+	}
+
+	public java.lang.Integer getUserFace() {
+		return userFace;
+	}
+
+	public void setUserFace(java.lang.Integer userFace) {
+		this.userFace = userFace;
+	}
 
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)

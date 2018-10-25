@@ -16,7 +16,7 @@ public class GeneratorMain {
 //		g.printAllTableNames();				//打印数据库中的表名称
 		
 		g.clean();							//删除生成器的输出目录
-		g.generateByTable("tr_supplier");	//通过数据库表生成文件,注意: oracle 需要指定schema及注意表名的大小写.
+		g.generateByTable("tr_activity_good");	//通过数据库表生成文件,注意: oracle 需要指定schema及注意表名的大小写.
 //		g.generateByAllTable();				//自动搜索数据库中的所有表并生成文件
 //		g.generateByClass(Blog.class);
 		

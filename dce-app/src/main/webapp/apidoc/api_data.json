@@ -101,7 +101,7 @@
     "groupTitle": "Common",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/commonIntf/sendMessage.do"
+        "url": "http://127.0.0.1:8080/dce-app/commonIntf/sendMessage.do"
       }
     ]
   },
@@ -196,7 +196,7 @@
     "groupTitle": "Common",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/commonIntf/uploadImg.do"
+        "url": "http://127.0.0.1:8080/dce-app/commonIntf/uploadImg.do"
       }
     ]
   },
@@ -260,7 +260,7 @@
     "groupTitle": "aboutUs",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/aboutUs/index.do"
+        "url": "http://127.0.0.1:8080/dce-app/aboutUs/index.do"
       }
     ]
   },
@@ -272,6 +272,40 @@
     "group": "activity",
     "version": "1.0.0",
     "description": "<p>活动风彩列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>当前用户ID,用户登录ID,如果未登录为0</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "getUserId",
+            "description": "<p>用户活动风采列表</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
@@ -315,7 +349,7 @@
             "type": "java.lang.String",
             "optional": false,
             "field": "images",
-            "description": "<p>图片</p>"
+            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
           },
           {
             "group": "Success 200",
@@ -368,6 +402,34 @@
           },
           {
             "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "activityGood",
+            "description": "<p>用户是否点赞 0：未点赞 1：已点赞</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userFace",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
@@ -394,29 +456,9 @@
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/activity/index.do"
+        "url": "http://127.0.0.1:8080/dce-app/activity/index.do"
       }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "rows",
-            "description": "<p>展示的条数</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "pageNum",
-            "description": "<p>页码</p>"
-          }
-        ]
-      }
-    }
+    ]
   },
   {
     "type": "POST",
@@ -448,7 +490,7 @@
             "type": "java.lang.String",
             "optional": false,
             "field": "images",
-            "description": "<p>图片</p>"
+            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
           }
         ]
       }
@@ -496,7 +538,7 @@
             "type": "java.lang.String",
             "optional": false,
             "field": "images",
-            "description": "<p>图片</p>"
+            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
           },
           {
             "group": "Success 200",
@@ -549,6 +591,34 @@
           },
           {
             "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "activityGood",
+            "description": "<p>用户是否点赞 0：未点赞 1：已点赞</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userFace",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
@@ -575,9 +645,107 @@
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/activity/add.do"
+        "url": "http://127.0.0.1:8080/dce-app/activity/add.do"
       }
     ]
+  },
+  {
+    "type": "POST",
+    "url": "/activity/addGood.do",
+    "title": "添加活动点赞",
+    "name": "addGood",
+    "group": "activity",
+    "version": "1.0.0",
+    "description": "<p>添加活动点赞</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    []\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "activityId",
+            "description": "<p>风采ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "createDate",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "groupTitle": "activity",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/activity/addGood.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "activityId",
+            "description": "<p>风采ID</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "POST",
@@ -638,9 +806,79 @@
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/activity/del.do"
+        "url": "http://127.0.0.1:8080/dce-app/activity/del.do"
       }
     ]
+  },
+  {
+    "type": "POST",
+    "url": "/activity/delGood.do",
+    "title": "删除活动点赞",
+    "name": "delGood",
+    "group": "activity",
+    "version": "1.0.0",
+    "description": "<p>删除活动点赞</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 删除成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "groupTitle": "activity",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/activity/delGood.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "activityId",
+            "description": "<p>风采ID</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "POST",
@@ -720,7 +958,7 @@
             "type": "java.lang.String",
             "optional": false,
             "field": "images",
-            "description": "<p>图片</p>"
+            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
           },
           {
             "group": "Success 200",
@@ -773,6 +1011,34 @@
           },
           {
             "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "activityGood",
+            "description": "<p>用户是否点赞 0：未点赞 1：已点赞</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userFace",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
@@ -799,7 +1065,7 @@
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/activity/edit.do"
+        "url": "http://127.0.0.1:8080/dce-app/activity/edit.do"
       }
     ]
   },
@@ -867,7 +1133,7 @@
             "type": "java.lang.String",
             "optional": false,
             "field": "images",
-            "description": "<p>图片</p>"
+            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
           },
           {
             "group": "Success 200",
@@ -920,6 +1186,34 @@
           },
           {
             "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "activityGood",
+            "description": "<p>用户是否点赞 0：未点赞 1：已点赞</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userFace",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
@@ -946,7 +1240,315 @@
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/activity/getId.do"
+        "url": "http://127.0.0.1:8080/dce-app/activity/getId.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/address/addAddress.do",
+    "title": "添加收货地址",
+    "name": "addAddress",
+    "group": "address",
+    "version": "1.0.0",
+    "description": "<p>添加收货地址</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>当前用户ID,用户登录ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "addressId",
+            "description": "<p>收货地址id，id为空是新记录 新增， 非空是已经存在的记录调用修改</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>收货人姓名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userPhone",
+            "description": "<p>收货人手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>收货人所在的：省-市-区</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "addressDetails",
+            "description": "<p>收货地址详情</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
+    "groupTitle": "",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/address/addAddress.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/address/delAddress.do",
+    "title": "删除地址",
+    "name": "delAddress",
+    "group": "address",
+    "version": "1.0.0",
+    "description": "<p>删除地址</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "addressid",
+            "description": "<p>地址主键ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "addressid",
+            "description": "<p>地址id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>收货姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userphone",
+            "description": "<p>收货电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>收货地址（省市区）</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "addressDetails",
+            "description": "<p>收货地址详情</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
+    "groupTitle": "",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/address/delAddress.do"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/address/listAddress.do",
+    "title": "用户收货地址列表",
+    "name": "listAddress",
+    "group": "address",
+    "version": "1.0.0",
+    "description": "<p>用户收货地址列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>当前用户ID,用户登录ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "addressid",
+            "description": "<p>地址id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>收货姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userphone",
+            "description": "<p>收货电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>收货地址（省市区）</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "addressDetails",
+            "description": "<p>收货地址详情</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
+    "groupTitle": "",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/address/listAddress.do"
       }
     ]
   },
@@ -1094,9 +1696,191 @@
     "groupTitle": "banner",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/banner/index.do"
+        "url": "http://127.0.0.1:8080/dce-app/banner/index.do"
       }
     ]
+  },
+  {
+    "type": "POST",
+    "url": "/feedBack/addFeedBack.do",
+    "title": "用户反馈",
+    "name": "addFeedBack",
+    "group": "feedBack",
+    "version": "1.0.0",
+    "description": "<p>用户反馈</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>当前用户ID,</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "feedBackContent",
+            "description": "<p>反馈内容</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "model",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"result\": {\n\t\"model\": {\n\t\t\n\t},\n\t  \"status\": {\n\t    \"code\": 200,\n\t    \"msg\": \"请求成功\"\n\t  }\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/action/feedback/FeedBackController.java",
+    "groupTitle": "feedBack",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/feedBack/addFeedBack.do"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/news/list.do",
+    "title": "新闻列表",
+    "name": "index",
+    "group": "news",
+    "version": "1.0.0",
+    "description": "<p>新闻列表</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>新闻ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>内容</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "createDate",
+            "description": "<p>日期</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>图片</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/news/NewsController.java",
+    "groupTitle": "news",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/news/list.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "GET",
@@ -1193,7 +1977,7 @@
     "groupTitle": "notice",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/notice/list.do"
+        "url": "http://127.0.0.1:8080/dce-app/notice/list.do"
       }
     ]
   },
@@ -1410,7 +2194,7 @@
     "groupTitle": "supplier",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/supplier/getId.do"
+        "url": "http://127.0.0.1:8080/dce-app/supplier/getId.do"
       }
     ]
   },
@@ -1465,7 +2249,7 @@
             "type": "java.lang.String",
             "optional": false,
             "field": "images",
-            "description": "<p>图片</p>"
+            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
           },
           {
             "group": "Success 200",
@@ -1518,6 +2302,34 @@
           },
           {
             "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "activityGood",
+            "description": "<p>用户是否点赞 0：未点赞 1：已点赞</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "trueName",
+            "description": "<p>真名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userFace",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
@@ -1544,7 +2356,7 @@
     "groupTitle": "supplier",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/supplier/index.do"
+        "url": "http://127.0.0.1:8080/dce-app/supplier/index.do"
       }
     ],
     "parameter": {
@@ -1634,7 +2446,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/alterpass.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/alterpass.do"
       }
     ]
   },
@@ -1649,6 +2461,13 @@
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -1675,7 +2494,7 @@
             "type": "String",
             "optional": false,
             "field": "sex",
-            "description": "<p>性别</p>"
+            "description": "<p>性别 1男 2女</p>"
           },
           {
             "group": "Parameter",
@@ -1690,6 +2509,27 @@
             "optional": false,
             "field": "banktype",
             "description": "<p>开户行</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面像</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证背面像</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userImage",
+            "description": "<p>用户图像</p>"
           }
         ]
       }
@@ -1732,7 +2572,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/authentication.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/authentication.do"
       }
     ]
   },
@@ -1822,7 +2662,28 @@
             "type": "String",
             "optional": false,
             "field": "certification",
-            "description": "<p>用户认证状态，默认为：0（未认证）</p>"
+            "description": "<p>用户认证状态，默认为：0（未认证） 1:已实名认证</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "userImage",
+            "description": "<p>用记头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>用户身份证正面</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>用户身份背面</p>"
           },
           {
             "group": "Success 200",
@@ -1859,7 +2720,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/getUserInfo.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/getUserInfo.do"
       }
     ]
   },
@@ -1957,7 +2818,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/infoUser.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/infoUser.do"
       }
     ]
   },
@@ -2055,7 +2916,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/login.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/login.do"
       }
     ]
   },
@@ -2105,7 +2966,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/logout.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/logout.do"
       }
     ]
   },
@@ -2217,7 +3078,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/reg.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/reg.do"
       }
     ]
   },
@@ -2302,7 +3163,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/shareList.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/shareList.do"
       }
     ],
     "parameter": {
@@ -2392,7 +3253,7 @@
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/user/updPayPass.do"
+        "url": "http://127.0.0.1:8080/dce-app/user/updPayPass.do"
       }
     ]
   }

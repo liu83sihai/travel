@@ -36,9 +36,30 @@ public class NewsController extends BaseController {
  
 
     /** 
-     * 新闻公告列表
-     * @return  
-     */
+	 * @api {GET} /news/list.do 新闻列表
+	 * @apiName index
+	 * @apiGroup news 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 新闻列表
+	 *  
+	 * @apiUse pageParam  
+	 *   
+	  *	@apiSuccess {java.lang.Integer}  id 新闻ID
+	  *	@apiSuccess {String}  title 标题
+	  *	@apiSuccess {String}  content 内容
+	  *	@apiSuccess {String}  createDate 日期
+	  *	@apiSuccess {String}  content 内容
+	  *	@apiSuccess {String}  image 图片
+	  *
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "code": 0
+	 *	"msg": 返回成功,
+	 *	"data": {}
+	 *	}
+	 */ 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result<?> list() {
 
@@ -67,7 +88,7 @@ public class NewsController extends BaseController {
                 map.put("id", message.getId());
                 map.put("title", message.getTitle());
                 map.put("content", message.getContent());
-                map.put("create_date", message.getCreateDate());
+                map.put("createDate", message.getCreateDate());
                 map.put("image", message.getImage());
                 result.add(map);
             }

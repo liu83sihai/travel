@@ -1,5 +1,7 @@
 package com.dce.business.entity.user;
 
+import java.util.Date;
+
 /**
  * 收货地址实体类
  * @author XEY
@@ -44,17 +46,11 @@ public class UserAddressDo {
 
     private Byte addressflag;
 
-    private String createtime;
+    private Date createtime;
 
-    private String updateTime;
+    private Date updateTime;
     
-    public String getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
+    
 
 	public String getAddressDetails() {
 		return addressDetails;
@@ -168,21 +164,31 @@ public class UserAddressDo {
         this.addressflag = addressflag;
     }
 
-    public String getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime;
-    }
     
-    public String getRemark() {
-        return remark;
-    }
 
-    public void setRemark(String remark) {
-        this.remark = createtime;
-    }
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Date getCreatetime() {
+		return createtime;
+	}
+
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 
 	@Override
 	public String toString() {

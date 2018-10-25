@@ -12,6 +12,7 @@ import com.dce.business.common.result.Result;
 import com.dce.business.common.util.DataEncrypt;
 import com.dce.business.dao.sms.ISmsDao;
 import com.dce.business.dao.user.IUserDao;
+import com.dce.business.entity.sms.SmsDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.sms.ISmsService;
 
@@ -31,9 +32,9 @@ public class SmsServiceImpl implements ISmsService{
 	//page： 扫描支付： scan，  卖单：  sale，  美元转让：  tran
 	@Override
 	public void send(Integer userId, String page) {
-		//UserDo user = userDao.selectByPrimaryKey(userId);
+		UserDo user = userDao.selectByPrimaryKey(userId);
 		try {
-			/*
+			 
 			String smscode = IdentifyCodeGenerator.generateIdentifyCode(4);
 			if(StringUtils.isEmpty(user.getMobile())){
 				new BusinessException("你还未设置手机号码");
@@ -50,7 +51,7 @@ public class SmsServiceImpl implements ISmsService{
 			}else{
 				 new BusinessException("发送失败");
 			}
-			*/
+			 
 		} catch (Throwable e) {
 			logger.error(e.getMessage());
 			throw new BusinessException("发送失败");

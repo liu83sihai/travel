@@ -3,6 +3,7 @@ package com.dce.business.actions.common;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,11 +18,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -49,6 +53,11 @@ public class CommonIntf extends BaseController {
 	 */
 	private static final Logger logger = Logger.getLogger(CommonIntf.class);
 
+	@Value("#{sysconfig['uploadPath']}")
+	private String uploadPath;
+	
+	@Value("#{sysconfig['readImgUrl']}")
+	private String readImgUrl;
 	 /** 
      *  
      * @api {get}  /commonIntf/sendMessage.do 获取短信验证码
@@ -139,34 +148,26 @@ public class CommonIntf extends BaseController {
 	 */  
 	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> uploadImg(@RequestParam MultipartFile  fileName,
+	public Result<?> uploadImg(@RequestPart(value="fileData")  CommonsMultipartResolver  fileData,
+			@RequestParam(value="fileName") String fileName,
 			HttpServletRequest request){
 	
-		// 获取web应用根路径,也可以直接指定服务器任意盘符路径
-		String rootPath = request.getSession().getServletContext().getRealPath("/");
-		
 		//保存在项目的路径上
-		String savePath = "/upload/cc/images/";
+		String savePath =uploadPath +  "/app/images/";
 		
-		File file1 = new File(rootPath + savePath);
+		File file1 = new File(savePath);
 		if (!file1.exists()) {
 			file1.mkdirs();
 		}
 		// 文件真实文件名
-//		String fileName = fromFile.getFileName();
-//		String extend = FileUtils.getExtend(fileName);// 获取文件扩展名
-		
-
-		
 		int fileSize = 5*1024*1204;
 		// 我们一般会根据某种命名规则对其进行重命名
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+		String date = df.format(new Date());
 		String saveFileName = "";
-//		String fileprefixName = FileUtils.getFilePrefix(fileName);
-//		String noextfilename = DateUtils.getDataString() + StringUtil.random(8);// 自定义文件名称
-		String noextfilename = "";// 自定义文件名称
-		saveFileName = noextfilename + ".png";// 自定义文件名称
+		saveFileName = date + fileName;// 自定义文件名称
 		
-		File fileToCreate = new File(rootPath + savePath, saveFileName);
+		File fileToCreate = new File( savePath, saveFileName);
 
 		// 检查同名文件是否存在,不存在则将文件流写入文件磁盘系统
 		FileOutputStream os = null;
@@ -174,7 +175,7 @@ public class CommonIntf extends BaseController {
 			
 			
 			os = new FileOutputStream(fileToCreate, false);
-			os.write(fileName.getBytes());
+//			os.write(fileData.);
 //			os.write(fromFile.getFileData().getBytes());
 			os.flush();
 		} catch (Exception e) {
@@ -183,13 +184,11 @@ public class CommonIntf extends BaseController {
 		}finally{
 			IOUtils.closeQuietly(os);
 		}
-
-		String serviceUrl = "";
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("filePath", savePath + saveFileName);
-		resultMap.put("viewPath", serviceUrl + savePath + saveFileName);
-		return  Result.successResult("保存成功", resultMap);
+		resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+		return  Result.successResult("图片保存成功", resultMap);
 	}
 
 }

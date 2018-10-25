@@ -345,7 +345,10 @@ public class UserController extends BaseController {
 	 *@apiSuccess {String} refereeid 用户推荐人的手机号码
 	 *@apiSuccess {String} banknumber 银行卡卡号
 	 *@apiSuccess {String} banktype 银行卡开户行
-	 *@apiSuccess {String} certification 用户认证状态，默认为：0（未认证）
+	 *@apiSuccess {String} certification 用户认证状态，默认为：0（未认证） 1:已实名认证
+	 *@apiSuccess {String} userImage 用记头像
+	 *@apiSuccess {String} idcardFront 用户身份证正面
+	 *@apiSuccess {String} idcardBack  用户身份背面
 	 * 
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
@@ -369,6 +372,12 @@ public class UserController extends BaseController {
 		newUserDo.setUserFace(userDo.getUserFace());
 		newUserDo.setRefereeNumber(userDo.getRefereeNumber());
 		newUserDo.setUserLevelName(userDo.getUserLevel() + "");
+		//用户身份证信息
+		newUserDo.setUserImage(userDo.getUserImage());
+		newUserDo.setIdcardBack(userDo.getIdcardBack());
+		newUserDo.setIdcardFront(userDo.getIdcardFront());
+		
+		
 		// 用户等级
 		List<LoanDictDtlDo> leves = loanDictService.queryDictDtlListByDictCode(DictCode.BaoDanFei.getCode());
 		if (!CollectionUtils.isEmpty(leves)) {
@@ -449,12 +458,16 @@ public class UserController extends BaseController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 用户认证
 	 * 
+	 * @apiParam {Integer} userId 用户ID
 	 * @apiParam {String} trueName 真名
 	 * @apiParam {String} mobile 手机
 	 * @apiParam {String} idnumber 身份证号
-	 * @apiParam {String} sex 性别
+	 * @apiParam {String} sex 性别 1男 2女
 	 * @apiParam {String} banknumber 卡号
 	 * @apiParam {String} banktype 开户行
+	 * @apiParam {String} idcardFront 身份证正面像
+	 * @apiParam {String} idcardBack 身份证背面像
+	 * @apiParam {String} userImage 用户图像
 	 * 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {String} msg 认证成功
@@ -467,33 +480,43 @@ public class UserController extends BaseController {
 	public Result<?> authentication() {
 		try {
 
-			Integer userId = getUserId();
+			String  userId = getString("userId");
 			String trueName = getString("trueName");
 			String mobile = getString("mobile");
 			String idnumber = getString("idnumber");
 			String sex = getString("sex");
 			String banknumber = getString("banknumber");// 卡号
 			String banktype = getString("banktype");// 开卡行
+			String idcardFront = getString("idcardFront");// 开卡行
+			String idcardBack = getString("idcardBack");// 开卡行
+			String userImage = getString("userImage");// 开卡行
 
 			System.err.println("shuju----" + trueName);
 
 			logger.info("用户信息，userId:" + userId);
 
+			Assert.hasText(userId, "用户ID为空");
 			Assert.hasText(trueName, "姓名不能为空");
 			Assert.hasText(mobile, "手机号码不能为空");
 			Assert.hasText(idnumber, "身份证不能为空");
 			Assert.hasText(sex, "性别不能为空");
 			Assert.hasText(banktype, "开卡行不能为空");
 			Assert.hasText(banknumber, "卡号不能为空");
+			Assert.hasText(idcardFront, "身份证正背照片不能为空");
+			Assert.hasText(idcardBack, "身份证背面照片不能为空");
 			// 用户信息
 			UserDo userDo = new UserDo();
-			userDo.setId(userId);
+			userDo.setId(Integer.valueOf(userId));
 			userDo.setMobile(mobile);
 			userDo.setTrueName(trueName);
 			userDo.setIdnumber(idnumber);
 			userDo.setSex(Integer.parseInt(sex));
 			userDo.setBanknumber(banknumber);
 			userDo.setBanktype(banktype);
+			
+			userDo.setIdcardFront(idcardFront);
+			userDo.setIdcardBack(idcardBack);
+			userDo.setUserImage(idcardBack);
 			// 更改用户认证状态
 			userDo.setCertification(1);
 
@@ -822,9 +845,9 @@ public class UserController extends BaseController {
 				userDo.setTwoPassword(twoPassword);
 			}
 			// 认证状态
-			if (trueName != null || mobile != null || idnumber != null || banknumber != null || banktype != null) {
-				userDo.setCertification(1);
-			}
+//			if (trueName != null || mobile != null || idnumber != null || banknumber != null || banktype != null) {
+//				userDo.setCertification(1);
+//			}
 
 			return userService.update(userDo);
 		} catch (Exception e) {

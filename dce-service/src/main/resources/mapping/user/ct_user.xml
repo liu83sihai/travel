@@ -99,6 +99,9 @@
 		<result column="certification" jdbcType="INTEGER" property="certification" />
 		<result column="district" jdbcType="VARCHAR" property="district" />
 		<result column="refereeUserMobile" jdbcType="VARCHAR" property="refereeUserMobile" />
+		<result column="idcard_front" jdbcType="VARCHAR" property="idcardFront" />
+		<result column="idcard_back" jdbcType="VARCHAR" property="idcardBack" />
+		<result column="user_image" jdbcType="VARCHAR" property="userImage" />
 	</resultMap>
 
 	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
@@ -137,7 +140,8 @@
 		u.guadan_num, u.allStatic, u.dis, u.release_time, u.isShop,
 		u.isImport, u.pos,
 		u.isOut,u.baodan_amount,u.undo_opts,u.tran_direct,
-		identity,isActivated,certification,district,refereeUserMobile
+		identity,isActivated,certification,district,refereeUserMobile,
+		u.idcard_front,u.idcard_back,u.user_image
 	</sql>
 
 	<sql id="Blob_Column_List">
@@ -205,7 +209,12 @@
 		isShop, isImport, pos,
 		isOut,touch_distance,baodan_amount,undo_opts,tran_direct,
 		identity,isActivated,
-		certification,district,refereeUserMobile)
+		certification,district,refereeUserMobile,
+		  idcard_front,
+        idcard_back,
+        user_image
+		
+		)
 		values
 		(#{userName,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR},
 		#{email,jdbcType=VARCHAR},
@@ -268,7 +277,9 @@
 		#{isout,jdbcType=TINYINT}, #{touchDistance,jdbcType=LONGVARCHAR},
 		#{baodan_amount,jdbcType=DECIMAL},#{undoOpts,jdbcType=VARCHAR},#{tranDirect,jdbcType=VARCHAR},
 		#{identity,jdbcType=VARCHAR},#{isActivated,jdbcType=INTEGER},
-		#{certification,jdbcType=INTEGER},#{district,jdbcType=VARCHAR},#{refereeUserMobile,jdbcType=VARCHAR})
+		#{certification,jdbcType=INTEGER},#{district,jdbcType=VARCHAR},#{refereeUserMobile,jdbcType=VARCHAR},
+		#{idcardFront,jdbcType=VARCHAR},#{idcardBack,jdbcType=VARCHAR},#{userImage,jdbcType=VARCHAR}
+		)
 	</insert>
 
 	<!-- 下单购买商品之后，用户状态激活 -->
@@ -570,7 +581,16 @@
 				district,
 			</if>
 			<if test="refereeUserMobile">
-				refereeUserMobile
+				refereeUserMobile,
+			</if>
+			<if test="idcardFront">
+				idcard_front,
+			</if>
+			<if test="idcardBack">
+				idcard_back,
+			</if>
+			<if test="userImage">
+				user_image
 			</if>
 		</trim>
 
@@ -859,6 +879,15 @@
 			</if>
 			<if test="refereeUserMobile">
 				#{refereeUserMobile}
+			</if>
+			<if test="idcardFront">
+				#{idcardFront}
+			</if>
+			<if test="idcardBack">
+				#{idcardBack}
+			</if>
+			<if test="userImage">
+				#{userImage}
 			</if>
 		</trim>
 	</insert>
@@ -1151,7 +1180,16 @@
 				district = #{district,jdbcType=VARCHAR},
 			</if>
 			<if test="refereeUserMobile != null">
-				refereeUserMobile = #{refereeUserMobile,jdbcType=VARCHAR}
+				refereeUserMobile = #{refereeUserMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="idcardFront != null">
+				idcard_front = #{idcardFront,jdbcType=VARCHAR},
+			</if>
+			<if test="idcardBack != null">
+				idcard_back = #{idcardBack,jdbcType=VARCHAR},
+			</if>
+			<if test="userImage != null">
+				user_image = #{userImage,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
@@ -1315,7 +1353,13 @@
 		district =
 		#{district,jdbcType=VARCHAR},
 		refereeUserMobile =
-		#{refereeUserMobile,jdbcType=VARCHAR}
+		#{refereeUserMobile,jdbcType=VARCHAR},
+		idcard_front =
+		#{idcardFront,jdbcType=VARCHAR},
+		idcard_back =
+		#{idcardBack,jdbcType=VARCHAR},
+		user_image =
+		#{userImage,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 
@@ -1479,7 +1523,13 @@
 		district =
 		#{district,jdbcType=VARCHAR},
 		refereeUserMobile =
-		#{refereeUserMobile,jdbcType=VARCHAR}
+		#{refereeUserMobile,jdbcType=VARCHAR},
+		idcard_front =
+		#{idcardFront,jdbcType=VARCHAR},
+		idcard_back =
+		#{idcardBack,jdbcType=VARCHAR},
+		user_image =
+		#{userImage,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 		<!-- where id = #{id,jdbcType=INTEGER} -->
 	</update>
