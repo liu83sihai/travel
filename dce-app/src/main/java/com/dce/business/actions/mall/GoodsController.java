@@ -42,22 +42,76 @@ public class GoodsController extends BaseController {
 	@Resource
 	private IUserService userDo;
 	
-/*	@Resource
-	private RealgoodsService ctrealgoodsService;*/
 	
+	/** 
+	 * @api {POST} /mall/list.do 商城，商品列表
+	 * @apiName list
+	 * @apiGroup mall 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 商品列表
+	 * @apiUse pageParam
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {Object[]} hotGoodsList  爆款商品       
+	 * @apiSuccess {int} hotGoodsList.goodsId 商品id
+	 * @apiSuccess {String} hotGoodsList.title 商品标题
+	 * @apiSuccess {String} hotGoodsList.GoodsDesc 商品的描述
+	 * @apiSuccess {json} hotGoodsList.goodsImg 商品图片地址
+	 * @apiSuccess {json} hotGoodsList.goodsBanner 商品详情页面banner图片地址
+	 * @apiSuccess {String} hotGoodsList.goodsDetailImg 商品详情图片地址
+	 * @apiSuccess {double} hotGoodsList.shopPrice 商品价格
+	 * @apiSuccess {double} hotGoodsList.marketPrice 商品优惠价格
+	 * @apiSuccess {int} hotGoodsList.saleCount 已售数量
+	 * @apiSuccess {String} hotGoodsList.brandName 商品品牌名称
+	 * @apiSuccess {String} hotGoodsList.cateName 商品类别名称
+	 * 
+	 * @apiSuccess {Object[]} normalGoodsList  正常商品      
+	 * @apiSuccess {int} normalGoodsList.goodsId 商品id
+	 * @apiSuccess {String} normalGoodsList.title 商品标题
+	 * @apiSuccess {String} normalGoodsList.GoodsDesc 商品的描述
+	 * @apiSuccess {json} normalGoodsList.goodsImg 商品图片地址
+	 * @apiSuccess {json} normalGoodsList.goodsBanner 商品详情页面banner图片地址
+	 * @apiSuccess {String} normalGoodsList.goodsDetailImg 商品详情图片地址
+	 * @apiSuccess {double} normalGoodsList.shopPrice 商品价格
+	 * @apiSuccess {double} normalGoodsList.marketPrice 商品优惠价格
+	 * @apiSuccess {int} normalGoodsList.saleCount 已售数量
+	 * @apiSuccess {String} normalGoodsList.brandName 商品品牌名称
+	 * @apiSuccess {String} normalGoodsList.cateName 商品类别名称 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "code": 0
+	 *	"msg": 返回成功,
+	 *	"data": {"hotGoodsList":[
+	 *		      "goodsId": "1",
+	 *		      "title": "鹿无忧",
+	 *		      "goodsDtails": "提神抗疲劳",
+	 *		      "goodsImg": 
+	 *		                {
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *		      "saleTime": "2018-8-6 10：19：56",
+	 *		      "shopPrice":4999.00,
+	 *		    ],
+	 *          "normalGoodsList":[
+	 *		      "goodsId": "1",
+	 *		      "title": "鹿无忧",
+	 *		      "goodsDtails": "提神抗疲劳",
+	 *		      "goodsImg": 
+	 *		                {
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *		      "saleTime": "2018-8-6 10：19：56",
+	 *		      "shopPrice":4999.00,
+	 *		    ],
+	 *		    }
+	 *	}
+	 */	
 	@RequestMapping(value = "/list", method = {RequestMethod.POST,RequestMethod.GET})
 	public Result<?> list() {
 		
-		UserDo user=userDo.getUser(getUserId());
-		if(user==null){
-			return Result.failureResult("用户 不存在");
-			
-		}
-		
-		if (user.getStatus().intValue() != 0) {
-			return Result.failureResult("当前用户已被锁定,不允许登录!");
-		}
-
 		 String pageNum = getString("pageNum");  //当前页码
 		 String rows = getString("rows");   //每页显示记录数
 		 
@@ -74,41 +128,85 @@ public class GoodsController extends BaseController {
 		 Map<String,Object> maps=new HashMap<String, Object>();
 		 maps.put("pageNum", pageNum);
 		 maps.put("rows", rows);
-		// List<CTGoodsDo> resultList = ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
 		 
-		/* List<Map<String,Object>> retList = new ArrayList<>();
-		 if(!CollectionUtils.isEmpty(resultList)){
-			 for(CTGoodsDo good : resultList){
-				 Map<String,Object> map = new HashMap<String,Object>();
-				 map.put("productId", good.getGoodsId());
-				 map.put("productName", good.getTitle());
-				 map.put("imgUrl", good.getGoodsImg());
-				 map.put("soldQty", good.getSaleCount());
-				 map.put("price", good.getMarketPrice());
-				 map.put("barginPrice", good.getShopPrice());
-				 retList.add(map);
-			 }
-		 }*/
+		 List<CTGoodsDo> hotGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
 		 
-		 List<CTGoodsDo> resultList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
+		 List<CTGoodsDo> normalGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
 		 
+		 Map<String,List<CTGoodsDo>> goodsLst = new HashMap<String,List<CTGoodsDo>>();
+		 goodsLst.put("hotGoodsList", hotGoodsList);
+		 goodsLst.put("normalGoodsList", normalGoodsList);
 		 
-		 List<Map<String,Object>> retList = new ArrayList<>();
-		 if(!CollectionUtils.isEmpty(resultList)){
-			 for(CTGoodsDo good : resultList){
-				 Map<String,Object> map = new HashMap<String,Object>();
-				 map.put("goodsId", good.getGoodsId());
-				 map.put("title", good.getTitle());
-				 map.put("goodsImg", good.getGoodsImg());
-				 map.put("saleTime", good.getSaleTime());
-				 map.put("shopPrice", good.getShopPrice());
-				 map.put("goodsDtails", good.getGoodsDesc());
-				 retList.add(map);
-			 }
+		 return Result.successResult("商品获取成功!", goodsLst);
+	}
+	
+	
+	/** 
+	 * @api {POST} /mall/listTravelCard.do 加入我们购买旅游卡
+	 * @apiName listTravelCard
+	 * @apiGroup mall 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 加入我们购买旅游卡
+	 * @apiUse pageParam
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {Object[]} travelCardList  爆款商品       
+	 * @apiSuccess {int} travelCardList.goodsId 商品id
+	 * @apiSuccess {String} travelCardList.title 商品标题
+	 * @apiSuccess {String} travelCardList.GoodsDesc 商品的描述
+	 * @apiSuccess {json} travelCardList.goodsImg 商品图片地址
+	 * @apiSuccess {json} travelCardList.goodsBanner 商品详情页面banner图片地址
+	 * @apiSuccess {String} travelCardList.goodsDetailImg 商品详情图片地址
+	 * @apiSuccess {double} travelCardList.shopPrice 商品价格
+	 * @apiSuccess {double} travelCardList.marketPrice 商品优惠价格
+	 * @apiSuccess {int} travelCardList.saleCount 已售数量
+	 * @apiSuccess {String} travelCardList.brandName 商品品牌名称
+	 * @apiSuccess {String} travelCardList.cateName 商品类别名称
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "code": 0
+	 *	"msg": 返回成功,
+	 *	"data": {"travelCardList":[
+	 *		      "goodsId": "1",
+	 *		      "title": "鹿无忧",
+	 *		      "GoodsDesc": "提神抗疲劳",
+	 *		      "goodsImg": 
+	 *		                {
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *		      "saleTime": "2018-8-6 10：19：56",
+	 *		      "shopPrice":4999.00,
+	 *		    ] }
+	 *	}
+	 */	
+	@RequestMapping(value = "/listTravelCard", method = {RequestMethod.POST,RequestMethod.GET})
+	public Result<?> listTravelCard() {
+
+		
+		 String pageNum = getString("pageNum");  //当前页码
+		 String rows = getString("rows");   //每页显示记录数
+		 
+		 logger.info("查询商品列表：查询页码--" + pageNum);
+		 
+		 if(StringUtils.isBlank(pageNum)){  //如果为空则查询第一页
+			 pageNum = "1";
 		 }
 		 
-		 return Result.successResult("商品获取成功!", retList);
+		 if(StringUtils.isBlank(rows)){  //如果为空  默认显示10条
+			 rows = "50";
+		 }
+		 
+		 Map<String,Object> maps=new HashMap<String, Object>();
+		 maps.put("pageNum", pageNum);
+		 maps.put("rows", rows);
+		 
+		 List<CTGoodsDo> cardGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
+		 return Result.successResult("商品获取成功!", cardGoodsList);
+	
 	}
+	
 	
 	@RequestMapping(value = "/product/detail", method = {RequestMethod.GET})
 	public Result<?> detail(){

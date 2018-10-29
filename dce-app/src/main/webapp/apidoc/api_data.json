@@ -97,7 +97,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/common/CommonIntf.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/common/CommonIntf.java",
     "groupTitle": "Common",
     "sampleRequest": [
       {
@@ -192,7 +192,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/common/CommonIntf.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/common/CommonIntf.java",
     "groupTitle": "Common",
     "sampleRequest": [
       {
@@ -256,7 +256,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/aboutUs/AboutUsController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/aboutUs/AboutUsController.java",
     "groupTitle": "aboutUs",
     "sampleRequest": [
       {
@@ -452,7 +452,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -641,7 +641,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -719,7 +719,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -802,7 +802,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -852,7 +852,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -1061,7 +1061,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -1236,7 +1236,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/activity/ActivityController.java",
     "groupTitle": "activity",
     "sampleRequest": [
       {
@@ -1334,7 +1334,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
     "groupTitle": "",
     "sampleRequest": [
       {
@@ -1439,7 +1439,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
     "groupTitle": "",
     "sampleRequest": [
       {
@@ -1544,7 +1544,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserAddressController.java",
     "groupTitle": "",
     "sampleRequest": [
       {
@@ -1692,7 +1692,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/banner/BannerController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/banner/BannerController.java",
     "groupTitle": "banner",
     "sampleRequest": [
       {
@@ -1769,13 +1769,405 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/action/feedback/FeedBackController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/action/feedback/FeedBackController.java",
     "groupTitle": "feedBack",
     "sampleRequest": [
       {
         "url": "http://127.0.0.1:8080/dce-app/feedBack/addFeedBack.do"
       }
     ]
+  },
+  {
+    "type": "POST",
+    "url": "/mall/list.do",
+    "title": "商城，商品列表",
+    "name": "list",
+    "group": "mall",
+    "version": "1.0.0",
+    "description": "<p>商品列表</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "hotGoodsList",
+            "description": "<p>爆款商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "hotGoodsList.goodsId",
+            "description": "<p>商品id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.title",
+            "description": "<p>商品标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.GoodsDesc",
+            "description": "<p>商品的描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "hotGoodsList.goodsImg",
+            "description": "<p>商品图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "hotGoodsList.goodsBanner",
+            "description": "<p>商品详情页面banner图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.goodsDetailImg",
+            "description": "<p>商品详情图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "hotGoodsList.shopPrice",
+            "description": "<p>商品价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "hotGoodsList.marketPrice",
+            "description": "<p>商品优惠价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "hotGoodsList.saleCount",
+            "description": "<p>已售数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.brandName",
+            "description": "<p>商品品牌名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.cateName",
+            "description": "<p>商品类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "normalGoodsList",
+            "description": "<p>正常商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "normalGoodsList.goodsId",
+            "description": "<p>商品id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.title",
+            "description": "<p>商品标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.GoodsDesc",
+            "description": "<p>商品的描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "normalGoodsList.goodsImg",
+            "description": "<p>商品图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "normalGoodsList.goodsBanner",
+            "description": "<p>商品详情页面banner图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.goodsDetailImg",
+            "description": "<p>商品详情图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "normalGoodsList.shopPrice",
+            "description": "<p>商品价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "normalGoodsList.marketPrice",
+            "description": "<p>商品优惠价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "normalGoodsList.saleCount",
+            "description": "<p>已售数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.brandName",
+            "description": "<p>商品品牌名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.cateName",
+            "description": "<p>商品类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\"hotGoodsList\":[\n\t\t      \"goodsId\": \"1\",\n\t\t      \"title\": \"鹿无忧\",\n\t\t      \"goodsDtails\": \"提神抗疲劳\",\n\t\t      \"goodsImg\": \n\t\t                {\n\t\t                 \"img1\":\"d:/sasd.jgp\",\n\t\t                 \"img2\":\"d:/sasd.jgp\",\n\t\t                  } ,\n\t\t      \"saleTime\": \"2018-8-6 10：19：56\",\n\t\t      \"shopPrice\":4999.00,\n\t\t    ],\n         \"normalGoodsList\":[\n\t\t      \"goodsId\": \"1\",\n\t\t      \"title\": \"鹿无忧\",\n\t\t      \"goodsDtails\": \"提神抗疲劳\",\n\t\t      \"goodsImg\": \n\t\t                {\n\t\t                 \"img1\":\"d:/sasd.jgp\",\n\t\t                 \"img2\":\"d:/sasd.jgp\",\n\t\t                  } ,\n\t\t      \"saleTime\": \"2018-8-6 10：19：56\",\n\t\t      \"shopPrice\":4999.00,\n\t\t    ],\n\t\t    }\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/mall/GoodsController.java",
+    "groupTitle": "mall",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/mall/list.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "/mall/listTravelCard.do",
+    "title": "加入我们购买旅游卡",
+    "name": "listTravelCard",
+    "group": "mall",
+    "version": "1.0.0",
+    "description": "<p>加入我们购买旅游卡</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "travelCardList",
+            "description": "<p>爆款商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "travelCardList.goodsId",
+            "description": "<p>商品id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.title",
+            "description": "<p>商品标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.GoodsDesc",
+            "description": "<p>商品的描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "travelCardList.goodsImg",
+            "description": "<p>商品图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "travelCardList.goodsBanner",
+            "description": "<p>商品详情页面banner图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.goodsDetailImg",
+            "description": "<p>商品详情图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "travelCardList.shopPrice",
+            "description": "<p>商品价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "travelCardList.marketPrice",
+            "description": "<p>商品优惠价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "travelCardList.saleCount",
+            "description": "<p>已售数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.brandName",
+            "description": "<p>商品品牌名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.cateName",
+            "description": "<p>商品类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\"travelCardList\":[\n\t\t      \"goodsId\": \"1\",\n\t\t      \"title\": \"鹿无忧\",\n\t\t      \"GoodsDesc\": \"提神抗疲劳\",\n\t\t      \"goodsImg\": \n\t\t                {\n\t\t                 \"img1\":\"d:/sasd.jgp\",\n\t\t                 \"img2\":\"d:/sasd.jgp\",\n\t\t                  } ,\n\t\t      \"saleTime\": \"2018-8-6 10：19：56\",\n\t\t      \"shopPrice\":4999.00,\n\t\t    ] }\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/mall/GoodsController.java",
+    "groupTitle": "mall",
+    "sampleRequest": [
+      {
+        "url": "http://127.0.0.1:8080/dce-app/mall/listTravelCard.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
   },
   {
     "type": "GET",
@@ -1854,7 +2246,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/news/NewsController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/news/NewsController.java",
     "groupTitle": "news",
     "sampleRequest": [
       {
@@ -1973,7 +2365,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/action/notice/NoticeController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/action/notice/NoticeController.java",
     "groupTitle": "notice",
     "sampleRequest": [
       {
@@ -2190,7 +2582,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
     "groupTitle": "supplier",
     "sampleRequest": [
       {
@@ -2352,7 +2744,7 @@
         ]
       }
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
     "groupTitle": "supplier",
     "sampleRequest": [
       {
@@ -2442,7 +2834,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -2568,7 +2960,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -2716,7 +3108,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -2814,7 +3206,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -2912,7 +3304,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -2962,7 +3354,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -3074,7 +3466,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -3159,7 +3551,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
@@ -3249,7 +3641,7 @@
         }
       ]
     },
-    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
+    "filename": "E:/CODE/谭总-乐游环球/code/travel/dce-app/src/main/java/com/dce/business/actions/user/UserController.java",
     "groupTitle": "user",
     "sampleRequest": [
       {
