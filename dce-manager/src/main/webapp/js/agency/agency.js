@@ -2,15 +2,15 @@
 $(function(){
 /*#############################################search form begin#################################*/	
 		
-	$("#searchsupplierForm #searchButton").on("click",function(){
-		$("#tt_Supplier").datagrid('load',{
-			'searchStr': $("#searchsupplierForm #searchStr").val(),
-			'searchCodeStr':$("#searchsupplierForm #searchCodeStr").val()		
+	$("#searchagencyForm #searchButton").on("click",function(){
+		$("#tt_Agency").datagrid('load',{
+			'searchStr': $("#searchagencyForm #searchStr").val(),
+			'searchCodeStr':$("#searchagencyForm #searchCodeStr").val()		
 		});
 	});
 	
-	$("#searchsupplierForm #resetButton").on("click",function(){
-		$("#searchsupplierForm").form('reset');
+	$("#searchagencyForm #resetButton").on("click",function(){
+		$("#searchagencyForm").form('reset');
 	});
 	
 /*#############################################search form end#################################*/		
@@ -21,7 +21,7 @@ $(function(){
 					{
 						iconCls:"icon-edit",
 						text:"新增",
-						handler:to_addsupplier
+						handler:to_addagency
 					}
 	          	];
 	
@@ -30,34 +30,25 @@ $(function(){
 	var columns_tt = [
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
-								{field:"userId",title:"空",width:180,align:"center"},
-								{field:"supplierName",title:"供应商名",width:180,align:"center"},
-								{field:"synopsis",title:"简介",width:180,align:"center"},
-								{field:"content",title:"详情",width:180,align:"center"},
-								{field:"linkValue",title:"链接",width:180,align:"center"},
-								{field:"listImages",title:"小图片",width:180,align:"center"},
-								{field:"bannerImages",title:"banner图",width:180,align:"center"},
-								{field:"busiImage",title:"营业执照",width:180,align:"center"},
-								{field:"shopImage",title:"门店照片",width:180,align:"center"},
-								{field:"city",title:"省市/城市",width:180,align:"center"},
-								{field:"supplierAddress",title:"详细地址",width:180,align:"center"},
-								{field:"telPhone",title:"电话",width:180,align:"center"},
-								{field:"linkMan",title:"联系人",width:180,align:"center"},
-								{field:"supplierType",title:"类型",width:180,align:"center"},
-								{field:"grade",title:"评分",width:180,align:"center"},
-								{field:"average",title:"人均",width:180,align:"center"},
-								{field:"longitude",title:"经度",width:180,align:"center"},
-								{field:"latitude",title:"纬度",width:180,align:"center"},
-								{field:"hitNum",title:"点击数",width:180,align:"center"},
+								{field:"userId",title:"用户ID",width:180,align:"center"},
+								{field:"userName",title:"姓名",width:180,align:"center"},
+								{field:"mobile",title:"手机号码",width:180,align:"center"},
+								{field:"idCard",title:"身份证",width:180,align:"center"},
+								{field:"bankNumber",title:"银行卡",width:180,align:"center"},
+								{field:"bankType",title:"银行卡类型",width:180,align:"center"},
+								{field:"idcardFront",title:"身份证正面照",width:180,align:"center"},
+								{field:"idcardBack",title:"身份证反面照",width:180,align:"center"},
+								{field:"province",title:"省份",width:180,align:"center"},
+								{field:"city",title:"城市",width:180,align:"center"},
 								{field:"createDate",title:"创建时间",width:180,align:"center",formatter:dateTimeFormatter},
 								{field:"createName",title:"创建人",width:180,align:"center"},
 								{field:"modifyDate",title:"更新时间",width:180,align:"center",formatter:dateTimeFormatter},
 								{field:"modifyName",title:"更新人",width:180,align:"center"},
-								{field:"status",title:"状态",width:180,align:"center"},
+								{field:"status",title:"状态(0:删除  1:正常 2:审核通过)",width:180,align:"center"},
 								{field:"remark",title:"备注",width:180,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.id+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.id+'\');">删除</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editagency(\''+row.id+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delAgency(\''+row.id+'\');">删除</a>';
 	 					  return str;
 	 					}
 	 				}	 				
@@ -65,9 +56,9 @@ $(function(){
 	 	];
 /*######################grid columns end##############################*/
 	
-	$("#tt_Supplier").datagrid({
-		url:httpUrl+"/supplier/listSupplier.html?&rand=" + Math.random(),
-		height:$("#body").height()-$('#search_areaSupplier').height()-10,
+	$("#tt_Agency").datagrid({
+		url:httpUrl+"/agency/listAgency.html?&rand=" + Math.random(),
+		height:$("#body").height()-$('#search_areaAgency').height()-10,
 		width:$("#body").width(),
 		rownumbers:true,
 		fitColumns:true,
@@ -92,8 +83,8 @@ $(function(){
 		columns:columns_tt,
 		toolbar:toolbar_tt,
 		queryParams:{
-			'searchStr': $("#searchsupplierForm #searchStr").val(),
-			'searchCodeStr':$("#searchsupplierForm #searchCodeStr").val()
+			'searchStr': $("#searchagencyForm #searchStr").val(),
+			'searchCodeStr':$("#searchagencyForm #searchCodeStr").val()
 		},
 		onLoadSuccess:function(data){//根据状态限制checkbox
 			
@@ -111,15 +102,15 @@ $(function(){
  * 新增
  * @param id
  */
-function to_addsupplier(){
-	to_editsupplier('');
+function to_addagency(){
+	to_editagency('');
 }
 
 /**
  * 删除
  */
 
-function to_delSupplier(id) {
+function to_delAgency(id) {
 	if (!id) {
 		$.messager.alert("消息", "id不能为空");
 		return;
@@ -127,13 +118,13 @@ function to_delSupplier(id) {
 	$.messager.confirm("消息", "确认删除吗，删除后不可恢复", function(r) {
 		if (r) {
 			$.ajax({
-				url : httpUrl + "/supplier/deleteSupplier.html?id=" + id,
+				url : httpUrl + "/agency/deleteAgency.html?id=" + id,
 				type : "post",
 				data : {},
 				success : function(data) {
 					if (data.ret == 1) {
 						$.messager.alert("消息", "删除成功");
-						$('#tt_Supplier').datagrid('reload');
+						$('#tt_Agency').datagrid('reload');
 					} else {
 						$.messager.alert("消息", "删除失败，请稍后再试");
 					}
@@ -148,10 +139,10 @@ function to_delSupplier(id) {
  * 编辑
  * @param id
  */
-function to_editsupplier(id){
+function to_editagency(id){
 	
-	var url = httpUrl+"/supplier/addSupplier.html?&rand=" + Math.random()+"&id="+id;
-	$('#editSupplierDiv').dialog({
+	var url = httpUrl+"/agency/addAgency.html?&rand=" + Math.random()+"&id="+id;
+	$('#editAgencyDiv').dialog({
 		title: "新增",
 		width: 760,
 		height: 500,
@@ -163,31 +154,31 @@ function to_editsupplier(id){
 		toolbar:[
 				{
 					iconCls:"icon-save",text:"保存",
-					handler:save_Supplier
+					handler:save_Agency
 				},
 				{
 					iconCls:"icon-no",text:"关闭",
 					handler:function(){
-						$("#editSupplierDiv").dialog("close");
+						$("#editAgencyDiv").dialog("close");
 				}
 		}]
 	});
 }
 
-function save_Supplier(){
-	var formdata = $("#editSupplierForm").serialize();
+function save_Agency(){
+	var formdata = $("#editAgencyForm").serialize();
 	console.info("formdata");
 	console.info(formdata);
-	var  url =httpUrl+"/supplier/saveSupplier.html?&rand=" + Math.random();
+	var  url =httpUrl+"/agency/saveAgency.html?&rand=" + Math.random();
 	 $.ajax({   
 		 type: 'POST',
 		 dataType: 'json',
 		 url: url,  
-		 data:$("#editSupplierForm").serialize(),
+		 data:$("#editAgencyForm").serialize(),
 		 success: function(data){ 
 			 if(data.code ==="0"){
-				 $("#editSupplierDiv").dialog("close");
-				 $('#tt_Supplier').datagrid('reload');
+				 $("#editAgencyDiv").dialog("close");
+				 $('#tt_Agency').datagrid('reload');
 				 $.messager.alert("提示","操作成功","info");
 			 }else{
 				 $.messager.alert("提示","操作失败","error");
@@ -199,7 +190,7 @@ function save_Supplier(){
 
 function reloadDataGrid()
 {
-	$("tt_Supplier").datagrid("reload");
+	$("tt_Agency").datagrid("reload");
 }
 
 
@@ -213,11 +204,11 @@ window.onresize = function(){
 };
 //改变表格和查询表单宽高
 function domresize(){
-	$('tt_Supplier').datagrid('resize',{  
-		height:$("#body").height()-$('#search_areaSupplier').height()-5,
+	$('tt_Agency').datagrid('resize',{  
+		height:$("#body").height()-$('#search_areaAgency').height()-5,
 		width:$("#body").width()
 	});
-	$('#search_areaSupplier').panel('resize',{
+	$('#search_areaAgency').panel('resize',{
 		width:$("#body").width()
 	});
 	$('#detailLoanDiv').dialog('resize',{  

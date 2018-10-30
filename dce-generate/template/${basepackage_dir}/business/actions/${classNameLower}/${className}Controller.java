@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.activity.ActivityDo;
 import com.dce.business.entity.notice.NoticeDo;
@@ -34,7 +35,7 @@ import ${basepackage}.business.entity.${classNameLower}.${className}Do;
  */
 @RestController
 @RequestMapping("/${classNameLower}")
-public class ${className}Controller {
+public class ${className}Controller  extends BaseController{
 	private final static Logger logger = Logger.getLogger(${className}Controller.class);
 	@Resource
 	private I${className}Service ${classNameLower}Service;
@@ -62,7 +63,7 @@ public class ${className}Controller {
 	 *  
 	 * @apiUse pageParam  
 	 
-	 * @apiUse activitySucces  
+	 * @apiUse ${classNameLower}Succes  
 	 * @apiUse RETURN_MESSAGE
 	
 	 * @apiSuccessExample Success-Response: 
@@ -185,16 +186,16 @@ public class ${className}Controller {
 	 @RequestMapping(value = "/add", method = RequestMethod.POST)
 	 public Result<?> add( ${className}Do  ${classNameLower}Do,HttpServletRequest request, HttpServletResponse response) {
 		 
-//		 if(null == ${className}Do.getUserId() || 0 == ${className}Do.getUserId()){
+//		 if(null == ${classNameLower}Do.getUserId() || 0 == ${classNameLower}Do.getUserId()){
 //			 return Result.failureResult("用户ID不能为空!");
 //		 }
 //		 
 //		 if(StringUtils.isBlank(${className}Do.getContent())){
 //			 return Result.failureResult("内容为空!");
 //		 }
-//		 activityDo.setStatus(1);
-//		 activityDo.setCreateDate(new Date(System.currentTimeMillis()));
-//		 activityDo.setCreateName("前台增加${TABLE_INFO}");
+//		 ${classNameLower}Do.setStatus(1);
+//		 ${classNameLower}Do.setCreateDate(new Date(System.currentTimeMillis()));
+//		 ${classNameLower}Do.setCreateName("前台增加${TABLE_INFO}");
 		 ${classNameLower}Service.add${className}(${classNameLower}Do);
 		 return Result.successResult("${TABLE_INFO}增加成功",${classNameLower}Do);
 	 }
@@ -229,12 +230,12 @@ public class ${className}Controller {
 	 @RequestMapping(value = "/edit", method = RequestMethod.POST)
 	 public Result<?> edit( ${className}Do  ${classNameLower}Do,HttpServletRequest request, HttpServletResponse response) {
 		 
-//		 if(null == ${className}Do.getId() || 0 == ${className}Do.getId()){
+//		 if(null == ${classNameLower}Do.getId() || 0 == ${classNameLower}Do.getId()){
 //			 return Result.failureResult("ID不能为空!");
 //		 }
 //		 
-//		 activityDo.setModifyDate(new Date(System.currentTimeMillis()));
-//		 activityDo.setModifyName("前台修改风采");
+//		 ${classNameLower}Do.setModifyDate(new Date(System.currentTimeMillis()));
+//		 ${classNameLower}Do.setModifyName("前台修改风采");
 		 ${classNameLower}Service.update${className}ById(${classNameLower}Do);
 		 return Result.successResult("${TABLE_INFO}修改成功",${classNameLower}Do);
 	 }

@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -32,8 +30,6 @@ import com.dce.business.common.util.DataEncrypt;
 import com.dce.business.common.util.NumberUtil;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
-import com.dce.business.entity.message.NewsDo;
-import com.dce.business.entity.user.UserAddressDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
@@ -349,6 +345,9 @@ public class UserController extends BaseController {
 	 *@apiSuccess {String} userImage 用记头像
 	 *@apiSuccess {String} idcardFront 用户身份证正面
 	 *@apiSuccess {String} idcardBack  用户身份背面
+	 *@apiSuccess {Bigdecimal} amount  现金用户
+	 *@apiSuccess {Bigdecimal} originalAmount  抵用券
+	 *@apiSuccess {Bigdecimal} pointAmount  积分
 	 * 
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
@@ -408,11 +407,11 @@ public class UserController extends BaseController {
 		Map<String, Object> accountInfo = new HashMap<>();
 		accountInfo.put("amount", NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_money))); // 现金账户
 		accountInfo.put("originalAmount",
-				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_travel))); // 赠送旅游
+				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_travel))); // 抵用券
 		accountInfo.put("pointAmount",
-				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_goods))); // 赠送商品
-		accountInfo.put("frozenDeposit",
-				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_active))); // 赠送活动：沙龙
+				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_goods))); // 积分
+//		accountInfo.put("frozenDeposit",
+//				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_active))); // 
 
 		Map<String, Object> topInfoMap = new HashMap<>();
 		topInfoMap.put("decCount", "");

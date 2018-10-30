@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.agency.IAgencyDao">
+	<resultMap type="agencyDo" id="agencyResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="mobile" column="mobile" />
+		<result property="idCard" column="id_card" />
+		<result property="bankNumber" column="bank_number" />
+		<result property="bankType" column="bank_type" />
+		<result property="idcardFront" column="idcard_front" />
+		<result property="idcardBack" column="idcard_back" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="createDate" column="create_date" />
+		<result property="createName" column="create_name" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="modifyName" column="modify_name" />
+		<result property="status" column="status" />
+		<result property="remark" column="remark" />
+		<result property="sex" column="sex" />
+	</resultMap>
+
+	<select id="getById" parameterType="int" resultMap="agencyResultMap">
+		SELECT * 
+		  FROM tr_agency WHERE user_id = #{userId}
+	</select>
+
+	<select id="selectAgency" parameterType="Map" resultMap="agencyResultMap">
+		SELECT * 
+		  FROM tr_agency
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND user_id = #{userId}
+			</if>
+			<if test="userName != null">  
+				AND user_name = #{userName}
+			</if>
+			<if test="mobile != null">  
+				AND mobile = #{mobile}
+			</if>
+			<if test="idCard != null">  
+				AND id_card = #{idCard}
+			</if>
+			<if test="bankNumber != null">  
+				AND bank_number = #{bankNumber}
+			</if>
+			<if test="bankType != null">  
+				AND bank_type = #{bankType}
+			</if>
+			<if test="idcardFront != null">  
+				AND idcard_front = #{idcardFront}
+			</if>
+			<if test="idcardBack != null">  
+				AND idcard_back = #{idcardBack}
+			</if>
+			<if test="province != null">  
+				AND province = #{province}
+			</if>
+			<if test="city != null">  
+				AND city = #{city}
+			</if>
+			<if test="createDate != null">  
+				AND create_date = #{createDate}
+			</if>
+			<if test="createName != null">  
+				AND create_name = #{createName}
+			</if>
+			<if test="modifyDate != null">  
+				AND modify_date = #{modifyDate}
+			</if>
+			<if test="modifyName != null">  
+				AND modify_name = #{modifyName}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			<if test="sex != null">  
+				AND sex = #{sex}
+			</if>
+         </trim> 
+
+	</select>
+	<select id="selectAgencyByPage" parameterType="Map" resultMap="agencyResultMap">
+		SELECT * 
+		  FROM tr_agency
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND user_id = #{userId}
+			</if>
+			<if test="userName != null">  
+				AND user_name = #{userName}
+			</if>
+			<if test="mobile != null">  
+				AND mobile = #{mobile}
+			</if>
+			<if test="idCard != null">  
+				AND id_card = #{idCard}
+			</if>
+			<if test="bankNumber != null">  
+				AND bank_number = #{bankNumber}
+			</if>
+			<if test="bankType != null">  
+				AND bank_type = #{bankType}
+			</if>
+			<if test="idcardFront != null">  
+				AND idcard_front = #{idcardFront}
+			</if>
+			<if test="idcardBack != null">  
+				AND idcard_back = #{idcardBack}
+			</if>
+			<if test="province != null">  
+				AND province = #{province}
+			</if>
+			<if test="city != null">  
+				AND city = #{city}
+			</if>
+			<if test="createDate != null">  
+				AND create_date = #{createDate}
+			</if>
+			<if test="createName != null">  
+				AND create_name = #{createName}
+			</if>
+			<if test="modifyDate != null">  
+				AND modify_date = #{modifyDate}
+			</if>
+			<if test="modifyName != null">  
+				AND modify_name = #{modifyName}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			<if test="sex != null">  
+				AND sex = #{sex}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateAgencyById" parameterType="agencyDo">
+		UPDATE tr_agency 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				user_id = #{userId},
+		</if>				
+		<if test="userName != null">  
+				user_name = #{userName},
+		</if>				
+		<if test="sex != null">  
+				sex = #{sex},
+		</if>				
+		<if test="mobile != null">  
+				mobile = #{mobile},
+		</if>				
+		<if test="idCard != null">  
+				id_card = #{idCard},
+		</if>				
+		<if test="bankNumber != null">  
+				bank_number = #{bankNumber},
+		</if>				
+		<if test="bankType != null">  
+				bank_type = #{bankType},
+		</if>				
+		<if test="idcardFront != null">  
+				idcard_front = #{idcardFront},
+		</if>				
+		<if test="idcardBack != null">  
+				idcard_back = #{idcardBack},
+		</if>				
+		<if test="province != null">  
+				province = #{province},
+		</if>				
+		<if test="city != null">  
+				city = #{city},
+		</if>				
+		<if test="createDate != null">  
+				create_date = #{createDate},
+		</if>				
+		<if test="createName != null">  
+				create_name = #{createName},
+		</if>				
+		<if test="modifyDate != null">  
+				modify_date = #{modifyDate},
+		</if>				
+		<if test="modifyName != null">  
+				modify_name = #{modifyName},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		<if test="remark != null">  
+				remark = #{remark},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addAgency" parameterType="agencyDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO tr_agency(		user_id
+		,user_name
+		,mobile
+		,id_card
+		,bank_number
+		,bank_type
+		,idcard_front
+		,idcard_back
+		,province
+		,city
+		,create_date
+		,create_name
+		,modify_date
+		,modify_name
+		,status
+		,remark
+		,sex
+)
+		     VALUES (		#{userId}
+		,#{userName}
+		,#{mobile}
+		,#{idCard}
+		,#{bankNumber}
+		,#{bankType}
+		,#{idcardFront}
+		,#{idcardBack}
+		,#{province}
+		,#{city}
+		,#{createDate}
+		,#{createName}
+		,#{modifyDate}
+		,#{modifyName}
+		,#{status}
+		,#{remark}
+		,#{sex}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="int" >
+		DELETE FROM tr_agency WHERE user_id = #{userId}
+	</delete>
+	
+</mapper>
+

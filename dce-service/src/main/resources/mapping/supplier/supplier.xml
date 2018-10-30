@@ -4,12 +4,16 @@
 <mapper namespace="com.dce.business.dao.supplier.ISupplierDao">
 	<resultMap type="supplierDo" id="supplierResultMap">
 		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
 		<result property="supplierName" column="supplier_name" />
 		<result property="synopsis" column="synopsis" />
 		<result property="content" column="content" />
 		<result property="linkValue" column="link_value" />
 		<result property="listImages" column="list_images" />
 		<result property="bannerImages" column="banner_images" />
+		<result property="busiImage" column="busi_image" />
+		<result property="shopImage" column="shop_image" />
+		<result property="city" column="city" />
 		<result property="supplierAddress" column="supplier_address" />
 		<result property="telPhone" column="tel_phone" />
 		<result property="linkMan" column="link_man" />
@@ -25,19 +29,23 @@
 		<result property="modifyName" column="modify_name" />
 		<result property="status" column="status" />
 		<result property="remark" column="remark" />
+		<result property="distance" column="distance" />
 	</resultMap>
 
 	<select id="getById" parameterType="int" resultMap="supplierResultMap">
 		SELECT * 
-		  FROM tr_supplier WHERE id = #{id}
+		  FROM tr_supplier WHERE user_id = #{userId}
 	</select>
 
 	<select id="selectSupplier" parameterType="Map" resultMap="supplierResultMap">
-		SELECT * 
-		  FROM tr_supplier
+		SELECT s.*,select  FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
+		  FROM tr_supplier s
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
 				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND user_id = #{userId}
 			</if>
 			<if test="supplierName != null">  
 				AND supplier_name = #{supplierName}
@@ -57,8 +65,17 @@
 			<if test="bannerImages != null">  
 				AND banner_images = #{bannerImages}
 			</if>
+			<if test="busiImage != null">  
+				AND busi_image = #{busiImage}
+			</if>
+			<if test="shopImage != null">  
+				AND shop_image = #{shopImage}
+			</if>
+			<if test="city != null">  
+				AND city = #{city}
+			</if>
 			<if test="supplierAddress != null">  
-				AND supplier_address = #{supplierAddress}
+				AND supplier_address like  '%#{supplierAddress}%'
 			</if>
 			<if test="telPhone != null">  
 				AND tel_phone = #{telPhone}
@@ -74,12 +91,6 @@
 			</if>
 			<if test="average != null">  
 				AND average = #{average}
-			</if>
-			<if test="longitude != null">  
-				AND longitude = #{longitude}
-			</if>
-			<if test="latitude != null">  
-				AND latitude = #{latitude}
 			</if>
 			<if test="hitNum != null">  
 				AND hit_num = #{hitNum}
@@ -106,14 +117,17 @@
 
 	</select>
 	<select id="selectSupplierByPage" parameterType="Map" resultMap="supplierResultMap">
-		SELECT * 
-		  FROM tr_supplier
+		SELECT s.*,FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance
+		  FROM tr_supplier s
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
 				AND id = #{id}
 			</if>
+			<if test="userId != null">  
+				AND user_id = #{userId}
+			</if>
 			<if test="supplierName != null">  
-				AND supplier_name = #{supplierName}
+				AND supplier_name like  '%#{supplierName}%'
 			</if>
 			<if test="synopsis != null">  
 				AND synopsis = #{synopsis}
@@ -129,6 +143,15 @@
 			</if>
 			<if test="bannerImages != null">  
 				AND banner_images = #{bannerImages}
+			</if>
+			<if test="busiImage != null">  
+				AND busi_image = #{busiImage}
+			</if>
+			<if test="shopImage != null">  
+				AND shop_image = #{shopImage}
+			</if>
+			<if test="city != null">  
+				AND city = #{city}
 			</if>
 			<if test="supplierAddress != null">  
 				AND supplier_address = #{supplierAddress}
@@ -147,12 +170,6 @@
 			</if>
 			<if test="average != null">  
 				AND average = #{average}
-			</if>
-			<if test="longitude != null">  
-				AND longitude = #{longitude}
-			</if>
-			<if test="latitude != null">  
-				AND latitude = #{latitude}
 			</if>
 			<if test="hitNum != null">  
 				AND hit_num = #{hitNum}
@@ -182,6 +199,9 @@
 	<update id="updateSupplierById" parameterType="supplierDo">
 		UPDATE tr_supplier 
 		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				user_id = #{userId},
+		</if>				
 		<if test="supplierName != null">  
 				supplier_name = #{supplierName},
 		</if>				
@@ -199,6 +219,15 @@
 		</if>				
 		<if test="bannerImages != null">  
 				banner_images = #{bannerImages},
+		</if>				
+		<if test="busiImage != null">  
+				busi_image = #{busiImage},
+		</if>				
+		<if test="shopImage != null">  
+				shop_image = #{shopImage},
+		</if>				
+		<if test="city != null">  
+				city = #{city},
 		</if>				
 		<if test="supplierAddress != null">  
 				supplier_address = #{supplierAddress},
@@ -251,12 +280,16 @@
 	
 	<insert id="addSupplier" parameterType="supplierDo" keyProperty="id"
 		useGeneratedKeys="true" >
-		INSERT INTO tr_supplier(		supplier_name
+		INSERT INTO tr_supplier(		user_id
+		,supplier_name
 		,synopsis
 		,content
 		,link_value
 		,list_images
 		,banner_images
+		,busi_image
+		,shop_image
+		,city
 		,supplier_address
 		,tel_phone
 		,link_man
@@ -273,12 +306,16 @@
 		,status
 		,remark
 )
-		     VALUES (		#{supplierName}
+		     VALUES (		#{userId}
+		,#{supplierName}
 		,#{synopsis}
 		,#{content}
 		,#{linkValue}
 		,#{listImages}
 		,#{bannerImages}
+		,#{busiImage}
+		,#{shopImage}
+		,#{city}
 		,#{supplierAddress}
 		,#{telPhone}
 		,#{linkMan}
@@ -298,7 +335,7 @@
 	</insert>
 	
 	<delete id="deleteById" parameterType="int" >
-		DELETE FROM tr_supplier WHERE id = #{id}
+		DELETE FROM tr_supplier WHERE user_id = #{userId}
 	</delete>
 	
 </mapper>

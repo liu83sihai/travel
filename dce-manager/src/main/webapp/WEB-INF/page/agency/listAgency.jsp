@@ -3,13 +3,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>商家管理</title>
+<title>代理管理</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache" />
 <jsp:include page="../common_easyui_cus.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/icons.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/common/js/jquery-easyui-1.4.1/extension/jquery-easyui-datagridview/datagrid-detailview.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/supplier/supplier.js?v='/>"></script>
+<script type="text/javascript" src="<c:url value='/js/agency/agency.js?v='/>"></script>
 <script type="text/javascript" src="<c:url value='/js/common/formatter.js?v=1.0'/>"></script>
 <style type="text/css">
 .tdfont{
@@ -21,9 +21,9 @@
 
 <div id="body" region="center" > 
   <!-- 查询条件区域 -->
-	<div id="search_areaSupplier"  class="easyui-panel" >
+	<div id="search_areaAgency"  class="easyui-panel" >
 		<div id="conditon" >
-			<form id="searchsupplierForm" style="margin-top:7px;margin-left:5px;" >
+			<form id="searchagencyForm" style="margin-top:7px;margin-left:5px;" >
 			      <table border="0">
 			        <tr>
 			          <td class="tdfont">查询条件:
@@ -42,11 +42,11 @@
 	</div>
   
   	<!-- 数据表格区域 -->
-  <div id="tt_Supplier"></div>
+  <div id="tt_Agency"></div>
   
 </div>
 
-  <div id="editSupplierDiv"></div>  
+  <div id="editAgencyDiv"></div>  
 </body>
 
 </html>
