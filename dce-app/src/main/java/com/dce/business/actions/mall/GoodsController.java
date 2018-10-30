@@ -83,29 +83,43 @@ public class GoodsController extends BaseController {
 	 *  "code": 0
 	 *	"msg": 返回成功,
 	 *	"data": {"hotGoodsList":[
-	 *		      "goodsId": "1",
+	 *		      {"goodsId": "1",
 	 *		      "title": "鹿无忧",
-	 *		      "goodsDtails": "提神抗疲劳",
+	 *		      "GoodsDesc": "提神抗疲劳",
 	 *		      "goodsImg": 
 	 *		                {
 	 *		                 "img1":"d:/sasd.jgp",
 	 *		                 "img2":"d:/sasd.jgp",
 	 *		                  } ,
+	 *			  "goodsBanner":{
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *            "goodsDetailImg":"http://sasd.jgp",
 	 *		      "saleTime": "2018-8-6 10：19：56",
 	 *		      "shopPrice":4999.00,
+	 *			  "marketPrice":4000.00,
+	 *			  "saleCount": 30}
 	 *		    ],
 	 *          "normalGoodsList":[
-	 *		      "goodsId": "1",
+	 *		      {"goodsId": "1",
 	 *		      "title": "鹿无忧",
-	 *		      "goodsDtails": "提神抗疲劳",
+	 *		      "GoodsDesc": "提神抗疲劳",
 	 *		      "goodsImg": 
 	 *		                {
 	 *		                 "img1":"d:/sasd.jgp",
 	 *		                 "img2":"d:/sasd.jgp",
 	 *		                  } ,
+	 *			  "goodsBanner":{
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *            "goodsDetailImg":"http://sasd.jgp",
 	 *		      "saleTime": "2018-8-6 10：19：56",
 	 *		      "shopPrice":4999.00,
-	 *		    ],
+	 *			  "marketPrice":4000.00,
+	 *			  "saleCount": 30}
+	 *		    ]
 	 *		    }
 	 *	}
 	 */	
@@ -167,8 +181,8 @@ public class GoodsController extends BaseController {
 	 * {
 	 *  "code": 0
 	 *	"msg": 返回成功,
-	 *	"data": {"travelCardList":[
-	 *		      "goodsId": "1",
+	 *	"data": {[
+	 *		      {"goodsId": "1",
 	 *		      "title": "鹿无忧",
 	 *		      "GoodsDesc": "提神抗疲劳",
 	 *		      "goodsImg": 
@@ -176,8 +190,15 @@ public class GoodsController extends BaseController {
 	 *		                 "img1":"d:/sasd.jgp",
 	 *		                 "img2":"d:/sasd.jgp",
 	 *		                  } ,
+	 *			  "goodsBanner":{
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *            "goodsDetailImg":"http://sasd.jgp",
 	 *		      "saleTime": "2018-8-6 10：19：56",
 	 *		      "shopPrice":4999.00,
+	 *			  "marketPrice":4000.00,
+	 *			  "saleCount": 30}
 	 *		    ] }
 	 *	}
 	 */	

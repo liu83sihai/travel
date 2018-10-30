@@ -61,8 +61,23 @@ public class CTGoodsDo implements Serializable {
 	  private String statusRemarks ; //商品状态：0为删除1为未删除（逻辑删除）
 	  //商品创建时间
 	  private Date createTime ;
+	  private String goodsDetailImg; //详情图片
+	  private String goodsBanner; //详情页面的banner图片
 	  
 	  
+	  
+	public String getGoodsBanner() {
+		return goodsBanner;
+	}
+	public void setGoodsBanner(String goodsBanner) {
+		this.goodsBanner = goodsBanner;
+	}
+	public String getGoodsDetailImg() {
+		return goodsDetailImg;
+	}
+	public void setGoodsDetailImg(String goodsDetailImg) {
+		this.goodsDetailImg = goodsDetailImg;
+	}
 	public Integer getGoodsId() {
 		return goodsId;
 	}

@@ -43,6 +43,8 @@
 		<result column="goodsFlag" property="goodsFlag" />
 		<result column="statusRemarks" property="statusRemarks" />
 		<result column="createTime" property="createTime" />
+		<result column="goodsDetailImg" property="goodsDetailImg" />
+		<result column="goodsBanner" property="goodsBanner" />
 
 	</resultMap>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
@@ -476,14 +478,8 @@
 	<!-- 自定义查询 -->
 	<select id="selectByPage4App" parameterType="java.util.Map"
 		resultMap="BaseResultMap">
-		select goodsId,
-		title,
-		goodsDesc,
-		saleTime,
-		shopPrice,
-		status,
-		createTime,
-		goodsimg
+		select 
+		*
 		from ct_goods where status=1 and statusRemarks=1 limit #{offset},#{rows}
 
 	</select>
