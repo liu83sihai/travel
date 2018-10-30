@@ -116,7 +116,8 @@ public class CommonIntf extends BaseController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 上传图片接口,返回绝对路径,都是指定以png后辍结尾
 	 *  
-	 * @apiParam {MultipartFile} fileName 文件数据流
+	 * @apiParam {String} fileName 文件名称
+	 * @apiParam {String} fileData 文件内容以base64编码的字符串
 	 *  
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {String} filePath 文件保存的绝对路径 
