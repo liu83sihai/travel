@@ -101,7 +101,7 @@ define({ "api": [
     "groupTitle": "Common",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/commonIntf/sendMessage.do"
+        "url": "http://103.82.143.121:8080/dce-app/commonIntf/sendMessage.do"
       }
     ]
   },
@@ -120,8 +120,15 @@ define({ "api": [
             "group": "Parameter",
             "type": "MultipartFile",
             "optional": false,
-            "field": "fileName",
+            "field": "fileData",
             "description": "<p>文件数据流</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Strig",
+            "optional": false,
+            "field": "fileName",
+            "description": "<p>文件名</p>"
           }
         ]
       }
@@ -196,7 +203,7 @@ define({ "api": [
     "groupTitle": "Common",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/commonIntf/uploadImg.do"
+        "url": "http://103.82.143.121:8080/dce-app/commonIntf/uploadImg.do"
       }
     ]
   },
@@ -260,7 +267,7 @@ define({ "api": [
     "groupTitle": "aboutUs",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/aboutUs/index.do"
+        "url": "http://103.82.143.121:8080/dce-app/aboutUs/index.do"
       }
     ]
   },
@@ -456,7 +463,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/index.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/index.do"
       }
     ]
   },
@@ -645,7 +652,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/add.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/add.do"
       }
     ]
   },
@@ -723,7 +730,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/addGood.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/addGood.do"
       }
     ],
     "parameter": {
@@ -806,7 +813,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/del.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/del.do"
       }
     ]
   },
@@ -856,7 +863,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/delGood.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/delGood.do"
       }
     ],
     "parameter": {
@@ -1065,7 +1072,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/edit.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/edit.do"
       }
     ]
   },
@@ -1240,7 +1247,7 @@ define({ "api": [
     "groupTitle": "activity",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/activity/getId.do"
+        "url": "http://103.82.143.121:8080/dce-app/activity/getId.do"
       }
     ]
   },
@@ -1338,7 +1345,7 @@ define({ "api": [
     "groupTitle": "",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/address/addAddress.do"
+        "url": "http://103.82.143.121:8080/dce-app/address/addAddress.do"
       }
     ]
   },
@@ -1443,7 +1450,7 @@ define({ "api": [
     "groupTitle": "",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/address/delAddress.do"
+        "url": "http://103.82.143.121:8080/dce-app/address/delAddress.do"
       }
     ]
   },
@@ -1548,7 +1555,939 @@ define({ "api": [
     "groupTitle": "",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/address/listAddress.do"
+        "url": "http://103.82.143.121:8080/dce-app/address/listAddress.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/agency/add.do",
+    "title": "添加代理管理",
+    "name": "addAgency",
+    "group": "agency",
+    "version": "1.0.0",
+    "description": "<p>添加代理管理</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 用户ID\n\t\t\t\tuserName 姓名\n\t\t\t\tmobile 手机号码\n\t\t\t\tidCard 身份证\n\t\t\t\tbankNumber 银行卡\n\t\t\t\tbankType 银行卡类型\n\t\t\t\tidcardFront 身份证正面照\n\t\t\t\tidcardBack 身份证反面照\n\t\t\t\tprovince 省份\n\t\t\t\tcity 城市\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态(0:删除  1:正常 2:审核通过)\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idCard",
+            "description": "<p>身份证</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankNumber",
+            "description": "<p>银行卡</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankType",
+            "description": "<p>银行卡类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证反面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省份</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>城市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "createDate",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "createName",
+            "description": "<p>创建人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "modifyDate",
+            "description": "<p>更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "modifyName",
+            "description": "<p>更新人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态(0:删除  1:正常 2:审核通过)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/agency/AgencyController.java",
+    "groupTitle": "agency",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/agency/add.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>姓名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idCard",
+            "description": "<p>身份证</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankNumber",
+            "description": "<p>银行卡</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankType",
+            "description": "<p>银行卡类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面照</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证反面照</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省份</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>城市</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "agencyList",
+    "group": "agency",
+    "version": "1.0.0",
+    "description": "<p>代理管理列表</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 用户ID\n\t\t\t\tuserName 姓名\n\t\t\t\tmobile 手机号码\n\t\t\t\tidCard 身份证\n\t\t\t\tbankNumber 银行卡\n\t\t\t\tbankType 银行卡类型\n\t\t\t\tidcardFront 身份证正面照\n\t\t\t\tidcardBack 身份证反面照\n\t\t\t\tprovince 省份\n\t\t\t\tcity 城市\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态(0:删除  1:正常 2:审核通过)\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idCard",
+            "description": "<p>身份证</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankNumber",
+            "description": "<p>银行卡</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankType",
+            "description": "<p>银行卡类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证反面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省份</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>城市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "createDate",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "createName",
+            "description": "<p>创建人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "modifyDate",
+            "description": "<p>更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "modifyName",
+            "description": "<p>更新人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态(0:删除  1:正常 2:审核通过)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/agency/AgencyController.java",
+    "groupTitle": "agency",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "/agency/del.do",
+    "title": "删除代理管理",
+    "name": "delAgency",
+    "group": "agency",
+    "version": "1.0.0",
+    "description": "<p>删除代理管理</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 删除成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/agency/AgencyController.java",
+    "groupTitle": "agency",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/agency/del.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/agency/edit.do",
+    "title": "修改代理管理",
+    "name": "editAgency",
+    "group": "agency",
+    "version": "1.0.0",
+    "description": "<p>修改代理管理</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 用户ID\n\t\t\t\tuserName 姓名\n\t\t\t\tmobile 手机号码\n\t\t\t\tidCard 身份证\n\t\t\t\tbankNumber 银行卡\n\t\t\t\tbankType 银行卡类型\n\t\t\t\tidcardFront 身份证正面照\n\t\t\t\tidcardBack 身份证反面照\n\t\t\t\tprovince 省份\n\t\t\t\tcity 城市\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态(0:删除  1:正常 2:审核通过)\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idCard",
+            "description": "<p>身份证</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankNumber",
+            "description": "<p>银行卡</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankType",
+            "description": "<p>银行卡类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证反面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省份</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>城市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "createDate",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "createName",
+            "description": "<p>创建人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "modifyDate",
+            "description": "<p>更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "modifyName",
+            "description": "<p>更新人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态(0:删除  1:正常 2:审核通过)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/agency/AgencyController.java",
+    "groupTitle": "agency",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/agency/edit.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>姓名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idCard",
+            "description": "<p>身份证</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankNumber",
+            "description": "<p>银行卡</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankType",
+            "description": "<p>银行卡类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面照</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证反面照</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省份</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>城市</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "GET",
+    "url": "/agency/getId.do",
+    "title": "获取代理管理",
+    "name": "getAgency",
+    "group": "agency",
+    "version": "1.0.0",
+    "description": "<p>获取代理管理</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 用户ID\n\t\t\t\tuserName 姓名\n\t\t\t\tmobile 手机号码\n\t\t\t\tidCard 身份证\n\t\t\t\tbankNumber 银行卡\n\t\t\t\tbankType 银行卡类型\n\t\t\t\tidcardFront 身份证正面照\n\t\t\t\tidcardBack 身份证反面照\n\t\t\t\tprovince 省份\n\t\t\t\tcity 城市\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态(0:删除  1:正常 2:审核通过)\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>姓名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "mobile",
+            "description": "<p>手机号码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idCard",
+            "description": "<p>身份证</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankNumber",
+            "description": "<p>银行卡</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "bankType",
+            "description": "<p>银行卡类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardFront",
+            "description": "<p>身份证正面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "idcardBack",
+            "description": "<p>身份证反面照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省份</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>城市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "createDate",
+            "description": "<p>创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "createName",
+            "description": "<p>创建人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.sql.Date",
+            "optional": false,
+            "field": "modifyDate",
+            "description": "<p>更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "modifyName",
+            "description": "<p>更新人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态(0:删除  1:正常 2:审核通过)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>备注</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/agency/AgencyController.java",
+    "groupTitle": "agency",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/agency/getId.do"
       }
     ]
   },
@@ -1696,7 +2635,7 @@ define({ "api": [
     "groupTitle": "banner",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/banner/index.do"
+        "url": "http://103.82.143.121:8080/dce-app/banner/index.do"
       }
     ]
   },
@@ -1773,7 +2712,7 @@ define({ "api": [
     "groupTitle": "feedBack",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/feedBack/addFeedBack.do"
+        "url": "http://103.82.143.121:8080/dce-app/feedBack/addFeedBack.do"
       }
     ]
   },
@@ -1858,7 +2797,7 @@ define({ "api": [
     "groupTitle": "news",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/news/list.do"
+        "url": "http://103.82.143.121:8080/dce-app/news/list.do"
       }
     ],
     "parameter": {
@@ -1977,36 +2916,23 @@ define({ "api": [
     "groupTitle": "notice",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/notice/list.do"
+        "url": "http://103.82.143.121:8080/dce-app/notice/list.do"
       }
     ]
   },
   {
-    "type": "GET",
-    "url": "/supplier/getId.do",
-    "title": "获取商家管理",
-    "name": "getSupplier",
+    "type": "POST",
+    "url": "/supplier/add.do",
+    "title": "添加商家管理",
+    "name": "addSupplier",
     "group": "supplier",
     "version": "1.0.0",
-    "description": "<p>获取商家管理</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "java.lang.Integer",
-            "optional": false,
-            "field": "id",
-            "description": "<p>商家管理ID</p>"
-          }
-        ]
-      }
-    },
+    "description": "<p>添加商家管理</p>",
     "success": {
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tsupplierName 供应商名\n\t\t\t\tsynopsis 简介\n\t\t\t\tcontent 详情\n\t\t\t\tlinkValue 链接\n\t\t\t\tlistImages 小图片\n\t\t\t\tbannerImages banner图\n\t\t\t\tsupplierAddress 地址\n\t\t\t\ttelPhone 电话\n\t\t\t\tlinkMan 联系人\n\t\t\t\tsupplierType 类型\n\t\t\t\tgrade 评分\n\t\t\t\taverage 人均\n\t\t\t\tlongitude 经度\n\t\t\t\tlatitude 纬度\n\t\t\t\thitNum 点击数\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态(0:删除  1:正常)\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 空\n\t\t\t\tsupplierName 供应商名\n\t\t\t\tsynopsis 简介\n\t\t\t\tcontent 详情\n\t\t\t\tlinkValue 链接\n\t\t\t\tlistImages 小图片\n\t\t\t\tbannerImages banner图\n\t\t\t\tbusiImage 营业执照\n\t\t\t\tshopImage 门店照片\n\t\t\t\tcity 省市/城市\n\t\t\t\tsupplierAddress 详细地址\n\t\t\t\ttelPhone 电话\n\t\t\t\tlinkMan 联系人\n\t\t\t\tsupplierType 类型\n\t\t\t\tgrade 评分\n\t\t\t\taverage 人均\n\t\t\t\tlongitude 经度\n\t\t\t\tlatitude 纬度\n\t\t\t\thitNum 点击数\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
           "type": "json"
         }
       ],
@@ -2018,6 +2944,13 @@ define({ "api": [
             "optional": false,
             "field": "id",
             "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>空</p>"
           },
           {
             "group": "Success 200",
@@ -2037,57 +2970,29 @@ define({ "api": [
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "content",
-            "description": "<p>详情</p>"
+            "field": "busiImage",
+            "description": "<p>营业执照</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "linkValue",
-            "description": "<p>链接</p>"
+            "field": "shopImage",
+            "description": "<p>门店照片</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "listImages",
-            "description": "<p>小图片</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "bannerImages",
-            "description": "<p>banner图</p>"
+            "field": "city",
+            "description": "<p>省市/城市</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
             "field": "supplierAddress",
-            "description": "<p>地址</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "telPhone",
-            "description": "<p>电话</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "linkMan",
-            "description": "<p>联系人</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.Integer",
-            "optional": false,
-            "field": "supplierType",
-            "description": "<p>类型</p>"
+            "description": "<p>详细地址</p>"
           },
           {
             "group": "Success 200",
@@ -2119,52 +3024,17 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "java.lang.Integer",
+            "type": "java.math.BigDecimal",
             "optional": false,
-            "field": "hitNum",
-            "description": "<p>点击数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.sql.Date",
-            "optional": false,
-            "field": "createDate",
-            "description": "<p>创建时间</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "createName",
-            "description": "<p>创建人</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.sql.Date",
-            "optional": false,
-            "field": "modifyDate",
-            "description": "<p>更新时间</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "modifyName",
-            "description": "<p>更新人</p>"
+            "field": "distance",
+            "description": "<p>距离</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.Integer",
             "optional": false,
             "field": "status",
-            "description": "<p>状态(0:删除  1:正常)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "remark",
-            "description": "<p>备注</p>"
+            "description": "<p>状态 0:删除 1：正常 2:审核通过</p>"
           },
           {
             "group": "Success 200",
@@ -2194,23 +3064,162 @@ define({ "api": [
     "groupTitle": "supplier",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/supplier/getId.do"
+        "url": "http://103.82.143.121:8080/dce-app/supplier/add.do"
       }
-    ]
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>供应商</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>空</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierName",
+            "description": "<p>供应商名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "synopsis",
+            "description": "<p>简介</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "busiImage",
+            "description": "<p>营业执照</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "shopImage",
+            "description": "<p>门店照片</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>省市/城市</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierAddress",
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>经度</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>纬度</p>"
+          }
+        ]
+      }
+    }
   },
   {
-    "type": "GET",
-    "url": "/supplier/index.do",
-    "title": "商家管理列表",
-    "name": "supplierList",
+    "type": "POST",
+    "url": "/supplier/del.do",
+    "title": "删除商家管理",
+    "name": "delSupplier",
     "group": "supplier",
     "version": "1.0.0",
-    "description": "<p>商家管理列表</p>",
+    "description": "<p>删除商家管理</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tsupplierName 供应商名\n\t\t\t\tsynopsis 简介\n\t\t\t\tcontent 详情\n\t\t\t\tlinkValue 链接\n\t\t\t\tlistImages 小图片\n\t\t\t\tbannerImages banner图\n\t\t\t\tsupplierAddress 地址\n\t\t\t\ttelPhone 电话\n\t\t\t\tlinkMan 联系人\n\t\t\t\tsupplierType 类型\n\t\t\t\tgrade 评分\n\t\t\t\taverage 人均\n\t\t\t\tlongitude 经度\n\t\t\t\tlatitude 纬度\n\t\t\t\thitNum 点击数\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态(0:删除  1:正常)\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 删除成功,\n\t\"data\": {}\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
+    "groupTitle": "supplier",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/supplier/del.do"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/supplier/edit.do",
+    "title": "修改商家管理",
+    "name": "editSupplier",
+    "group": "supplier",
+    "version": "1.0.0",
+    "description": "<p>修改商家管理</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 空\n\t\t\t\tsupplierName 供应商名\n\t\t\t\tsynopsis 简介\n\t\t\t\tcontent 详情\n\t\t\t\tlinkValue 链接\n\t\t\t\tlistImages 小图片\n\t\t\t\tbannerImages banner图\n\t\t\t\tbusiImage 营业执照\n\t\t\t\tshopImage 门店照片\n\t\t\t\tcity 省市/城市\n\t\t\t\tsupplierAddress 详细地址\n\t\t\t\ttelPhone 电话\n\t\t\t\tlinkMan 联系人\n\t\t\t\tsupplierType 类型\n\t\t\t\tgrade 评分\n\t\t\t\taverage 人均\n\t\t\t\tlongitude 经度\n\t\t\t\tlatitude 纬度\n\t\t\t\thitNum 点击数\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
           "type": "json"
         }
       ],
@@ -2228,105 +3237,91 @@ define({ "api": [
             "type": "java.lang.Integer",
             "optional": false,
             "field": "userId",
-            "description": "<p>用户ID</p>"
+            "description": "<p>空</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierName",
+            "description": "<p>供应商名</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
             "field": "synopsis",
-            "description": "<p>描述</p>"
+            "description": "<p>简介</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "content",
-            "description": "<p>内容</p>"
+            "field": "busiImage",
+            "description": "<p>营业执照</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "images",
-            "description": "<p>图片多张图片以&quot;,&quot;号相隔 例a.png,b.png</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.Integer",
-            "optional": false,
-            "field": "hitNum",
-            "description": "<p>点赞数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.sql.Date",
-            "optional": false,
-            "field": "createDate",
-            "description": "<p>创建时间</p>"
+            "field": "shopImage",
+            "description": "<p>门店照片</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "createName",
-            "description": "<p>创建人</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.sql.Date",
-            "optional": false,
-            "field": "modifyDate",
-            "description": "<p>更新时间</p>"
+            "field": "city",
+            "description": "<p>省市/城市</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.String",
             "optional": false,
-            "field": "modifyName",
-            "description": "<p>更新人</p>"
+            "field": "supplierAddress",
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "average",
+            "description": "<p>人均</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>经度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>纬度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "distance",
+            "description": "<p>距离</p>"
           },
           {
             "group": "Success 200",
             "type": "java.lang.Integer",
             "optional": false,
             "field": "status",
-            "description": "<p>状态</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "remark",
-            "description": "<p>备注</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "activityGood",
-            "description": "<p>用户是否点赞 0：未点赞 1：已点赞</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "userName",
-            "description": "<p>用户名</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "trueName",
-            "description": "<p>真名</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "java.lang.String",
-            "optional": false,
-            "field": "userFace",
-            "description": "<p>用户头像</p>"
+            "description": "<p>状态 0:删除 1：正常 2:审核通过</p>"
           },
           {
             "group": "Success 200",
@@ -2356,12 +3351,276 @@ define({ "api": [
     "groupTitle": "supplier",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/supplier/index.do"
+        "url": "http://103.82.143.121:8080/dce-app/supplier/edit.do"
       }
     ],
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>供应商</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>空</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierName",
+            "description": "<p>供应商名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "synopsis",
+            "description": "<p>简介</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "busiImage",
+            "description": "<p>营业执照</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "shopImage",
+            "description": "<p>门店照片</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>省市/城市</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierAddress",
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>经度</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>纬度</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "GET",
+    "url": "/supplier/getId.do",
+    "title": "获取商家管理",
+    "name": "getSupplier",
+    "group": "supplier",
+    "version": "1.0.0",
+    "description": "<p>获取商家管理</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 空\n\t\t\t\tsupplierName 供应商名\n\t\t\t\tsynopsis 简介\n\t\t\t\tcontent 详情\n\t\t\t\tlinkValue 链接\n\t\t\t\tlistImages 小图片\n\t\t\t\tbannerImages banner图\n\t\t\t\tbusiImage 营业执照\n\t\t\t\tshopImage 门店照片\n\t\t\t\tcity 省市/城市\n\t\t\t\tsupplierAddress 详细地址\n\t\t\t\ttelPhone 电话\n\t\t\t\tlinkMan 联系人\n\t\t\t\tsupplierType 类型\n\t\t\t\tgrade 评分\n\t\t\t\taverage 人均\n\t\t\t\tlongitude 经度\n\t\t\t\tlatitude 纬度\n\t\t\t\thitNum 点击数\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>空</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierName",
+            "description": "<p>供应商名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "synopsis",
+            "description": "<p>简介</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "busiImage",
+            "description": "<p>营业执照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "shopImage",
+            "description": "<p>门店照片</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>省市/城市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierAddress",
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "average",
+            "description": "<p>人均</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>经度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>纬度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "distance",
+            "description": "<p>距离</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态 0:删除 1：正常 2:审核通过</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
+    "groupTitle": "supplier",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/supplier/getId.do"
+      }
+    ]
+  },
+  {
+    "name": "supplierList",
+    "group": "supplier",
+    "version": "1.0.0",
+    "description": "<p>商家管理列表</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierName",
+            "description": "<p>供应商名查询</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>经度</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>纬度</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -2378,7 +3637,143 @@ define({ "api": [
           }
         ]
       }
-    }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\tuserId 空\n\t\t\t\tsupplierName 供应商名\n\t\t\t\tsynopsis 简介\n\t\t\t\tcontent 详情\n\t\t\t\tlinkValue 链接\n\t\t\t\tlistImages 小图片\n\t\t\t\tbannerImages banner图\n\t\t\t\tbusiImage 营业执照\n\t\t\t\tshopImage 门店照片\n\t\t\t\tcity 省市/城市\n\t\t\t\tsupplierAddress 详细地址\n\t\t\t\ttelPhone 电话\n\t\t\t\tlinkMan 联系人\n\t\t\t\tsupplierType 类型\n\t\t\t\tgrade 评分\n\t\t\t\taverage 人均\n\t\t\t\tlongitude 经度\n\t\t\t\tlatitude 纬度\n\t\t\t\thitNum 点击数\n\t\t\t\tcreateDate 创建时间\n\t\t\t\tcreateName 创建人\n\t\t\t\tmodifyDate 更新时间\n\t\t\t\tmodifyName 更新人\n\t\t\t\tstatus 状态\n\t\t\t\tremark 备注\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>空</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierName",
+            "description": "<p>供应商名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "synopsis",
+            "description": "<p>简介</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "busiImage",
+            "description": "<p>营业执照</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "shopImage",
+            "description": "<p>门店照片</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>省市/城市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.String",
+            "optional": false,
+            "field": "supplierAddress",
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>评分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "average",
+            "description": "<p>人均</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>经度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>纬度</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.math.BigDecimal",
+            "optional": false,
+            "field": "distance",
+            "description": "<p>距离</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态 0:删除 1：正常 2:审核通过</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/supplier/SupplierController.java",
+    "groupTitle": "supplier"
   },
   {
     "type": "POST",
@@ -2446,7 +3841,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/alterpass.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/alterpass.do"
       }
     ]
   },
@@ -2572,7 +3967,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/authentication.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/authentication.do"
       }
     ]
   },
@@ -2687,6 +4082,27 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Bigdecimal",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>现金用户</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Bigdecimal",
+            "optional": false,
+            "field": "originalAmount",
+            "description": "<p>抵用券</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Bigdecimal",
+            "optional": false,
+            "field": "pointAmount",
+            "description": "<p>积分</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "msg",
@@ -2720,7 +4136,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/getUserInfo.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/getUserInfo.do"
       }
     ]
   },
@@ -2818,7 +4234,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/infoUser.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/infoUser.do"
       }
     ]
   },
@@ -2916,7 +4332,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/login.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/login.do"
       }
     ]
   },
@@ -2966,7 +4382,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/logout.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/logout.do"
       }
     ]
   },
@@ -3078,7 +4494,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/reg.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/reg.do"
       }
     ]
   },
@@ -3163,7 +4579,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/shareList.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/shareList.do"
       }
     ],
     "parameter": {
@@ -3253,7 +4669,7 @@ define({ "api": [
     "groupTitle": "user",
     "sampleRequest": [
       {
-        "url": "http://127.0.0.1:8080/dce-app/user/updPayPass.do"
+        "url": "http://103.82.143.121:8080/dce-app/user/updPayPass.do"
       }
     ]
   }
