@@ -46,7 +46,7 @@ public class NewsController extends BaseController {
 	 *   
 	  *	@apiSuccess {java.lang.Integer}  id 新闻ID
 	  *	@apiSuccess {String}  title 标题
-	  *	@apiSuccess {String}  content 内容
+	  *	@apiSuccess {String}  content 新闻详情外部链接url
 	  *	@apiSuccess {String}  createDate 日期
 	  *	@apiSuccess {String}  content 内容
 	  *	@apiSuccess {String}  image 图片
