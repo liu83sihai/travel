@@ -47,11 +47,7 @@
             type:"post",
             data:{fileData:base64Data,fileName:'a.png'},
             success:function(data){
-                if(data == "success"){
                    alert("上传成功");
-                }else{
-                    alert("上传失败");
-                }
             },
             error:function(){
                 alert("上传失败");

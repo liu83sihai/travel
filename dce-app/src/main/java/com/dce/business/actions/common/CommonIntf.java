@@ -7,9 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.dce.business.common.result.Result;
+import com.dce.business.dao.sms.ISmsDao;
+import com.dce.business.entity.sms.SmsDo;
 
 import sun.misc.BASE64Decoder;
 
@@ -48,6 +52,8 @@ public class CommonIntf extends BaseController {
 	
 	@Value("#{sysconfig['readImgUrl']}")
 	private String readImgUrl;
+	@Resource 
+	ISmsDao smsDao;
 	 /** 
      *  
      * @api {get}  /commonIntf/sendMessage.do 获取短信验证码
@@ -57,9 +63,11 @@ public class CommonIntf extends BaseController {
      * @apiDescription 根据手机号码返回短信验证码
      *  
      * @apiParam {String} mobile 手机号码  
+     * @apiParam {String} page 发送类型,空为验证码。code:验证码，扫描支付： scan，  卖单：  sale，  美元转让：  tran
      *  
      * @apiUse RETURN_MESSAGE
      * @apiSuccess {String} model 验证码
+     * 
      * 
      * @apiSuccessExample Success-Response: 
      *  HTTP/1.1 200 OK 
@@ -84,27 +92,31 @@ public class CommonIntf extends BaseController {
      */  
 	@RequestMapping(value = "/sendMessage", method = RequestMethod.GET)
 	@ResponseBody
-	public Result<?> sendMessage(String mobile) {
+	public Result<?> sendMessage(String mobile,String page) {
 		Assert.hasText(mobile, "请输入手机号");
+		if(StringUtils.isBlank(page)){
+			page = "code";
+		}
 		
 		String content = "" + ((int) (Math.random() * 1000000));
-		
-		
 		// 新的短信验证码发送
-//		String[] sendMmessage = new String[] { content, "3" };
 		SendSmsResponse response;
 		try {
 			response = AliyunSmsTool.sendSms(mobile,content);
 			if (!response.getCode().equals("OK")) {
 				return Result.failureResult("发送失败!");
 			} else {
+				SmsDo record = new SmsDo();
+				record.setRecievers(mobile);
+				record.setMessage(content);
+				record.setBusinessType(page);
+				smsDao.insertSelective(record);
 				return Result.successResult("发送成功", content);
 			}
 		} catch (ClientException e) {
 			// TODO Auto-generated catch block
 			return  Result.failureResult("发送失败!");	
 		}
-		
 
 	}
 	
@@ -148,9 +160,11 @@ public class CommonIntf extends BaseController {
 		
 		try {
 	        // 去掉头部
-	        int zmHeaderLength = imgeFile.indexOf(";base64,") + ";base64,".length();
+			System.out.println("imgeFile:" + imgeFile);
+			int zmHeaderLength = imgeFile.indexOf(";base64,") + ";base64,".length();
 	        String fileContext = imgeFile.substring(zmHeaderLength);
 	        fileContext = fileContext.replace("&#43;", "+");
+	        System.out.println("fileContext:" + fileContext);
 	        BASE64Decoder decoder = new BASE64Decoder();
 	
 	        byte[] decodedBytes = decoder.decodeBuffer(fileContext);
