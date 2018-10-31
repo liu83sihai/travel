@@ -405,7 +405,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * 
 	 * @param chooseGoodsLst
 	 */
-	public Result<String> saveOrder(List<OrderDetail> premiumList, List<OrderDetail> chooseGoodsLst, Order order,
+	public Result<String> saveOrder( List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		// 若传过来的订单id为空，则重新生成订单
@@ -416,7 +416,7 @@ public class OrderServiceImpl implements IOrderService {
 		// 维护订单地址
 		Integer orderAddressId = mainOrderAddress(order);
 		order.setAddressid(orderAddressId);
-		return this.updateOrderToPay(premiumList, chooseGoodsLst, order, request, response);
+		return this.updateOrderToPay( chooseGoodsLst, order, request, response);
 	}
 
 	/**
@@ -553,7 +553,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * @param response
 	 * @return
 	 */
-	private Result<String> updateOrderToPay(List<OrderDetail> premiumList, List<OrderDetail> chooseGoodsLst,
+	private Result<String> updateOrderToPay( List<OrderDetail> chooseGoodsLst,
 			Order order, HttpServletRequest request, HttpServletResponse response) {
 
 		// 查询出原来的订单
@@ -564,18 +564,12 @@ public class OrderServiceImpl implements IOrderService {
 		// 删除原来的明细
 		orderDetailDao.deleteByExample(example);
 
-		logger.debug("用户选择的赠品信息======》》》：" + premiumList);
-		// 计算是否需要补赠品的差价
-		Double giftAmount = countPremiumPriceSpread(premiumList);
-		logger.debug("需要补的赠品差价========》》》：" + giftAmount);
-
 		// 产生订单编号
 		String orderCode = OrderCodeUtil.genOrderCode(order.getUserid());
 		logger.debug("产生订单号=====》》》" + orderCode);
 
 		Integer quantity = 0; // 商品总数量
 		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
-		BigDecimal price = new BigDecimal(0); // 商品总金额
 		Integer salqty = 0; // 赠品数量
 
 		// 循环遍历出商品信息，计算商品总价格和商品总数量
@@ -583,26 +577,10 @@ public class OrderServiceImpl implements IOrderService {
 			CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			quantity += orderDetail.getQuantity(); // 商品总数量
-			price = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(price); // 商品总金额
-			logger.debug("商品总金额---------》》》》》》》》》" + price);
+			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
+			logger.debug("商品总金额---------》》》》》》》》》" + totalprice);
 		}
 
-		// 计算赠品总数量
-		if (premiumList != null) {
-			for (OrderDetail orderDetail : premiumList) {
-				CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
-				orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
-				salqty += orderDetail.getQuantity(); // 商品总数量
-			}
-			logger.debug("赠品总数量---------》》》》》》》》》" + salqty);
-		}
-
-		// 总金额加上赠品需要补的差价
-		if (giftAmount != 0) {
-			totalprice = price.add(new BigDecimal(giftAmount));
-		} else {
-			totalprice = price;
-		}
 		logger.debug("订单总金额========》》》：" + totalprice);
 
 		// 更新订单
@@ -612,22 +590,17 @@ public class OrderServiceImpl implements IOrderService {
 		oldOrder.setAddressid(order.getAddressid());
 		oldOrder.setCreatetime(DateUtil.dateformat(date));// 订单创建时间
 		oldOrder.setTotalprice(totalprice); // 订单总金额
-		oldOrder.setGiftAmount(new BigDecimal(giftAmount)); // 差价
 		oldOrder.setSalqty(new BigDecimal(salqty)); // 赠品总数量
 		oldOrder.setQty(quantity); // 商品总数量
 		oldOrder.setOrdercode(orderCode);
-		oldOrder.setGoodsprice(price); // 商品总金额
+		oldOrder.setGoodsprice(totalprice); // 商品总金额
 		oldOrder.setOrderDetailList(chooseGoodsLst); // 订单商品明细
-		oldOrder.setOrderDetailList(premiumList); // 订单赠品明细
 
 		orderDao.updateByPrimaryKeySelective(oldOrder);
 		logger.debug("==========》》》》》更新的订单信息：" + oldOrder);
 
 		// 添加商品明细
 		order = buyOrder(order, 1, chooseGoodsLst);
-
-		// 添加赠品明细
-		order = buyOrder(order, 0, premiumList);
 
 		// 获取加签后的订单
 		return getSignByPayType(request, response, oldOrder);
