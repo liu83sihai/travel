@@ -11,3 +11,4 @@
 /bin/
 /api/*
 !/api/mytemplate/
+/src/main/webapp/apidoc/*
