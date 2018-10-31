@@ -1,4 +1,4 @@
-﻿package com.dce.business.entity.activity;
+package com.dce.business.entity.activity;
 
 import org.apache.ibatis.type.Alias;
 import org.apache.commons.lang.builder.EqualsBuilder;

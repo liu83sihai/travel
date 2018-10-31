@@ -50,6 +50,38 @@ public class TravelApplyController extends BaseController {
 	 * 
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /travelApply/addApply.do 旅游申请
+	 * @apiName addApply
+	 * @apiGroup travel 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 旅游申请
+	 * 
+	 * @apiSuccess {int}  id	int(11)	是		申请信息id
+	*  @apiSuccess {int}  userId	int	是		申请人id
+	*  @apiSuccess {String}  name	varcahr(50)	是		申请人姓名
+	*  @apiSuccess {int}  sex	int	是		申请人性别(0/1 男/女)
+	*  @apiSuccess {String}  nation	Varchar(50)	是		民族
+	*  @apiSuccess {String}  identity	Varchar(50)	是		身份证
+	*  @apiSuccess {String}  phone	Varchar(50)	是		手机号码
+	*  @apiSuccess {String}  address	Varchar(200)	是		地址
+	*  @apiSuccess {int}  IsBenn	Int	是		是否去过该路线0是/1否
+	*  @apiSuccess {int}  people	int	是		同行人数
+	*  @apiSuccess {int}  pathid	int	是		路线id
+	*  
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * * {
+	*    "msg": "获取交易流水记录成功",
+	*    "code": "0",
+	*    "balance": 50000,
+	*    "data": 
+	*        {
+	*           
+	*        }        
+	*  }
+	**/
 	@RequestMapping(value = "/addApply", method = RequestMethod.POST)
 	public Result<?> addApply() {
 		logger.info("申请旅游....");

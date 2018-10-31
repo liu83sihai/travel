@@ -29,24 +29,30 @@ public class TravelPathController {
 	/**
 	 * 返回所有路线给前台
 	 */
+	/** 
+	 * @api {POST} /travelPath/allPath.do 旅游路线
+	 * @apiName allPath
+	 * @apiGroup travel 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 旅游路线列表查询
+	 * 
+	*  
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * * {
+	*    "msg": "获取旅游路线成功",
+	*    "code": "0",
+	*    "data": 
+	*        {
+	*           
+	*        }        
+	*  }
+	**/
 	@RequestMapping(value = "/allPath", method = RequestMethod.GET)
     public Result<?> list() {
-
         logger.info("查询所有路线.....");
-
         List<TravelPathDo> pathList = travelPathService.selectAll();
-        List<Map<String, Object>> result = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(pathList)) {
-            for (TravelPathDo message : pathList) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", message.getPathid());
-                map.put("lineName", message.getLinename());
-                map.put("state", message.getState());  //状态 (已开发0/马上推出1/正在开发2)
-                map.put("remake", message.getRemake());
-                result.add(map);
-            }
-        }
-
-        return Result.successResult("查询成功", result);
+        return Result.successResult("查询成功", pathList);
     }
 }

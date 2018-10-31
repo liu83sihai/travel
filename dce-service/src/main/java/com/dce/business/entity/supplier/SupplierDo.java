@@ -1,4 +1,4 @@
-﻿package com.dce.business.entity.supplier;
+package com.dce.business.entity.supplier;
 
 import org.apache.ibatis.type.Alias;
 import org.apache.commons.lang.builder.EqualsBuilder;

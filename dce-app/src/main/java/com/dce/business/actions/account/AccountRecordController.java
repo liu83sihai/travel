@@ -37,6 +37,58 @@ public class AccountRecordController extends BaseController {
 	 * 获取用户交易流水记录
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /accountRecord/selectAccountRecord.do 券账户详情
+	 * @apiName accountRecord
+	 * @apiGroup accountRecord 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 根据券账户类别查询详情
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * @apiParam {String} accountType  券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户”
+	 * 
+	 * @apiSuccess {int}id	int	主键
+	*  @apiSuccess {int}userId	int	用户id
+	*  @apiSuccess {Decimal}balance	账户余额
+	*  @apiSuccess {Decimal}amount	交易金额
+	*  @apiSuccess {int}moreOrLess	int	增加/减少
+	*  @apiSuccess {int}userId	int	用户id
+	*  @apiSuccess {Decimal}balanceAmount	余额
+	*  @apiSuccess {String}remark	String	交易操作（提现、商城消费）
+	*  @apiSuccess {String}createTime	String	交易时间
+	*  @apiSuccess {String}accountType	String	交易账户类型：“wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户”
+	*  
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * * {
+	*    "msg": "获取交易流水记录成功",
+	*    "code": "0",
+	*    "balance": 50000,
+	*    "data": [
+	*        {
+	*            "amount": 200,
+	*            "createTime": "2018-08-13",
+	*            "moreOrLess": "+",
+	*            "remark": "提现",
+	*            "id": 1657,
+	*            "balanceAmount": 44000,
+	*            "userId": 37,
+	*            "seqId": "205d9eb1-ab94-4abc-abc4-451841690fbd"
+	*        },
+	*        {
+	*            "amount": 45000,
+	*            "createTime": "2018-08-03",
+	*            "moreOrLess": "+",
+	*            "remark": "商城消费",
+	*            "id": 1631,
+	*            "balanceAmount": 660000,
+	*            "userId": 37,
+	*            "accountType": "wallet_money"
+	*        }
+	*    ]
+	*  }
+	**/
 	@RequestMapping(value = "/selectAccountRecord", method=RequestMethod.GET)
 	public Map<String,Object> selectAccountRecord(){
 		
@@ -63,21 +115,8 @@ public class AccountRecordController extends BaseController {
 			return map;
 		}
 		
-		List<Map<String,Object>> accountlist = new ArrayList<>();
-		for(UserAccountDetailDo userAccountDetail : list){
-			Map<String,Object> map2 = new HashMap<>();
-			map2.put("id", userAccountDetail.getId());
-			map2.put("userId", userAccountDetail.getUserId());
-			map2.put("amount", userAccountDetail.getAmount());
-			map2.put("moreOrLess", userAccountDetail.getMoreOrLess());
-			map2.put("balanceAmount", userAccountDetail.getBalanceAmount());
-			map2.put("createTime", DateUtil.YYYY_MM_DD_MM_HH_SS.format(userAccountDetail.getCreateTime()));
-			map2.put("remark", userAccountDetail.getRemark());
-			map2.put("seqId", userAccountDetail.getSeqId());
-			map2.put("accountType", userAccountDetail.getAccountType());
-			accountlist.add(map2);
-		}
-		map.put("data", accountlist);
+		
+		map.put("data", list);
 		
 		return map;
 	}

@@ -58,12 +58,10 @@ public class BeatufySpotController {
 	 public Result<?> list() {
 		 logger.info("查询景区查询...");
 		 Map<String, Object> ret = new HashMap<String,Object>();
-		 Result result = Result.successResult("ok");
-		 result.setData(ret);
 		 ret.put("url", "https://wx.xinglvka.com/list.html");
 		 ret.put("id", 1);
 		 ret.put("channel", 1);
-		 return Result.successResult("查询成功", result);
+		 return Result.successResult("查询成功", ret);
 	 }
 	 
 }

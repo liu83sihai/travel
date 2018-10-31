@@ -147,22 +147,46 @@ public class AccountController extends BaseController {
 	 * 查询 现持仓、原始仓、美元点 余额
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /account/amount.do 券账户余额
+	 * @apiName amount
+	 * @apiGroup accountRecord 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 查询券账户余额
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * @apiParam {String} accountType  券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户”
+	 * 
+	 * @apiSuccess {Decimal} amount  余额
+	 * @apiSuccess {String} accountType 券账户类别 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * * {
+	*    "msg": "获取券账户余额成功",
+	*    "code": "0",
+	*    "data": 
+	*        {
+	*            "amount": 200
+	*        }
+	*  }
+	**/
 	@RequestMapping(value = "/amount", method = { RequestMethod.GET, RequestMethod.POST })
 	public Result<?> amount() {
 		
 		Integer userId = getUserId();
-
-		UserAccountDo account = accountService.getUserAccount(userId,AccountType.wallet_money);
+		String accountType = getString("accountType"); 
+		
+		UserAccountDo account = accountService.getUserAccount(userId,AccountType.getAccountType(accountType));
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (account == null || account.getAmount() == null) {
-
-			result.put("totalIncome", "0.0");
 			result.put("amount", "0.0");
+			result.put("accountType", accountType);
 			return Result.successResult("获取账户信息成功!", result);
 		} else {
-			result.put("totalIncome", account.getTotalInocmeAmount());
 			result.put("amount", account.getAmount());
+			result.put("accountType", accountType);
 			return Result.successResult("获取账户信息成功!", result);
 		}
 	}

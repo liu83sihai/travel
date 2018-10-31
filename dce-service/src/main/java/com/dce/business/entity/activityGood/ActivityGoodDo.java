@@ -1,4 +1,4 @@
-﻿package com.dce.business.entity.activityGood;
+package com.dce.business.entity.activityGood;
 
 import org.apache.ibatis.type.Alias;
 import org.apache.commons.lang.builder.EqualsBuilder;
