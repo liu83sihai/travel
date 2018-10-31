@@ -39,6 +39,29 @@ public class WithDrawController extends BaseController {
 	 * 
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /withdraw/withdraws.do 提交兑换申请
+	 * @apiName withdraws
+	 * @apiGroup withdraw 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 提交兑换申请
+	 * 
+	 * @apiParam {String} userId 用户id
+	 *  @apiParam {Decimal} qty	是	用户要提现的金额（整百整百的取如100,200,300）
+	 *  @apiParam {String} password	交易密码
+	 *  @apiParam {int} type	是	提现类型 1支付宝 2银行卡 3微信
+	 *  @apiParam {String} bank_no	是	账号 （提现到银行卡，账号不显示）
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 *   {
+	*    "code": "0",
+	*    "msg": "兑换申请提交成功",
+	*    "data":{
+	*       
+	*      }
+	*  }
+	**/
 	@RequestMapping(value = "/withdraws", method = RequestMethod.POST )
 	public Result<?> withdraw(HttpServletRequest request) {
 		
@@ -82,6 +105,59 @@ public class WithDrawController extends BaseController {
 	 * 
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /withdraw/info.do 兑换记录查询
+	 * @apiName info
+	 * @apiGroup withdraw 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 兑换记录查询列表查询
+	 * 
+	 * @apiParam {String} userId 用户id
+	 *  
+	 * @apiSuccess {Decimal}   amount	double	提现金额
+	*  @apiSuccess {date}   confirmDateStr	date	确认时间
+	*  @apiSuccess {String}   user_name	int	用户名
+	*  @apiSuccess {Decimal}   confirmedAmt	 成交金额
+	*  @apiSuccess {Decimal}   fee	double	手续费
+	*  @apiSuccess {String}   mobile	int	手机号
+	*  @apiSuccess {String}   processStatusStr	varchar	审批状态
+	*  @apiSuccess {String}   remark	varchar	备注
+	*  @apiSuccess {String}   withdrawStatus	varchar	提现状态
+	*  @apiSuccess {date}   withdrawDateStr	date	提现申请时间
+	*  @apiSuccess {String}   bank_no	varchar	账号
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 *   {
+	*    "code": "0",
+	*    "msg": "查询成功",
+	*    "data": [
+	*      {
+	*        "amount": 500,
+	*        "confirmDateStr": "",
+	*        "fack_receive": 0,
+	*        "user_name": "A005",
+	*        "fee": 0,
+	*        "mobile": "88",
+	*        "processStatusStr": "待审批",
+	*        "money_type": "0",
+	*        "remark": "",
+	*        "bank_no": "56999896655",
+	*        "type": "1",
+	*        "userid": 40,
+	*        "withdrawStatus": "未到账",
+	*        "withdraw_date": 1534500274,
+	*        "bank": "",
+	*        "true_name": "gh",
+	*        "confirm_date": 0,
+	*        "process_status": "1",
+	*        "name": "",
+	*        "withdrawDateStr": "2018-08-17 18:04:34",
+	*        "id": 13,
+	*        "payment_date": 0
+	*      }]
+	*  }
+	**/
 	@RequestMapping(value = "/info", method = RequestMethod.POST)
 	public Result<List<Map<String, Object>>> withraw2() {
 
