@@ -133,7 +133,7 @@ public class UserDo {
 	private String refereeUserName;
 
 	// 推荐人的手机号
-	@NotBlank(message = "推荐人手机号不能为空")
+	//@NotBlank(message = "推荐人手机号不能为空")
 	private String refereeUserMobile;
 
 	// 接点人用户名

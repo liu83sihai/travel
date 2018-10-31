@@ -2,38 +2,28 @@ package com.dce.business.actions.common;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.dce.business.common.result.Result;
+
+import sun.misc.BASE64Decoder;
 
 
 /**
@@ -127,7 +117,8 @@ public class CommonIntf extends BaseController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 上传图片接口,返回绝对路径,都是指定以png后辍结尾
 	 *  
-	 * @apiParam {MultipartFile} fileName 文件数据流
+	 * @apiParam {String} fileData 文件数据流Base64文件编码字符串
+	 * @apiParam {String} fileName 文件名
 	 *  
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {String} filePath 文件保存的绝对路径 
@@ -148,46 +139,56 @@ public class CommonIntf extends BaseController {
 	 */  
 	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> uploadImg(@RequestPart(value="fileData")  CommonsMultipartResolver  fileData,
-			@RequestParam(value="fileName") String fileName,
-			HttpServletRequest request){
-	
-		//保存在项目的路径上
-		String savePath =uploadPath +  "/app/images/";
+	public Result<?> uploadImg(	HttpServletRequest request){
+		String fileName = getString("fileName");
+		String imgeFile = getString("fileData");
 		
-		File file1 = new File(savePath);
-		if (!file1.exists()) {
-			file1.mkdirs();
-		}
-		// 文件真实文件名
-		int fileSize = 5*1024*1204;
-		// 我们一般会根据某种命名规则对其进行重命名
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
-		String date = df.format(new Date());
-		String saveFileName = "";
-		saveFileName = date + fileName;// 自定义文件名称
-		
-		File fileToCreate = new File( savePath, saveFileName);
-
-		// 检查同名文件是否存在,不存在则将文件流写入文件磁盘系统
 		FileOutputStream os = null;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
 		try {
+	        // 去掉头部
+	        int zmHeaderLength = imgeFile.indexOf(";base64,") + ";base64,".length();
+	        String fileContext = imgeFile.substring(zmHeaderLength);
+	        fileContext = fileContext.replace("&#43;", "+");
+	        BASE64Decoder decoder = new BASE64Decoder();
+	
+	        byte[] decodedBytes = decoder.decodeBuffer(fileContext);
+			//保存在项目的路径上
+			String savePath =uploadPath +  "/app/images/";
+			File file1 = new File(savePath);
+			if (!file1.exists()) {
+				file1.mkdirs();
+			}
 			
+			// 文件真实文件名
+			int fileSize = 5*1024*1204;
+			// 我们一般会根据某种命名规则对其进行重命名
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+			String date = df.format(new Date());
+			String saveFileName = "";
+			saveFileName = date + fileName;// 自定义文件名称
 			
+			File fileToCreate = new File( savePath, saveFileName);
+	
+			// 检查同名文件是否存在,不存在则将文件流写入文件磁盘系统
 			os = new FileOutputStream(fileToCreate, false);
-//			os.write(fileData.);
-//			os.write(fromFile.getFileData().getBytes());
+			os.write(decodedBytes);
 			os.flush();
+			
+			
+			resultMap.put("filePath", savePath + saveFileName);
+			resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+			
 		} catch (Exception e) {
-			logger.info("save file error,freespace=" +fileToCreate.getParentFile().getFreeSpace(),e);
+			logger.info("save file error " ,e);
 			return Result.failureResult("发送失败!");
 		}finally{
+			if(os != null) {
 			IOUtils.closeQuietly(os);
+			}
 		}
 		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("filePath", savePath + saveFileName);
-		resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
 		return  Result.successResult("图片保存成功", resultMap);
 	}
 

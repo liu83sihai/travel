@@ -141,7 +141,14 @@ public class ActivityController extends BaseController{
 				map.put("userId", activity.getUserId());
 				map.put("synopsis", activity.getSynopsis());
 				map.put("content", activity.getContent());
-				map.put("images", activity.getImages());
+				String images = activity.getImages();
+				if(StringUtils.isNotBlank(images)){
+					String[] image = images.split(",");
+					map.put("images", image);
+				}else{
+					map.put("images", new String[]{});
+				}
+				
 				map.put("hitNum", activity.getHitNum());
 				map.put("createDate", activity.getCreateDate());
 				map.put("createName", activity.getCreateName());
