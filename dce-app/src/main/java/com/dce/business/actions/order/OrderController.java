@@ -363,8 +363,8 @@ public class OrderController extends BaseController {
 		logger.info("获取的商品信息-------》》》》》" + goods);
 
 		// 将商品信息的JSON数据解析为list集合
-//		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
-		List<OrderDetail> chooseGoodsLst = new ArrayList<OrderDetail>();
+		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
+//		List<OrderDetail> chooseGoodsLst = new ArrayList<OrderDetail>();
 
 		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId);
