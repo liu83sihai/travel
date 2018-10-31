@@ -49,7 +49,7 @@ public class TravelPathController {
 	*        }        
 	*  }
 	**/
-	@RequestMapping(value = "/allPath", method = RequestMethod.GET)
+	@RequestMapping(value = "/allPath", method = {RequestMethod.GET, RequestMethod.POST})
     public Result<?> list() {
         logger.info("查询所有路线.....");
         List<TravelPathDo> pathList = travelPathService.selectAll();
