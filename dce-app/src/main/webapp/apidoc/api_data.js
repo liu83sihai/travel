@@ -118,14 +118,14 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "MultipartFile",
+            "type": "String",
             "optional": false,
             "field": "fileData",
-            "description": "<p>文件数据流</p>"
+            "description": "<p>文件数据流Base64文件编码字符串</p>"
           },
           {
             "group": "Parameter",
-            "type": "Strig",
+            "type": "String",
             "optional": false,
             "field": "fileName",
             "description": "<p>文件名</p>"
@@ -2556,7 +2556,7 @@ define({ "api": [
             "type": "java.lang.String",
             "optional": false,
             "field": "linkValue",
-            "description": "<p>链接值</p>"
+            "description": "<p>banner详情外部url链接地址</p>"
           },
           {
             "group": "Success 200",
@@ -2640,6 +2640,77 @@ define({ "api": [
     ]
   },
   {
+    "type": "GET",
+    "url": "/beatufyspot/index.do",
+    "title": "景区查询列表",
+    "name": "beatufyspotList",
+    "group": "beatufyspot",
+    "version": "1.0.0",
+    "description": "<p>景区查询列表</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\n\t    [\n\t\t\t{\n\t\t\t\tid id\n\t\t\t\turl 景区查询url\n\t\t\t\tchannel 景区来源\n\t\t\t}\n\t\t]\n\t  }\n\t}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "java.lang.Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>景区查询url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>景区来源</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      }
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/beatufyspot/BeatufySpotController.java",
+    "groupTitle": "beatufyspot",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/beatufyspot/index.do"
+      }
+    ]
+  },
+  {
     "type": "POST",
     "url": "/feedBack/addFeedBack.do",
     "title": "用户反馈",
@@ -2717,6 +2788,398 @@ define({ "api": [
     ]
   },
   {
+    "type": "POST",
+    "url": "/mall/list.do",
+    "title": "商城，商品列表",
+    "name": "list",
+    "group": "mall",
+    "version": "1.0.0",
+    "description": "<p>商品列表</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "hotGoodsList",
+            "description": "<p>爆款商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "hotGoodsList.goodsId",
+            "description": "<p>商品id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.title",
+            "description": "<p>商品标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.GoodsDesc",
+            "description": "<p>商品的描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "hotGoodsList.goodsImg",
+            "description": "<p>商品图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "hotGoodsList.goodsBanner",
+            "description": "<p>商品详情页面banner图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.goodsDetailImg",
+            "description": "<p>商品详情图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "hotGoodsList.shopPrice",
+            "description": "<p>商品价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "hotGoodsList.marketPrice",
+            "description": "<p>商品优惠价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "hotGoodsList.saleCount",
+            "description": "<p>已售数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.brandName",
+            "description": "<p>商品品牌名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "hotGoodsList.cateName",
+            "description": "<p>商品类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "normalGoodsList",
+            "description": "<p>正常商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "normalGoodsList.goodsId",
+            "description": "<p>商品id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.title",
+            "description": "<p>商品标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.GoodsDesc",
+            "description": "<p>商品的描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "normalGoodsList.goodsImg",
+            "description": "<p>商品图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "normalGoodsList.goodsBanner",
+            "description": "<p>商品详情页面banner图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.goodsDetailImg",
+            "description": "<p>商品详情图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "normalGoodsList.shopPrice",
+            "description": "<p>商品价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "normalGoodsList.marketPrice",
+            "description": "<p>商品优惠价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "normalGoodsList.saleCount",
+            "description": "<p>已售数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.brandName",
+            "description": "<p>商品品牌名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "normalGoodsList.cateName",
+            "description": "<p>商品类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\"hotGoodsList\":[\n\t\t      \"goodsId\": \"1\",\n\t\t      \"title\": \"鹿无忧\",\n\t\t      \"goodsDtails\": \"提神抗疲劳\",\n\t\t      \"goodsImg\": \n\t\t                {\n\t\t                 \"img1\":\"d:/sasd.jgp\",\n\t\t                 \"img2\":\"d:/sasd.jgp\",\n\t\t                  } ,\n\t\t      \"saleTime\": \"2018-8-6 10：19：56\",\n\t\t      \"shopPrice\":4999.00,\n\t\t    ],\n         \"normalGoodsList\":[\n\t\t      \"goodsId\": \"1\",\n\t\t      \"title\": \"鹿无忧\",\n\t\t      \"goodsDtails\": \"提神抗疲劳\",\n\t\t      \"goodsImg\": \n\t\t                {\n\t\t                 \"img1\":\"d:/sasd.jgp\",\n\t\t                 \"img2\":\"d:/sasd.jgp\",\n\t\t                  } ,\n\t\t      \"saleTime\": \"2018-8-6 10：19：56\",\n\t\t      \"shopPrice\":4999.00,\n\t\t    ],\n\t\t    }\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/mall/GoodsController.java",
+    "groupTitle": "mall",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/mall/list.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "POST",
+    "url": "/mall/listTravelCard.do",
+    "title": "加入我们购买旅游卡",
+    "name": "listTravelCard",
+    "group": "mall",
+    "version": "1.0.0",
+    "description": "<p>加入我们购买旅游卡</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "travelCardList",
+            "description": "<p>爆款商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "travelCardList.goodsId",
+            "description": "<p>商品id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.title",
+            "description": "<p>商品标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.GoodsDesc",
+            "description": "<p>商品的描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "travelCardList.goodsImg",
+            "description": "<p>商品图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "travelCardList.goodsBanner",
+            "description": "<p>商品详情页面banner图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.goodsDetailImg",
+            "description": "<p>商品详情图片地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "travelCardList.shopPrice",
+            "description": "<p>商品价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "double",
+            "optional": false,
+            "field": "travelCardList.marketPrice",
+            "description": "<p>商品优惠价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "travelCardList.saleCount",
+            "description": "<p>已售数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.brandName",
+            "description": "<p>商品品牌名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "travelCardList.cateName",
+            "description": "<p>商品类别名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>返回成功信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>返回成功编码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回成功的数据</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": " HTTP/1.1 200 OK \n{\n \"code\": 0\n\t\"msg\": 返回成功,\n\t\"data\": {\"travelCardList\":[\n\t\t      \"goodsId\": \"1\",\n\t\t      \"title\": \"鹿无忧\",\n\t\t      \"GoodsDesc\": \"提神抗疲劳\",\n\t\t      \"goodsImg\": \n\t\t                {\n\t\t                 \"img1\":\"d:/sasd.jgp\",\n\t\t                 \"img2\":\"d:/sasd.jgp\",\n\t\t                  } ,\n\t\t      \"saleTime\": \"2018-8-6 10：19：56\",\n\t\t      \"shopPrice\":4999.00,\n\t\t    ] }\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "D:/travel/dce-app/src/main/java/com/dce/business/actions/mall/GoodsController.java",
+    "groupTitle": "mall",
+    "sampleRequest": [
+      {
+        "url": "http://103.82.143.121:8080/dce-app/mall/listTravelCard.do"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rows",
+            "description": "<p>展示的条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pageNum",
+            "description": "<p>页码</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "GET",
     "url": "/news/list.do",
     "title": "新闻列表",
@@ -2746,7 +3209,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "content",
-            "description": "<p>内容</p>"
+            "description": "<p>新闻详情外部链接url</p>"
           },
           {
             "group": "Success 200",
@@ -4415,7 +4878,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "refereeId",
+            "field": "refereeUserMobile",
             "description": "<p>用户推荐人，填写用户手机号</p>"
           },
           {
