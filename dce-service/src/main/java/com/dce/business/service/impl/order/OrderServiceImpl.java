@@ -335,21 +335,11 @@ public class OrderServiceImpl implements IOrderService {
 				return oldOrder;
 			}
 
-			// 商品明细
-			if (goodstype == 1) {
-				for (OrderDetail detail : orderDetail) {
-					detail.setOrderid(oldOrder.getOrderid());
-					detail.setRemark("1");
-					orderDetailDao.insertSelective(detail);
-				}
-				// 赠品明细
-			} else {
-				for (OrderDetail detail : orderDetail) {
-					detail.setOrderid(oldOrder.getOrderid());
-					detail.setRemark("0");
-					orderDetailDao.insertSelective(detail);
-				}
-			}
+			for (OrderDetail detail : orderDetail) {
+				detail.setOrderid(oldOrder.getOrderid());
+				detail.setRemark("1");
+				orderDetailDao.insertSelective(detail);
+			} 
 		} catch (Exception e) {
 			logger.error("添加订单明细失败！！！" + e);
 			e.printStackTrace();
@@ -408,15 +398,15 @@ public class OrderServiceImpl implements IOrderService {
 	public Result<String> saveOrder( List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		// 若传过来的订单id为空，则重新生成订单
-		if (order.getOrderid() == null) {
-			throw new BusinessException("无效的订单ID");
-		}
-		logger.debug("===========支付成功，更新订单==========");
 		// 维护订单地址
 		Integer orderAddressId = mainOrderAddress(order);
 		order.setAddressid(orderAddressId);
-		return this.updateOrderToPay( chooseGoodsLst, order, request, response);
+		// 若传过来的订单id为空，则重新生成订单
+		if (order.getOrderid() == null) {
+			return this.createOrderToPay(chooseGoodsLst, order, request, response);
+		}else {
+			return this.updateOrderToPay(chooseGoodsLst, order, request, response);
+		}
 	}
 
 	/**
@@ -461,58 +451,39 @@ public class OrderServiceImpl implements IOrderService {
 	 * @param response
 	 * @return
 	 */
-	private Result<String> createOrderToPay(List<OrderDetail> premiumList, List<OrderDetail> chooseGoodsLst,
-			Order order, HttpServletRequest request, HttpServletResponse response) {
+	private Result<String> createOrderToPay(List<OrderDetail> chooseGoodsLst,
+											Order order, 
+											HttpServletRequest request, 
+											HttpServletResponse response) {
 
 		// 选择的商品信息为空
 		if (chooseGoodsLst.size() == 0) {
-			logger.debug("获取的商品清单为空=====》》》");
-			return Result.successResult("商品清单为空");
+			logger.warn("获取的商品清单为空=====》》》");
+			return Result.failureResult("商品清单为空");
 		}
 
 		if (order == null) {
-			logger.debug("获取的商品信息为空（地址id、支付方式、用户id）=====》》》");
-			return Result.successResult("获取的商品信息为空（地址id、支付方式、用户id）");
+			logger.warn("获取的商品信息为空（地址id、支付方式、用户id）=====》》》");
+			return Result.failureResult("获取的商品信息为空（地址id、支付方式、用户id）");
 		}
-		// 计算是否需要补赠品的差价
-		Double giftAmount = countPremiumPriceSpread(premiumList);
-		logger.debug("需要补的赠品差价========》》》：" + giftAmount);
-
+		
 		Integer quantity = 0; // 商品总数量
 		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
-		BigDecimal price = new BigDecimal(0); // 商品总金额
 		Integer salqty = 0; // 赠品数量
 
 		// 产生订单编号
 		String orderCode = OrderCodeUtil.genOrderCode(order.getUserid());
-		logger.debug("产生订单号=====》》》" + orderCode);
+		logger.info("产生订单号=====》》》" + orderCode);
 
 		// 循环遍历出商品信息，计算商品总价格和商品总数量
 		for (OrderDetail orderDetail : chooseGoodsLst) {
 			CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			quantity += orderDetail.getQuantity(); // 商品总数量
-			price = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(price); // 商品总金额
-			logger.debug("商品总金额---------》》》》》》》》》" + price);
+			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
+			logger.debug("商品总金额---------》》》》》》》》》" + totalprice);
 		}
 
-		// 计算赠品总数量
-		if (premiumList != null) {
-			for (OrderDetail orderDetail : premiumList) {
-				CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
-				orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
-				salqty += orderDetail.getQuantity(); // 商品总数量
-			}
-			logger.debug("赠品总数量---------》》》》》》》》》" + salqty);
-		}
-
-		// 总金额加上赠品需要补的差价
-		if (giftAmount != 0) {
-			totalprice = price.add(new BigDecimal(giftAmount));
-		} else {
-			totalprice = price;
-		}
-		logger.debug("订单总金额========》》》：" + totalprice);
 
 		// 创建订单
 		order.setOrdercode(orderCode); // 订单号
@@ -522,21 +493,15 @@ public class OrderServiceImpl implements IOrderService {
 		order.setPaystatus("0"); // 未支付状态
 		order.setQty(quantity); // 商品总数量
 		order.setTotalprice(totalprice); // 订单总金额
-		order.setGiftAmount(new BigDecimal(giftAmount)); // 差价
-		order.setSalqty(new BigDecimal(salqty)); // 赠品总数量
-		order.setGoodsprice(price); // 商品总金额
+		order.setGoodsprice(totalprice); // 商品单价
 		order.setOrderDetailList(chooseGoodsLst); // 订单商品明细
-		order.setOrderDetailList(premiumList); // 订单赠品明细
 
 		// 添加订单
 		orderDao.insertSelective(order);
-		logger.debug("==========》》》》》插入的订单信息：" + order);
+		logger.info("==========》》》》》插入的订单信息：" + order);
 
 		// 添加商品明细
 		order = buyOrder(order, 1, chooseGoodsLst);
-
-		// 添加赠品明细
-		order = buyOrder(order, 0, premiumList);
 
 		// 获取加签后的订单
 		return getSignByPayType(request, response, order);
@@ -570,7 +535,6 @@ public class OrderServiceImpl implements IOrderService {
 
 		Integer quantity = 0; // 商品总数量
 		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
-		Integer salqty = 0; // 赠品数量
 
 		// 循环遍历出商品信息，计算商品总价格和商品总数量
 		for (OrderDetail orderDetail : chooseGoodsLst) {
@@ -590,7 +554,6 @@ public class OrderServiceImpl implements IOrderService {
 		oldOrder.setAddressid(order.getAddressid());
 		oldOrder.setCreatetime(DateUtil.dateformat(date));// 订单创建时间
 		oldOrder.setTotalprice(totalprice); // 订单总金额
-		oldOrder.setSalqty(new BigDecimal(salqty)); // 赠品总数量
 		oldOrder.setQty(quantity); // 商品总数量
 		oldOrder.setOrdercode(orderCode);
 		oldOrder.setGoodsprice(totalprice); // 商品总金额

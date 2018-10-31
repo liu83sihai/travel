@@ -74,6 +74,77 @@ public class OrderController extends BaseController {
 	 * 
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /order/orderInquiry.do 用户订单列表显示
+	 * @apiName orderInquiry
+	 * @apiGroup order 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户订单列表显示
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	*  {
+	*    "code": "0",
+	*    "msg": "获取订单成功",
+	*    "data": [{
+	*            "orderstatus": "1",
+	*            "orderid": 391,
+	*            "totalprice": 2985,
+	*            "paytime": "2018-08-30 00:22:29",
+	*            "userid": 768,
+	*            "addressid": 77,
+	*            "orderDetailList": [
+	*                {
+	*                    "orderdetailid": 545,
+	*                    "orderid": 391,
+	*                    "goodsId": 1001,
+	*                    "quantity": 5,
+	*                    "price": 597,
+	*                    "goodsName": "鹿无忧男士尊享版",
+	*                    "remark": "1"
+	*                }
+	*            ],
+	*            "ordercode": "XX76820180830002214997",
+	*            "createTime": "2018-08-30 00:22:14",
+	*            "price": 2985,
+	*            "qty": 5,
+	*            "paystatus": "1",
+	*            "salqty": 1,
+	*            "ordertype": "2"
+	*        },
+	*        {
+	*            "orderstatus": "1",
+	*            "orderid": 390,
+	*            "totalprice": 597,
+	*            "paytime": "2018-08-30 00:20:54",
+	*            "userid": 768,
+	*            "addressid": 77,
+	*            "orderDetailList": [
+	*                {
+	*                    "orderdetailid": 542,
+	*                    "orderid": 390,
+	*                    "goodsId": 1001,
+	*                    "quantity": 1,
+	*                    "price": 597,
+	*                    "goodsName": "鹿无忧男士尊享版",
+	*                    "remark": "1"
+	*                }
+	*            ],
+	*            "ordercode": "XX7682018083000204767",
+	*            "createTime": "2018-08-30 00:20:47",
+	*            "price": 597,
+	*            "qty": 1,
+	*            "paystatus": "1",
+	*            "salqty": 0,
+	*            "ordertype": "2"
+	*        }
+	*    ],
+	*    "success": true
+	*	}
+	*/ 
 	@RequestMapping(value = "/orderInquiry", method = RequestMethod.POST)
 	public Result<?> getOrder(HttpServletRequest request) {
 
@@ -103,28 +174,27 @@ public class OrderController extends BaseController {
 		logger.debug("获取用户所有订单=======》》》》》" + orderLitst);
 
 		List<Map<String, Object>> newOrderlist = new ArrayList<>();
-		// 设置商品名称
-		for (Order order : orderLitst) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("orderid", order.getOrderid());
-			map.put("ordercode", order.getOrdercode());
-			map.put("userid", order.getUserid());
-			map.put("qty", order.getQty());
-			map.put("salqty", order.getSalqty());
-			map.put("totalprice", order.getTotalprice());
-			map.put("giftAmount", order.getGiftAmount());
-			map.put("createTime", order.getCreatetime());
-			map.put("orderstatus", order.getOrderstatus());
-			map.put("paystatus", order.getPaystatus());
-			map.put("paytime", order.getPaytime());
-			map.put("ordertype", order.getOrdertype());
-			map.put("addressid", order.getAddressid());
-			map.put("price", order.getGoodsprice());
-			map.put("orderDetailList", order.getOrderDetailList());
-			map.put("awardDetailLst", order.getAwardDetailLst());
-			newOrderlist.add(map);
-		}
-		return Result.successResult("获取订单成功", newOrderlist);
+//		// 设置商品名称
+//		for (Order order : orderLitst) {
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("orderid", order.getOrderid());
+//			map.put("ordercode", order.getOrdercode());
+//			map.put("userid", order.getUserid());
+//			map.put("qty", order.getQty());
+//			map.put("salqty", order.getSalqty());
+//			map.put("totalprice", order.getTotalprice());
+//			map.put("giftAmount", order.getGiftAmount());
+//			map.put("createTime", order.getCreatetime());
+//			map.put("orderstatus", order.getOrderstatus());
+//			map.put("paystatus", order.getPaystatus());
+//			map.put("paytime", order.getPaytime());
+//			map.put("ordertype", order.getOrdertype());
+//			map.put("addressid", order.getAddressid());
+//			map.put("price", order.getGoodsprice());
+//			map.put("orderDetailList", order.getOrderDetailList());
+//			newOrderlist.add(map);
+//		}
+		return Result.successResult("获取订单成功", orderLitst);
 	}
 
 	/**
@@ -221,16 +291,16 @@ public class OrderController extends BaseController {
 
 		// 订单参数
 		String goods = request.getParameter("cart") == null ? "" : request.getParameter("cart");
-		String premium = request.getParameter("premium") == null ? "" : request.getParameter("premium");
+		//String premium = request.getParameter("premium") == null ? "" : request.getParameter("premium");
 		String userId = getString("userId") == null ? "" : request.getParameter("userId");
 		String addressId = getString("addressId") == null ? "" : request.getParameter("addressId");
 		String orderType = getString("orderType") == null ? "" : request.getParameter("orderType");
-		String orderId = getString("orderId") == null ? "" : request.getParameter("orderId");
+		//String orderId = getString("orderId") == null ? "" : request.getParameter("orderId");
 
 		// 假如获取参数某一个为空，直接返回结果至前端
-		if (userId == "" || goods == "" || addressId == "" || orderType == "" || StringUtils.isBlank(orderId)) {
+		if (userId == "" || goods == "" || addressId == "" || orderType == "" ) {
 
-			return Result.successResult("获取orderId,userId、addressId、orderType、cart参数为空！", new JSONArray());
+			return Result.successResult("获取userId、addressId、orderType、cart参数为空！", new JSONArray());
 		}
 
 		// 验证token
@@ -246,7 +316,7 @@ public class OrderController extends BaseController {
 		}
 
 		Order order = new Order();
-		order.setOrderid(Integer.valueOf(orderId));
+		//order.setOrderid(Integer.valueOf(orderId));
 		order.setUserid(Integer.valueOf(userId));
 		order.setAddressid(Integer.valueOf(addressId));
 		order.setOrdertype(orderType);
@@ -258,11 +328,6 @@ public class OrderController extends BaseController {
 
 		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId);
-
-		// 前端页面没有传orderId
-		for (OrderDetail od : chooseGoodsLst) {
-			od.setOrderid(Integer.valueOf(orderId));
-		}
 
 		// 生成预付单，保存订单和订单明显
 		return orderService.saveOrder(chooseGoodsLst, order, request, response);
