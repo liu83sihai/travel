@@ -48,7 +48,7 @@ public class BannerController {
 	 *	@apiSuccess {java.lang.String}  icoImage 图片
 	 *	@apiSuccess {java.lang.Integer}  icoType 图标类型（1:banner图,2:导航小图标）
 	 *	@apiSuccess {java.lang.Integer}  linkType 链接类型（0:无 1:超链接  2:程序链接）
-	 *	@apiSuccess {java.lang.String}  linkValue 链接值
+	 *	@apiSuccess {java.lang.String}  linkValue banner详情外部url链接地址
 	 *	@apiSuccess {java.lang.String}  hintValue 提示内容
 	 *	@apiSuccess {java.lang.Integer}  sort 排序
 	 *	@apiSuccess {java.sql.Date}  createDate 创建时间
