@@ -151,14 +151,14 @@ public class OrderController extends BaseController {
 		Integer userId = getUserId();
 		// 验证用户token参数
 		//String uri = request.getRequestURI(); // 获得发出请求字符串的客户端地址
-		String uri = "";
-		String ts = request.getParameter(TokenUtil.TS);
-		String sign = request.getParameter(TokenUtil.SIGN);
-		// 验证token
-		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
-		if (!flag) {
-			return Result.failureResult("登录失效，请重新登录！");
-		}
+//		String uri = "";
+//		String ts = request.getParameter(TokenUtil.TS);
+//		String sign = request.getParameter(TokenUtil.SIGN);
+//		// 验证token
+//		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
+//		if (!flag) {
+//			return Result.failureResult("登录失效，请重新登录！");
+//		}
 
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
