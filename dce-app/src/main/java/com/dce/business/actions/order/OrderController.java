@@ -331,9 +331,9 @@ public class OrderController extends BaseController {
 		// 订单参数
 		String goods = request.getParameter("cart") == null ? "" : request.getParameter("cart");
 		//String premium = request.getParameter("premium") == null ? "" : request.getParameter("premium");
-		String userId = getString("userId") == null ? "" : request.getParameter("userId");
-		String addressId = getString("addressId") == null ? "" : request.getParameter("addressId");
-		String orderType = getString("orderType") == null ? "" : request.getParameter("orderType");
+		String userId = request.getParameter("userId") == null ? "" : request.getParameter("userId");
+		String addressId = request.getParameter("addressId") == null ? "" : request.getParameter("addressId");
+		String orderType = request.getParameter("orderType") == null ? "" : request.getParameter("orderType");
 		//String orderId = getString("orderId") == null ? "" : request.getParameter("orderId");
 
 		// 假如获取参数某一个为空，直接返回结果至前端
@@ -343,10 +343,10 @@ public class OrderController extends BaseController {
 		}
 
 		// 验证token
-		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
-		if (!flag) {
-			return Result.failureResult("登录失效，请重新登录！");
-		}
+//		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
+//		if (!flag) {
+//			return Result.failureResult("登录失效，请重新登录！");
+//		}
 
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
@@ -363,7 +363,8 @@ public class OrderController extends BaseController {
 		logger.info("获取的商品信息-------》》》》》" + goods);
 
 		// 将商品信息的JSON数据解析为list集合
-		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
+//		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
+		List<OrderDetail> chooseGoodsLst = new ArrayList<OrderDetail>();
 
 		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId);

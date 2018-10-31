@@ -33,6 +33,7 @@ import com.dce.business.common.result.Result;
 import com.dce.business.common.util.Constants;
 import com.dce.business.common.util.DateUtil;
 import com.dce.business.common.util.OrderCodeUtil;
+import com.dce.business.common.wxPay.app.WeixiPayUtil;
 import com.dce.business.common.wxPay.handler.PrepayIdRequestHandler;
 import com.dce.business.common.wxPay.util.MD5Util;
 import com.dce.business.common.wxPay.util.WXPayConfig;
@@ -566,7 +567,8 @@ public class OrderServiceImpl implements IOrderService {
 		if (order.getOrdertype().equals("1")) {
 			// 微信支付
 			try {
-				return getWXPayStr(request, response, order);
+				Map weixinMap = WeixiPayUtil.getWeixiPayInfo(order.getOrdercode(), "订单微信支付", order.getTotalprice(), 1);
+				return Result.successResult("获取微信预支付订单成功", weixinMap.toString());
 			} catch (Exception e) {
 				logger.debug("获取微信预支付订单出错");
 				e.printStackTrace();

@@ -9,10 +9,10 @@ package com.dce.business.common.wxPay.util;
 public class WXPayConfig {
 
 	// 微信开发平台应用ID
-	public static final String APP_ID = "wxd9081abe95f78686";
+	public static final String APP_ID = "wx7a337545e02bdead";
 
 	// 应用对应的凭证
-	public static final String APP_SECRET = "1f9be37cd165e8e999b20b250239269e";
+	public static final String APP_SECRET = "1dd7398de4ac33c541e609d22b19dc11";
 
 	// 应用对应的密钥
 	public static final String APP_KEY = "dfsfdvdfvgk32423423oGdfsfdsvBO66";
