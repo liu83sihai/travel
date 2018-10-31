@@ -63,7 +63,7 @@ public interface IOrderService {
 	 * @param chooseGoodsLst
 	 * @return
 	 */
-	Result<String> saveOrder(List<OrderDetail> premiumList, List<OrderDetail> chooseGoodsLst, Order order,
+	Result<String> saveOrder( List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response);
 
 	// 查询总业绩

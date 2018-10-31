@@ -9,3 +9,5 @@
 *.launch
 /.classpath
 /bin/
+/api/*
+!/api/mytemplate/

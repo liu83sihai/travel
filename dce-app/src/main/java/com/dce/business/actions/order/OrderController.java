@@ -169,7 +169,6 @@ public class OrderController extends BaseController {
 		logger.info("======用户选择的商品信息：" + chooseGoodsLst + "=====用户id：" + userId);
 
 		// 生成订单，保存订单和订单明细
-		// orderService.chooseGoods(chooseGoodsLst, order);
 		return orderService.chooseGoods(chooseGoodsLst, order);
 
 	}
@@ -179,6 +178,38 @@ public class OrderController extends BaseController {
 	 * 
 	 * @return
 	 */
+	
+	/** 
+	 * @api {POST} /order/createOrder.do 生成预支付订单
+	 * @apiName createOrder
+	 * @apiGroup order 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 生成预支付订单
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * @apiParam {String} orderType 支付方式 1微信2支付宝3其他 
+	 * @apiParam {String} addressId 订单送货地址id
+	 * @apiParam {String} orderId 订单id
+	 * @apiParam {String} orderId 订单idcart
+	 * @apiParam {json} cart 商品信息：qty商品数量；goodsId商品编号；price商品单价
+	 * 
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "code": 0
+	 *	"msg": 返回成功,
+	 *	"data": {
+	 *	    [
+	 *			{
+	 * 				唤起支付json字符串
+	 *			}
+	 *		]
+	 *	  }
+	 *	}
+	 */ 
 	@RequestMapping(value = "/createOrder", method = RequestMethod.POST)
 	public Result<?> insertOrder(HttpServletRequest request, HttpServletResponse response) {
 
@@ -225,16 +256,8 @@ public class OrderController extends BaseController {
 		// 将商品信息的JSON数据解析为list集合
 		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
 
-		// 将赠品信息的JSON数据解析为list集合
-		List<OrderDetail> premiumList = convertGoodsFromJson(premium);
-
-		logger.info("======用户选择的商品信息：" + chooseGoodsLst + "=====获取的赠品信息：" + premiumList + "=====获取的地址id：" + addressId
+		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId);
-
-		// 前端页面没有传orderId
-		for (OrderDetail od : premiumList) {
-			od.setOrderid(Integer.valueOf(orderId));
-		}
 
 		// 前端页面没有传orderId
 		for (OrderDetail od : chooseGoodsLst) {
@@ -242,7 +265,7 @@ public class OrderController extends BaseController {
 		}
 
 		// 生成预付单，保存订单和订单明显
-		return orderService.saveOrder(premiumList, chooseGoodsLst, order, request, response);
+		return orderService.saveOrder(chooseGoodsLst, order, request, response);
 	}
 
 	/**
