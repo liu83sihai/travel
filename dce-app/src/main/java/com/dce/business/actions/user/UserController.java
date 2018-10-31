@@ -744,11 +744,33 @@ public class UserController extends BaseController {
 		return Result.successResult("查询用户名成功", map);
 	}
 
-	/**
-	 * 个人中心查询个人信息
+	/** 
+	 * @api {GET} /user/personalInfo.do 查询个人资料
+	 * @apiName personalInfo
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription  查询个人资料
 	 * 
-	 * @return
-	 */
+	 * @apiParam {String} userId 用户ID
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {int} id 用户ID
+	 * @apiSuccess {String} token 用户token
+	 *
+	 *@apiSuccess {int} userLevel 用户等级，默认为：0：普通用户；1：会员;2：VIP；3：城市合伙人；4：股东
+	 *@apiSuccess {String} mobile 手机号
+	 *@apiSuccess {String} trueName 用户姓名
+	 *@apiSuccess {String} idnumber 身份证号码
+	 *@apiSuccess {String} sex 默认为：0（无）；男为：1；女为：2
+	 *@apiSuccess {String} refereeid 用户推荐人的手机号码
+	 *@apiSuccess {String} banknumber 银行卡卡号
+	 *@apiSuccess {String} banktype 银行卡开户行
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	}
+	 */ 
 	@RequestMapping(value = "/personalInfo", method = RequestMethod.GET)
 	public Result<?> getUser() {
 		Integer userId = getUserId();
