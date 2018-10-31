@@ -238,30 +238,11 @@ public class OrderServiceImpl implements IOrderService {
 		for (Order order : list) {
 			List<OrderDetail> orderDetail = order.getOrderDetailList();
 			if (orderDetail != null) {
-				// 订单商品明细
-				List<OrderDetail> orderDetailList = new ArrayList<OrderDetail>();
-				// 订单赠品明细
-				// List<OrderDetail> awardDetailLst = new
-				// ArrayList<OrderDetail>();
-
 				for (OrderDetail detail : orderDetail) {
-					if (null == detail.getGoodsId()) {// 过滤没有明细的订单
-						continue;
-					}
-
 					// 设置商品名称
 					CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(detail.getGoodsId()));
-					// 赠品明细
-					if ("0".equals(detail.getRemark())) {
-						detail.setGoodsName("赠品:" + goods.getTitle());
-					} else {
-						// 设置商品名称
-						detail.setGoodsName(goods.getTitle());
-					}
-					orderDetailList.add(detail);
+					detail.setGoodsName(goods.getTitle());
 				}
-				order.setOrderDetailList(orderDetailList);
-				// order.setAwardDetailLst(awardDetailLst);
 			}
 		}
 

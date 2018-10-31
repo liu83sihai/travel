@@ -83,68 +83,128 @@ public class OrderController extends BaseController {
 	 * 
 	 * @apiParam {String} userId 用户id
 	 * 
+	 * *  @apiSuccess {int} orderid	int	订单id主键
+	*  @apiSuccess {int} userid	int	用户id
+	*  @apiSuccess {String} ordercode	int	订单编号
+	*  @apiSuccess {int} qty	int	商品总数量
+	*  @apiSuccess {int} salqty	int	赠品数量
+	*  @apiSuccess {decimal} totalprice	decimal(20,6)	订单总金额（商品总金额加差价）
+	*  @apiSuccess {decimal} giftAmount	decimal(20,6)	差价（选择公主版赠品要补的）
+	*  @apiSuccess {decimal} goodsprice	decimal(20,6)	商品总金额
+	*  @apiSuccess {String} addressid	String	地址id
+	*  @apiSuccess {String} createTime	timestamp	订单创建时间
+	*  @apiSuccess {String} paytime	timestamp	订单支付时间
+	*  @apiSuccess {int} orderstatus	int	订单状态：1已发货 0未发货
+	*  @apiSuccess {int} paystatus	int	付款状态：1支付成功 0支付失败
+	*  @apiSuccess {timestamp} paytime	timestamp	支付时间
+	*  @apiSuccess {int} ordertype	int	支付方式：1微信 2支付宝
+	*  @apiSuccess {Object[]} orderDetailList	String	商品明细：quantity商品数量；price商品单价；remark 0为赠品1为商品
+	*  @apiSuccess {String} orderDetailList.quantity 商品数量
+	*  @apiSuccess {String} orderDetailList.price 商品单价
+	*  @apiSuccess {String} orderDetailList.remark 0为赠品1为商品
+	*  @apiSuccess {String} goodsName	String	商品名称
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
 	 * HTTP/1.1 200 OK 
-	*  {
+	*{
 	*    "code": "0",
 	*    "msg": "获取订单成功",
-	*    "data": [{
-	*            "orderstatus": "1",
-	*            "orderid": 391,
+	*    "data": [
+	*        {
+	*            "orderid": 13,
+	*            "ordercode": "XX520180908144655443",
+	*            "userid": 5,
+	*            "qty": 5,
 	*            "totalprice": 2985,
-	*            "paytime": "2018-08-30 00:22:29",
-	*            "userid": 768,
-	*            "addressid": 77,
+	*            "goodsprice": 2985,
+	*            "giftAmount": 0,
+	*            "salqty": 1,
+	*            "createtime": "2018-09-08 14:46:55",
+	*            "orderstatus": "0",
+	*            "paystatus": "1",
+	*            "paytime": "2018-09-08 14:46:09",
+	*            "ordertype": "2",
+	*            "addressid": 6,
 	*            "orderDetailList": [
 	*                {
-	*                    "orderdetailid": 545,
-	*                    "orderid": 391,
+	*                    "orderdetailid": 25,
+	*                    "orderid": 13,
+	*                    "goodsId": 1001,
+	*                    "quantity": 5,
+	*                    "price": 597,
+	*                    "goodsName": "鹿无忧男士尊享版",
+	*                    "remark": "1"
+	*                },
+	*                {
+	*                    "orderdetailid": 26,
+	*                    "orderid": 13,
+	*                    "goodsId": 1001,
+	*                    "quantity": 1,
+	*                    "price": 597,
+	*                    "goodsName": "鹿无忧男士尊享版",
+	*                    "remark": "0"
+	*                }
+	*            ]
+	*        },
+	*        {
+	*            "orderid": 12,
+	*            "userid": 5,
+	*            "qty": 6,
+	*            "totalprice": 3622,
+	*            "goodsprice": 3622,
+	*            "salqty": 1,
+	*            "createtime": "2018-09-08 14:46:03",
+	*            "orderstatus": "0",
+	*            "paystatus": "1",
+	*            "paytime": "2018-09-08 14:46:03",
+	*            "orderDetailList": [
+	*                {
+	*                    "orderdetailid": 22,
+	*                    "orderid": 12,
+	*                    "goodsId": 1001,
+	*                    "quantity": 5,
+	*                    "price": 597,
+	*                    "goodsName": "鹿无忧男士尊享版",
+	*                    "remark": "1"
+	*                },
+	*                {
+	*                    "orderdetailid": 23,
+	*                    "orderid": 12,
+	*                    "goodsId": 1002,
+	*                    "quantity": 1,
+	*                    "price": 637,
+	*                    "goodsName": "哈根达斯",
+	*                    "remark": "1"
+	*                }
+	*            ]
+	*        },
+	*        {
+	*            "orderid": 11,
+	*            "userid": 5,
+	*            "qty": 5,
+	*            "totalprice": 2985,
+	*            "goodsprice": 2985,
+	*            "salqty": 1,
+	*            "createtime": "2018-09-08 14:45:51",
+	*            "orderstatus": "0",
+	*            "paystatus": "1",
+	*            "paytime": "2018-09-08 14:45:51",
+	*            "orderDetailList": [
+	*                {
+	*                    "orderdetailid": 21,
+	*                    "orderid": 11,
 	*                    "goodsId": 1001,
 	*                    "quantity": 5,
 	*                    "price": 597,
 	*                    "goodsName": "鹿无忧男士尊享版",
 	*                    "remark": "1"
 	*                }
-	*            ],
-	*            "ordercode": "XX76820180830002214997",
-	*            "createTime": "2018-08-30 00:22:14",
-	*            "price": 2985,
-	*            "qty": 5,
-	*            "paystatus": "1",
-	*            "salqty": 1,
-	*            "ordertype": "2"
-	*        },
-	*        {
-	*            "orderstatus": "1",
-	*            "orderid": 390,
-	*            "totalprice": 597,
-	*            "paytime": "2018-08-30 00:20:54",
-	*            "userid": 768,
-	*            "addressid": 77,
-	*            "orderDetailList": [
-	*                {
-	*                    "orderdetailid": 542,
-	*                    "orderid": 390,
-	*                    "goodsId": 1001,
-	*                    "quantity": 1,
-	*                    "price": 597,
-	*                    "goodsName": "鹿无忧男士尊享版",
-	*                    "remark": "1"
-	*                }
-	*            ],
-	*            "ordercode": "XX7682018083000204767",
-	*            "createTime": "2018-08-30 00:20:47",
-	*            "price": 597,
-	*            "qty": 1,
-	*            "paystatus": "1",
-	*            "salqty": 0,
-	*            "ordertype": "2"
+	*            ]
 	*        }
 	*    ],
 	*    "success": true
-	*	}
-	*/ 
+	*}
+	**/
 	@RequestMapping(value = "/orderInquiry", method = RequestMethod.POST)
 	public Result<?> getOrder(HttpServletRequest request) {
 
@@ -173,27 +233,6 @@ public class OrderController extends BaseController {
 		}
 		logger.debug("获取用户所有订单=======》》》》》" + orderLitst);
 
-		List<Map<String, Object>> newOrderlist = new ArrayList<>();
-//		// 设置商品名称
-//		for (Order order : orderLitst) {
-//			Map<String, Object> map = new HashMap<>();
-//			map.put("orderid", order.getOrderid());
-//			map.put("ordercode", order.getOrdercode());
-//			map.put("userid", order.getUserid());
-//			map.put("qty", order.getQty());
-//			map.put("salqty", order.getSalqty());
-//			map.put("totalprice", order.getTotalprice());
-//			map.put("giftAmount", order.getGiftAmount());
-//			map.put("createTime", order.getCreatetime());
-//			map.put("orderstatus", order.getOrderstatus());
-//			map.put("paystatus", order.getPaystatus());
-//			map.put("paytime", order.getPaytime());
-//			map.put("ordertype", order.getOrdertype());
-//			map.put("addressid", order.getAddressid());
-//			map.put("price", order.getGoodsprice());
-//			map.put("orderDetailList", order.getOrderDetailList());
-//			newOrderlist.add(map);
-//		}
 		return Result.successResult("获取订单成功", orderLitst);
 	}
 
