@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.DateUtil;
 import com.dce.business.entity.message.NewsDo;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.message.INewsService;
@@ -94,7 +95,7 @@ public class NewsController extends BaseController {
 				map.put("id", message.getId());
 				map.put("title", message.getTitle());
 				map.put("content", message.getContent());
-				map.put("createDate", message.getCreateDate());
+				map.put("createDate", DateUtil.dateToString(message.getCreateDate()));
 				map.put("image", message.getImage());
 				result.add(map);
 			}
