@@ -58,6 +58,61 @@ public class MemberAcountController extends BaseController {
 	 * 
 	 * @return
 	 */
+	/** 
+	 * @api {POST} /memberAccount/teamDetails.do 团队成员
+	 * @apiName orderInquiry
+	 * @apiGroup memberAccount 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 团队成员
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * 
+	 * @apiSuccess {Decimal} totalYJ	double	总业绩
+	 * @apiSuccess {int} user_level	int	用户级别
+	 * @apiSuccess {int} refereeid	int	推荐人id
+	 * @apiSuccess {String} true_name	用户真实姓名
+	 * @apiSuccess {String} user_name	用户名
+	 * @apiSuccess {int} id	int	用户id
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * * {
+	*   "code": "0",
+	*   "msg": "查询成功",
+	*   "data": {
+	*     "totalYJ": "0",
+	*     "tuanduilist": [*     
+	*       {
+	*         "user_level": "vip",
+	*         "user": [
+	*           {
+	*             "refereeid": 40,
+	*             "true_name": "yu",
+	*             "user_name": "A006",
+	*             "mobile": "88",
+	*             "user_level": 2,
+	*             "id": 41
+	*           }
+	*         ]
+	*       },
+	*       {
+	*         "user_level": "城市合伙人",
+	*         "user": [
+	*           {
+	*             "refereeid": 40,
+	*             "true_name": "突击",
+	*             "user_name": "A008",
+	*             "mobile": "666",
+	*             "user_level": 3,
+	*             "id": 42
+	*           }
+	*         ]
+	*       }
+	*     ]
+	*   },
+	*   "success": true
+	* }
+	**/
 	@RequestMapping(value = "/teamDetails", method = RequestMethod.POST)
 	public Result<Map<String, Object>> teamDetails() {
 
