@@ -1,4 +1,4 @@
-﻿package com.dce.business.entity.banner;
+package com.dce.business.entity.banner;
 
 import org.apache.ibatis.type.Alias;
 import org.apache.commons.lang.builder.EqualsBuilder;
