@@ -114,7 +114,7 @@
 		u.id, u.user_name, u.true_name, u.email, u.mobile,
 		u.user_password, u.two_password, u.user_face,
 		u.balance_integral,
-		u.sex, u.login_times, u.last_login_time, u.last_login_ip, u.reg_ip,
+		u.sex,u.sex displaySex, u.login_times, u.last_login_time, u.last_login_ip, u.reg_ip,
 		u.reg_time,
 		u.status, u.balance_bonus, u.balance_repeat,
 		u.balance_cash, u.balance_dongjie, u.balance_shopping,
@@ -132,11 +132,9 @@
 		u.city,
 		u.darea, u.balance_et, u.idnumber, u.banktype, u.bank_user_name,
 		u.banknumber, u.bank_content,
-		u.question1, u.question2, u.question3,
-		u.answer1, u.answer2, u.answer3, u.groupid, u.ticket, u.balance_gouwu,
+	
 		u.qrcode_status, u.bonus_time, u.is_empty, u.balance_heart,
-		u.kuo_level, u.backfill_status, u.backfill_money,
-		u.backfill_sheng,
+		
 		u.guadan_num, u.allStatic, u.dis, u.release_time, u.isShop,
 		u.isImport, u.pos,
 		u.isOut,u.baodan_amount,u.undo_opts,u.tran_direct,

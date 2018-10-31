@@ -28,8 +28,10 @@ import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.DataEncrypt;
 import com.dce.business.common.util.NumberUtil;
+import com.dce.business.dao.sms.ISmsDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
+import com.dce.business.entity.sms.SmsDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
@@ -61,7 +63,8 @@ public class UserController extends BaseController {
 	private UserAdressService addressService;
 	// @Resource
 	// private IReleaseService staticAwardService;
-
+	@Resource 
+	ISmsDao smsDao;
 	/** 
 	 * @api {POST} /user/reg.do 用户注册
 	 * @apiName reg
@@ -69,6 +72,7 @@ public class UserController extends BaseController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 用户注册
 	 * 
+	 * @apiParam {String} smsCode 手机验证码
 	 * @apiParam {String} userName 手机号码
 	 * @apiParam {String} userPassword 登录密码
 	 * @apiParam {String} refereeUserMobile 用户推荐人，填写用户手机号
@@ -95,6 +99,18 @@ public class UserController extends BaseController {
 			return Result.failureResult(errors.get(0).getDefaultMessage());
 		}
 
+		//判断验证码
+		SmsDo codeDo = smsDao.getLastIdentifyCode(userDo.getMobile(), "code");
+		if( null == codeDo){
+			return Result.failureResult("验证码不存在");
+		}else{
+			String smsCode = getString("smsCode");
+			if(!smsCode.equals(codeDo.getMessage())){
+				return Result.failureResult("验证码错误");
+			}
+			
+			
+		}
 		Result<?> result = userService.reg(userDo);
 
 		logger.info("用户注册结果:" + JSON.toJSONString(result));
@@ -328,6 +344,7 @@ public class UserController extends BaseController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 获取用户信息
 	 * 
+	 * @apiParam {String} userId 用户ID
 	 * 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {int} id 用户ID
@@ -354,10 +371,13 @@ public class UserController extends BaseController {
 	 * {
 	 *	}
 	 */ 
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Result<?> getUserInfo() {
-		Integer userId = getUserId();
+	@RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
+	public Result<?> getUserInfo(Integer userId) {
 
+		if(null == userId || 0 == userId){
+
+			return Result.failureResult("用户ID为空");
+		}
 		logger.info("查询用户基本信息，userId:" + userId);
 
 		// 用户信息
@@ -396,12 +416,12 @@ public class UserController extends BaseController {
 		}
 
 		// 接点人
-		if (userDo.getParentid() != null) {
-			UserDo parent = userService.getUser(userDo.getParentid());
-			if (parent != null) {
-				newUserDo.setParentUserName(parent.getUserName());
-			}
-		}
+//		if (userDo.getParentid() != null) {
+//			UserDo parent = userService.getUser(userDo.getParentid());
+//			if (parent != null) {
+//				newUserDo.setParentUserName(parent.getUserName());
+//			}
+//		}
 
 		// 财务信息
 		Map<String, Object> accountInfo = new HashMap<>();
@@ -428,6 +448,8 @@ public class UserController extends BaseController {
 //			topInfoMap.put("dceMsg", "");
 //		}
 		Map<String, Object> map = new HashMap<>();
+		newUserDo.setSex(1);
+		
 		map.put("userInfo", newUserDo);
 		map.put("userAccountDo", accountInfo);
 		map.put("topInfo", topInfoMap);
