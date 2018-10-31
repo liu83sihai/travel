@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.message.NewsDo;
+import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.message.INewsService;
 
 /** 
@@ -61,40 +62,45 @@ public class NewsController extends BaseController {
 	 *	}
 	 */ 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Result<?> list() {
+	public Result<?> list() {
 
-        logger.info("查询新闻公告.....");
+		logger.info("查询新闻公告.....");
 
-        String pageNum = getString("pageNum"); //当前页
-        String rows = getString("rows"); //每页显示条数
+		String pageNum = getString("pageNum"); // 当前页
+		String rows = getString("rows"); // 每页显示条数
 
-        if (StringUtils.isBlank(pageNum)) {
-            pageNum = "1";
-        }
+		if (StringUtils.isBlank(pageNum)) {
+			pageNum = "1";
+		}
 
-        if (StringUtils.isBlank(rows)) {
-            rows = "10";
-        }
+		if (StringUtils.isBlank(rows)) {
+			rows = "10";
+		}
 
-        logger.info("查询新闻公告列表:pageNum=" + pageNum + ",rows=" + rows);
+		logger.info("查询新闻公告列表:pageNum=" + pageNum + ",rows=" + rows);
 
-        //List<NewsDo> newsList = newsService.selectNewsList(Integer.parseInt(pageNum), Integer.parseInt(rows));
-        List<NewsDo> newsList = newsService.selectNewsList();
-        List<Map<String, Object>> result = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(newsList)) {
-            for (NewsDo message : newsList) {
+		Map<String, Object> papamMap = new HashMap<String, Object>();
+		PageDo<NewsDo> page = new PageDo<NewsDo>();
+		page.setPageSize(Long.valueOf(rows));
+		page.setCurrentPage(Long.valueOf(pageNum));
+		PageDo<NewsDo> newsPage = newsService.getYsNewsPage(papamMap, page);
+		List<NewsDo> newsList = newsPage.getModelList();
+		// List<NewsDo> newsList = newsService.selectNewsList();
+		List<Map<String, Object>> result = new ArrayList<>();
+		if (!CollectionUtils.isEmpty(newsList)) {
+			for (NewsDo message : newsList) {
 
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", message.getId());
-                map.put("title", message.getTitle());
-                map.put("content", message.getContent());
-                map.put("createDate", message.getCreateDate());
-                map.put("image", message.getImage());
-                result.add(map);
-            }
-        }
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", message.getId());
+				map.put("title", message.getTitle());
+				map.put("content", message.getContent());
+				map.put("createDate", message.getCreateDate());
+				map.put("image", message.getImage());
+				result.add(map);
+			}
+		}
 
-        return Result.successResult("查询成功", result);
-    }
+		return Result.successResult("查询成功", result);
+	}
    
 }
