@@ -78,7 +78,7 @@ public class NewsController extends BaseController {
 			rows = "10";
 		}
 
-		logger.info("查询新闻公告列表:pageNum=" + pageNum + ",rows=" + rows);
+		logger.info("查询新闻公告列表:pageNum111=" + pageNum + ",rows=" + rows);
 
 		Map<String, Object> papamMap = new HashMap<String, Object>();
 		PageDo<NewsDo> page = new PageDo<NewsDo>();
