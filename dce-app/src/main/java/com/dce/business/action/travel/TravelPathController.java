@@ -36,7 +36,19 @@ public class TravelPathController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 旅游路线列表查询
 	 * 
-	*  
+	 * @apiSuccess {String} pathid 记录ID,
+	 * @apiSuccess {String} linename 路线名称,
+	 * @apiSuccess {String} state  路线状态  是否开通,
+	 * @apiSuccess {String} remake 备注,
+	 * @apiSuccess {String} bannerImg banner页面img url,
+	 * @apiSuccess {String} detailImg 详情页面，详情图片,
+	 * @apiSuccess {String} iconImg   列表页面 小图片url,
+	 * @apiSuccess {String} starLevel 景区 星级,
+	 * @apiSuccess {String} price  景区价格,
+	 * @apiSuccess {String} score  景区评分,
+	 * @apiSuccess {String} outline  景区概要,
+	 * @apiSuccess {String} detailUrl 景区详情外部链接
+	 *
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
 	 * HTTP/1.1 200 OK 
