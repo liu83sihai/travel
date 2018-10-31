@@ -89,7 +89,7 @@ public class AccountRecordController extends BaseController {
 	*    ]
 	*  }
 	**/
-	@RequestMapping(value = "/selectAccountRecord", method=RequestMethod.GET)
+	@RequestMapping(value = "/selectAccountRecord", method= {RequestMethod.GET,RequestMethod.POST})
 	public Map<String,Object> selectAccountRecord(){
 		
 		Integer userId = getUserId();
