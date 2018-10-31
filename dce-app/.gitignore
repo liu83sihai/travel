@@ -7,3 +7,5 @@
 */.project
 */.classPath
 *.launch
+/.classpath
+/bin/

@@ -154,6 +154,8 @@ public class CommonIntf extends BaseController {
 	        BASE64Decoder decoder = new BASE64Decoder();
 	
 	        byte[] decodedBytes = decoder.decodeBuffer(fileContext);
+	
+	           
 			//保存在项目的路径上
 			String savePath =uploadPath +  "/app/images/";
 			File file1 = new File(savePath);

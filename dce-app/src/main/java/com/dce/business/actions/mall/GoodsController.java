@@ -106,7 +106,6 @@ public class GoodsController extends BaseController {
 	 *		      "saleTime": "2018-8-6 10：19：56",
 	 *		      "shopPrice":4999.00,
 	 *		    ],
-	 *		    }
 	 *	}
 	 */	
 	@RequestMapping(value = "/list", method = {RequestMethod.POST,RequestMethod.GET})
@@ -167,8 +166,8 @@ public class GoodsController extends BaseController {
 	 * {
 	 *  "code": 0
 	 *	"msg": 返回成功,
-	 *	"data": {"travelCardList":[
-	 *		      "goodsId": "1",
+	 *	"data": {[
+	 *		      {"goodsId": "1",
 	 *		      "title": "鹿无忧",
 	 *		      "GoodsDesc": "提神抗疲劳",
 	 *		      "goodsImg": 
@@ -176,8 +175,15 @@ public class GoodsController extends BaseController {
 	 *		                 "img1":"d:/sasd.jgp",
 	 *		                 "img2":"d:/sasd.jgp",
 	 *		                  } ,
+	 *			  "goodsBanner":{
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *            "goodsDetailImg":"http://sasd.jgp",
 	 *		      "saleTime": "2018-8-6 10：19：56",
 	 *		      "shopPrice":4999.00,
+	 *			  "marketPrice":4000.00,
+	 *			  "saleCount": 30}
 	 *		    ] }
 	 *	}
 	 */	
