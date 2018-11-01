@@ -86,22 +86,7 @@ public class NewsController extends BaseController {
 		page.setCurrentPage(Long.valueOf(pageNum));
 		PageDo<NewsDo> newsPage = newsService.getYsNewsPage(papamMap, page);
 		List<NewsDo> newsList = newsPage.getModelList();
-		// List<NewsDo> newsList = newsService.selectNewsList();
-		List<Map<String, Object>> result = new ArrayList<>();
-		if (!CollectionUtils.isEmpty(newsList)) {
-			for (NewsDo message : newsList) {
-
-				Map<String, Object> map = new HashMap<>();
-				map.put("id", message.getId());
-				map.put("title", message.getTitle());
-				map.put("content", message.getContent());
-				map.put("createDate", DateUtil.dateToString(message.getCreateDate()));
-				map.put("image", message.getImage());
-				result.add(map);
-			}
-		}
-
-		return Result.successResult("查询成功", result);
+		return Result.successResult("查询成功", newsList);
 	}
    
 }
