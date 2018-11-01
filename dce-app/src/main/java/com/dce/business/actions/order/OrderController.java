@@ -298,8 +298,6 @@ public class OrderController extends BaseController {
 	 * @apiParam {String} userId 用户id
 	 * @apiParam {String} orderType 支付方式 1微信2支付宝3其他 
 	 * @apiParam {String} addressId 订单送货地址id
-	 * @apiParam {String} orderId 订单id
-	 * @apiParam {String} orderId 订单idcart
 	 * @apiParam {json} cart 商品信息：qty商品数量；goodsId商品编号；price商品单价
 	 * 
 	 * 
