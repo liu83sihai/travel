@@ -213,4 +213,13 @@ public class TravelPathDo {
     public void setRemake(String remake) {
         this.remake = remake;
     }
+
+	@Override
+	public String toString() {
+		return "TravelPathDo [bannerImg=" + bannerImg + ", detailImg=" + detailImg + ", iconImg=" + iconImg
+				+ ", outline=" + outline + ", detailUrl=" + detailUrl + ", starLevel=" + starLevel + ", price=" + price
+				+ ", score=" + score + ", pathid=" + pathid + ", linename=" + linename + ", state=" + state
+				+ ", remake=" + remake + "]";
+	}
+    
 }
