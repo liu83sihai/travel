@@ -52,7 +52,8 @@ public class NewsController extends BaseController {
 	  *	@apiSuccess {String}  createDate 日期
 	  *	@apiSuccess {String}  content 内容
 	  *	@apiSuccess {String}  image 图片
-	  *
+	  * @apiSuccess {String}  remark 新闻概要
+	  * 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
