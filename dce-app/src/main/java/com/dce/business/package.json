@@ -7,7 +7,7 @@
     "url2" : "http://127.0.0.1:8080/dce-app",
     "sampleUrl2" : "http://127.0.0.1:8080/dce-app",
     "url1" : "http://103.82.143.121:8080/dce-app",
-    "sampleUrl1" : "http://103.82.143.121:8080/dce-app"
+    "sampleUrl1" : "http://103.82.143.121:8080/dce-app",
     "url" : "http://app.zjzwly.com/dce-app",
     "sampleUrl" : "http://app.zjzwly.com/dce-app"
  },
