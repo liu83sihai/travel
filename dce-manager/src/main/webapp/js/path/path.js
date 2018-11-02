@@ -36,7 +36,7 @@ $(function() {
 	} ];
 
 	/* ######################grid toolbar end############################## */
-	/* ######################grid columns begin############################## */
+	/* ######################grid columns begin##############################  
 	var columns_tt = [ [
 			{
 				field : 'pathid',
@@ -84,6 +84,38 @@ $(function() {
 					return str;
 				}
 			} ] ];
+	*/
+	var columns_tt = [
+	        			[	 				
+	  							{field:'pathid',title:'pathid',width:100,hidden:true},						
+	  								{field:"linename",title:"路线名称",width:180,align:"center"},
+	  								{field:"state",title:"开放状态 ",width:180,align:"center",
+	  									formatter : function(value, row, index) {
+	  										if (row.state == "0") {
+	  											return "已开发";
+	  										} else if (row.state == "1") {
+	  											return "马上推出";
+	  										} else if (row.state == "2") {
+	  											return "正在开发";
+	  										}
+	  									}},
+	  								{field:"remake",title:"备注",width:180,align:"center"},
+	  								{field:"bannerImg",title:"banner图片",width:180,align:"center"},
+	  								{field:"detailImg",title:"详情图片",width:180,align:"center"},
+	  								{field:"iconImg",title:"列表小图",width:180,align:"center"},
+	  								{field:"starLevel",title:"星级",width:180,align:"center"},
+	  								{field:"price",title:"价格",width:180,align:"center"},
+	  								{field:"score",title:"评分",width:180,align:"center"},
+	  								{field:"outline",title:"概要",width:180,align:"center"},
+	  								{field:"detailUrl",title:"详情外部链接	",width:180,align:"center"},
+	  					{field:"操作",title:"操作",width:80,align:"left",
+	  	 					formatter:function(value,row,index){
+	  	 					  var str= '<a href="javascript:void(0);" onclick="to_editpath(\''+row.pathid+'\');">编辑</a>   <a href="javascript:void(0);" onclick="deletePath(\''+row.pathid+'\');">删除</a>';
+	  	 					  return str;
+	  	 					}
+	  	 				}	 				
+	  	 			]
+	  	 	];
 	/* ######################grid columns end############################## */
 
 	$("#tt_Path").datagrid({
@@ -204,11 +236,24 @@ function to_editpath(id) {
 function save_Path() {
 
 	var obj = new FormData();
+//	var obj =  $("#editPathForm").serialize();;
 
 	var pathid = $("#editPathForm #pathid").val();
 	var linename = $("#editPathForm #linename").val();
 	var state = $("#editPathForm #state").datebox('getValue');
 	var remake = $("#editPathForm #remake").val();
+	
+	var starLevel = $("#editPathForm #starLevel").val();
+	var price = $("#editPathForm #price").val();
+	var score = $("#editPathForm #score").val();
+	var outline = $("#editPathForm #outline").val();
+	var detailUrl = $("#editPathForm #detailUrl").val();
+	
+	var bannerImg = document.getElementById("bannerImg").files[0];
+	var detailImg = document.getElementById("detailImg").files[0];
+	var iconImg = document.getElementById("iconImg").files[0];
+	
+	
 	if (linename == null || linename == "") {
 		$.messager.alert("错误", "请填写路线名称");
 		return;
@@ -218,7 +263,22 @@ function save_Path() {
 	obj.append("linename", linename);
 	obj.append("state", state);
 	obj.append("remake", remake);
-
+	
+	obj.append("starLevel", starLevel);
+	obj.append("price", price);
+	obj.append("score", score);
+	obj.append("outline", outline);
+	obj.append("detailUrl", detailUrl);
+	
+	if(bannerImg){
+		obj.append("bannerImg1", bannerImg);
+	}
+	if(detailImg){
+		obj.append("detailImg1", detailImg);
+	}
+	if(iconImg){
+		obj.append("iconImg1", iconImg);
+	}
 	var url = httpUrl + "/path/savePath.html?&rand=" + Math.random();
 	$.ajax({
 		type : 'POST',

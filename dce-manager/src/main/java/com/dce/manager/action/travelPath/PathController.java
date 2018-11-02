@@ -7,6 +7,7 @@
 
 package com.dce.manager.action.travelPath;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dce.business.common.exception.BusinessException;
@@ -34,13 +39,6 @@ import com.dce.manager.action.BaseAction;
 import com.dce.manager.util.ResponseUtils;
 
 
-
-/**
- * @author  huangzl QQ: 272950754
- * @version 1.0
- * @since 1.0
- */
-
 @Controller
 @RequestMapping("/path")
 public class PathController extends BaseAction{
@@ -48,6 +46,12 @@ public class PathController extends BaseAction{
 	//protected static final String DEFAULT_SORT_COLUMNS = null; 
 	@Resource
 	private ITravelPathService travelPathService;
+	
+	@Value("#{sysconfig['uploadPath']}")
+	private String uploadPath;
+	
+	@Value("#{sysconfig['readImgUrl']}")
+	private String readImgUrl;
 	/**
      * 去列表页面
      * @param model
@@ -63,7 +67,7 @@ public class PathController extends BaseAction{
     							  ModelMap model,
     							  HttpServletResponse response) {
 
-        logger.info("----listPath----");
+        logger.info("----listPath11----");
         try{
             PageDo<TravelPathDo> page = PageDoUtil.getPage(pagination);
             Map<String,Object> param = new HashMap<String,Object>();
@@ -98,7 +102,7 @@ public class PathController extends BaseAction{
             if(StringUtils.isNotBlank(id)){
                 TravelPathDo TravelPathDo = travelPathService.selectByPrimaryKey(Integer.valueOf(id));
                 if(null != TravelPathDo){
-                    modelMap.addAttribute("path", TravelPathDo);
+                    modelMap.addAttribute("travelpath", TravelPathDo);
                 }
             }
             return "path/addPath";
@@ -140,10 +144,66 @@ public class PathController extends BaseAction{
      */
     @RequestMapping("/savePath")
     @ResponseBody
-    public void savePath(TravelPathDo TravelPathDo, 
+    public void savePath(TravelPathDo TravelPathDo,@RequestParam(value = "bannerImg1", required = false)  CommonsMultipartFile  bannerImg1,
+    		@RequestParam(value = "detailImg1", required = false)  CommonsMultipartFile  detailImg1,
+    		@RequestParam(value = "iconImg1", required = false)  CommonsMultipartFile  iconImg1,
     							  HttpServletRequest request, 
     							  HttpServletResponse response) {
         logger.info("----savePath------");
+        if(null != bannerImg1 ){
+				try {
+					String bannerPath = "";
+//					for (CommonsMultipartFile banner : bannerImg1) {
+						// 文件保存路径
+						String filePath = uploadPath + "/" + bannerImg1.getOriginalFilename();
+						// 转存文件
+						bannerImg1.transferTo(new File(filePath));
+						bannerPath =getReadImgUrl(filePath,readImgUrl) ;
+//					}
+					// 存数据库
+					TravelPathDo.setBannerImg(bannerPath);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+		};
+        if(null != detailImg1 ){
+        	try {
+        		String bannerPath = "";
+//					for (CommonsMultipartFile banner : bannerImg1) {
+        		// 文件保存路径
+        		String filePath = uploadPath + "/" + detailImg1.getOriginalFilename();
+        		// 转存文件
+        		detailImg1.transferTo(new File(filePath));
+        		bannerPath = getReadImgUrl(filePath,readImgUrl) ;
+//					}
+        		// 存数据库
+        		TravelPathDo.setDetailImg(bannerPath);
+        		
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+        	
+        }
+        if(null != iconImg1 ){
+        	try {
+        		String bannerPath = "";
+//					for (CommonsMultipartFile banner : bannerImg1) {
+        		// 文件保存路径
+        		String filePath = uploadPath + "/" + iconImg1.getOriginalFilename();
+        		// 转存文件
+        		iconImg1.transferTo(new File(filePath));
+        		bannerPath  = getReadImgUrl(filePath,readImgUrl) ;
+//					}
+        		// 存数据库
+        		TravelPathDo.setIconImg(bannerPath);
+        		
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+        	
+        }
         try{
         	Integer id = TravelPathDo.getPathid();
         	
