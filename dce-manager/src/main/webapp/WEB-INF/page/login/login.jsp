@@ -171,12 +171,12 @@
 <body>
 <div class="login">
     <div  class="logo" style="float:left;width:400px;">
-     	<font style="color:#FFFFFF;font-size:35px;font-family: serif;font-weight: bold;">湘信后台管理系统</font>
+     	<font style="color:#FFFFFF;font-size:35px;font-family: serif;font-weight: bold;">享游环球后台管理系统</font>
     </div>
 <%--     <img src="<c:url value='/images/login_logo.png'/>" class="logo"> --%>
     <div class="login-wapper">
         <div class="login-head" style="color: gray;">
-            	湘信集团
+            	享游环球
         </div>
         <form method="post"  id="submitForm">
         <div class="form">

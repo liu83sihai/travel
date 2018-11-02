@@ -167,7 +167,7 @@
 	</div>
 	<div region="south" split="true"
 		style="height: 30px; background: #D2E0F2;">
-		<div class="footer">湘信系统管理后台</div>
+		<div class="footer">享游环球系统管理后台</div>
 	</div>
 
 	<!--  <div class="easyui-accordion" region="west" split="true" border="false" title="导航菜单" style="width:200px;" id="west">
