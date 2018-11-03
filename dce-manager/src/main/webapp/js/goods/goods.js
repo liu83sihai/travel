@@ -53,14 +53,22 @@ $(function(){
 									formatter:function(value,row,index){
 				 						if(row.goodsFlag == "1"){
 				 							return "旅游卡";
-				 						}else if(row.goodsFlag == "1"){
+				 						}else if(row.goodsFlag == "2"){
 				 							return "爆款商品";
 				 						}else {
 				 							return "常规商品";
 				 						}
 									}
 								},
-								
+								{field:"shopCatId1",title:"积分/会员",width:80,align:"center",
+									formatter:function(value,row,index){
+				 						if(row.shopCatId1 == "1"){
+				 							return "积分商品";
+				 						}else if(row.shopCatId1 == "2"){
+				 							return "会员商品";
+				 						}
+									}
+								},
 								{field:"saleTime",title:"商品上架时间",width:80,align:"center",formatter:dateTimeFormatter},
 								{field:"createTime",title:"商品创建时间",width:80,align:"center",formatter:dateTimeFormatter},
 					{field:"操作",title:"操作",width:80,align:"left",
@@ -210,6 +218,8 @@ function save_Goods(){
     var saleCount =$("#editGoodsForm #saleCount").val();
     var goodsImg =$("#editGoodsForm #goodsImg").val();
     var goodsFlag =$("#editGoodsForm #goodsFlag").combobox('getValue');
+    var shopCatId1 =$("#editGoodsForm #shopCatId1").combobox('getValue');
+    
     //var file = document.getElementById("goodsImg").files[0];
     if(title == null || title == ""){
 		$.messager.alert("错误", "请填写商品名称");
@@ -242,7 +252,7 @@ function save_Goods(){
     obj.append("detailLink", detailLink);
     obj.append("goodsImg", goodsImg);
     obj.append("goodsFlag", goodsFlag);
-    
+    obj.append("shopCatId1", shopCatId1);
     
     $.ajax({   
 		 type: 'POST',

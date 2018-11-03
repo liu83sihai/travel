@@ -79,6 +79,19 @@
 					</td>
 				</tr>
 				<tr>
+					<td align="right"><label for="name">商品类别：</label></td>
+					<td>
+					<select id="shopCatId1" class="easyui-combobox"
+						style="width: 150px;">
+							<option value="1"
+								<c:if test="${goods.shopCatId1==1}">selected="selected"</c:if>>积分商品</option>
+							<option value="2"
+								<c:if test="${goods.shopCatId1==2}">selected="selected"</c:if>>会员商品</option>
+					</select>
+					</td>
+				</tr>
+				
+				<tr>
 					<td align="right"><label for="name">商品上架状态：</label></td>
 					<td><select id="status" class="easyui-combobox"
 						style="width: 150px;">

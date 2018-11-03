@@ -40,8 +40,7 @@ public class CTGoodsServiceImpl implements ICTGoodsService {
 	private IPayService payService;
 
 	@Override
-	public List<CTGoodsDo> selectByPage(int pageNum, int pageCount) {
-		Map<String, Object> params = new HashMap<String, Object>();
+	public List<CTGoodsDo> selectByPage(int pageNum, int pageCount, Map<String, Object> params) {
 		pageNum = pageNum > 0 ? pageNum - 1 : pageNum;
 		int offset = pageNum * pageCount;
 		int rows = pageCount;

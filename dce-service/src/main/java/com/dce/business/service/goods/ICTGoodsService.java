@@ -8,7 +8,7 @@ import com.dce.business.entity.page.PageDo;
 
 public interface ICTGoodsService {
 
-	public List<CTGoodsDo> selectByPage(int pageNum,int pageCount);
+	public List<CTGoodsDo> selectByPage(int pageNum, int pageCount, Map<String, Object> params);
 	
 	
 	public CTGoodsDo selectById(Long id);

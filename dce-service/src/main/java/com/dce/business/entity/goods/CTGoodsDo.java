@@ -43,7 +43,7 @@ public class CTGoodsDo implements Serializable {
 	  private Long cid1 ;
 	  private Long cid2 ;
 	  private Long cid3 ;
-	  private Long shopCatId1 ;
+	  private Long shopCatId1 ; //2 会员商品， 1 积分商品 
 	  private Long shopCatId2 ;
 	  // 商品的详情
 	  private String goodsDesc ;

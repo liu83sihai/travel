@@ -54,6 +54,7 @@ public class GoodsController extends BaseController {
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 商品列表
 	 * @apiUse pageParam
+	 * @apiParam {int} shopCatId1 2: 会员商品   1: 积分商品 
 	 * 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {Object[]} hotGoodsList  爆款商品       
@@ -123,6 +124,7 @@ public class GoodsController extends BaseController {
 		
 		 String pageNum = getString("pageNum");  //当前页码
 		 String rows = getString("rows");   //每页显示记录数
+		 String shopCatId1Para = getString("shopCatId1");   //2 会员商品， 1 积分商品 
 		 
 		 logger.info("查询商品列表：查询页码--" + pageNum);
 		 
@@ -138,9 +140,14 @@ public class GoodsController extends BaseController {
 		 maps.put("pageNum", pageNum);
 		 maps.put("rows", rows);
 		 
-		 List<CTGoodsDo> hotGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
-		 
-		 List<CTGoodsDo> normalGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
+		 Map<String, Object> param = new HashMap<String,Object>();
+		 param.put("goodsFlag", 2);
+		 param.put("shopCatId1", shopCatId1Para);
+		 List<CTGoodsDo> hotGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows), param );
+		 param.clear();
+		 param.put("shopCatId1", shopCatId1Para);
+		 param.put("goodsFlag", 3);
+		 List<CTGoodsDo> normalGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows),param);
 		 
 		 Map<String,List<CTGoodsDo>> goodsLst = new HashMap<String,List<CTGoodsDo>>();
 		 goodsLst.put("hotGoodsList", hotGoodsList);
@@ -217,11 +224,9 @@ public class GoodsController extends BaseController {
 			 rows = "50";
 		 }
 		 
-		 Map<String,Object> maps=new HashMap<String, Object>();
-		 maps.put("pageNum", pageNum);
-		 maps.put("rows", rows);
-		 
-		 List<CTGoodsDo> cardGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows));
+		 Map<String, Object> param = new HashMap<String,Object>();
+		 param.put("goodsFlag", 1);
+		 List<CTGoodsDo> cardGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows), param );
 		 return Result.successResult("商品获取成功!", cardGoodsList);
 	
 	}
