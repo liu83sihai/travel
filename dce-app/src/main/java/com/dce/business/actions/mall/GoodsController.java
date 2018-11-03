@@ -126,6 +126,10 @@ public class GoodsController extends BaseController {
 		 String rows = getString("rows");   //每页显示记录数
 		 String shopCatId1Para = getString("shopCatId1");   //2 会员商品， 1 积分商品 
 		 
+		 if(shopCatId1Para == null) {
+			 shopCatId1Para = "1";
+		 }
+		 
 		 logger.info("查询商品列表：查询页码--" + pageNum);
 		 
 		 if(StringUtils.isBlank(pageNum)){  //如果为空则查询第一页
