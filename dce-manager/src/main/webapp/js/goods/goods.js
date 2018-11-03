@@ -209,7 +209,7 @@ function save_Goods(){
     var detailLink =$("#editGoodsForm #detailLink").val();
     var saleCount =$("#editGoodsForm #saleCount").val();
     var goodsImg =$("#editGoodsForm #goodsImg").val();
-    var goodsFlag =$("#editGoodsForm #goodsFlag").val();
+    var goodsFlag =$("#editGoodsForm #goodsFlag").combobox('getValue');
     //var file = document.getElementById("goodsImg").files[0];
     if(title == null || title == ""){
 		$.messager.alert("错误", "请填写商品名称");
