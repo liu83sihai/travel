@@ -34,11 +34,13 @@ $(function(){
       			[	 				
 							{field:'goodsId',title:'id',width:100,hidden:true},						
 								{field:"title",title:"商品名称",width:180,align:"center"},
-								{field:"shopPrice",title:"价格",width:180,align:"center"},
-								{field:"goodsUnit",title:"单位",width:180,align:"center"},
+								{field:"shopPrice",title:"价格",width:80,align:"center"},
+								{field:"goodsUnit",title:"单位",width:80,align:"center"},
 								{field:"goodsDesc",title:"内容",width:180,align:"center"},
-								{field:"goodsImg",title:"商品图片地址",width:180,align:"center"},
-								{field:"status",title:"商品上架的状态",width:180,align:"center",
+								{field:"goodsImg",title:"商品图片地址",width:120,align:"center"},
+								{field:"profit",title:"商品利润",width:80,align:"center"},
+								{field:"saleCount",title:"已售数量",width:80,align:"center"},
+								{field:"status",title:"商品上架的状态",width:80,align:"center",
 									formatter:function(value,row,index){
 				 						if(row.status == "0"){
 				 							return "未上架";
@@ -47,8 +49,21 @@ $(function(){
 				 						}
 									}
 								},
-								{field:"saleTime",title:"商品上架时间",width:180,align:"center",formatter:dateTimeFormatter},
-								{field:"createTime",title:"商品创建时间",width:180,align:"center",formatter:dateTimeFormatter},
+								{field:"goodsFlag",title:"商品类别",width:80,align:"center",
+									formatter:function(value,row,index){
+				 						if(row.goodsFlag == "1"){
+				 							return "旅游卡";
+				 						}else if(row.goodsFlag == "1"){
+				 							return "爆款商品";
+				 						}else {
+				 							return "常规商品";
+				 						}
+									}
+								},
+								@apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+								
+								{field:"saleTime",title:"商品上架时间",width:80,align:"center",formatter:dateTimeFormatter},
+								{field:"createTime",title:"商品创建时间",width:80,align:"center",formatter:dateTimeFormatter},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
 	 					  var str= '<a href="javascript:void(0);" onclick="to_editgoods(\''+row.goodsId+'\');">编辑</a> <a href="javascript:void(0);" onclick="deleteNotice(\''+row.goodsId+'\');">删除</a>';
@@ -178,7 +193,6 @@ function deleteNotice(id){
 function save_Goods(){
 	//var formdata = $("#editGoodsForm").serialize();
 	//console.info("formdata");
-	//console.info(formdata);
 	var  url =httpUrl+"/goods/saveGoods.html?&rand=" + Math.random();
 	
 	// 创建表单数据对象
@@ -192,7 +206,12 @@ function save_Goods(){
     var shopPrice =document.getElementById("shopPrice").value;
     var goodsDesc =document.getElementById("goodsDesc").value;
     var status =$("#editGoodsForm #status").combobox('getValue');
-    var file = document.getElementById("goodsImg").files[0];
+    var profit =$("#editGoodsForm #profit").val();
+    var detailLink =$("#editGoodsForm #detailLink").val();
+    var saleCount =$("#editGoodsForm #saleCount").val();
+    var goodsImg =$("#editGoodsForm #goodsImg").val();
+    var goodsFlag =$("#editGoodsForm #goodsFlag").val();
+    //var file = document.getElementById("goodsImg").files[0];
     if(title == null || title == ""){
 		$.messager.alert("错误", "请填写商品名称");
 		return;
@@ -212,13 +231,19 @@ function save_Goods(){
     
 
     // 将数据添加至表单数据对象中
-    obj.append("file", file);
+    //obj.append("file", file);
     obj.append("title", title);
     obj.append("goodsId", goodsId);
     obj.append("shopPrice", shopPrice);
     obj.append("goodsUnit", goodsUnit);
     obj.append("goodsDesc", goodsDesc);
     obj.append("status", status);
+    obj.append("saleCount", saleCount);
+    obj.append("profit", profit);
+    obj.append("detailLink", detailLink);
+    obj.append("goodsImg", goodsImg);
+    obj.append("goodsFlag", goodsFlag);
+    
     
     $.ajax({   
 		 type: 'POST',

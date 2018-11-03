@@ -55,7 +55,7 @@ public class GoodsController extends BaseAction {
 	
 	@Value("#{sysconfig['readImgUrl']}")
 	private String readImgUrl;
-
+	
 		
 	/**
 	 * 去列表页面
@@ -95,11 +95,6 @@ public class GoodsController extends BaseAction {
 			}
 			param.put("statusRemarks", 1);
 			page = goodsService.getGoodsPage(param, page);
-			/*
-			 * List<CommonComboxConstants> statusList =
-			 * CommonComboxConstants.getStatusList();
-			 */
-			// model.addAttribute("statusList", statusList);
 			pagination = PageDoUtil.getPageValue(pagination, page);
 			outPrint(response, JSONObject.toJSON(pagination));
 		} catch (Exception e) {
@@ -153,7 +148,6 @@ public class GoodsController extends BaseAction {
 			//更新商品状态，做逻辑删除
 			goods.setStatusRemarks("0");
 			int ret = goodsService.updateGoodsById(goods);
-			//int ret = goodsService.deleteGoodsService(Integer.valueOf(id));
 			ResponseUtils.renderJson(response, null, "{\"ret\":" + ret + "}");
 		} catch (Exception e) {
 			logger.error("删除商品异常", e);
@@ -170,53 +164,21 @@ public class GoodsController extends BaseAction {
 	 */
 	@RequestMapping("/saveGoods")
 	@ResponseBody
-	public void saveGoods(CTGoodsDo CTGoodsDo, @RequestParam(value = "file", required = false) MultipartFile file,
-			HttpServletRequest request, HttpServletResponse response) {
+	public void saveGoods(  CTGoodsDo CTGoodsDo, 	
+							HttpServletRequest request, 
+							HttpServletResponse response) {
+		
 		logger.info("----saveGoods------");
-
-		if (file != null) {
-			if (!file.isEmpty()) {
-				try {
-					// 文件保存路径
-					String filePath = uploadPath + "/" + file.getOriginalFilename();
-					logger.debug(uploadPath);
-
-					// 转存文件
-					file.transferTo(new File(filePath));
-
-					// 定死大小 不会根据比列压缩
-					//Thumbnails.of(filePath).size(200, 300).keepAspectRatio(false).toFile(filePath);
-
-					// 存数据库
-					CTGoodsDo.setGoodsImg(getReadImgUrl(filePath));
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
-		}
 
 		try {
 
 			Integer id = CTGoodsDo.getGoodsId();
-
-			int i = 0;
-			if (id != null && id.intValue() > 0) {
-				if (CTGoodsDo.getStatus() == 1) {
-					CTGoodsDo.setSaleTime(new Date());
-				}
-				i = goodsService.updateGoodsById(CTGoodsDo);
-				
-			} else {
-				if (CTGoodsDo.getStatus() == 1) {
-					CTGoodsDo.setSaleTime(new Date());
-				}
-				CTGoodsDo.setCreateTime(new Date());
-				if (goodsService.insertSelectiveService(CTGoodsDo)) {
-					i = 1;
-				}
+			//上架时间
+			if (CTGoodsDo.getStatus() == 1) {
+				CTGoodsDo.setSaleTime(new Date());
 			}
+			
+			int i = goodsService.updateGoodsById(CTGoodsDo);
 			if (i <= 0) {
 				outPrint(response, this.toJSONString(Result.failureResult("操作失败")));
 				return;

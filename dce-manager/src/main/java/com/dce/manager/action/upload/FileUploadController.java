@@ -39,14 +39,13 @@ public class FileUploadController extends BaseAction {
 	private IFileServerService fileServerService;
 
 	
-	@Value("#{sysconfig['fileServer.url']}")
+	@Value("#{sysconfig['readImgUrl']}")
 	private String imgAccessUrl ;
 
 	
 
 	/**
 	 * @Description 富文本控件上传图片
-	 * @author ladybug QQ: 3204644918
 	 * @date 2015年11月22日 下午3:10:28
 	 * @param imgFile
 	 * @param request
@@ -55,7 +54,6 @@ public class FileUploadController extends BaseAction {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/imgUpload")
 	@ResponseBody
-	//public void imgUpload(@RequestParam MultipartFile imgFile, HttpServletRequest request, HttpServletResponse response) {
 	public void imgUpload(HttpServletRequest request, HttpServletResponse response) {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();

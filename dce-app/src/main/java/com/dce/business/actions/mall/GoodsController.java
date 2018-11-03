@@ -64,6 +64,9 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {int} hotGoodsList.saleCount 已售数量
 	 * @apiSuccess {String} hotGoodsList.brandName 商品品牌名称
 	 * @apiSuccess {String} hotGoodsList.cateName 商品类别名称
+	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
+	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
+	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
 	 * 
 	 * @apiSuccess {Object[]} normalGoodsList  正常商品      
 	 * @apiSuccess {int} normalGoodsList.goodsId 商品id
@@ -77,6 +80,9 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {int} normalGoodsList.saleCount 已售数量
 	 * @apiSuccess {String} normalGoodsList.brandName 商品品牌名称
 	 * @apiSuccess {String} normalGoodsList.cateName 商品类别名称 
+	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
+	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
+	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
 	 * {
@@ -161,6 +167,9 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {int} travelCardList.saleCount 已售数量
 	 * @apiSuccess {String} travelCardList.brandName 商品品牌名称
 	 * @apiSuccess {String} travelCardList.cateName 商品类别名称
+	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
+	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
+	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
 	 * {

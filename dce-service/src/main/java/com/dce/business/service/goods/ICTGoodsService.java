@@ -14,7 +14,7 @@ public interface ICTGoodsService {
 	public CTGoodsDo selectById(Long id);
 	
 	//选择性添加商品
-	boolean insertSelectiveService(CTGoodsDo goods);
+	int insertSelectiveService(CTGoodsDo goods);
 	
 	//id条件删除商品
 	int deleteGoodsService(Integer goodsid);

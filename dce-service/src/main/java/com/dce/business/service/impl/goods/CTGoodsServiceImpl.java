@@ -1,5 +1,6 @@
 package com.dce.business.service.impl.goods;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,14 +57,10 @@ public class CTGoodsServiceImpl implements ICTGoodsService {
 
 
 	@Override
-	public boolean insertSelectiveService(CTGoodsDo goods) {
-
-		boolean flag = false;
-		if (goods != null) {
-			flag = ctGoodsDao.insertSelective(goods) > 0;
-		}
-
-		return flag;
+	public int insertSelectiveService(CTGoodsDo goods) {
+		goods.setCreateTime(new Date());
+		return ctGoodsDao.insertSelective(goods) ;
+		
 	}
 
 	@Override
@@ -97,6 +94,9 @@ public class CTGoodsServiceImpl implements ICTGoodsService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public int updateGoodsById(CTGoodsDo newGoodsDo){
+		if (newGoodsDo.getGoodsId() == null || newGoodsDo.getGoodsId().intValue() == 0) {
+			return this.insertSelectiveService(newGoodsDo);
+		}
 		logger.debug("updateGoods(GoodsDo: "+newGoodsDo);
 		return  ctGoodsDao.updateByPrimaryKeySelective(newGoodsDo);		
 	}

@@ -49,10 +49,10 @@ import sun.misc.BASE64Encoder;
 @Component("fileService")
 public class FileServerServiceImpl implements IFileServerService {
 	private final Logger logger = Logger.getLogger(this.getClass());
-	@Value("${fileServerDir}")
+	@Value("${uploadPath}")
 	private String fileServerDir;
 	private String signfileDir;
-	@Value("${fileAccessUrl}")
+	@Value("${readImgUrl}")
 	private String fileAccessUrl;
 	private String creditfileDir;
 

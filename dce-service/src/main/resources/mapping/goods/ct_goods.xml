@@ -45,7 +45,8 @@
 		<result column="createTime" property="createTime" />
 		<result column="goodsDetailImg" property="goodsDetailImg" />
 		<result column="goodsBanner" property="goodsBanner" />
-
+		<result column="profit" property="profit" />
+		<result column="detailLink" property="detailLink" />
 	</resultMap>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
@@ -97,7 +98,8 @@
 		attrCatId,
 		goodsKeywords,
 		goodsFlag,
-		statusRemarks
+		statusRemarks,
+		profit
 		)
 		values (
 		#{goodsSn},
@@ -138,7 +140,8 @@
 		#{attrCatId},
 		#{goodsKeywords},
 		#{goodsFlag},
-		#{statusRemarks}
+		#{statusRemarks},
+		#{profit}
 		)
 	</insert>
 
@@ -269,7 +272,12 @@
 			<if test="createTime != null">
 				createTime,
 			</if>
-
+			<if test="profit != null">
+				profit,
+			</if>
+			<if test="detailLink != null">
+				detailLink,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -392,12 +400,18 @@
 			<if test="createTime != null">
 				#{createTime,jdbcType=TIMESTAMP},
 			</if>
+			<if test="profit != null">
+				#{profit,jdbcType=DECIMAL},
+			</if>
+			<if test="detailLink != null">
+				#{detailLink,jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 
 	<update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.goods.CTGoodsDo">
 		update ct_goods
-		<set>
+		<trim prefix="set" suffixOverrides=",">
 			<if test="goodsSn != null">
 				goodsSn = #{goodsSn},
 			</if>
@@ -452,7 +466,13 @@
 			<if test="statusRemarks != null">
 				statusRemarks = #{statusRemarks},
 			</if>
-		</set>
+			<if test="profit != null">
+				profit = #{profit},
+			</if>
+			<if test="detailLink != null">
+				detaillink = #{detailLink},
+			</if>
+		</trim>
 		where goodsId = #{goodsId}
 	</update>
 

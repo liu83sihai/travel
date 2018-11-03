@@ -12,7 +12,7 @@ public class ImageUrlUtil {
     	String sign = DigestUtils.md5Hex(KEY+imgPath);//电子签名
     	StringBuilder sb = new StringBuilder();
     	sb.append(fileServer)
-    	  .append("/file/showImg.do?imgPath=")
+    	  .append("?filePath=")
     	  .append(imgPath)
     	  .append("&sign=")
     	  .append(sign)

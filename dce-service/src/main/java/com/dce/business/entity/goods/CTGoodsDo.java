@@ -57,15 +57,30 @@ public class CTGoodsDo implements Serializable {
 	  private Date saleTime ;
 	  private Long attrCatId ;
 	  private String goodsKeywords ;
-	  private Integer goodsFlag ;
+	  private Integer goodsFlag ;  //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
 	  private String statusRemarks ; //商品状态：0为删除1为未删除（逻辑删除）
 	  //商品创建时间
 	  private Date createTime ;
 	  private String goodsDetailImg; //详情图片
 	  private String goodsBanner; //详情页面的banner图片
 	  
+	  private String detailLink ; //商品详情的连接
+	  private BigDecimal profit; //商品利润
 	  
 	  
+	  
+	public String getDetailLink() {
+		return detailLink;
+	}
+	public void setDetailLink(String detailLink) {
+		this.detailLink = detailLink;
+	}
+	public BigDecimal getProfit() {
+		return profit;
+	}
+	public void setProfit(BigDecimal profit) {
+		this.profit = profit;
+	}
 	public String getGoodsBanner() {
 		return goodsBanner;
 	}
