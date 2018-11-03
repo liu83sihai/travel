@@ -143,10 +143,7 @@ public class AccountController extends BaseController {
 		return Result.successResult("查询成功", map);
 	}
 
-	/**
-	 * 查询 现持仓、原始仓、美元点 余额
-	 * @return
-	 */
+	
 	/** 
 	 * @api {POST} /account/amount.do 券账户余额
 	 * @apiName amount
@@ -212,10 +209,10 @@ public class AccountController extends BaseController {
 	}
 
 	/**
-	 * 美元点转出
+	 * 查询 现持仓、原始仓、美元点 余额
 	 * @return
 	 */
-	@RequestMapping(value = "/pointOut", method = RequestMethod.POST)
+	@RequestMapping(value = "/transOut", method = RequestMethod.POST)
 	public Result<?> transOut() {
 		String accountType = getString("accountType");
 		String qty = getString("qty");
@@ -241,5 +238,59 @@ public class AccountController extends BaseController {
 
 		Integer userId = getUserId();
 		return payService.transOut(userId, qtyVal, accountType, receiver,password);
+	}
+	
+	
+	/** 
+	 * @api {POST} /account/convertBetweenAccount.do 两个账户之间金额转换
+	 * @apiName convertBetweenAccount
+	 * @apiGroup accountRecord 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 两个账户之间金额转换
+	 * 
+	 * @apiParam {String} sourceUserId  转出用户id
+	 * @apiParam {String} targetUserId  转入用户id
+	 * @apiParam {Decimal} sourceAmount  转出金额
+	 * @apiParam {String} fromAccount  转出账户类型 券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户”
+	 * @apiParam {String} toAccount  转入账户类型,默认为空与转出账户一样 
+	 * @apiParam {String} payPassword 转出人支付密码  
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * * {
+	*    "msg": "获取券账户余额成功",
+	*    "code": "0",
+	*    "data": 
+	*        {
+	*            "amount": 200
+	*        }
+	*  }
+	**/
+	@RequestMapping(value = "/convertBetweenAccount", method = RequestMethod.POST)
+	public Result<?> convertBetweenAccount(Integer sourceUserId, String targetUserId, BigDecimal sourceAmount,
+			 String fromAccount, String toAccount,String payPassword) {
+		
+		
+		logger.info("账户转出:sourceUserId=" + sourceUserId + ",targetUserId=" + targetUserId);
+		
+		Assert.hasText(fromAccount, "钱包类型不能为空");
+		Assert.hasText(payPassword, "交易密码不能为空");
+		Assert.hasText(targetUserId, "转出用户不能为空");
+		
+		
+		if (null == sourceUserId || null == targetUserId ) {
+			return Result.failureResult("转入转出用户不能为空!");
+		}
+		
+		if (null == sourceAmount) {
+			return Result.failureResult("转出金额不能为空!");
+		}
+		
+		if (sourceAmount.compareTo(BigDecimal.ZERO) <= 0) {
+			return Result.failureResult("转出数量必须大于0!");
+		}
+		
+		return payService.transOut(sourceUserId, sourceAmount, fromAccount, targetUserId,payPassword);
 	}
 }

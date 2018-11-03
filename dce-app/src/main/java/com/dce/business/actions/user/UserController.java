@@ -130,7 +130,7 @@ public class UserController extends BaseController {
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {int} id 用户ID
 	 * @apiSuccess {String} token 用户token
-	 * @apiSuccess {String} certification 真名
+	 * @apiSuccess {String} certification 认证状态;1为认证;0为未认证
 	
 	 * @apiSuccess {int} refereeNumber 推荐人数
 	 * 
