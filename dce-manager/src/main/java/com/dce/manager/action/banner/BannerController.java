@@ -143,11 +143,11 @@ public class BannerController extends BaseAction{
 			if (!icoImage.isEmpty()) {
 				try {
 					// 文件保存路径
-					String filePath = uploadPath + "/" + icoImage.getOriginalFilename();
+					String filePath =  "/" + icoImage.getOriginalFilename();
 					logger.debug(uploadPath);
 
 					// 转存文件
-					icoImage.transferTo(new File(filePath));
+					icoImage.transferTo(new File(uploadPath +filePath));
 
 					// 定死大小 不会根据比列压缩
 					//Thumbnails.of(filePath).size(200, 300).keepAspectRatio(false).toFile(filePath);

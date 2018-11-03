@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +36,7 @@ import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.page.PageDoUtil;
 import com.dce.business.service.message.INewsService;
 import com.dce.manager.action.BaseAction;
+import com.dce.manager.file.IFileServerService;
 import com.dce.manager.util.ResponseUtils;
 
 @Controller
@@ -45,6 +47,9 @@ public class YsNewsController extends BaseAction {
 	
 	@Value("#{sysconfig['readImgUrl']}")
 	private String readImgUrl;
+	
+	@Autowired
+	private IFileServerService fileServerService;
 
 	/**
 	 * 去列表页面
@@ -132,19 +137,6 @@ public class YsNewsController extends BaseAction {
 	}
 	
 	
-	/**
-	 * 读取图片的url	
-	 * @param filePath
-	 * @return
-	 */
-	private String getReadImgUrl(String filePath) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(readImgUrl);
-		sb.append(filePath);
-		return sb.toString();
-	}
-	
-	
 
 	/**
 	 * 保存更新
@@ -164,25 +156,10 @@ public class YsNewsController extends BaseAction {
 			if (!file.isEmpty()) {
 				try {
 					// 文件保存路径
-					 filePath = request.getSession().getServletContext().getRealPath("/") + "images/"
-							+ file.getOriginalFilename();
-
-					System.err.println("文件地址----》》" + filePath);
-
-					System.out.println(filePath);
-					// 转存文件
-					file.transferTo(new File(filePath));
-					
-					if(filePath!=null||!filePath.equals("")||!filePath.isEmpty()){
-						// 图片压缩
-						//Picture_Compression(filePath,filePath,300,300);
-						
-						// 存数据库
-						ysnewsDo.setImage(getReadImgUrl(filePath));
-					}
-
+					String imgFilePath = fileServerService.saveFileNoThumb(file.getInputStream(), file.getOriginalFilename());
+					// 存数据库
+					ysnewsDo.setImage(this.getReadImgUrl(imgFilePath,readImgUrl));
 				} catch (IllegalStateException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 

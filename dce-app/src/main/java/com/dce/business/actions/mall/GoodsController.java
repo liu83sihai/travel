@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,9 @@ import com.dce.business.service.user.IUserService;
 public class GoodsController extends BaseController {
 
 	private final static Logger logger = Logger.getLogger(GoodsController.class);
+	
+	@Value("${uploadPath}")
+	private String fileServerDir;
 	
 	@Resource
 	private ICTGoodsService ctGoodsService;
@@ -295,7 +299,7 @@ public class GoodsController extends BaseController {
 		FileInputStream ips = null;
 		try {
 			String filePath = this.getString("filePath");
-			ips = new FileInputStream(filePath);
+			ips = new FileInputStream(fileServerDir+filePath);
 			response.setContentType("image/png");
 			out = response.getOutputStream();
 			//读取文件流

@@ -155,9 +155,9 @@ public class PathController extends BaseAction{
 					String bannerPath = "";
 //					for (CommonsMultipartFile banner : bannerImg1) {
 						// 文件保存路径
-						String filePath = uploadPath + "/" + bannerImg1.getOriginalFilename();
+						String filePath =  "/" + bannerImg1.getOriginalFilename();
 						// 转存文件
-						bannerImg1.transferTo(new File(filePath));
+						bannerImg1.transferTo(new File(uploadPath +filePath));
 						bannerPath =getReadImgUrl(filePath,readImgUrl) ;
 //					}
 					// 存数据库
@@ -173,9 +173,9 @@ public class PathController extends BaseAction{
         		String bannerPath = "";
 //					for (CommonsMultipartFile banner : bannerImg1) {
         		// 文件保存路径
-        		String filePath = uploadPath + "/" + detailImg1.getOriginalFilename();
+        		String filePath =  "/" + detailImg1.getOriginalFilename();
         		// 转存文件
-        		detailImg1.transferTo(new File(filePath));
+        		detailImg1.transferTo(new File(uploadPath+filePath));
         		bannerPath = getReadImgUrl(filePath,readImgUrl) ;
 //					}
         		// 存数据库
@@ -191,9 +191,9 @@ public class PathController extends BaseAction{
         		String bannerPath = "";
 //					for (CommonsMultipartFile banner : bannerImg1) {
         		// 文件保存路径
-        		String filePath = uploadPath + "/" + iconImg1.getOriginalFilename();
+        		String filePath =  "/" + iconImg1.getOriginalFilename();
         		// 转存文件
-        		iconImg1.transferTo(new File(filePath));
+        		iconImg1.transferTo(new File(uploadPath+filePath));
         		bannerPath  = getReadImgUrl(filePath,readImgUrl) ;
 //					}
         		// 存数据库

@@ -60,7 +60,6 @@ $(function(){
 				 						}
 									}
 								},
-								@apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
 								
 								{field:"saleTime",title:"商品上架时间",width:80,align:"center",formatter:dateTimeFormatter},
 								{field:"createTime",title:"商品创建时间",width:80,align:"center",formatter:dateTimeFormatter},

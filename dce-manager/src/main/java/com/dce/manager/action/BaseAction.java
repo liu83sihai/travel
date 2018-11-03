@@ -23,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
+import com.dce.business.common.util.ImageUrlUtil;
 import com.dce.business.entity.secrety.UserInfos;
 import com.dce.manager.util.DataEncrypt;
 import com.dce.manager.util.StringUtil;
@@ -275,9 +276,6 @@ public class BaseAction {
 	 * @return
 	 */
 	public String getReadImgUrl(String filePath,String readImgUrl) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(readImgUrl);
-		sb.append(filePath);
-		return sb.toString();
+		 return ImageUrlUtil.getImagePath(readImgUrl,filePath);
 	}
 }
