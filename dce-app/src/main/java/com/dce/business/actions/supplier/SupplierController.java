@@ -74,7 +74,7 @@ public class SupplierController  extends BaseController{
 	 */
 	
 	/** 
-	 * {GET} /supplier/index.do 商家管理列表
+	 * @api {GET} /supplier/index.do 商家管理列表
 	 * @apiName supplierList
 	 * @apiGroup supplier 
 	 * @apiVersion 1.0.0 
