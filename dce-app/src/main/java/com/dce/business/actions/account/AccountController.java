@@ -249,7 +249,7 @@ public class AccountController extends BaseController {
 	 * @apiDescription 两个账户之间金额转换
 	 * 
 	 * @apiParam {String} sourceUserId  转出用户id
-	 * @apiParam {String} targetUserId  转入用户id
+	 * @apiParam {String} targetUser  转入用户手机号码
 	 * @apiParam {Decimal} sourceAmount  转出金额
 	 * @apiParam {String} fromAccount  转出账户类型 券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户”
 	 * @apiParam {String} toAccount  转入账户类型,默认为空与转出账户一样 
