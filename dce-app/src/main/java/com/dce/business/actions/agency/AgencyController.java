@@ -52,8 +52,7 @@ public class AgencyController  extends BaseController{
 	 *	@apiSuccess {java.lang.String}  bankType 银行卡类型
 	 *	@apiSuccess {java.lang.String}  idcardFront 身份证正面照
 	 *	@apiSuccess {java.lang.String}  idcardBack 身份证反面照
-	 *	@apiSuccess {java.lang.String}  province 省份
-	 *	@apiSuccess {java.lang.String}  city 城市
+	 *	@apiSuccess {java.lang.String}  city 城市 广东-深圳-罗湖区
 	 *	@apiSuccess {java.sql.Date}  createDate 创建时间
 	 *	@apiSuccess {java.lang.String}  createName 创建人
 	 *	@apiSuccess {java.sql.Date}  modifyDate 更新时间
@@ -73,8 +72,7 @@ public class AgencyController  extends BaseController{
 	 *	@apiParam {java.lang.String}  bankType 银行卡类型
 	 *	@apiParam {java.lang.String}  idcardFront 身份证正面照
 	 *	@apiParam {java.lang.String}  idcardBack 身份证反面照
-	 *	@apiParam {java.lang.String}  province 省份
-	 *	@apiParam {java.lang.String}  city 城市
+	 *	@apiParam {java.lang.String}  city 城市 广东-深圳-罗湖区
 	 */
 	
 	/** 
@@ -106,7 +104,6 @@ public class AgencyController  extends BaseController{
 	 * 				bankType 银行卡类型
 	 * 				idcardFront 身份证正面照
 	 * 				idcardBack 身份证反面照
-	 * 				province 省份
 	 * 				city 城市
 	 * 				createDate 创建时间
 	 * 				createName 创建人

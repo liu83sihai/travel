@@ -49,7 +49,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiSuccess {java.lang.String}  synopsis 简介
 	 *	@apiSuccess {java.lang.String}  busiImage 营业执照
 	 *	@apiSuccess {java.lang.String}  shopImage 门店照片
-	 *	@apiSuccess {java.lang.String}  city 省市/城市
+	 *	@apiSuccess {java.lang.String}  city 省市/城市 广东-深圳-罗湖区
 	 *	@apiSuccess {java.lang.String}  supplierAddress 详细地址
 	 *	@apiSuccess {java.math.BigDecimal}  grade 评分
 	 *	@apiSuccess {java.math.BigDecimal}  average 人均
@@ -67,7 +67,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiParam {java.lang.String}  synopsis 简介
 	 *	@apiParam {java.lang.String}  busiImage 营业执照
 	 *	@apiParam {java.lang.String}  shopImage 门店照片
-	 *	@apiParam {java.lang.String}  city 省市/城市
+	 *	@apiParam {java.lang.String}  city 省市/城市 拼装成'广东-深圳-罗湖区 '三级类型
 	 *	@apiParam {java.lang.String}  supplierAddress 详细地址
 	 *	@apiParam {java.math.BigDecimal}  longitude 经度
 	 *	@apiParam {java.math.BigDecimal}  latitude 纬度

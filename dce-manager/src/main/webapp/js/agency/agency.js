@@ -44,11 +44,11 @@ $(function(){
 								{field:"createName",title:"创建人",width:180,align:"center"},
 								{field:"modifyDate",title:"更新时间",width:180,align:"center",formatter:dateTimeFormatter},
 								{field:"modifyName",title:"更新人",width:180,align:"center"},
-								{field:"status",title:"状态(0:删除  1:正常 2:审核通过)",width:180,align:"center"},
+								{field:"status",title:"状态",width:180,align:"center"},
 								{field:"remark",title:"备注",width:180,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editagency(\''+row.id+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delAgency(\''+row.id+'\');">删除</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editagency(\''+row.userId+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delAgency(\''+row.userId+'\');">删除</a>';
 	 					  return str;
 	 					}
 	 				}	 				

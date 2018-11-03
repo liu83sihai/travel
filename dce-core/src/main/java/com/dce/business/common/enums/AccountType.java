@@ -10,9 +10,9 @@ public enum AccountType {
 	/**现金账户*/
 	wallet_money("wallet_money", "现金账户"),
 	/**旅游*/
-	wallet_travel("wallet_travel", "抵用券"),
+	wallet_travel("wallet_travel", "积分"),
 	/**日息钱包*/
-	wallet_goods("wallet_goods", "积分"),
+	wallet_goods("wallet_goods", "抵用券"),
 	/**赠送活动：沙龙*/
 	wallet_active("wallet_active", "赠送活动");
 

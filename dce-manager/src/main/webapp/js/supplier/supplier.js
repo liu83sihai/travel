@@ -22,6 +22,11 @@ $(function(){
 						iconCls:"icon-edit",
 						text:"新增",
 						handler:to_addsupplier
+					},
+					{
+						iconCls:"icon-edit",
+						text:"审核",
+						handler:to_auditSupplier
 					}
 	          	];
 	
@@ -30,7 +35,7 @@ $(function(){
 	var columns_tt = [
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
-								{field:"userId",title:"空",width:180,align:"center"},
+								{field:"userId",title:"用户Id",width:180,align:"center"},
 								{field:"supplierName",title:"供应商名",width:180,align:"center"},
 								{field:"synopsis",title:"简介",width:180,align:"center"},
 								{field:"content",title:"详情",width:180,align:"center"},
@@ -57,7 +62,7 @@ $(function(){
 								{field:"remark",title:"备注",width:180,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.id+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.id+'\');">删除</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.userId+'\');">删除</a>';
 	 					  return str;
 	 					}
 	 				}	 				
@@ -92,8 +97,7 @@ $(function(){
 		columns:columns_tt,
 		toolbar:toolbar_tt,
 		queryParams:{
-			'searchStr': $("#searchsupplierForm #searchStr").val(),
-			'searchCodeStr':$("#searchsupplierForm #searchCodeStr").val()
+			'supplierName': $("#searchsupplierForm #searchStr").val(),
 		},
 		onLoadSuccess:function(data){//根据状态限制checkbox
 			
@@ -171,6 +175,31 @@ function to_editsupplier(id){
 						$("#editSupplierDiv").dialog("close");
 				}
 		}]
+	});
+}
+
+/**
+ * 审核
+ * @param id
+ */
+function to_auditsupplier(id){
+	
+	$.messager.confirm("消息", "确认，删除后不可恢复", function(r) {
+		if (r) {
+			$.ajax({
+				url : httpUrl + "/supplier/deleteSupplier.html?id=" + id,
+				type : "post",
+				data : {},
+				success : function(data) {
+					if (data.ret == 1) {
+						$.messager.alert("消息", "删除成功");
+						$('#tt_Supplier').datagrid('reload');
+					} else {
+						$.messager.alert("消息", "删除失败，请稍后再试");
+					}
+				}
+			});
+		}
 	});
 }
 
