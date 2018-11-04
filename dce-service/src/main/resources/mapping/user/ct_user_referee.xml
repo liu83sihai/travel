@@ -104,6 +104,7 @@
 			    <![CDATA[    AND u.distance <= '${maxDistance}']]>
 			</if>
 		</trim>
+		order by u.distance
 	</select>
 
 	<select id="listMyRef" parameterType="Map" resultType="Map">
