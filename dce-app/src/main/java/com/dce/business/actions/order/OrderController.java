@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +29,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.alipay.util.AlipayConfig;
 import com.dce.business.common.enums.AccountType;
+import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.DateUtil;
@@ -38,6 +40,7 @@ import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
+import com.dce.business.entity.order.OrderPayDetail;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.accountRecord.AccountRecordService;
@@ -85,7 +88,7 @@ public class OrderController extends BaseController {
 	 * @apiDescription 订单支付方式
 	 * 
 	 * @apiParam {String} userId 用户id
-	 * @apiParam {Object[]} chooseGoods 购物车商品列表
+	 * @apiParam {json} chooseGoods 购物车商品列表
 	 * @apiParam {int} chooseGoods.goodsId 商品id
 	 * @apiParam {decimal} chooseGoods.qty 购买数量
 	 * 
@@ -388,7 +391,7 @@ public class OrderController extends BaseController {
 	 * @apiParam {String} orderType 支付方式 1微信2支付宝3其他 
 	 * @apiParam {String} addressId 订单送货地址id
 	 * @apiParam {json} cart 商品信息：qty商品数量；goodsId商品编号；price商品单价
-	 * 
+	 * @apiParam {json} payList 支付信息：accountType 账户类型；payAmt 支付金额      账户类别说明    券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户” "cash" ：代表用支付宝和微信的现金支付
 	 * 
 	 * @apiUse RETURN_MESSAGE
 	
@@ -417,7 +420,7 @@ public class OrderController extends BaseController {
 
 		// 订单参数
 		String goods = request.getParameter("cart") == null ? "" : request.getParameter("cart");
-		//String premium = request.getParameter("premium") == null ? "" : request.getParameter("premium");
+		String payList = request.getParameter("payList") == null ? "" : request.getParameter("payList");
 		String userId = request.getParameter("userId") == null ? "" : request.getParameter("userId");
 		String addressId = request.getParameter("addressId") == null ? "" : request.getParameter("addressId");
 		String orderType = request.getParameter("orderType") == null ? "" : request.getParameter("orderType");
@@ -451,10 +454,12 @@ public class OrderController extends BaseController {
 
 		// 将商品信息的JSON数据解析为list集合
 		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
-//		List<OrderDetail> chooseGoodsLst = new ArrayList<OrderDetail>();
+		//支付明细
+		List<OrderPayDetail> payLst = convertPayJson(payList);
+		
 
 		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
-				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId);
+				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
 
 		// 生成预付单，保存订单和订单明显
 		return orderService.saveOrder(chooseGoodsLst, order, request, response);
@@ -602,6 +607,41 @@ public class OrderController extends BaseController {
 		return orderService.alipayQuery(outTradeNo);
 	}
 
+	
+	/**
+	 * payListJson 转OrderPayDetail对象 json 格式 [ { "payAmt": "0001", "qty": "20",
+	 * "price":"597" }, { "goodsId": "0002", "qty": "10", "price": "637" } ]
+	 * 
+	 * @param goods
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private List<OrderPayDetail> convertPayJson(String payListJson) {
+
+		if (StringUtils.isBlank(payListJson)) {
+			logger.info("解析的支付为空======》》》》");
+			throw new BusinessException("没有正确的提交支付方式");
+		}
+
+		List<OrderPayDetail>  payLst = new ArrayList<OrderPayDetail>();
+		JSONArray jsonArray = JSONArray.parseArray(payListJson);
+		for (int i = 0; i < payLst.size(); i++) {
+			JSONObject obj = jsonArray.getJSONObject(i);
+			BigDecimal payAmt  =  new BigDecimal (obj.getString("payAmt") );
+			// 过滤支付金额为0的
+			if (payAmt.compareTo(BigDecimal.ZERO) == 0) {
+				continue;
+			}
+			OrderPayDetail payDetail = new OrderPayDetail();
+			payDetail.setPayAmt(payAmt);
+			String accountType = obj.getString("accountType");
+			payDetail.setAccountType(accountType);
+			payLst.add(payDetail);			
+		}
+		return payLst;
+	}
+	
+	
 	/**
 	 * json 转OrderDetail对象 json 格式 [ { "goodsId": "0001", "qty": "20",
 	 * "price":"597" }, { "goodsId": "0002", "qty": "10", "price": "637" } ]
