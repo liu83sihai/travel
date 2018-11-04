@@ -77,7 +77,8 @@ public class LoanDictController  extends BaseController{
 	 *  
 	 *  
 	 * @apiUse RETURN_MESSAGE
-	 * @apiSuccess {java.lang.Long}  id 主键ID
+	 *	@apiSuccess {java.lang.String}  code 付款方式,多种以分号隔开  1：现金,2:积分,3:现金账户,4:券
+	 *	@apiSuccess {java.lang.String}  name 名称 travelCard:旅游卡，travelLine：旅游路线，pointGood：积分商品,vipGood:会员商品，supplierSale：商家消费
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
 	 * {
