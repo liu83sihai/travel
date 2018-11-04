@@ -58,6 +58,17 @@ public class Order {
 	private String accounttype;
 
 	private Long goodsid;
+	
+	private BigDecimal profit; //订单利润
+	
+
+	public BigDecimal getProfit() {
+		return profit;
+	}
+
+	public void setProfit(BigDecimal profit) {
+		this.profit = profit;
+	}
 
 	public String getPhone() {
 		return phone;

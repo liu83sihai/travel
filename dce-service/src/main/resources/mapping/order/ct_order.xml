@@ -23,6 +23,9 @@
 		<result column="alipayStatus" jdbcType="INTEGER" property="alipayStatus" />
 		<result column="awardStatus" jdbcType="VARCHAR" property="awardStatus" />
 		<result column="awardRemark" jdbcType="VARCHAR" property="awardRemark" />
+		<result column="profit" jdbcType="DECIMAL" property="profit" />
+		
+		
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -33,7 +36,7 @@
 		salqty, accountType, goodsId,
 		goodsprice,giftAmount,
 		addressId,
-		alipayStatus,awardStatus,awardRemark
+		alipayStatus,awardStatus,awardRemark,profit
 	</sql>
 
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
@@ -47,7 +50,8 @@
 		paytime,a.orderType ordertype,a.addressId addressid, a.goodsprice goodsprice,
 		a.alipayStatus
 		alipayStatus,a.awardStatus awardStatus,a.awardRemark awardRemark,
-		CONCAT(b.address,b.addressDetails) address
+		CONCAT(b.address,b.addressDetails) address,
+		a.profit
 		from ct_order a left join
 		ct_order_address b on b.addressId = a.addressId
 		where a.orderId =
@@ -92,7 +96,8 @@
 		a.awardStatus, b.orderDetailId,
 		b.orderId, b.goods_id, b.quantity
 		quantity, b.price,
-		b.remark
+		b.remark,
+		a.profit
 		from ct_order a left join 
 		ct_orderdetail b on a.orderId=b.orderId
 		where
@@ -121,6 +126,7 @@
 		<result column="alipayStatus" jdbcType="INTEGER" property="alipayStatus" />
 		<result column="awardStatus" jdbcType="VARCHAR" property="awardStatus" />
 		<result column="awardRemark" jdbcType="VARCHAR" property="awardRemark" />
+		<result column="profit" jdbcType="DECIMAL" property="profit" />
 		<collection property="orderDetailList"
 			ofType="com.dce.business.entity.order.OrderDetail">
 			<id column="orderdetailid" jdbcType="INTEGER" property="orderdetailid"></id>
@@ -220,6 +226,9 @@
 			<if test="salqty != null">
 				salqty,
 			</if>
+			<if test="profit != null">
+				profit,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="ordercode != null">
@@ -269,6 +278,9 @@
 			</if>
 			<if test="salqty != null">
 				#{salqty,jdbcType=DECIMAL},
+			</if>
+			<if test="profit != null">
+				#{profit,jdbcType=DECIMAL},
 			</if>
 		</trim>
 	</insert>
@@ -339,6 +351,9 @@
 			<if test="awardRemark != null">
 				awardRemark = #{awardRemark,jdbcType=VARCHAR},
 			</if>
+			<if test="profit != null">
+				profit = #{profit,jdbcType=DECIMAL},
+			</if>
 		</set>
 		where orderId = #{orderid,jdbcType=BIGINT}
 	</update>
@@ -405,6 +420,9 @@
 			</if>
 			<if test="awardRemark != null">
 				awardRemark = #{awardRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="profit != null">
+				profit = #{profit,jdbcType=DECIMAL},
 			</if>
 		</set>
 		where ordercode = #{ordercode,jdbcType=INTEGER}
@@ -541,7 +559,7 @@
 	<!-- 支付成功更新订单状态 -->
 	<update id="updateOrderStatusByOldStatus" parameterType="Map">
 		update ct_order
-		<set>
+		<trim prefix="set" suffixOverrides=",">
 			<if test="ordercode != null">
 				ordercode = #{ordercode,jdbcType=VARCHAR},
 			</if>
@@ -602,13 +620,13 @@
 			<if test="awardRemark != null">
 				awardRemark = #{awardRemark,jdbcType=VARCHAR},
 			</if>
-		</set>
+		</trim>
 		WHERE orderId = #{orderId} and payStatus = #{oldStatus}
 	</update>
 
 	<update id="updateMatchOrder" parameterType="com.dce.business.entity.order.Order">
 		update ct_order
-		<set>
+		<trim prefix="set" suffixOverrides=",">
 			<if test="payStatus != null">
 				payStatus = #{payStatus,jdbcType=INTEGER},
 			</if>
@@ -620,7 +638,7 @@
 				#{salqty}),
 				salqty = ifnull(salqty,0) + #{salqty},
 			</if>
-		</set>
+		</trim>
 		where orderId = #{orderId,jdbcType=BIGINT} AND (ifnull(qty,0) -
 		ifnull(salqty,0) - #{salqty})>=0
 

@@ -47,6 +47,7 @@
 		<result column="goodsBanner" property="goodsBanner" />
 		<result column="profit" property="profit" />
 		<result column="detailLink" property="detailLink" />
+		<result column="payType" property="payType" />
 	</resultMap>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
@@ -278,6 +279,9 @@
 			<if test="detailLink != null">
 				detailLink,
 			</if>
+			<if test="payType != null">
+				payType,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -406,6 +410,9 @@
 			<if test="detailLink != null">
 				#{detailLink,jdbcType=VARCHAR},
 			</if>
+			<if test="payType != null">
+				#{payType,jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 
@@ -471,6 +478,9 @@
 			</if>
 			<if test="detailLink != null">
 				detaillink = #{detailLink},
+			</if>
+			<if test="payType != null">
+				payType =  #{payType},
 			</if>
 		</trim>
 		where goodsId = #{goodsId}

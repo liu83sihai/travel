@@ -220,8 +220,6 @@ public class UserServiceImpl implements IUserService {
 	 * @param parentId
 	 */
 	private void maintainUserReferee(Integer userId, Integer refereeId) {
-		// 1、推荐人的推荐人数加一,没有激活的时候不累计，报单才累计
-		// userDao.addRefereeNumber(refereeId);
 
 		// 2、直接推荐人
 		UserRefereeDo userRefereeDo = new UserRefereeDo();

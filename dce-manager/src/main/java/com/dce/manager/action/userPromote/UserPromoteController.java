@@ -78,34 +78,11 @@ public class UserPromoteController extends BaseAction{
                 model.addAttribute("searManagerName",managerName);
             }
            page = userPromoteService.getUserPromotePage(param, page);
-           /*  List<CommonComboxConstants> statusList = CommonComboxConstants.getStatusList();
-            model.addAttribute("statusList", statusList);*/
-            pagination = PageDoUtil.getPageValue(pagination, page);
+           pagination = PageDoUtil.getPageValue(pagination, page);
            
             for(UserPromoteDo promote:pagination.getDatas()){
-            	if(promote.getUserLevel().equals("0")){
-            		promote.setUserLevel("普通用戶");
-            	}else if(promote.getUserLevel().equals("1")){
-            		promote.setUserLevel("会员用戶");
-            	}else if (promote.getUserLevel().equals("2")){
-            		promote.setUserLevel("VIP用戶");
-            	}else if (promote.getUserLevel().equals("3")){
-            		promote.setUserLevel("城市合伙人用戶");
-            	}else if (promote.getUserLevel().equals("4")){
-            		promote.setUserLevel("股东");
-            	}
-            	
-            	if(promote.getPromoteLevel().equals("0")){
-            		promote.setPromoteLevel("普通用戶");
-            	}else if(promote.getPromoteLevel().equals("1")){
-            		promote.setPromoteLevel("会员用戶");
-            	}else if (promote.getPromoteLevel().equals("2")){
-            		promote.setPromoteLevel("VIP用戶");
-            	}else if (promote.getPromoteLevel().equals("3")){
-            		promote.setPromoteLevel("城市合伙人用戶");
-            	}else if (promote.getPromoteLevel().equals("4")){
-            		promote.setPromoteLevel("股东");
-            	}
+            	promote.setUserLevel(promote.getUserLevelName(promote.getUserLevel()));
+            	promote.setPromoteLevel(promote.getUserLevelName(promote.getPromoteLevel()));
             }
             System.err.println("数据---"+JSONObject.toJSON(pagination));
             outPrint(response, JSONObject.toJSON(pagination));

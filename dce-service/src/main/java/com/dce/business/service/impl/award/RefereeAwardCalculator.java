@@ -50,7 +50,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	private ThreadLocal<Map<String, Object>> awardContextMap = new ThreadLocal<Map<String, Object>>();
 
 	/**
-	 * 根据购买者购买数量确定用户会员等级和给会员的奖励 计算奖励的方法
+	 * 计算推荐奖
 	 * 
 	 * @param buyUserId
 	 *            购买者
