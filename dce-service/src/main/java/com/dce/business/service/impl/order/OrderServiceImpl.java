@@ -601,7 +601,7 @@ public class OrderServiceImpl implements IOrderService {
 		}
 
 		//测试都有1分钱 
-		order.setTotalprice(new BigDecimal(0.01));
+		order.setTotalprice(new BigDecimal(1));
 		
 		// 创建支付宝订单记录
 		AlipaymentOrder alipaymentOrder = new AlipaymentOrder();
