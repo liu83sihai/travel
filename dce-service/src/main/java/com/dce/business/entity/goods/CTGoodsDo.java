@@ -66,9 +66,15 @@ public class CTGoodsDo implements Serializable {
 	  
 	  private String detailLink ; //商品详情的连接
 	  private BigDecimal profit; //商品利润
+	  private String  payType;    //支付方式设置
 	  
 	  
-	  
+	public String getPayType() {
+		return payType;
+	}
+	public void setPayType(String payType) {
+		this.payType = payType;
+	}
 	public String getDetailLink() {
 		return detailLink;
 	}
