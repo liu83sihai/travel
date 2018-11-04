@@ -25,7 +25,9 @@ import com.dce.business.entity.notice.NoticeDo;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.supplier.SupplierDo;
 import com.dce.business.service.agency.IAgencyService;
+import com.dce.business.service.district.IDistrictService;
 import com.dce.business.entity.agency.AgencyDo;
+import com.dce.business.entity.district.District;
 /**
  * 代理管理授权业务实现类
  *
@@ -40,6 +42,9 @@ public class AgencyController  extends BaseController{
 	private final static Logger logger = Logger.getLogger(AgencyController.class);
 	@Resource
 	private IAgencyService agencyService;
+	
+	@Resource
+	private IDistrictService districtService;
 	
 	/**
 	 *  @apiDefine agencySucces
@@ -200,15 +205,15 @@ public class AgencyController  extends BaseController{
 	  *	}
 	  */ 
 	 @RequestMapping("/getId")
-	 public Result<?> getId(AgencyDo agencyDo) {
+	 public Result<?> getId(District agencyDo) {
 		 logger.info("获取代理管理...");
 		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId()){
 			 return Result.failureResult("代理用户ID不能为空!");
 		 }
 		 
-		 AgencyDo agency = agencyService.getById(agencyDo.getUserId());
+		 District district = districtService.getById(agencyDo.getUserId());
 		 
-		 return Result.successResult("获取代理管理成功", agency);
+		 return Result.successResult("获取代理管理成功", district);
 	 }
 	 
 	 /** 
@@ -228,27 +233,7 @@ public class AgencyController  extends BaseController{
 		 *  "code": 0
 		 *	"msg": 返回成功,
 		 *	"data": {
-		 *	    [
-		 *			{
-	  	 * 				id id
-	  	 * 				userId 用户ID
-	  	 * 				userName 姓名
-	  	 * 				mobile 手机号码
-	  	 * 				idCard 身份证
-	  	 * 				bankNumber 银行卡
-	  	 * 				bankType 银行卡类型
-	  	 * 				idcardFront 身份证正面照
-	  	 * 				idcardBack 身份证反面照
-	  	 * 				province 省份
-	  	 * 				city 城市
-	  	 * 				createDate 创建时间
-	  	 * 				createName 创建人
-	  	 * 				modifyDate 更新时间
-	  	 * 				modifyName 更新人
-	  	 * 				status 状态(0:删除  1:正常 2:审核通过)
-	  	 * 				remark 备注
-		 *			}
-		 *		]
+		 *	    []
 		 *	  }
 		 *	}
 		 */ 
@@ -263,6 +248,7 @@ public class AgencyController  extends BaseController{
 			 return Result.successResult("当前用户已申请代理,请在用户当中查看",agency);
 		 }
 		 
+		 
 //		 Assert.hasText(agencyDo.getUserName(), "姓名为空");
 //		 Assert.hasText("" + agencyDo.getSex(), "性别为空");
 //		 Assert.hasText(agencyDo.getMobile(), "手机号码为空");
@@ -276,6 +262,14 @@ public class AgencyController  extends BaseController{
 		 agencyDo.setCreateDate(new Date(System.currentTimeMillis()));
 		 agencyDo.setCreateName("前台增加代理管理");
 		 agencyService.addAgency(agencyDo);
+		 
+		 
+		 District  district = new District();
+		 district.setUserId(agencyDo.getUserId());
+		 district.setDistrict(agencyDo.getCity());
+		 district.setDistrictStatus(0);
+		 districtService.addDistrict(district);
+		 
 		 return Result.successResult("代理管理增加成功",agencyDo);
 	 }
 	 

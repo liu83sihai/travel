@@ -117,5 +117,10 @@ public class DistrictServiceImpl implements IDistrictService {
 		
 		return districtDao.selectByPrimaryKeySelective(record);
 	}
+	@Override
+	public List<District> getDistrict(Map<String,Object>  map){
+		// TODO Auto-generated method stub
+		return districtDao.queryListPage(map);
+	}
 
 }

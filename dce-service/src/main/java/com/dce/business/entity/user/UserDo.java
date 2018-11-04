@@ -152,7 +152,7 @@ public class UserDo {
 
 	private Integer userscore;
 
-	private Byte userType;
+	private Integer userType;
 
 	private Byte userGroup;
 
@@ -693,11 +693,11 @@ public class UserDo {
 		this.userscore = userscore;
 	}
 
-	public Byte getUserType() {
+	public Integer getUserType() {
 		return userType;
 	}
 
-	public void setUserType(Byte userType) {
+	public void setUserType(Integer userType) {
 		this.userType = userType;
 	}
 
