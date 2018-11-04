@@ -17,7 +17,7 @@ public class UserDo {
 	private Integer id;
 
 	// 登录用户名或昵称
-	@NotBlank(message = "登录用户名不能为空")
+	@NotBlank(message = "登录用户名手机号码为空")
 	private String userName;
 
 	// 证件姓名

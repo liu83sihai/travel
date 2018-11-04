@@ -601,7 +601,7 @@ public class OrderServiceImpl implements IOrderService {
 		}
 
 		//测试都有1分钱 
-		order.setTotalprice(new BigDecimal(1));
+		order.setTotalprice(new BigDecimal(0.01));
 		
 		// 创建支付宝订单记录
 		AlipaymentOrder alipaymentOrder = new AlipaymentOrder();
@@ -636,7 +636,7 @@ public class OrderServiceImpl implements IOrderService {
 			// 【必填】销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
 			model.setProductCode("QUICK_MSECURITY_PAY");
 			// 【必填】商品的标题/交易标题/订单标题/订单关键字等
-			model.setSubject("湘信商城消费");
+			model.setSubject("乐游环球消费");
 
 			ali_request.setBizModel(model);
 			// 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
@@ -661,6 +661,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public String notify(Map<String, String> conversionParams) throws Exception {
 		logger.debug("==================支付宝异步通知逻辑处理=============");
+		System.out.println("==================支付宝异步通知逻辑处理=============");
 
 		// 签名验证(对支付宝返回的数据验证，确定是支付宝返回的)
 		boolean signVerified = false;
