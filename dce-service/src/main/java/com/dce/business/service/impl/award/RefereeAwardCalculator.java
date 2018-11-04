@@ -66,6 +66,11 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	@Override
 	public void doAward(UserDo buyer, Order order) {
 
+		if(order.getProfit() == null || BigDecimal.ZERO.compareTo(order.getProfit()) == 0) {
+			logger.warn("订单利润等于0 不计算分润"+order.getOrderid());
+			return;
+		}
+		
 		Map<String, Object> contextMap = new HashMap<String, Object>();
 		contextMap.put("buyer", buyer);
 		contextMap.put("order", order);
@@ -81,24 +86,39 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			return;
 		}
 		
-		// 得到奖励配置
-		Awardlist award = awardlistService.getAwardConfigByQtyAndBuyerLevel(buyer.getUserLevel(), order.getQty());
-		if (award == null) {
-			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
-		}
+//		// 得到奖励配置
+//		Awardlist award = awardlistService.getAwardConfigByQtyAndBuyerLevel(buyer.getUserLevel(), order.getQty());
+//		if (award == null) {
+//			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
+//		}
 		
 		UserRefereeDo[] refArray = (UserRefereeDo[])list.toArray();
+		
 		UserDo[] refUserArray = buildRefUser(refArray);
-		double[] rateArray = buildRate(refUserArray,award);
-		for (int i = 0 ; i <refArray.length;i++) {
-			UserRefereeDo temp = refArray[i];
-			
-			UserDo refUser = userService.getUser(temp.getRefereeid());
-			String awardConf = award.getAwardConfigByLevel(refUser.getUserLevel());
-			// 多种奖励办法以;分隔
-			String[] bAwardLst = awardConf.split(";");
+		int[] rateArray = buildRate(refUserArray);
+		
+		for (int i = 0 ; i <refUserArray.length;i++) {
 			IncomeType awardsShow = IncomeType.TYPE_AWARD_JIAJIN;
-			oneAward(temp.getId(), bAwardLst, order, awardsShow);
+
+			if(rateArray[i] == 0) {
+				logger.info("用户分润比例=0 userId:"+refUserArray[i].getId());
+				continue;
+			}
+			
+			// 计算奖励金额
+			BigDecimal wardAmount = order.getProfit();
+			BigDecimal rate = new BigDecimal(rateArray[i]/100d);
+			wardAmount = wardAmount.multiply(rate);
+			// 获取奖励账户
+			String accountType = "wallet_money";
+			if (wardAmount.compareTo(BigDecimal.ZERO) > 0) {
+				UserAccountDo accont = new UserAccountDo(wardAmount, buyer.getId(), accountType);
+				buildAccountRemark(accont);
+				// 账户对象增加金额
+				accountService.updateUserAmountById(accont, awardsShow);
+			}
+		
+			
 		}
 
 	}
@@ -113,44 +133,114 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		return refUserArray;
 	}
 
-	private double[] buildRate(UserDo[] refArray,Awardlist award) {
+	private int[] buildRate(UserDo[] refArray) {
 		//默认推荐分红比率
-		double[] rateArray  = {49d,8d,5d,4d,3d};
+		int[] rateArray  = {49,8,5,4,3};
 		//普通 0 , vip  1, 商家 2, 设区合伙人 3， 城市合伙人 4， 省级合伙人 5， 股东 6  董事 7
-		double[] firstRefRateArray  = {0d,49d,49d,57d,62d,66d,69d,5d};
+		int[] firstRefRateArray  = {0,49,49,57,62,66,69,5};
+		//分润用户等级
+		byte[] userLevelArray = new byte[refArray.length];
+		for (int i = 0 ; i <refArray.length;i++) {
+			byte currentUserLevel = refArray[i].getUserLevel();
+			//商家跟社区合伙人平级，先处理成一致
+			if(currentUserLevel == 2) {
+				currentUserLevel =3;
+			}
+			userLevelArray[i] = currentUserLevel;
+		}
 		
-		
+		//推荐用户的分润比例数组
+		int[] retArray  = new int[refArray.length];
 		
 		//直推
-		double f= firstRefRateArray[refArray[0].getUserLevel()];
-		rateArray[0] = f;
+		int f= firstRefRateArray[refArray[0].getUserLevel()];
+		retArray[0] = f;
 		
-		for (int i = 1 ; i <refArray.length;i++) {
+		for (int i = 1 ; i <userLevelArray.length;i++) {
 			int idx1 = i -1;
 			int idx2 = i -2;
-			byte currentUser = refArray[i].getUserLevel();
+			byte currentUser = userLevelArray[i];
 			byte  idx1User = 0;
 			byte idx2User = 0;
 			if(idx1>0) {
-				idx1User = refArray[idx1].getUserLevel();
+				idx1User = userLevelArray[idx1];
 			}
 			if(idx2>0) {
-				idx2User = refArray[idx2].getUserLevel();
-			}
-			if(currentUser == idx1User && idx1User == idx2User) {
-				rateArray[i]=0;
-			}
-			if(currentUser == idx1User && idx1User != idx2User) {
-				rateArray[i]= 1d;
-			}
-			//如果是股东 
-			if(currentUser == 6 && rateArray[i] == 1d) {
-				rateArray[i]= 2d;
+				idx2User = userLevelArray[idx2];
 			}
 			
+			//普通用户和vip不参与
+			if(currentUser == 0 || currentUser == 1 ) {
+				retArray[i] = 0 ;
+				continue;
+			}
+			
+			//不能比前面的等级低
+			if(currentUser < idx1User) {
+				retArray[i] = 0 ;
+				continue;
+			}
+			
+			//平级只分一代
+			if(currentUser == idx1User && idx1User == idx2User) {
+				retArray[i]=0;
+				continue;
+			}
+			
+			//平级处理
+			if(currentUser == idx1User && idx1User != idx2User) {
+				retArray[i]= 1;
+				//如果是股东 
+				if(currentUser == 6 && retArray[i] == 1d) {
+					retArray[i]= 2;
+				}
+				continue;
+			}
+			//不相邻的平级， 如果前一个是0，继续查看前面
+			boolean findNext = false;
+			if(retArray[i-1] ==0) {
+				findNext =true;
+			}
+			boolean isSamelevel = false;
+			if(findNext) {
+				for(int k = i-2; k>=0;k--) {
+					if(retArray[k] != 0) {
+						if(userLevelArray[k]> currentUser) {
+							retArray[i] = 0;
+							isSamelevel = true;
+							break;
+						}
+						//等于 1,2，表示上一个已经是平级
+						if(userLevelArray[k]==currentUser &&  retArray[k]==1) {
+							retArray[i] = 0;
+							isSamelevel = true;
+							break;
+						}
+						if(userLevelArray[k]==currentUser &&  retArray[k]==2) {
+							retArray[i] = 0;
+							isSamelevel = true;
+							break;
+						}
+					}
+				}
+				if(isSamelevel) {
+					continue;
+				}
+			}
+			retArray[i] = rateArray[currentUser];
 		}
 		
-		return rateArray;
+		//计算 股东差级
+		int total = 0;
+		for(int j = 0; j < retArray.length ;j++) {
+			if(userLevelArray[j]==6 ) {
+				retArray[j] = 69-total;
+				break;
+			}
+			total=total+retArray[j];
+			 
+		}
+		return retArray;
 	}
 
 	/**

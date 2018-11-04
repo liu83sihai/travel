@@ -40,6 +40,7 @@ import com.dce.manager.util.ResponseUtils;
 
 import com.dce.business.service.agency.IAgencyService;
 import com.dce.business.service.district.IDistrictService;
+import com.dce.business.service.user.IUserService;
 import com.dce.business.entity.agency.AgencyDo;
 import com.dce.business.entity.district.District;
 
@@ -53,6 +54,9 @@ public class AgencyController extends BaseAction{
 	private IAgencyService agencyService;
 	@Resource
 	private IDistrictService districtService;
+	
+	@Resource
+	private IUserService userService;
 
 	/**
      * 去列表页面
@@ -227,6 +231,13 @@ public class AgencyController extends BaseAction{
     		agencyDo.setModifyName(this.getUserName() + ":" + userId);
     		agencyDo.setModifyDate(new Date(System.currentTimeMillis()));
     		int ret = agencyService.updateAgencyById(agencyDo);
+    		
+    		//更新用户
+    		UserDo userDo = new UserDo();
+    		userDo.setId(Integer.valueOf(userId));
+    		userDo.setUserType(3);
+    		userService.update(userDo);
+    		
     		
     		ResponseUtils.renderJson(response, null, "{\"ret\":" + ret + "}");
     	}catch(Exception e){

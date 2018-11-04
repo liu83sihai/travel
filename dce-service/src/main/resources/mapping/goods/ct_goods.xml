@@ -510,7 +510,18 @@
 		resultMap="BaseResultMap">
 		select 
 		*
-		from ct_goods where status=1 and statusRemarks=1 limit #{offset},#{rows}
+		from ct_goods 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="goodsFlag != null">
+				AND goodsFlag = #{goodsFlag}
+			</if>
+			<if test="shopCatId1 != null">
+				AND shopCatId1 = #{shopCatId1}
+			</if>
+		   and status=1 
+		   and statusRemarks=1 
+		</trim>
+		limit #{offset},#{rows}
 
 	</select>
 

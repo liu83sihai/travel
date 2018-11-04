@@ -77,7 +77,6 @@
             <list>
                 <ref bean="areaAwardCalculator" />
                 <ref bean="refereeAwardCalculator" />
-                <ref bean="buyerAwardCalculator" />
                 <ref bean="refereeUpgrade" />
             </list>
         </property>
