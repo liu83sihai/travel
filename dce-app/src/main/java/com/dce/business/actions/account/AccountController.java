@@ -268,18 +268,18 @@ public class AccountController extends BaseController {
 	*  }
 	**/
 	@RequestMapping(value = "/convertBetweenAccount", method = RequestMethod.POST)
-	public Result<?> convertBetweenAccount(Integer sourceUserId, String targetUserId, BigDecimal sourceAmount,
+	public Result<?> convertBetweenAccount(Integer sourceUserId, String targetUser, BigDecimal sourceAmount,
 			 String fromAccount, String toAccount,String payPassword) {
 		
 		
-		logger.info("账户转出:sourceUserId=" + sourceUserId + ",targetUserId=" + targetUserId);
+		logger.info("账户转出:sourceUserId=" + sourceUserId + ",targetUserId=" + targetUser);
 		
 		Assert.hasText(fromAccount, "钱包类型不能为空");
 		Assert.hasText(payPassword, "交易密码不能为空");
-		Assert.hasText(targetUserId, "转出用户不能为空");
+		Assert.hasText(targetUser, "转出用户不能为空");
 		
 		
-		if (null == sourceUserId || null == targetUserId ) {
+		if (null == sourceUserId || null == targetUser ) {
 			return Result.failureResult("转入转出用户不能为空!");
 		}
 		
@@ -291,6 +291,6 @@ public class AccountController extends BaseController {
 			return Result.failureResult("转出数量必须大于0!");
 		}
 		
-		return payService.transOut(sourceUserId, sourceAmount, fromAccount, targetUserId,payPassword);
+		return payService.transOut(sourceUserId, sourceAmount, fromAccount, targetUser,payPassword);
 	}
 }
