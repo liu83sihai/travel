@@ -38,7 +38,10 @@ import com.dce.manager.action.BaseAction;
 import com.dce.manager.util.ResponseUtils;
 
 import com.dce.business.service.supplier.ISupplierService;
+import com.dce.business.service.user.IUserService;
 import com.dce.business.entity.supplier.SupplierDo;
+import com.dce.business.entity.user.UserDo;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -47,6 +50,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SupplierController extends BaseAction{
 	@Resource
 	private ISupplierService supplierService;
+	
+	@Resource
+	private IUserService userService;
+
 
 	/**
      * 去列表页面
@@ -171,6 +178,37 @@ public class SupplierController extends BaseAction{
              ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
          }
      }
+    /**
+     * 审核
+     */
+    @RequestMapping("/aduitSupplier")
+    public void aduitSupplier(String id,String userId,String district,HttpServletRequest request,
+    		HttpServletResponse response) {
+    	logger.info("----aduitSupplier----");
+    	try{
+    		if (StringUtils.isBlank(id) || !id.matches("\\d+")) {
+    			logger.info(id);
+    			ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
+    			return;
+    		}
+    		//更新供应商
+			SupplierDo supplierDo = new SupplierDo();
+			supplierDo.setId(Integer.valueOf(id));
+			supplierDo.setStatus(2);
+    		int ret = supplierService.updateSupplierById(supplierDo);
+    		//更新用户
+    		UserDo userDo = new UserDo();
+    		userDo.setId(Integer.valueOf(userId));
+    		userDo.setUserType(1);
+    		userDo.setDistrict(district);
+    		userService.update(userDo);
+    		
+    		ResponseUtils.renderJson(response, null, "{\"ret\":" + ret + "}");
+    	}catch(Exception e){
+    		logger.error("审核异常",e);
+    		ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
+    	}
+    }
     
 }
 

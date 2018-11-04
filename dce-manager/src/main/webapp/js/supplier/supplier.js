@@ -22,11 +22,6 @@ $(function(){
 						iconCls:"icon-edit",
 						text:"新增",
 						handler:to_addsupplier
-					},
-					{
-						iconCls:"icon-edit",
-						text:"审核",
-						handler:to_auditSupplier
 					}
 	          	];
 	
@@ -35,7 +30,7 @@ $(function(){
 	var columns_tt = [
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
-								{field:"userId",title:"用户Id",width:180,align:"center"},
+								{field:"userId",title:"用户Id",width:80,align:"center"},
 								{field:"supplierName",title:"供应商名",width:180,align:"center"},
 								{field:"synopsis",title:"简介",width:180,align:"center"},
 								{field:"content",title:"详情",width:180,align:"center"},
@@ -44,26 +39,23 @@ $(function(){
 								{field:"bannerImages",title:"banner图",width:180,align:"center"},
 								{field:"busiImage",title:"营业执照",width:180,align:"center"},
 								{field:"shopImage",title:"门店照片",width:180,align:"center"},
-								{field:"city",title:"省市/城市",width:180,align:"center"},
+								{field:"city",title:"省市/城市",width:120,align:"center"},
 								{field:"supplierAddress",title:"详细地址",width:180,align:"center"},
-								{field:"telPhone",title:"电话",width:180,align:"center"},
-								{field:"linkMan",title:"联系人",width:180,align:"center"},
-								{field:"supplierType",title:"类型",width:180,align:"center"},
-								{field:"grade",title:"评分",width:180,align:"center"},
-								{field:"average",title:"人均",width:180,align:"center"},
-								{field:"longitude",title:"经度",width:180,align:"center"},
-								{field:"latitude",title:"纬度",width:180,align:"center"},
+								{field:"grade",title:"评分",width:80,align:"center"},
+								{field:"average",title:"人均",width:80,align:"center"},
+								{field:"longitude",title:"经度",width:80,align:"center"},
+								{field:"latitude",title:"纬度",width:80,align:"center"},
 								{field:"hitNum",title:"点击数",width:180,align:"center"},
-								{field:"createDate",title:"创建时间",width:180,align:"center",formatter:dateTimeFormatter},
-								{field:"createName",title:"创建人",width:180,align:"center"},
-								{field:"modifyDate",title:"更新时间",width:180,align:"center",formatter:dateTimeFormatter},
-								{field:"modifyName",title:"更新人",width:180,align:"center"},
+								{field:"createDate",title:"创建时间",width:120,align:"center",formatter:dateTimeFormatter},
+								{field:"createName",title:"创建人",width:120,align:"center"},
+								{field:"modifyDate",title:"更新时间",width:120,align:"center",formatter:dateTimeFormatter},
+								{field:"modifyName",title:"更新人",width:120,align:"center"},
 								{field:"status",title:"状态",width:180,align:"center"},
 								{field:"remark",title:"备注",width:180,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.userId+'\');">删除</a>';
-	 					  return str;
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">编辑</a>    <a href="javascript:void(0);" onclick="to_auditsupplier(\''+row.id+'\',\''+row.userId+'\',\''+row.city+'\');">审核</a>    <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.id+'\');">删除</a>';
+	 					  return str; 
 	 					}
 	 				}	 				
 	 			]
@@ -75,7 +67,7 @@ $(function(){
 		height:$("#body").height()-$('#search_areaSupplier').height()-10,
 		width:$("#body").width(),
 		rownumbers:true,
-		fitColumns:true,
+		fitColumns:false,
 		singleSelect:false,//配合根据状态限制checkbox
 		autoRowHeight:true,
 		striped:true,
@@ -182,20 +174,25 @@ function to_editsupplier(id){
  * 审核
  * @param id
  */
-function to_auditsupplier(id){
-	
-	$.messager.confirm("消息", "确认，删除后不可恢复", function(r) {
+function to_auditsupplier(id,userId,district){
+	$.messager.confirm("消息", "审核确认", function(r) {
 		if (r) {
 			$.ajax({
-				url : httpUrl + "/supplier/deleteSupplier.html?id=" + id,
+				url : httpUrl + "/supplier/aduitSupplier.html?id=" + id,
 				type : "post",
-				data : {},
+				data : {
+					"userId":userId,
+					"district":district
+				},
 				success : function(data) {
 					if (data.ret == 1) {
-						$.messager.alert("消息", "删除成功");
+						$.messager.alert("消息", "审核成功");
 						$('#tt_Supplier').datagrid('reload');
+					}else if (data.ret == 2) {
+						$.messager.alert("消息", "审核失败,当前区域已存在商家");
+							$('#tt_Supplier').datagrid('reload');
 					} else {
-						$.messager.alert("消息", "删除失败，请稍后再试");
+						$.messager.alert("消息", "审核失败，请稍后再试");
 					}
 				}
 			});
