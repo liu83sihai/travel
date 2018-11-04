@@ -1,5 +1,8 @@
 package com.dce.business.entity.award;
 
+import com.dce.business.common.enums.AccountType;
+import com.dce.business.common.exception.BusinessException;
+
 public class Awardlist {
     
     private Integer awardid;
@@ -17,6 +20,45 @@ public class Awardlist {
 		return  "level 0 级购买"+minQty +"到" +maxQty+"获的奖励公式等于 300+(n-1)*300"+"现金";
 	}
 	
+	/**
+	 * 根据配置 用 - 分隔 ，配置进什么账户类型，如果没有配置报错 配置格式： 1-wallet_travel-4人港澳游 表示 1次，旅游账户 奖励
+	 * 4人港澳游 ， wallet_travel 查看{@link AccountType}
+	 * 
+	 * @param oneAward
+	 * @return
+	 */
+	public static String getAccountTypeByAward(String[] awds) {
+		if (awds.length < 2) {
+			throw new BusinessException("购买者对应的奖励办法没有正确配置，请检查奖励办法的配置", "error-refereeAward-004");
+		}
+		return awds[1];
+	}
+	
+	/**
+	 * 根据用户等级获取配置字段
+	 * @param level
+	 * @return
+	 */
+	public String getAwardConfigByLevel(Byte level) {
+		switch (level) {
+		case 0:
+			getP1Level0();
+			break;
+		case 1:
+			getP1Level1();
+			break;
+		case 2:
+			getP1Level2();
+			break;
+		case 3:
+			getP1Level3();
+			break;
+		case 4:
+			getP1Level4();
+			break;
+		}
+		return "";
+	}
 	
 	
 	
