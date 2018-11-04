@@ -141,14 +141,14 @@ public class OrderController extends BaseController {
 		payMap1.put("useableAmt", amount.getAmount());
 		
 		Map<String, Object> payMap2 = new HashMap<String,Object>();
-		payMap2.put("payCode", amount.getAccountType());
-		payMap2.put("totalAmt", amount.getAmount());
-		payMap2.put("useableAmt", amount.getAmount());
+		payMap2.put("payCode", originalAmount.getAccountType());
+		payMap2.put("totalAmt", originalAmount.getAmount());
+		payMap2.put("useableAmt", originalAmount.getAmount());
 		
 		Map<String, Object> payMap3 = new HashMap<String,Object>();
-		payMap3.put("payCode", amount.getAccountType());
-		payMap3.put("totalAmt", amount.getAmount());
-		payMap3.put("useableAmt", amount.getAmount());
+		payMap3.put("payCode", pointAmount.getAccountType());
+		payMap3.put("totalAmt", pointAmount.getAmount());
+		payMap3.put("useableAmt", pointAmount.getAmount());
 		
 		accountInfo.add(payMap1);
 		accountInfo.add(payMap2);
