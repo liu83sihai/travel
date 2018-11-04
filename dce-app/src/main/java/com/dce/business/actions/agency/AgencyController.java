@@ -63,7 +63,6 @@ public class AgencyController  extends BaseController{
 	
 	/**
 	 *  @apiDefine agencyParam
-	 *	@apiParam {java.lang.Integer}  id id
 	 *	@apiParam {java.lang.Integer}  userId 用户ID
 	 *	@apiParam {java.lang.String}  city 城市 广东-深圳-罗湖区
 	 *	@apiParam {java.lang.String}  cityCode 城市代码
@@ -264,13 +263,13 @@ public class AgencyController  extends BaseController{
 			 return Result.successResult("当前用户已申请代理,请在用户当中查看",agency);
 		 }
 		 
-		 Assert.hasText(agencyDo.getUserName(), "姓名为空");
-		 Assert.hasText("" + agencyDo.getSex(), "性别为空");
-		 Assert.hasText(agencyDo.getMobile(), "手机号码为空");
-		 Assert.hasText(agencyDo.getBankNumber(), "银行号码为空");
-		 Assert.hasText(agencyDo.getBankType(), "银行开户行为空");
-		 Assert.hasText(agencyDo.getIdcardFront(), "身份证正面为空");
-		 Assert.hasText(agencyDo.getIdcardBack(), "身份证背面图像为空");
+//		 Assert.hasText(agencyDo.getUserName(), "姓名为空");
+//		 Assert.hasText("" + agencyDo.getSex(), "性别为空");
+//		 Assert.hasText(agencyDo.getMobile(), "手机号码为空");
+//		 Assert.hasText(agencyDo.getBankNumber(), "银行号码为空");
+//		 Assert.hasText(agencyDo.getBankType(), "银行开户行为空");
+//		 Assert.hasText(agencyDo.getIdcardFront(), "身份证正面为空");
+//		 Assert.hasText(agencyDo.getIdcardBack(), "身份证背面图像为空");
 		 Assert.hasText(agencyDo.getCity(), "代理城市为空");
 
 		 agencyDo.setStatus(1);
