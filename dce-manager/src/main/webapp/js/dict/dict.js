@@ -159,22 +159,6 @@ function to_editloanDict(id){
 
 function save_LoanDict(){
 	var formdata = $("#editLoanDictForm").serialize();
-	
-	var travelCard=$("input[name='travelCard']:checked").map(function(index,elem){return $(elem).val();}).get().join(';');
-	formdata = formdata + '&travelCardValue='+travelCard;
-	
-	var travelLine=$("input[name='travelLine']:checked").map(function(index,elem){return $(elem).val();}).get().join(';');
-	formdata = formdata + '&travelLineValue='+travelLine;
-	
-	var pointGood=$("input[name='pointGood']:checked").map(function(index,elem){return $(elem).val();}).get().join(';');
-	formdata = formdata + '&pointGoodValue='+pointGood;
-	
-	var vipGood=$("input[name='vipGood']:checked").map(function(index,elem){return $(elem).val();}).get().join(';');
-	formdata = formdata + '&vipGoodValue='+vipGood;
-	
-	var supplierSale=$("input[name='supplierSale']:checked").map(function(index,elem){return $(elem).val();}).get().join(';');
-	formdata = formdata + '&supplierSaleValue='+supplierSale;
-	
 	console.info("formdata");
 	console.info(formdata);
 	var  url =httpUrl+"/loandict/saveLoanDict.html?&rand=" + Math.random();

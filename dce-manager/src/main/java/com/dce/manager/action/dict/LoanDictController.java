@@ -102,7 +102,25 @@ public class LoanDictController extends BaseAction{
                 if(null != loandictDo){
                 	
                 	 List<LoanDictDtlDo> ldDtl =loandictService.getDictDetailByDictId(Long.valueOf(id));
-                	 loandictDo.setDtlList(ldDtl);
+                	 for (LoanDictDtlDo ldd : ldDtl) {
+						String name = ldd.getName();
+						String code = ldd.getCode();
+						if(name.equals("travelCard")){
+							 modelMap.addAttribute("travelCard", code);
+							 
+						}else if(name.equals("travelLine")){
+							modelMap.addAttribute("travelLine", code);
+							
+						}else if(name.equals("pointGood")){
+							modelMap.addAttribute("pointGood", code);
+							
+						}else if(name.equals("vipGood")){
+							modelMap.addAttribute("vipGood", code);
+							
+						}else if(name.equals("supplierSale")){
+							modelMap.addAttribute("supplierSale", code);
+						}
+					}
                     modelMap.addAttribute("loandict", loandictDo);
                 }
             }
@@ -126,11 +144,11 @@ public class LoanDictController extends BaseAction{
     							  HttpServletRequest request, 
     							  HttpServletResponse response) {
     	logger.info("----saveLoanDict------");
-    	String travelCard = getString("travelCardValue");
-    	String travelLine = getString("travelLineValue");
-    	String pointGood = getString("pointGoodValue");
-    	String vipGood = getString("vipGoodValue");
-    	String supplierSale = getString("supplierSaleValue");
+    	String travelCard = getString("travelCard");
+    	String travelLine = getString("travelLine");
+    	String pointGood = getString("pointGood");
+    	String vipGood = getString("vipGood");
+    	String supplierSale = getString("supplierSale");
         try{
         	Long id = loandictDo.getId();
             Long userId = new Long(this.getUserId());
