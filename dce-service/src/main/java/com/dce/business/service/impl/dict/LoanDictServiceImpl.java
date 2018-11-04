@@ -15,10 +15,13 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import com.dce.business.common.enums.DictCode;
+import com.dce.business.common.util.Constants;
 import com.dce.business.dao.dict.ILoanDictDao;
 import com.dce.business.dao.dict.ILoanDictDtlDao;
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
+import com.dce.business.entity.page.PageDo;
+import com.dce.business.entity.supplier.SupplierDo;
 import com.dce.business.service.dict.ILoanDictService;
 
 @Service("loanDictService")
@@ -186,5 +189,21 @@ public class LoanDictServiceImpl implements ILoanDictService {
 //        BigDecimal pointAmt = rmb.divide(new BigDecimal(6), 6, RoundingMode.HALF_UP);
         
         return rmb.divide(decp,6,RoundingMode.HALF_UP);
+	}
+
+	@Override
+	public PageDo<LoanDictDo> queryListPage(Map<String, Object> searchItem, PageDo<LoanDictDo> page) {
+		// TODO Auto-generated method stub
+		logger.info("----getSupplierPage----"+searchItem);
+		searchItem.put(Constants.MYBATIS_PAGE, page);
+        List<LoanDictDo> list =  loanDictDao.queryListPage(searchItem);
+        page.setModelList(list);
+		return page;
+	}
+
+	@Override
+	public int deleteByDictId(Long id) {
+		// TODO Auto-generated method stub
+		return loanDictDtlDao.deleteByDictId(id);
 	}
 }

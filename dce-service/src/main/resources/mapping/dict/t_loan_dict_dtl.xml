@@ -22,6 +22,10 @@
 		delete from t_loan_dict_dtl
 		where id = #{id,jdbcType=BIGINT}
 	</delete>
+	<delete id="deleteByDictId" parameterType="java.lang.Long">
+		delete from t_loan_dict_dtl
+		where dictId = #{id,jdbcType=BIGINT}
+	</delete>
 	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.dict.LoanDictDtlDo"
 		useGeneratedKeys="true">
 		insert into t_loan_dict_dtl (dictId, code, name,

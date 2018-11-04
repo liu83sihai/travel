@@ -22,6 +22,7 @@ public class AgencyDo  implements java.io.Serializable{
 	private java.lang.String idcardBack;
 	private java.lang.String province;
 	private java.lang.String city;
+	private java.lang.String cityCode;
 	private java.sql.Date createDate;
 	private java.lang.String createName;
 	private java.sql.Date modifyDate;
@@ -40,6 +41,15 @@ public class AgencyDo  implements java.io.Serializable{
 		return this.id;
 	}
 	
+
+	
+	public java.lang.String getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(java.lang.String cityCode) {
+		this.cityCode = cityCode;
+	}
 
 	public void setUserId(java.lang.Integer userId) {
 		this.userId = userId;

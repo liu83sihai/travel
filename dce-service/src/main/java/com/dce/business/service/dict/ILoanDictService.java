@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
+import com.dce.business.entity.page.PageDo;
 
 public interface ILoanDictService {
 
@@ -21,6 +22,12 @@ public interface ILoanDictService {
 
     LoanDictDo getDictById(long dictId);
 
+    /**
+     * 查询字典列表
+     * @param searchItem
+     * @return
+     */
+    public PageDo<LoanDictDo> queryListPage(Map<String, Object> searchItem, PageDo<LoanDictDo> page) ;
     /**
      * 查询单个字典明细信息<br/>
      * 并且状态有效
@@ -53,6 +60,13 @@ public interface ILoanDictService {
      * @return
      */
     int updateDictDtl(LoanDictDtlDo dictDtlDo);
+   
+    /**
+     * 删除明细
+     * @param id
+     * @return
+     */
+    int deleteByDictId(Long id);
 
     /**
      * 新增数据字典明细

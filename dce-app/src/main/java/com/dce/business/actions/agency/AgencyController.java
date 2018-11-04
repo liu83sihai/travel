@@ -65,14 +65,8 @@ public class AgencyController  extends BaseController{
 	 *  @apiDefine agencyParam
 	 *	@apiParam {java.lang.Integer}  id id
 	 *	@apiParam {java.lang.Integer}  userId 用户ID
-	 *	@apiParam {java.lang.String}  userName 姓名
-	 *	@apiParam {java.lang.String}  mobile 手机号码
-	 *	@apiParam {java.lang.String}  idCard 身份证
-	 *	@apiParam {java.lang.String}  bankNumber 银行卡
-	 *	@apiParam {java.lang.String}  bankType 银行卡类型
-	 *	@apiParam {java.lang.String}  idcardFront 身份证正面照
-	 *	@apiParam {java.lang.String}  idcardBack 身份证反面照
 	 *	@apiParam {java.lang.String}  city 城市 广东-深圳-罗湖区
+	 *	@apiParam {java.lang.String}  cityCode 城市代码
 	 */
 	
 	/** 

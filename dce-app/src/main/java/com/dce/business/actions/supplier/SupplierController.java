@@ -68,6 +68,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiParam {java.lang.String}  busiImage 营业执照
 	 *	@apiParam {java.lang.String}  shopImage 门店照片
 	 *	@apiParam {java.lang.String}  city 省市/城市 拼装成'广东-深圳-罗湖区 '三级类型
+	 *	@apiParam {java.lang.String}  cityCode 城市代码
 	 *	@apiParam {java.lang.String}  supplierAddress 详细地址
 	 *	@apiParam {java.math.BigDecimal}  longitude 经度
 	 *	@apiParam {java.math.BigDecimal}  latitude 纬度

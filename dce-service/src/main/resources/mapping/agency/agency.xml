@@ -14,6 +14,7 @@
 		<result property="idcardBack" column="idcard_back" />
 		<result property="province" column="province" />
 		<result property="city" column="city" />
+		<result property="cityCode" column="city_code" />
 		<result property="createDate" column="create_date" />
 		<result property="createName" column="create_name" />
 		<result property="modifyDate" column="modify_date" />
@@ -37,6 +38,9 @@
 			</if>
 			<if test="userId != null">  
 				AND user_id = #{userId}
+			</if>
+			<if test="cityCode != null">  
+				AND city_code = #{"cityCode != null"}
 			</if>
 			<if test="userName != null">  
 				AND user_name = #{userName}
@@ -105,6 +109,9 @@
 			<if test="mobile != null">  
 				AND mobile = #{mobile}
 			</if>
+			<if test="cityCode != null">  
+				AND city_code = #{"cityCode != null"}
+			</if>
 			<if test="idCard != null">  
 				AND id_card = #{idCard}
 			</if>
@@ -159,6 +166,9 @@
 		</if>				
 		<if test="userName != null">  
 				user_name = #{userName},
+		</if>				
+		<if test="cityCode != null">  
+				city_code = #{cityCode},
 		</if>				
 		<if test="sex != null">  
 				sex = #{sex},
@@ -228,6 +238,7 @@
 		,status
 		,remark
 		,sex
+		,city_code
 )
 		     VALUES (		#{userId}
 		,#{userName}
@@ -246,6 +257,7 @@
 		,#{status}
 		,#{remark}
 		,#{sex}
+		,#{cityCode}
 )
 	</insert>
 	

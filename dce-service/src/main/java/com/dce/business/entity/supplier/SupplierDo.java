@@ -22,6 +22,7 @@ public class SupplierDo  implements java.io.Serializable{
 	private java.lang.String busiImage;
 	private java.lang.String shopImage;
 	private java.lang.String city;
+	private java.lang.String cityCode;
 	private java.lang.String supplierAddress;
 	private java.lang.String telPhone;
 	private java.lang.String linkMan;
@@ -284,6 +285,16 @@ public class SupplierDo  implements java.io.Serializable{
 
 	public void setDistance(java.math.BigDecimal distance) {
 		this.distance = distance;
+	}
+	
+	
+
+	public java.lang.String getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(java.lang.String cityCode) {
+		this.cityCode = cityCode;
 	}
 
 	public String toString() {

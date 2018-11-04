@@ -30,6 +30,7 @@
 		<result property="status" column="status" />
 		<result property="remark" column="remark" />
 		<result property="distance" column="distance" />
+		<result property="cityCode" column="city_code" />
 	</resultMap>
 
 	<select id="getById" parameterType="int" resultMap="supplierResultMap">
@@ -141,6 +142,9 @@
 			<if test="listImages != null">  
 				AND list_images = #{listImages}
 			</if>
+			<if test="cityCode != null">  
+				AND city_code = #{cityCode}
+			</if>
 			<if test="bannerImages != null">  
 				AND banner_images = #{bannerImages}
 			</if>
@@ -204,6 +208,9 @@
 		</if>				
 		<if test="supplierName != null">  
 				supplier_name = #{supplierName},
+		</if>				
+		<if test="cityCode != null">  
+				city_code = #{cityCode},
 		</if>				
 		<if test="synopsis != null">  
 				synopsis = #{synopsis},
@@ -305,6 +312,7 @@
 		,modify_name
 		,status
 		,remark
+		,city_code
 )
 		     VALUES (		#{userId}
 		,#{supplierName}
@@ -331,6 +339,7 @@
 		,#{modifyName}
 		,#{status}
 		,#{remark}
+		,#{cityCode}
 )
 	</insert>
 	

@@ -7,6 +7,8 @@ import com.dce.business.entity.dict.LoanDictDtlDo;
 
 public interface ILoanDictDtlDao {
     int deleteByPrimaryKey(Long id);
+    
+    int deleteByDictId(Long id);
 
     int insert(LoanDictDtlDo record);
 
