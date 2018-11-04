@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.activity.ActivityDo;
+import com.dce.business.entity.agency.AgencyDo;
 import com.dce.business.entity.dict.LoanDictDo;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.notice.NoticeDo;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.dict.ILoanDictService;
@@ -38,7 +40,7 @@ import com.dce.business.service.dict.ILoanDictService;
 public class LoanDictController  extends BaseController{
 	private final static Logger logger = Logger.getLogger(LoanDictController.class);
 	@Resource
-	private ILoanDictService dictService;
+	private ILoanDictService loandictService;
 	
 	/**
 	 *  @apiDefine dictSucces
@@ -67,17 +69,15 @@ public class LoanDictController  extends BaseController{
 	 */
 	
 	/** 
-	 * @api {GET} /dict/index.do 字典管理列表
-	 * @apiName dictList
+	 * @api {GET} /dict/getPay.do 商品付款方式
+	 * @apiName getPay
 	 * @apiGroup dict 
 	 * @apiVersion 1.0.0 
-	 * @apiDescription 字典管理列表
+	 * @apiDescription 商品付款方式
 	 *  
-	 * @apiUse pageParam  
-	 
-	 * @apiUse dictSucces  
+	 *  
 	 * @apiUse RETURN_MESSAGE
-	
+	 * @apiSuccess {java.lang.Long}  id 主键ID
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
 	 * {
@@ -85,61 +85,22 @@ public class LoanDictController  extends BaseController{
 	 *	"msg": 返回成功,
 	 *	"data": {
 	 *	    [
-	 *			{
-	 * 				id 主键ID
-	 * 				code 编码
-	 * 				name 名称
-	 * 				status 状态
-	 * 				remark 备注
-	 * 				createUserId 创建用户ID
-	 * 				updateUserId 修改用户ID
-	 * 				createTime 创建时间
-	 * 				updateTime 修改时间
-	 *			}
 	 *		]
 	 *	  }
 	 *	}
 	 */ 
-	 @RequestMapping("/index")
-	 public Result<?> list() {
-		 logger.info("查询字典管理...");
-	
-		 String pageNums = getString("pageNum");
-		 String row = getString("rows");
-		// 不传 默认查询第一页
-		if (StringUtils.isNotBlank(pageNums)) {
-			pageNum = Long.parseLong(pageNums);
-		}
-		if (StringUtils.isNotBlank(row)) {
-			rows = Long.parseLong(row);
+	 @RequestMapping("/getPay")
+	public Result<?> getPay() {
+
+		logger.info("获取商品付款方式...");
+		LoanDictDo loandictDo = loandictService.getLoanDict("payment");
+		if (null != loandictDo) {
+			List<LoanDictDtlDo> ldDtl = loandictService.getDictDetailByDictId(loandictDo.getId());
+			return Result.successResult("查询成功", ldDtl);
 		}
 
-		Map<String,Object> paramMap = new HashMap<String,Object>();
-		PageDo<LoanDictDo> dictPage = new PageDo<LoanDictDo>();
-		dictPage.setCurrentPage(pageNum);
-		dictPage.setPageSize(rows);
-//		PageDo<LoanDictDo> pageDo = dictService.queryListPage
-//		List<LoanDictDo> dictList = pageDo.getModelList();
-		 
-//		List<Map<String, Object>> result = new ArrayList<>();
-//	    if (!CollectionUtils.isEmpty(dictList)) {
-//	         for (LoanDictDo dict : dictList) {
-//
-//	             Map<String, Object> map = new HashMap<>();
-//	             map.put("id", dict.getId());
-//	             map.put("code", dict.getCode());
-//	             map.put("name", dict.getName());
-//	             map.put("status", dict.getStatus());
-//	             map.put("remark", dict.getRemark());
-//	             map.put("createUserId", dict.getCreateUserId());
-//	             map.put("updateUserId", dict.getUpdateUserId());
-//	             map.put("createTime", dict.getCreateTime());
-//	             map.put("updateTime", dict.getUpdateTime());
-//	                result.add(map);
-//	           }
-//	        }
-		 return Result.successResult("查询成功", paramMap);
-	 }
+		return Result.successResult("查询失败", loandictDo);
+	}
 	 
 
 }
