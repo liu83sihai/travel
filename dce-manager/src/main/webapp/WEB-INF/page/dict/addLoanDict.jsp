@@ -52,10 +52,7 @@
 							<label for="name">旅游卡</label>
 						</td>	
 						<td>
-							<label><input name="travelCard"  type="checkbox"  style="width:40px" value="1" />现金 </label> 
-							<label><input name="travelCard"  type="checkbox" style="width:40px" value="2" />积分 </label> 
-							<label><input name="travelCard" type="checkbox"  style="width:40px" value="3" />现金账户 </label> 
-							<label><input name="travelCard" type="checkbox"  style="width:40px" value="4" />券 </label> 
+							<label><input name="travelCard" type="text" id="travelCard"   value="${travelCard}" />1=100：现金可100%付款,2:积分,3:现金账户,4:券,中间;号间隔 </label> 
 						</td>						   
 					</tr>
 					<tr>	
@@ -63,10 +60,8 @@
 							<label for="name">旅游路线</label>
 						</td>	
 						<td>
-							<label><input name="travelLine"  type="checkbox"  style="width:40px" value="1" />现金 </label> 
-							<label><input name="travelLine"  type="checkbox" style="width:40px" value="2" />积分 </label> 
-							<label><input name="travelLine" type="checkbox"  style="width:40px" value="3" />现金账户 </label> 
-							<label><input name="travelLine" type="checkbox"  style="width:40px" value="4" />券 </label> 
+								<label><input name="travelLine" type="text" id="travelLine" value="${travelLine}"   />1=100：现金,2=40:积分可40%付款,3:现金账户,4:券,中间;号间隔 </label> 
+						
 						
 						</td>						   
 					</tr>
@@ -75,10 +70,8 @@
 							<label for="name">积分商品</label>
 						</td>	
 						<td>
-							<label><input name="pointGood"  type="checkbox"  style="width:40px" value="1" />现金 </label> 
-							<label><input name="pointGood"  type="checkbox" style="width:40px" value="2" />积分 </label> 
-							<label><input name="pointGood" type="checkbox"  style="width:40px" value="3" />现金账户 </label> 
-							<label><input name="pointGood" type="checkbox"  style="width:40px" value="4" />券 </label> 
+						<label><input name="pointGood" type="text" id="pointGood"   value="${pointGood}"  />1=100：现金,2=40:积分可40%付款,3:现金账户,4:券,中间;号间隔 </label> 
+						
 					
 						</td>						   
 					</tr>
@@ -87,10 +80,9 @@
 							<label for="name">会员商品</label>
 						</td>	
 						<td>
-							<label><input name="vipGood"  type="checkbox"  style="width:40px" value="1" />现金 </label> 
-							<label><input name="vipGood"  type="checkbox" style="width:40px" value="2" />积分 </label> 
-							<label><input name="vipGood" type="checkbox"  style="width:40px" value="3" />现金账户 </label> 
-							<label><input name="vipGood" type="checkbox"  style="width:40px" value="4" />券 </label> 
+						
+						<label><input name="vipGood" type="text" id="vipGood"   value="${vipGood}" />1=100：现金,2=40:积分可40%付款,3:现金账户,4:券 ,中间;号间隔</label> 
+						
 						
 						</td>						   
 					</tr>
@@ -99,11 +91,7 @@
 							<label for="name">商家消费</label>
 						</td>	
 						<td>
-							<label><input name="supplierSale"  type="checkbox"  style="width:40px" value="1" />现金 </label> 
-							<label><input name="supplierSale"  type="checkbox" style="width:40px" value="2" />积分 </label> 
-							<label><input name="supplierSale" type="checkbox"  style="width:40px" value="3" />现金账户 </label> 
-							<label><input name="supplierSale" type="checkbox"  style="width:40px" value="4" />券 </label> 
-						
+						<label><input name="supplierSale" type="text" id="supplierSale"    value="${supplierSale}" />1=100：现金,2=40:积分可40%付款,3:现金账户,4:券,中间;号间隔 </label> 
 						</td>						   
 					</tr>
 			</table>	   
@@ -112,9 +100,4 @@
 
 
 </body>
-<script type="text/javascript">
-$(document).ready(function () {
-		$("input[value=<%=checkbox[is]%>]").attr("checked",true);    //根据jquery的选择器来添加选中复选框的属性
-})
-</script>
 </html>
