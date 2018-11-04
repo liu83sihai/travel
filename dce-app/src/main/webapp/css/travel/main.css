@@ -1,0 +1,20 @@
+* { padding: 0; margin: 0 }
+[v-loak]{visibility: hidden;}
+body{background: #fff;}
+.index-slider { height: 3.3rem; overflow: hidden; }
+.index-slide-item { height: 3.3rem; background-size: contain; background-position: 50% 50%; background-repeat: no-repeat; background: #eee; }
+.prodcut-title { padding:0.2rem 0.26rem; }
+.prodcut-title h2 { font-size: 0.36rem; color: #3E4149; height: 0.44rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.prodcut-title .num{padding-top: 0.1rem;}
+.prodcut-title .price{font-size: 0.36rem;color: #F66667;position: relative;
+bottom: -0.04rem;padding-right: .1rem;}
+.prodcut-title .discount{font-size: 0.24rem;border: 1px solid #4161C7;color: #4161C7;padding: 0.02rem 0.1rem;border-radius: 0.24rem;height: 0.24rem;line-height: 1;}
+
+
+.product-detail{border-top: .25rem solid #F2F3F7;padding: .26rem;color: #3E4149;}
+.product-detail .title{font-size: .3rem;height: .4rem;line-height: .4rem;border-left: .08rem solid #4161C7;padding-left: .1rem;vertical-align: bottom;
+}
+.prodcut-article{font-size: .3rem;line-height: .42rem;padding-top: .2rem;text-align: justify;
+}
+.yd-slider-pagination-item.yd-slider-pagination-item-active{background: #fff!important;}
+.yd-slider-pagination-item{background: rgba(255,255,255,.8)!important;}
