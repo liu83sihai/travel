@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
+import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
+import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.user.UserDo;
+import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.account.IPayService;
 import com.dce.business.service.trade.IWithdrawService;
 import com.dce.business.service.user.IUserService;
@@ -33,6 +36,9 @@ public class WithDrawController extends BaseController {
 	private IWithdrawService withdrawService;
 	@Resource
 	private IUserService userService;
+	
+	@Resource
+	private IAccountService  accountService;
 
 	/**
 	 * 用户提现
@@ -161,24 +167,28 @@ public class WithDrawController extends BaseController {
 	@RequestMapping(value = "/info", method = RequestMethod.POST)
 	public Result<List<Map<String, Object>>> withraw2() {
 
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		map.put("userid", getString("userId"));
-
-		Assert.hasText(getString("userId"), "用户不存在");
-
-		UserDo userdo = userService.getUser(getUserId());
-
+		Integer userId = getUserId();
+		Assert.notNull(userId, "用户不存在");
+		UserDo userdo = userService.getUser(userId);
 		if (userdo == null) {
-
 			return Result.failureResult("用户不存在");
-
 		}
+		
+//		//总的现金券金额
+//		UserAccountDo account = accountService.getUserAccount(userId,AccountType.wallet_money);
+//
+//		Map<String, Object> result = new HashMap<String, Object>();
+//		if (account == null || account.getAmount() == null) {
+//			result.put("totalAmt", "0.0");
+//		} else {
+//			result.put("totalAmt", account.getAmount());
+//		}
 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userid", userId);
 		List<Map<String, Object>> maps = withdrawService.getWithdrawRecords(map);
 
 		if (maps == null) {
-
 			return Result.failureResult("查询失败");
 		}
 

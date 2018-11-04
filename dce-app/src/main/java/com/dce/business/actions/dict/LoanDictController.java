@@ -1,30 +1,17 @@
 package com.dce.business.actions.dict;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
-import com.dce.business.entity.activity.ActivityDo;
-import com.dce.business.entity.agency.AgencyDo;
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
-import com.dce.business.entity.notice.NoticeDo;
-import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.dict.ILoanDictService;
 
 /**

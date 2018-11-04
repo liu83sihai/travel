@@ -27,11 +27,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.alipay.util.AlipayConfig;
+import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.DateUtil;
+import com.dce.business.common.util.NumberUtil;
 import com.dce.business.common.wxPay.util.XMLUtil;
 import com.dce.business.dao.account.IUserAccountDetailDao;
+import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
@@ -68,6 +71,92 @@ public class OrderController extends BaseController {
 	private AlipaymentOrderService alipaymentOrderService;
 	@Resource
 	private IUserService userService;
+	
+	/**
+	 * 订单支付方式
+	 * 
+	 * @return
+	 */
+	/** 
+	 * @api {POST} /order/getOrderPayType.do 订单支付方式
+	 * @apiName getOrderPayType
+	 * @apiGroup order 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 订单支付方式
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * @apiParam {Object[]} chooseGoods 购物车商品列表
+	 * @apiParam {int} chooseGoods.goodsId 商品id
+	 * @apiParam {decimal} chooseGoods.qty 购买数量
+	 * 
+	 * @apiSuccess {Object[]} payList	支付方式列表
+	*  @apiSuccess {String} payList.payCode 支付账户类别
+	*  @apiSuccess {Decimal} payList.totalAmt	账户余额
+	*  @apiSuccess {Decimal} payList.useableAmt	本次可用金额
+	*  @apiSuccess {String} remark	备注
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccessExample Success-Response: 
+	 * HTTP/1.1 200 OK 
+	*{
+	*    "code": "0",
+	*    "msg": "订单支付方式成功",
+	*    "data": {
+	*         }
+	*}
+	**/
+	@RequestMapping(value = "/getOrderPayType", method = RequestMethod.POST)
+	public Result<?> getOrderPayType(HttpServletRequest request) {
+
+		Integer userId = getUserId();
+		// 验证用户token参数
+		//String uri = request.getRequestURI(); // 获得发出请求字符串的客户端地址
+//		String uri = "";
+//		String ts = request.getParameter(TokenUtil.TS);
+//		String sign = request.getParameter(TokenUtil.SIGN);
+//		// 验证token
+//		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
+//		if (!flag) {
+//			return Result.failureResult("登录失效，请重新登录！");
+//		}
+
+		// 判断该用户是否存在
+		UserDo user = userService.getUser(Integer.valueOf(userId));
+		if (user == null) {
+			return Result.successResult("该用户不存在！", new JSONArray());
+		}
+		
+
+		// 财务信息
+		List<Map<String, Object>> accountInfo = new ArrayList<Map<String,Object>>();
+		UserAccountDo amount = accountService.getUserAccount(userId, AccountType.wallet_money); // 现金账户
+		UserAccountDo originalAmount = accountService.getUserAccount(userId, AccountType.wallet_travel); // 抵用券
+		UserAccountDo pointAmount = accountService.getUserAccount(userId, AccountType.wallet_goods); // 积分
+		
+		Map<String, Object> payMap1 = new HashMap<String,Object>();
+		payMap1.put("payCode", amount.getAccountType());
+		payMap1.put("totalAmt", amount.getAmount());
+		payMap1.put("useableAmt", amount.getAmount());
+		
+		Map<String, Object> payMap2 = new HashMap<String,Object>();
+		payMap2.put("payCode", amount.getAccountType());
+		payMap2.put("totalAmt", amount.getAmount());
+		payMap2.put("useableAmt", amount.getAmount());
+		
+		Map<String, Object> payMap3 = new HashMap<String,Object>();
+		payMap3.put("payCode", amount.getAccountType());
+		payMap3.put("totalAmt", amount.getAmount());
+		payMap3.put("useableAmt", amount.getAmount());
+		
+		accountInfo.add(payMap1);
+		accountInfo.add(payMap2);
+		accountInfo.add(payMap3);
+		
+		Map<String ,Object> ret = new HashMap<String,Object>();
+		ret.put("remark", "积分商品只能用积分支付");
+		ret.put("payList", accountInfo);
+		return Result.successResult("获取订单成功", ret);
+	}
+	
 
 	/**
 	 * 用户订单列表显示
