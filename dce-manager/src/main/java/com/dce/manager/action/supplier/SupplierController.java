@@ -200,6 +200,7 @@ public class SupplierController extends BaseAction{
     		UserDo userDo = new UserDo();
     		userDo.setId(Integer.valueOf(userId));
     		userDo.setUserType(1);
+    		userDo.setUserLevel((byte)2);
     		userDo.setDistrict(district);
     		userService.update(userDo);
     		
