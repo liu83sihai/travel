@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,9 @@ import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.entity.account.UserAccountDo;
-import com.dce.business.entity.award.Awardlist;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
-import com.dce.business.service.award.IAwardlistService;
 import com.dce.business.service.user.IUserService;
 
 /**
@@ -32,8 +29,6 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 
 	private Logger logger = Logger.getLogger(getClass());
 
-	@Resource
-	private IAwardlistService awardlistService;
 
 	@Resource
 	private IUserService userService;
@@ -60,21 +55,17 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		contextMap.put("order", order);
 		awardContextMap.set(contextMap);
 		
-		// 得到奖励记录
-		Awardlist award = awardlistService.getAwardConfigByQtyAndBuyerLevel(buyer.getUserLevel(), order.getQty());
+		UserDo userDo = new UserDo();
+		userDo.setId(buyer.getId());
+		userDo.setStatus((byte)0);
+		userDo.setUserLevel((byte)1);//vip
+		userService.update(userDo );
 
-		if (award == null) {
-			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-buyerAward-001");
-		}
-
-		String buyerAward = award.getBuyerAward();
-		if (StringUtils.isBlank(buyerAward)) {
-			throw new BusinessException("购买者对应的奖励办法没有正确配置，请检查奖励办法的配置", "error-buyerAward-002");
-		}
-
-		// 多种奖励办法以;分隔
-		String[] bAwardLst = buyerAward.split(";");
-		oneAward(buyer.getId(), bAwardLst);
+		//送199 积分
+		UserAccountDo accont = new UserAccountDo(new BigDecimal(199), buyer.getId(), AccountType.wallet_travel.name());
+		buildAccountRemark(accont);
+		// 账户对象增加金额
+		accountService.updateUserAmountById(accont, IncomeType.TYPE_PURCHASE_TRAVEL);
 
 	}
 

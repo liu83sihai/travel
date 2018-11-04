@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
+import com.dce.business.entity.order.OrderPayDetail;
 import com.dce.business.entity.page.PageDo;
 
 public interface IOrderService {
@@ -63,7 +64,7 @@ public interface IOrderService {
 	 * @param chooseGoodsLst
 	 * @return
 	 */
-	Result<String> saveOrder( List<OrderDetail> chooseGoodsLst, Order order,
+	Result<String> saveOrder( List<OrderPayDetail> payLst,List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response);
 
 	// 查询总业绩

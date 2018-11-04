@@ -2,6 +2,8 @@ package com.dce.business.dao.order;
 
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.order.OrderDetailExample;
+import com.dce.business.entity.order.OrderPayDetail;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +33,16 @@ public interface OrderDetailMapper {
 	int updateByPrimaryKeySelective(OrderDetail record);
 
 	int updateByPrimaryKey(OrderDetail record);
+
+	/**
+	 * 支付明细
+	 * @param detail
+	 */
+	void insertPayDetail(OrderPayDetail detail);
+
+	/**
+	 * 删除支付明细
+	 * @param orderid
+	 */
+	void deletePayDetailByOrderId(Integer orderid);
 }

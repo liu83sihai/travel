@@ -240,4 +240,43 @@
       remark = #{remark,jdbcType=VARCHAR}
     where orderDetailId = #{orderdetailid,jdbcType=INTEGER}
   </update>
+  
+  
+	<insert id="insertPayDetail" parameterType="com.dce.business.entity.order.OrderPayDetail">
+    insert into ct_order_pay_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        orderId,
+      </if>
+      <if test="accountType != null">
+        accountType,
+      </if>
+      <if test="payAmt != null">
+        payAmt,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="accountType != null">
+        #{accountType},
+      </if>
+      <if test="payAmt != null">
+        #{payAmt},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+  
+	<delete id="deletePayDetailByOrderId" parameterType="java.lang.Integer">
+	    delete from ct_order_pay_detail
+	    where orderId = #{orderid,jdbcType=INTEGER}
+  </delete>
+	
 </mapper>

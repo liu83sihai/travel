@@ -16,6 +16,13 @@ public enum IncomeType {
      * @return  
      */
     TYPE_PURCHASE(12, "购买订单"),
+    
+    /** 
+     * 购买旅游卡
+     * @return  
+     */
+    TYPE_PURCHASE_TRAVEL(122, "购买旅游卡"),
+    
     /** 
      * 卖出订单
      * @return  

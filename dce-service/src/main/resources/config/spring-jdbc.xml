@@ -75,7 +75,7 @@
     <bean id="awardService" class="com.dce.business.service.impl.award.AwardServiceImpl">
         <property name="awardCalculatorList">
             <list>
-                <ref bean="areaAwardCalculator" />
+                <ref bean="buyerAwardCalculator" />
                 <ref bean="refereeAwardCalculator" />
                 <ref bean="refereeUpgrade" />
             </list>

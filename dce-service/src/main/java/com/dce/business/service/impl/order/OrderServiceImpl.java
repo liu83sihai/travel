@@ -47,6 +47,7 @@ import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderAddressDo;
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.order.OrderDetailExample;
+import com.dce.business.entity.order.OrderPayDetail;
 import com.dce.business.entity.order.OrderSendOut;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.user.UserAddressDo;
@@ -325,11 +326,39 @@ public class OrderServiceImpl implements IOrderService {
 		} catch (Exception e) {
 			logger.error("添加订单明细失败！！！" + e);
 			e.printStackTrace();
+			throw e;
 		}
 		logger.debug("保存订单明细返回的订单对象========》》》》》" + order);
 		return order;
 	}
 
+	
+	
+	public Order savePayDetail(Order order, int goodstype, List<OrderPayDetail> payList) {
+		logger.debug("获取订单id=====>>>>" + order.getOrderid());
+		try {
+			// 获取订单对象
+			Order oldOrder = orderDao.selectByPrimaryKey(order.getOrderid());
+			logger.debug("获取的订单明细类型=====》》》》" + goodstype);
+			if (payList == null) {
+				return oldOrder;
+			}
+
+			for (OrderPayDetail detail : payList) {
+				detail.setOrderid(oldOrder.getOrderid());
+				detail.setRemark("1");
+				orderDetailDao.insertPayDetail(detail);
+			} 
+		} catch (Exception e) {
+			logger.error("添加订单支付明细失败！！！" + e);
+			e.printStackTrace();
+			throw e;
+		}
+		logger.debug("添加订单支付明细========》》》》》" + order);
+		return order;
+	}
+
+	
 	/**
 	 * 计算赠品的差价
 	 * 
@@ -377,7 +406,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * 
 	 * @param chooseGoodsLst
 	 */
-	public Result<String> saveOrder( List<OrderDetail> chooseGoodsLst, Order order,
+	public Result<String> saveOrder( List<OrderPayDetail> payLst,List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		// 维护订单地址
@@ -385,9 +414,9 @@ public class OrderServiceImpl implements IOrderService {
 		order.setAddressid(orderAddressId);
 		// 若传过来的订单id为空，则重新生成订单
 		if (order.getOrderid() == null) {
-			return this.createOrderToPay(chooseGoodsLst, order, request, response);
+			return this.createOrderToPay(payLst,chooseGoodsLst, order, request, response);
 		}else {
-			return this.updateOrderToPay(chooseGoodsLst, order, request, response);
+			return this.updateOrderToPay(payLst,chooseGoodsLst, order, request, response);
 		}
 	}
 
@@ -433,11 +462,13 @@ public class OrderServiceImpl implements IOrderService {
 	 * @param response
 	 * @return
 	 */
-	private Result<String> createOrderToPay(List<OrderDetail> chooseGoodsLst,
+	private Result<String> createOrderToPay(List<OrderPayDetail> payLst,
+											List<OrderDetail> chooseGoodsLst,
 											Order order, 
 											HttpServletRequest request, 
 											HttpServletResponse response) {
 
+		
 		// 选择的商品信息为空
 		if (chooseGoodsLst.size() == 0) {
 			logger.warn("获取的商品清单为空=====》》》");
@@ -452,6 +483,7 @@ public class OrderServiceImpl implements IOrderService {
 		Integer quantity = 0; // 商品总数量
 		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
 		Integer salqty = 0; // 赠品数量
+		BigDecimal profit = BigDecimal.ZERO; //订单利润
 
 		// 产生订单编号
 		String orderCode = OrderCodeUtil.genOrderCode(order.getUserid());
@@ -463,6 +495,7 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			quantity += orderDetail.getQuantity(); // 商品总数量
 			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
+			profit.add(goods.getProfit());
 			logger.debug("商品总金额---------》》》》》》》》》" + totalprice);
 		}
 
@@ -477,6 +510,7 @@ public class OrderServiceImpl implements IOrderService {
 		order.setTotalprice(totalprice); // 订单总金额
 		order.setGoodsprice(totalprice); // 商品单价
 		order.setOrderDetailList(chooseGoodsLst); // 订单商品明细
+		order.setProfit(profit); //订单利润
 
 		// 添加订单
 		orderDao.insertSelective(order);
@@ -484,6 +518,7 @@ public class OrderServiceImpl implements IOrderService {
 
 		// 添加商品明细
 		order = buyOrder(order, 1, chooseGoodsLst);
+		order = savePayDetail(order, 1, payLst);
 
 		// 获取加签后的订单
 		return getSignByPayType(request, response, order);
@@ -500,7 +535,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * @param response
 	 * @return
 	 */
-	private Result<String> updateOrderToPay( List<OrderDetail> chooseGoodsLst,
+	private Result<String> updateOrderToPay(List<OrderPayDetail> payLst, List<OrderDetail> chooseGoodsLst,
 			Order order, HttpServletRequest request, HttpServletResponse response) {
 
 		// 查询出原来的订单
@@ -510,6 +545,7 @@ public class OrderServiceImpl implements IOrderService {
 		example.createCriteria().andOrderidEqualTo(oldOrder.getOrderid());
 		// 删除原来的明细
 		orderDetailDao.deleteByExample(example);
+		orderDetailDao.deletePayDetailByOrderId(oldOrder.getOrderid());
 
 		// 产生订单编号
 		String orderCode = OrderCodeUtil.genOrderCode(order.getUserid());
@@ -517,6 +553,7 @@ public class OrderServiceImpl implements IOrderService {
 
 		Integer quantity = 0; // 商品总数量
 		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
+		BigDecimal profit = BigDecimal.ZERO; //订单利润
 
 		// 循环遍历出商品信息，计算商品总价格和商品总数量
 		for (OrderDetail orderDetail : chooseGoodsLst) {
@@ -524,6 +561,7 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			quantity += orderDetail.getQuantity(); // 商品总数量
 			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
+			profit.add(goods.getProfit());
 			logger.debug("商品总金额---------》》》》》》》》》" + totalprice);
 		}
 
@@ -540,12 +578,14 @@ public class OrderServiceImpl implements IOrderService {
 		oldOrder.setOrdercode(orderCode);
 		oldOrder.setGoodsprice(totalprice); // 商品总金额
 		oldOrder.setOrderDetailList(chooseGoodsLst); // 订单商品明细
+		order.setProfit(profit); //订单利润
 
 		orderDao.updateByPrimaryKeySelective(oldOrder);
 		logger.debug("==========》》》》》更新的订单信息：" + oldOrder);
 
 		// 添加商品明细
 		order = buyOrder(order, 1, chooseGoodsLst);
+		order = savePayDetail(order, 1, payLst);
 
 		// 获取加签后的订单
 		return getSignByPayType(request, response, oldOrder);

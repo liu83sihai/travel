@@ -462,7 +462,7 @@ public class OrderController extends BaseController {
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
 
 		// 生成预付单，保存订单和订单明显
-		return orderService.saveOrder(chooseGoodsLst, order, request, response);
+		return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
 	}
 
 	/**
