@@ -600,6 +600,9 @@ public class OrderServiceImpl implements IOrderService {
 			return Result.failureResult("支付金额错误");
 		}
 
+		//测试都有1分钱 
+		order.setTotalprice(new BigDecimal(1));
+		
 		// 创建支付宝订单记录
 		AlipaymentOrder alipaymentOrder = new AlipaymentOrder();
 		alipaymentOrder.setOrderid(order.getOrderid());

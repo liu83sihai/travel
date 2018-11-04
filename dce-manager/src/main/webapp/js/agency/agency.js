@@ -30,25 +30,18 @@ $(function(){
 	var columns_tt = [
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
-								{field:"userId",title:"用户ID",width:180,align:"center"},
-								{field:"userName",title:"姓名",width:180,align:"center"},
-								{field:"mobile",title:"手机号码",width:180,align:"center"},
-								{field:"idCard",title:"身份证",width:180,align:"center"},
-								{field:"bankNumber",title:"银行卡",width:180,align:"center"},
-								{field:"bankType",title:"银行卡类型",width:180,align:"center"},
-								{field:"idcardFront",title:"身份证正面照",width:180,align:"center"},
-								{field:"idcardBack",title:"身份证反面照",width:180,align:"center"},
-								{field:"province",title:"省份",width:180,align:"center"},
-								{field:"city",title:"城市",width:180,align:"center"},
-								{field:"createDate",title:"创建时间",width:180,align:"center",formatter:dateTimeFormatter},
-								{field:"createName",title:"创建人",width:180,align:"center"},
-								{field:"modifyDate",title:"更新时间",width:180,align:"center",formatter:dateTimeFormatter},
-								{field:"modifyName",title:"更新人",width:180,align:"center"},
-								{field:"status",title:"状态",width:180,align:"center"},
-								{field:"remark",title:"备注",width:180,align:"center"},
-					{field:"操作",title:"操作",width:80,align:"left",
+								{field:"userId",title:"用户ID",width:80,align:"center"},
+								{field:"city",title:"城市",width:150,align:"center"},
+								{field:"cityCode",title:"城市代码",width:150,align:"center"},
+								{field:"createDate",title:"创建时间",width:120,align:"center",formatter:dateTimeFormatter},
+								{field:"createName",title:"创建人",width:120,align:"center"},
+								{field:"modifyDate",title:"更新时间",width:120,align:"center",formatter:dateTimeFormatter},
+								{field:"modifyName",title:"更新人",width:120,align:"center"},
+								{field:"status",title:"状态",width:60,align:"center"},
+								{field:"remark",title:"备注",width:80,align:"center"},
+					{field:"操作",title:"操作",width:180,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editagency(\''+row.userId+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_delAgency(\''+row.userId+'\');">删除</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editagency(\''+row.userId+'\');">编辑</a>   <a href="javascript:void(0);" onclick="to_auditAgency(\''+row.id+'\',\''+row.status+'\');">审核</a>   <a href="javascript:void(0);" onclick="to_delAgency(\''+row.userId+'\');">删除</a>';
 	 					  return str;
 	 					}
 	 				}	 				
@@ -127,6 +120,37 @@ function to_delAgency(id) {
 						$('#tt_Agency').datagrid('reload');
 					} else {
 						$.messager.alert("消息", "删除失败，请稍后再试");
+					}
+				}
+			});
+		}
+	});
+}
+/**
+ * 删除
+ */
+
+function to_auditAgency(id,status) {
+	if (!id) {
+		$.messager.alert("消息", "id不能为空");
+		return;
+	}
+	if (!status == 1) {
+		$.messager.alert("消息", "当前代理未待审核状态");
+		return;
+	}
+	$.messager.confirm("消息", "确认审核吗，审核后不可恢复", function(r) {
+		if (r) {
+			$.ajax({
+				url : httpUrl + "/agency/auditAgency.html?id=" + id,
+				type : "post",
+				data : {},
+				success : function(data) {
+					if (data.ret == 1) {
+						$.messager.alert("消息", "审核成功");
+						$('#tt_Agency').datagrid('reload');
+					} else {
+						$.messager.alert("消息", "审核失败，请稍后再试");
 					}
 				}
 			});

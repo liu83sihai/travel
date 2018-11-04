@@ -2,10 +2,10 @@
 package com.dce.manager.action.agency;
 
 import java.util.Map;
-
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +31,7 @@ import org.springframework.ui.Model;
 import com.dce.business.entity.page.NewPagination;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.page.PageDoUtil;
+import com.dce.business.entity.user.UserDo;
 import com.dce.business.common.result.Result;
 
 import com.dce.business.common.exception.BusinessException;
@@ -38,7 +39,10 @@ import com.dce.manager.action.BaseAction;
 import com.dce.manager.util.ResponseUtils;
 
 import com.dce.business.service.agency.IAgencyService;
+import com.dce.business.service.district.IDistrictService;
 import com.dce.business.entity.agency.AgencyDo;
+import com.dce.business.entity.district.District;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -47,6 +51,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AgencyController extends BaseAction{
 	@Resource
 	private IAgencyService agencyService;
+	@Resource
+	private IDistrictService districtService;
 
 	/**
      * 去列表页面
@@ -129,13 +135,13 @@ public class AgencyController extends BaseAction{
             
             int i = 0;
             if (id != null && id.intValue()>0) {
-            	 //agencyDo.setModifyName(this.getUserName() + ":" + userId);
-            	//agencyDo.setModifyDate(new Date(System.currentTimeMillis()));;
+            	 agencyDo.setModifyName(this.getUserName() + ":" + userId);
+            	agencyDo.setModifyDate(new Date(System.currentTimeMillis()));;
                 i = agencyService.updateAgencyById(agencyDo);
             } else {
-//				agencyDo.setCreateName(this.getUserName() + ":" + userId);
-//				agencyDo.setCreateDate(new Date(System.currentTimeMillis()));
-//				agencyDo.setStatus(1);
+				agencyDo.setCreateName(this.getUserName() + ":" + userId);
+				agencyDo.setCreateDate(new Date(System.currentTimeMillis()));
+				agencyDo.setStatus(1);
                 i = agencyService.addAgency(agencyDo);
             }
 
@@ -171,6 +177,63 @@ public class AgencyController extends BaseAction{
              ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
          }
      }
+   
+    
+    /**
+     * 删除
+     */
+    @RequestMapping("/auditAgency")
+    public void auditAgency(String id,HttpServletRequest request,
+    		HttpServletResponse response) {
+    	logger.info("----deleteagency----");
+    	try{
+    		if (StringUtils.isBlank(id) || !id.matches("\\d+")) {
+    			logger.info(id);
+    			ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
+    			return;
+    		}
+    		
+    		AgencyDo agencyDo = agencyService.getById(Integer.valueOf(id));
+    		if(agencyDo.getStatus() != 1){
+    			ResponseUtils.renderJson(response, "状态为非审核", "{\"ret\":-1}");
+    			return;
+    		}
+    		//写入用户代理表 不能重复
+    		Integer userId = new Integer(this.getUserId());
+    		Map<String,Object>  map = new HashMap<String,Object>();
+    		map.put("userId", userId);
+    		
+    		List<District> districtList =  districtService.getDistrict(map); 
+    		if(null != districtList  && districtList.size() >0){
+    			ResponseUtils.renderJson(response, "当前用户已申请代理", "{\"ret\":-1}");
+    		} 
+    		
+    		map = new HashMap<String,Object>();
+    		map.put("distrct_name", agencyDo.getCity());
+    		
+    		districtList =  districtService.getDistrict(map); 
+    		if(null != districtList  && districtList.size() >0){
+    			ResponseUtils.renderJson(response, "当前区域已有用户申请", "{\"ret\":-1}");
+    		} 
+    		 
+//    		 map.put("distrct_name", distrct_name);
+    		District district = new District();
+    		district.setUserId(userId);
+    		district.setDistrictStatus(1);
+    		district.setDistrctName(agencyDo.getCity());
+    		districtService.addDistrict(district);
+    		
+    		agencyDo.setStatus(2);
+    		agencyDo.setModifyName(this.getUserName() + ":" + userId);
+    		agencyDo.setModifyDate(new Date(System.currentTimeMillis()));
+    		int ret = agencyService.updateAgencyById(agencyDo);
+    		
+    		ResponseUtils.renderJson(response, null, "{\"ret\":" + ret + "}");
+    	}catch(Exception e){
+    		logger.error("删除异常",e);
+    		ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
+    	}
+    }
     
 }
 
