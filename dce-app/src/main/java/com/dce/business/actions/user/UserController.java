@@ -358,6 +358,7 @@ public class UserController extends BaseController {
 	 *@apiSuccess {String} refereeid 用户推荐人的手机号码
 	 *@apiSuccess {String} banknumber 银行卡卡号
 	 *@apiSuccess {String} banktype 银行卡开户行
+	 *@apiSuccess {String} userType 用户类型 默认普通会员 1：供应商 2代理
 	 *@apiSuccess {String} certification 用户认证状态，默认为：0（未认证） 1:已实名认证
 	 *@apiSuccess {String} userImage 用记头像
 	 *@apiSuccess {String} idcardFront 用户身份证正面
@@ -391,6 +392,7 @@ public class UserController extends BaseController {
 		newUserDo.setUserFace(userDo.getUserFace());
 		newUserDo.setRefereeNumber(userDo.getRefereeNumber());
 		newUserDo.setUserLevelName(userDo.getUserLevel() + "");
+		newUserDo.setUserType(userDo.getUserType());
 		//用户身份证信息
 		newUserDo.setUserImage(userDo.getUserImage());
 		newUserDo.setIdcardBack(userDo.getIdcardBack());

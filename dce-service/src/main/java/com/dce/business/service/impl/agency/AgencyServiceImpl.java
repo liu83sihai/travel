@@ -24,13 +24,22 @@ public class AgencyServiceImpl implements IAgencyService {
 	@Autowired
     private IAgencyDao  agencyDao;
 	/**
+	 * 根据用户ID 查询
+	 * @parameter id
+	 */
+	@Override
+	public AgencyDo getById(int userId){
+	  return agencyDao.getById(userId);
+	}
+	/**
 	 * 根据ID 查询
 	 * @parameter id
 	 */
 	@Override
-	public AgencyDo getById(int id){
-	  return agencyDao.getById(id);
+	public AgencyDo getByKeyId(int id){
+		return agencyDao.getByKeyId(id);
 	}
+	
 	
 	/**
 	 *根据条件查询列表

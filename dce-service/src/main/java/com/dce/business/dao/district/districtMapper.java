@@ -58,5 +58,9 @@ public interface districtMapper {
      * 多条件查询
      */
     District  selectByPrimaryKeySelective(District record);
+    /**
+     * 多条件查询
+     */
+    List<District>  selectSelective(District record);
     
 }

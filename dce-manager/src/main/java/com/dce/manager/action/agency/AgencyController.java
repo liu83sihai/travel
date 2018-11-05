@@ -189,7 +189,7 @@ public class AgencyController extends BaseAction{
     @RequestMapping("/auditAgency")
     public void auditAgency(String id,HttpServletRequest request,
     		HttpServletResponse response) {
-    	logger.info("----deleteagency----");
+    	logger.info("----audit----");
     	try{
     		if (StringUtils.isBlank(id) || !id.matches("\\d+")) {
     			logger.info(id);
@@ -197,35 +197,36 @@ public class AgencyController extends BaseAction{
     			return;
     		}
     		
-    		AgencyDo agencyDo = agencyService.getById(Integer.valueOf(id));
-    		if(agencyDo.getStatus() != 1){
+    		AgencyDo agencyDo = agencyService.getByKeyId(Integer.valueOf(id));
+    		Integer status =agencyDo.getStatus();
+    		if(null != status && status != 1){
     			ResponseUtils.renderJson(response, "状态为非审核", "{\"ret\":-1}");
     			return;
     		}
     		//写入用户代理表 不能重复
     		Integer userId = new Integer(this.getUserId());
-    		Map<String,Object>  map = new HashMap<String,Object>();
-    		map.put("userId", userId);
+    		District district = new District();
+    		district.setUserId(userId);
     		
-    		List<District> districtList =  districtService.getDistrict(map); 
+    		List<District> districtList =  districtService.selectSelective(district); 
     		if(null != districtList  && districtList.size() >0){
-    			ResponseUtils.renderJson(response, "当前用户已申请代理", "{\"ret\":-1}");
+    			ResponseUtils.renderJson(response, "当前用户已申请代理", "{\"ret\":-2}");
     		} 
     		
-    		map = new HashMap<String,Object>();
-    		map.put("distrct_name", agencyDo.getCity());
+    		district = new District();
+    		district.setDistrctName(agencyDo.getCity());
     		
-    		districtList =  districtService.getDistrict(map); 
+    		districtList =  districtService.selectSelective(district); 
     		if(null != districtList  && districtList.size() >0){
-    			ResponseUtils.renderJson(response, "当前区域已有用户申请", "{\"ret\":-1}");
+    			ResponseUtils.renderJson(response, "当前区域已有用户申请", "{\"ret\":-3}");
     		} 
     		 
 //    		 map.put("distrct_name", distrct_name);
-    		District district = new District();
-    		district.setUserId(userId);
-    		district.setDistrictStatus(1);
-    		district.setDistrctName(agencyDo.getCity());
-    		districtService.addDistrict(district);
+    		District districtSave = new District();
+    		districtSave.setUserId(userId);
+    		districtSave.setDistrictStatus(1);
+    		districtSave.setDistrctName(agencyDo.getCity());
+    		districtService.addDistrict(districtSave);
     		
     		agencyDo.setStatus(2);
     		agencyDo.setModifyName(this.getUserName() + ":" + userId);
@@ -235,13 +236,13 @@ public class AgencyController extends BaseAction{
     		//更新用户
     		UserDo userDo = new UserDo();
     		userDo.setId(Integer.valueOf(userId));
-    		userDo.setUserType(3);
+    		userDo.setUserType(2);
     		userService.update(userDo);
     		
     		
-    		ResponseUtils.renderJson(response, null, "{\"ret\":" + ret + "}");
+    		ResponseUtils.renderJson(response, null, "{\"ret\":1}");
     	}catch(Exception e){
-    		logger.error("删除异常",e);
+    		logger.error("审核异常",e);
     		ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
     	}
     }
