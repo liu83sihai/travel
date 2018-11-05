@@ -55,8 +55,10 @@ $(function(){
 				 							return "旅游卡";
 				 						}else if(row.goodsFlag == "2"){
 				 							return "爆款商品";
-				 						}else {
+				 						}else if(row.goodsFlag == "3"){
 				 							return "常规商品";
+				 						}else{
+				 							return "旅游路线";
 				 						}
 									}
 								},

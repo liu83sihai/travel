@@ -48,6 +48,8 @@
 		<result column="profit" property="profit" />
 		<result column="detailLink" property="detailLink" />
 		<result column="payType" property="payType" />
+		<result column="score" property="score" />
+		<result column="starLevel" property="starLevel" />
 	</resultMap>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
@@ -282,6 +284,12 @@
 			<if test="payType != null">
 				payType,
 			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="starLevel != null">
+				starLevel,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -413,6 +421,12 @@
 			<if test="payType != null">
 				#{payType,jdbcType=VARCHAR},
 			</if>
+			<if test="score != null">
+				#{score ,jdbcType=Integer},
+			</if>
+			<if test="starLevel != null">
+				#{starLevel,jdbcType=Integer},
+			</if>
 		</trim>
 	</insert>
 
@@ -481,6 +495,12 @@
 			</if>
 			<if test="payType != null">
 				payType =  #{payType},
+			</if>
+			<if test="score != null">
+				score = #{score},
+			</if>
+			<if test="starLevel != null">
+				starLevel = #{starLevel},
 			</if>
 		</trim>
 		where goodsId = #{goodsId}

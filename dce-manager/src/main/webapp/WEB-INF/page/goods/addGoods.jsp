@@ -94,6 +94,8 @@
 								<c:if test="${goods.goodsFlag==2}">selected="selected"</c:if>>爆款商品</option>
 							<option value="3"
 								<c:if test="${goods.goodsFlag==3}">selected="selected"</c:if>>常规商品</option>
+							<option value="4"
+								<c:if test="${goods.goodsFlag==4}">selected="selected"</c:if>>旅游路线</option>
 					</select>
 					</td>
 				</tr>

@@ -57,7 +57,7 @@ public class CTGoodsDo implements Serializable {
 	  private Date saleTime ;
 	  private Long attrCatId ;
 	  private String goodsKeywords ;
-	  private Integer goodsFlag ;  //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	  private Integer goodsFlag ;  //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品  4： 旅游路线 
 	  private String statusRemarks ; //商品状态：0为删除1为未删除（逻辑删除）
 	  //商品创建时间
 	  private Date createTime ;
@@ -67,8 +67,22 @@ public class CTGoodsDo implements Serializable {
 	  private String detailLink ; //商品详情的连接
 	  private BigDecimal profit; //商品利润
 	  private String  payType;    //支付方式设置
+	  private Integer starLevel; //路线级别 星级
+	  private Float score; //路线评分
 	  
 	  
+	public Integer getStarLevel() {
+		return starLevel;
+	}
+	public void setStarLevel(Integer starLevel) {
+		this.starLevel = starLevel;
+	}
+	public Float getScore() {
+		return score;
+	}
+	public void setScore(Float score) {
+		this.score = score;
+	}
 	public String getPayType() {
 		return payType;
 	}
