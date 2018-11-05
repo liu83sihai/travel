@@ -163,11 +163,11 @@
 			${user.nickName } <a href="#" id="editpass">修改密码</a> <a id="loginOut">安全退出</a>
 		</span> <span style="padding-left: 10px; font-size: 16px;"><img
 			src="<c:url value='/images/blocks.gif'/>" width="20" height="20"
-			align="absmiddle" /> 我的后台</span>
+			align="absmiddle" />乐游环球管理后台</span>
 	</div>
 	<div region="south" split="true"
 		style="height: 30px; background: #D2E0F2;">
-		<div class="footer">享游环球系统管理后台</div>
+		<div class="footer">乐游环球系统管理后台</div>
 	</div>
 
 	<!--  <div class="easyui-accordion" region="west" split="true" border="false" title="导航菜单" style="width:200px;" id="west">
