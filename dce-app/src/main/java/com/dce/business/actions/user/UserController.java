@@ -430,9 +430,9 @@ public class UserController extends BaseController {
 		Map<String, Object> accountInfo = new HashMap<>();
 		accountInfo.put("amount", NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_money))); // 现金账户
 		accountInfo.put("originalAmount",
-				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_travel))); // 抵用券
+				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_goods))); // 抵用券
 		accountInfo.put("pointAmount",
-				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_goods))); // 积分
+				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_travel))); // 积分
 //		accountInfo.put("frozenDeposit",
 //				NumberUtil.formatterBigDecimal(getAccountAmount(userId, AccountType.wallet_active))); // 
 
