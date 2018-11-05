@@ -131,7 +131,7 @@ public class UserController extends BaseController {
 	 * @apiSuccess {int} id 用户ID
 	 * @apiSuccess {String} token 用户token
 	 * @apiSuccess {String} certification 认证状态;1为认证;0为未认证
-	
+	 * @apiSuccess {String} userType 用户类型 默认普通会员 1：供应商 2代理
 	 * @apiSuccess {int} refereeNumber 推荐人数
 	 * 
 	 * @apiSuccessExample Success-Response: 
@@ -169,6 +169,7 @@ public class UserController extends BaseController {
 		map.put("token", token);
 		map.put("userId", userDo.getId());
 		map.put("certification", userDo.getCertification());
+		map.put("userType", userDo.getUserType());
 		
 		return Result.successResult("登录成功", map);
 	}
