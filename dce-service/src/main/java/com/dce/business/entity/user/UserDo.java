@@ -165,21 +165,44 @@ public class UserDo {
 	private String idcardBack;
 	private String userImage;
 
+	public static String   getUserLevelName(int userLevel) {
+		if (userLevel == 0) {
+			return "普通会员";
+		} else if (userLevel == 1) {
+			return "VIP";
+		} else if (userLevel == 2) {
+			return "商家";
+		} else if (userLevel == 3) {
+			return "社区合伙人";
+		} else if (userLevel == 4) {
+			return "城市合伙人";
+		}else if (userLevel == 5) {
+			return "省级合伙人";
+		}else if (userLevel == 6) {
+			return "股东";
+		}
+		return "";
+	}
+	
 	public String getDisplayUserLevel() {
 		displayUserLevel = null;
-		if (this.getIsActivated() == null) {
-			return "空";
-		}
+//		if (this.getIsActivated() == null) {
+//			return "空";
+//		}
 		if (this.getUserLevel().intValue() == 0) {
-			displayUserLevel = "未购买";
-		} else if (this.getUserLevel().intValue() == 1) {
 			displayUserLevel = "普通会员";
-		} else if (this.getUserLevel().intValue() == 2) {
-			displayUserLevel = "会员";
-		} else if (this.getUserLevel().intValue() == 3) {
+		} else if (this.getUserLevel().intValue() == 1) {
 			displayUserLevel = "VIP";
+		} else if (this.getUserLevel().intValue() == 2) {
+			displayUserLevel = "商家";
+		} else if (this.getUserLevel().intValue() == 3) {
+			displayUserLevel = "社区合伙人";
 		} else if (this.getUserLevel().intValue() == 4) {
-			displayUserLevel = "合伙人";
+			displayUserLevel = "城市合伙人";
+		}else if (this.getUserLevel().intValue() == 5) {
+			displayUserLevel = "省级合伙人";
+		}else if (this.getUserLevel().intValue() == 6) {
+			displayUserLevel = "股东";
 		}
 		return displayUserLevel;
 	}

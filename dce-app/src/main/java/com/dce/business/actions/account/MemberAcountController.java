@@ -142,20 +142,14 @@ public class MemberAcountController extends BaseController {
 		System.out.println("团员--------》》" + list);
 		String level = "";
 		try {
-			for (int j = 0; j <= 4; j++) {
+			for (int j = 0; j <= 6; j++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				List<Map<String, Object>> maplist = new ArrayList<>();
-
-				/*
-				 * if(j==0){ level="普通用户"; }else if(j==1){ level="会员"; }else
-				 * if(j==2){ level="vip"; }else if(j==3){ level="城市合伙人"; }else
-				 * if(j==4){ level="股东"; }
-				 */
 
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("grade_mark", j);
 
-				map.put("user_level", gradeService.selectgreadname(param).get(j).getGradeName());
+				map.put("user_level", UserDo.getUserLevelName(j));
 
 				for (int i = 0; i < list.size(); i++) {
 

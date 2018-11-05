@@ -434,7 +434,7 @@
 				#{starLevel,jdbcType=Integer},
 			</if>
 			<if test="goodsDetailImg != null">
-				#{goodsDetailImg}
+				#{goodsDetailImg},
 			</if>
 			<if test="goodsBanner != null">
 				#{goodsBanner}
@@ -521,7 +521,7 @@
 				shopCatId1 = #{shopCatId1},
 			</if>
 			<if test="goodsDetailImg != null">
-				goodsDetailImg = #{goodsDetailImg}
+				goodsDetailImg = #{goodsDetailImg},
 			</if>
 			<if test="goodsBanner != null">
 				goodsBanner = #{goodsBanner}
