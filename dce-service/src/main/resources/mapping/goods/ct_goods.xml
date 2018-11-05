@@ -290,6 +290,12 @@
 			<if test="starLevel != null">
 				starLevel,
 			</if>
+			<if test="goodsDetailImg != null">
+				goodsDetailImg,
+			</if>
+			<if test="goodsBanner != null">
+				goodsBanner,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -427,6 +433,12 @@
 			<if test="starLevel != null">
 				#{starLevel,jdbcType=Integer},
 			</if>
+			<if test="goodsDetailImg != null">
+				#{goodsDetailImg}
+			</if>
+			<if test="goodsBanner != null">
+				#{goodsBanner}
+			</if>
 		</trim>
 	</insert>
 
@@ -507,6 +519,12 @@
 			</if>
 			<if test="shopCatId1 != null">
 				shopCatId1 = #{shopCatId1},
+			</if>
+			<if test="goodsDetailImg != null">
+				goodsDetailImg = #{goodsDetailImg}
+			</if>
+			<if test="goodsBanner != null">
+				goodsBanner = #{goodsBanner}
 			</if>
 		</trim>
 		where goodsId = #{goodsId}

@@ -257,6 +257,9 @@ function save_Goods(){
     obj.append("goodsImg", goodsImg);
     obj.append("goodsFlag", goodsFlag);
     obj.append("shopCatId1", shopCatId1);
+    obj.append("goodsBanner", goodsBanner);
+    obj.append("goodsDetailImg", goodsDetailImg);
+    
     
     $.ajax({   
 		 type: 'POST',
