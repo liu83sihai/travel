@@ -15,7 +15,7 @@
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="app">
     <meta name="format-detection" content="telephone=no" />
-    <title>商品详情</title>
+    <title>旅游路线详情</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <link rel="stylesheet" href="<c:url value='/css/travel/ydui.rem.css'/>">
@@ -36,16 +36,16 @@
             
         </yd-slider>
         <div class="prodcut-title">
-        	<h2>${goods.title}</h2>
+        	<h2>${travelPath.linename}</h2>
         	<div class="num">
-        		<span class="price">￥${goods.shopPrice}</span>
+        		<span class="price">￥${travelPath.price}</span>
         	</div>
         </div>
 
         <div class="product-detail">
-        	<div class="title">商品介绍</div>
+        	<div class="title">旅游路线介绍</div>
         	<div class="prodcut-article" id="detail">
-        		<p>${goods.goodsDesc}</p>
+        		<p>${travelPath.outline}</p>
 				<p>&nbsp;</p>
 				<c:if test="${not empty detailImgs }">
 				<c:forEach items="${detailImgs}"  var="oneImg">

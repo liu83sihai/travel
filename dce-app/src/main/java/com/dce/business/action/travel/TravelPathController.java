@@ -1,25 +1,24 @@
 package com.dce.business.action.travel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.travel.TravelPathDo;
 import com.dce.business.service.travel.ITravelPathService;
 
 @RestController
 @RequestMapping("/travelPath")
-public class TravelPathController {
+public class TravelPathController extends BaseController{
 	private final static Logger logger = Logger.getLogger(TravelPathController.class);
 	
 	
@@ -70,4 +69,22 @@ public class TravelPathController {
         }
         return Result.successResult("查询成功", pathList);
     }
+	
+	
+	@RequestMapping(value = "/travelDetail", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView travelDetail() {
+        String travelPathId = getString("travelPathId");
+        ModelAndView mav = new ModelAndView("travelpath/travelDetail");
+        mav.addObject("travelPathId", travelPathId);
+        TravelPathDo  travelPath = travelPathService.selectByPrimaryKey(Integer.valueOf(travelPathId));
+        if(StringUtils.isNotBlank(travelPath.getBannerImg())){
+        	mav.addObject("bannerImgs", travelPath.getBannerImg().split(";"));
+        }
+        if(StringUtils.isNotBlank(travelPath.getDetailImg())){
+        	mav.addObject("detailImgs", travelPath.getDetailImg().split(";"));
+        }
+        mav.addObject("travelPath", travelPath);
+        return mav;
+    }
+	
 }
