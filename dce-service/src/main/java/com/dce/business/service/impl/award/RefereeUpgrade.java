@@ -63,6 +63,10 @@ public class RefereeUpgrade implements IAwardCalculator {
 		
 	
 		UserDo refUser = userService.getUser(buyer.getRefereeid());
+		if(refUser == null){
+			return;
+		}
+		
 		//商家和代理商不升级
 		if(refUser.getUserType().intValue() == 1 || refUser.getUserType().intValue() == 3) {
 			return ;
