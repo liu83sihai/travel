@@ -101,9 +101,7 @@
 		from ct_order a left join 
 		ct_orderdetail b on a.orderId=b.orderId
 		where
-		a.userId =
-		#{userId,jdbcType=INTEGER} and
-		a.payStatus = 1
+		a.userId = #{userId,jdbcType=INTEGER} 		
 		order by
 		a.createTime
 		desc
