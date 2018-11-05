@@ -57,14 +57,6 @@ public interface IDistrictService{
 	 * @return
 	 */
 	public PageDo<UserDo> getDistrictPage(Map<String, Object> param, PageDo<UserDo> page);
-	/**
-	 * 分页查询
-	 * @param param
-	 * @param page
-	 * @return
-	 */
-	public List<District> getDistrict(Map<String,Object>  map);
-	
 	
 	/**
 	 * 删除
@@ -75,5 +67,7 @@ public interface IDistrictService{
 	 * 多条件查询
 	 */
 	District selectByPrimaryKeySelective(District record);
+	
+	public  List<District> selectSelective(District record) ;
 
 }

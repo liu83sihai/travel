@@ -28,6 +28,10 @@
 		SELECT * 
 		  FROM tr_agency WHERE user_id = #{userId}
 	</select>
+	<select id="getByKeyId" parameterType="int" resultMap="agencyResultMap">
+		SELECT * 
+		  FROM tr_agency WHERE id = #{id}
+	</select>
 
 	<select id="selectAgency" parameterType="Map" resultMap="agencyResultMap">
 		SELECT * 

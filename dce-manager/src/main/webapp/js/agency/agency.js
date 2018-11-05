@@ -135,8 +135,9 @@ function to_auditAgency(id,status) {
 		$.messager.alert("消息", "id不能为空");
 		return;
 	}
+
 	if (!status == 1) {
-		$.messager.alert("消息", "当前代理未待审核状态");
+		$.messager.alert("消息", "当前代理非待审核状态");
 		return;
 	}
 	$.messager.confirm("消息", "确认审核吗，审核后不可恢复", function(r) {
@@ -150,6 +151,16 @@ function to_auditAgency(id,status) {
 						$.messager.alert("消息", "审核成功");
 						$('#tt_Agency').datagrid('reload');
 					} else {
+						if (data.ret == -1) {
+							$.messager.alert("消息", "当前代理非待审核状态");
+						}
+						if (data.ret == -2) {
+							$.messager.alert("消息", "前用户已申请代理");
+						}
+						if (data.ret == -3) {
+							$.messager.alert("消息", "前区域已有用户申请");
+						}
+						
 						$.messager.alert("消息", "审核失败，请稍后再试");
 					}
 				}

@@ -13,10 +13,16 @@ import com.dce.business.entity.agency.AgencyDo;
 public interface IAgencyDao {
 
 	/**
+	 * 根据用户ID 查询
+	 * @parameter userId
+	 */
+	public AgencyDo getById(int userId);
+	
+	/**
 	 * 根据ID 查询
 	 * @parameter id
 	 */
-	public AgencyDo getById(int id);
+	public AgencyDo getByKeyId(int id);
 	
 	/**
 	 *根据条件查询列表

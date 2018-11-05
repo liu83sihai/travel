@@ -113,14 +113,15 @@ public class DistrictServiceImpl implements IDistrictService {
 		return districtDao.insertSelective(record);
 	}
 	@Override
-	public District selectByPrimaryKeySelective(District record) {
+	public  District selectByPrimaryKeySelective(District record) {
 		
 		return districtDao.selectByPrimaryKeySelective(record);
 	}
 	@Override
-	public List<District> getDistrict(Map<String,Object>  map){
-		// TODO Auto-generated method stub
-		return districtDao.queryListPage(map);
+	public  List<District> selectSelective(District record) {
+		
+		return districtDao.selectSelective(record);
 	}
+
 
 }
