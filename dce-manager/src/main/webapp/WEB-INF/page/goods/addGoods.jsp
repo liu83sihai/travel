@@ -25,13 +25,32 @@
 						value="${goods.title}" /></td>
 				</tr>
 				<tr>
-					<td align="right"><label for="name">商品图片地址：</label></td>
+					<td align="right"><label for="name">列表小图：</label></td>
 					<td>
 						<input type="file" id="goodsImgFileObj" name="goodsImgFileObj"/>
-						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsImgFileObj');" />
+						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsImgFileObj','goodsImg');" />
 						<input type="hidden" id="goodsImg" name="goodsImg" value="${goods.goodsImg}"/>
 					</td>
 				</tr>
+				
+				<tr>
+					<td align="right"><label for="name">详情banner图：</label></td>
+					<td>
+						<input type="file" id="goodsBannerFileObj" name="goodsBannerFileObj"/>
+						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsBannerFileObj','goodsBanner');" />
+						<input type="hidden" id="goodsBanner" name="goodsBanner" value="${goods.goodsBanner}"/>
+					</td>
+				</tr>
+				
+				<tr>
+					<td align="right"><label for="name">详情图：</label></td>
+					<td>
+						<input type="file" id="goodsDetailImgFileObj" name="goodsDetailImgFileObj"/>
+						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsDetailImgFileObj','goodsDetailImg');" />
+						<input type="hidden" id="goodsDetailImg" name="goodsDetailImg" value="${goods.goodsDetailImg}"/>
+					</td>
+				</tr>
+				
 				<tr>
 					<td align="right"><label for="name">商品单位：</label></td>
 					<td><input type="text" id="goodsUnit" name="goodsUnit"
@@ -107,7 +126,7 @@
 <script type="text/javascript"	src="<c:url value='/js/ajax-fileupload.js?'/>v=${jsversion}"></script>
 	
 	<script type="text/javascript">
-	 function ajaxFileUpload(fileInputObj) {
+	 function ajaxFileUpload(fileInputObj,urlObj) {
         $.ajaxFileUpload
         (
             {
@@ -118,9 +137,10 @@
                 async:false,
                 success: function (data, status)  //服务器成功响应处理函数
                 {
-                	$("#img").attr("src", data.url);
-                    $("#goodsImg").val(data.url);
-                	
+                    var urlVal = $("#"+urlObj).val();
+                    urlVal = urlVal+","+data.url;
+                    $("#"+urlObj).val(urlVal);
+                    $("#imgDiv").append("<img style='width: 300px; height: 300px; align: center' src='"+data.url+"'>");
                     if (typeof (data.error) != 'undefined') {
                         if (data.error != '') {
                             alert(data.error);
@@ -139,7 +159,7 @@
     }
 	</script>
 	
-	<div align="center">
+	<div align="center" id="imgDiv">
 		<c:if test="${not empty goods.goodsImg }">
 			<img style="width: 300px; height: 300px; align: center" id="img"
 				src="${goods.goodsImg }">

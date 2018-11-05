@@ -109,8 +109,19 @@
 
 	<select id="selectPathAll" resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from ct_travel_path
+		   goodsId as  pathid,
+		   title as linename,
+		   `status` as  `state`,
+		    recommDesc as remake,
+		    goodsBanner as bannerImg,
+		    goodsDetailImg as detailImg,
+		    goodsImg as iconImg,
+		    starLevel,
+		    shopPrice as price,
+		    score,
+		    goodsDesc as outline,
+		    detailLink as detailUrl
+		from ct_goods
 	</select>
 
 	<select id="selectByExample" parameterType="com.dce.business.entity.travel.travelPathExample"
