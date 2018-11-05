@@ -25,34 +25,33 @@
 <body>
     <div id="app" v-loak>
         <yd-slider :autoplay="4000" pagination-activecolor="#ffffff" class="index-slider">
-            <yd-slider-item>
-            	<div class="index-slide-item" style="background-image: url(http://via.placeholder.com/350x165)"></div>
-	      	</yd-slider-item>
-            <yd-slider-item>
-            	<div class="index-slide-item" style="background-image: url(http://via.placeholder.com/350x165)"></div>
-	        </yd-slider-item>
-            <yd-slider-item>
-            	<div class="index-slide-item" style="background-image: url(http://via.placeholder.com/350x165)"></div>
-	        </yd-slider-item>
+            <c:if test="${not empty bannerImgs }">
+			<c:forEach items="${bannerImgs}"  var="oneImg">
+       			<yd-slider-item>
+            		<div class="index-slide-item" style="background-image: url(${oneImg})"></div>
+	      		</yd-slider-item>
+       		</c:forEach>
+       		</c:if>
+        		
+            
         </yd-slider>
         <div class="prodcut-title">
-        	<h2>万家福家居日用生活馆万家福家居日用生活馆万家福家居日用生活馆</h2>
+        	<h2>${goods.title}</h2>
         	<div class="num">
-        		<span class="price">￥999.99</span>
+        		<span class="price">￥${goods.shopPrice}</span>
         	</div>
         </div>
 
         <div class="product-detail">
         	<div class="title">商品介绍</div>
         	<div class="prodcut-article" id="detail">
-        		<p>Vue-ydui 是 YDUI Touch的一个Vue2.x实现版本，专为移动端打造，在追求完美视觉体验的同时也保证了其性能高效。</p>
-        		<p>&nbsp;</p>
-        		<p>Vue-ydui 是 YDUI Touch的一个Vue2.x实现版本，专为移动端打造，在追求完美视觉体验的同时也保证了其性能高效。</p>
-        		<p>&nbsp;</p>
-
-        		<p>Vue-ydui 是 YDUI Touch的一个Vue2.x实现版本，专为移动端打造，在追求完美视觉体验的同移动端打造，在追求完美视觉体验的同移动端打造，在追求完美视觉体验的同时也保证了其性能高效。</p>
+        		<p>${goods.goodsDesc}</p>
 				<p>&nbsp;</p>
-        		<img src="http://via.placeholder.com/350x165" alt="">
+				<c:if test="${not empty detailImgs }">
+				<c:forEach items="${detailImgs}"  var="oneImg">
+        		<img src="${oneImg}" alt="">
+        		</c:forEach>
+        		</c:if>
         	</div>
         </div>
     </div>

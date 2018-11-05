@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
@@ -257,6 +258,22 @@ public class GoodsController extends BaseController {
 			return Result.failureResult("所查商品不存在!");
 		}
 	}
+	
+	@RequestMapping(value = "/goodsDetail", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView goodsDetail() {
+        String goodsId = getString("goodsId");
+        ModelAndView mav = new ModelAndView("goods/goodsDetail");
+        mav.addObject("goodsId", goodsId);
+        CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(goodsId));
+        if(StringUtils.isNotBlank(goods.getGoodsBanner())){
+        	mav.addObject("bannerImgs", goods.getGoodsBanner().split(";"));
+        }
+        if(StringUtils.isNotBlank(goods.getGoodsDetailImg())){
+        	mav.addObject("detailImgs", goods.getGoodsDetailImg().split(";"));
+        }
+        mav.addObject("goods", goods);
+        return mav;
+    }
 	
 
 	@RequestMapping(value = "/address", method = {RequestMethod.POST})
