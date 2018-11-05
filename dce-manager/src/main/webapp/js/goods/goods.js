@@ -217,6 +217,8 @@ function save_Goods(){
     var detailLink =$("#editGoodsForm #detailLink").val();
     var saleCount =$("#editGoodsForm #saleCount").val();
     var goodsImg =$("#editGoodsForm #goodsImg").val();
+    var goodsBanner =$("#editGoodsForm #goodsBanner").val();
+    var goodsDetailImg =$("#editGoodsForm #goodsDetailImg").val();
     var goodsFlag =$("#editGoodsForm #goodsFlag").combobox('getValue');
     var shopCatId1 =$("#editGoodsForm #shopCatId1").combobox('getValue');
     
