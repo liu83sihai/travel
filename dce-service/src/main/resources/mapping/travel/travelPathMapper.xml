@@ -121,7 +121,7 @@
 		    score,
 		    goodsDesc as outline,
 		    detailLink as detailUrl
-		from ct_goods where goodsFlag = 4
+		from ct_goods where goodsFlag = 4 and status=1 
 	</select>
 
 	<select id="selectByExample" parameterType="com.dce.business.entity.travel.travelPathExample"

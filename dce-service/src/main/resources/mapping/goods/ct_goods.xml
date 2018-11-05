@@ -502,6 +502,12 @@
 			<if test="starLevel != null">
 				starLevel = #{starLevel},
 			</if>
+			<if test="goodsFlag != null">
+				goodsFlag = #{goodsFlag},
+			</if>
+			<if test="shopCatId1 != null">
+				shopCatId1 = #{shopCatId1},
+			</if>
 		</trim>
 		where goodsId = #{goodsId}
 	</update>
@@ -539,7 +545,6 @@
 				AND shopCatId1 = #{shopCatId1}
 			</if>
 		   and status=1 
-		   and statusRemarks=1 
 		</trim>
 		limit #{offset},#{rows}
 
