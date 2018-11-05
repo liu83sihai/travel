@@ -91,7 +91,7 @@ public class UserController extends BaseController {
 	 */ 
 	@RequestMapping(value = "/reg", method = RequestMethod.POST)
 	public Result<?> reg(@Valid UserDo userDo, BindingResult bindingResult) {
-		logger.info("用户注册");
+		logger.info("用户注册:名字=" + userDo.getTrueName());
 		// 参数校验
 		if (bindingResult.hasErrors()) {
 			List<ObjectError> errors = bindingResult.getAllErrors();

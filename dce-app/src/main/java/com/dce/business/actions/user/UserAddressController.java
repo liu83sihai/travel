@@ -61,13 +61,17 @@ public class UserAddressController extends BaseController {
 	 *	}
 	 */ 
 	@RequestMapping(value = "/addAddress", method = { RequestMethod.POST })
-	public Result<?> addAddress() {
-		Integer userId = getUserId();
+	public Result<?> addAddress(String address) {
+	Integer userId = getUserId();
+		
+	
 		String addressId = getString("addressId");
 		String username = getString("userName");
 		String userphone = getString("userPhone");
-		String address = getString("address");
+		String address111 = getString("address");
 		String addressDetails = getString("addressDetails");
+		
+		logger.info("用户地址=" + address + " == " + address111);
 
 		Assert.hasText(username, "收货人不能为空");
 		Assert.hasText(userphone, "收货人电话不能为空");
