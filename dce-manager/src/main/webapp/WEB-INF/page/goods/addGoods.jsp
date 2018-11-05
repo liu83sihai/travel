@@ -140,7 +140,11 @@
                 success: function (data, status)  //服务器成功响应处理函数
                 {
                     var urlVal = $("#"+urlObj).val();
-                    urlVal = urlVal+","+data.url;
+                    if(urlVal == ""){
+                    	urlVal = data.url;
+                    }else{
+	                    urlVal = urlVal+","+data.url;
+                    }
                     $("#"+urlObj).val(urlVal);
                     $("#imgDiv").append("<img style='width: 300px; height: 300px; align: center' src='"+data.url+"'>");
                     if (typeof (data.error) != 'undefined') {
