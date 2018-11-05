@@ -474,7 +474,7 @@ public class OrderController extends BaseController {
 	 * @throws IOException
 	 */
 	@SuppressWarnings({ "unchecked" })
-	@RequestMapping(value = "/notify_url", method = RequestMethod.POST)
+	@RequestMapping(value = "/notifyUrl", method = RequestMethod.POST)
 	public void notify(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String ret = "failure";
 		try {

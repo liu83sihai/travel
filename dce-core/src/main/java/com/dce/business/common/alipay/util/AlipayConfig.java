@@ -23,7 +23,7 @@ public class AlipayConfig {
 	public static String URL = "https://openapi.alipay.com/gateway.do";
 
 	// 服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://app.zjzwly.com/dce-app/order/notify_url.do";
+	public static String notify_url = "http://app.zjzwly.com/dce-app/order/notifyUrl.do";
 	//public static String notify_url = "http://193073pl14.imwork.net:46973/dce-app/order/notify_url.do";
 	
 	// 返回格式
