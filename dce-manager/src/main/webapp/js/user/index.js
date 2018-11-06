@@ -92,13 +92,19 @@ $(function() {
 					if (value == "0") {
 						return "普通会员";
 					} else if (value == "1") {
-						return "会员";
+						return "VIP";
 					} else if (value == "2") {
-						return "VIP"; // 铂金会员
+						return "商家"; // 铂金会员
 					} else if (value == "3") {// 黄金会员
-						return "合伙人"
+						return "社区合伙人"
 					} else if (value == "4") {
+						return "城市合伙人";
+					} else if (value == "5") {
+						return "省级合伙人";
+					} else if (value == "6") {
 						return "股东";
+					} else if (value == "7") {
+						return "董事";
 					}
 				}
 			},

@@ -25,7 +25,9 @@ import com.dce.business.entity.notice.NoticeDo;
 import com.dce.business.entity.page.PageDo;
 
 import com.dce.business.service.supplier.ISupplierService;
+import com.dce.business.service.user.IUserService;
 import com.dce.business.entity.supplier.SupplierDo;
+import com.dce.business.entity.user.UserDo;
 /**
  * 商家管理授权业务实现类
  *
@@ -41,6 +43,8 @@ public class SupplierController  extends BaseController{
 	@Resource
 	private ISupplierService supplierService;
 	
+	@Resource
+	private IUserService userService;
 	/**
 	 *  @apiDefine supplierSucces
 	 *	@apiSuccess {java.lang.Integer}  id id
@@ -304,6 +308,12 @@ public class SupplierController  extends BaseController{
 			 return Result.successResult("当前商家已申请商家管理,请在用户当中查看",supplierDo);
 		 }
 		 
+		 UserDo userDo =userService.getUser(supplierDo.getUserId());
+		 if(null == userDo){
+			 return Result.successResult("当前用户不存在,请联系管理员",userDo);
+		 }
+		 
+		 
 		 Assert.hasText(supplierDo.getSupplierName(), "供应商为空");
 		 Assert.hasText(supplierDo.getSynopsis(), "供应商简介为空");
 		 Assert.hasText(supplierDo.getBusiImage(), "营业执照为空");
@@ -311,6 +321,8 @@ public class SupplierController  extends BaseController{
 		 Assert.hasText(supplierDo.getSupplierAddress(), "详细地址");
 		 Assert.hasText(supplierDo.getCity(), "城市信息为空");
 
+		 supplierDo.setLinkMan(userDo.getTrueName());
+		 supplierDo.setLinkValue(userDo.getMobile());
 		 supplierDo.setStatus(1);
 		 supplierDo.setCreateDate(new Date(System.currentTimeMillis()));
 		 supplierDo.setCreateName("前台增加商家管理");

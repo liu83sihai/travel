@@ -204,13 +204,14 @@ public class AgencyController extends BaseAction{
     			return;
     		}
     		//写入用户代理表 不能重复
-    		Integer userId = new Integer(this.getUserId());
+    		Integer userId = agencyDo.getUserId();
     		District district = new District();
     		district.setUserId(userId);
     		
     		List<District> districtList =  districtService.selectSelective(district); 
     		if(null != districtList  && districtList.size() >0){
     			ResponseUtils.renderJson(response, "当前用户已申请代理", "{\"ret\":-2}");
+    			return;
     		} 
     		
     		district = new District();
@@ -219,6 +220,7 @@ public class AgencyController extends BaseAction{
     		districtList =  districtService.selectSelective(district); 
     		if(null != districtList  && districtList.size() >0){
     			ResponseUtils.renderJson(response, "当前区域已有用户申请", "{\"ret\":-3}");
+    			return;
     		} 
     		 
 //    		 map.put("distrct_name", distrct_name);

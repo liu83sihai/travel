@@ -24,8 +24,10 @@ import com.dce.business.entity.activity.ActivityDo;
 import com.dce.business.entity.notice.NoticeDo;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.supplier.SupplierDo;
+import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.agency.IAgencyService;
 import com.dce.business.service.district.IDistrictService;
+import com.dce.business.service.user.IUserService;
 import com.dce.business.entity.agency.AgencyDo;
 import com.dce.business.entity.district.District;
 /**
@@ -45,6 +47,9 @@ public class AgencyController  extends BaseController{
 	
 	@Resource
 	private IDistrictService districtService;
+	
+	@Resource
+	private IUserService userService;
 	
 	/**
 	 *  @apiDefine agencySucces
@@ -248,6 +253,10 @@ public class AgencyController  extends BaseController{
 			 return Result.successResult("当前用户已申请代理,请在用户当中查看",agency);
 		 }
 		 
+		 UserDo userDo =userService.getUser(agencyDo.getUserId());
+		 if(null == userDo){
+			 return Result.successResult("当前用户不存在,请联系管理员",userDo);
+		 }
 		 
 //		 Assert.hasText(agencyDo.getUserName(), "姓名为空");
 //		 Assert.hasText("" + agencyDo.getSex(), "性别为空");
@@ -258,6 +267,8 @@ public class AgencyController  extends BaseController{
 //		 Assert.hasText(agencyDo.getIdcardBack(), "身份证背面图像为空");
 		 Assert.hasText(agencyDo.getCity(), "代理城市为空");
 
+		 agencyDo.setUserName(userDo.getTrueName());
+		 agencyDo.setMobile(userDo.getMobile());
 		 agencyDo.setStatus(1);
 		 agencyDo.setCreateDate(new Date(System.currentTimeMillis()));
 		 agencyDo.setCreateName("前台增加代理管理");

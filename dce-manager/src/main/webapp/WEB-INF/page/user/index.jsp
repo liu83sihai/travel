@@ -45,11 +45,14 @@
 								class="tdfont" id="user_level" name="user_level" size="14" 
 								style="height: 30px; vertical-align: middle; border-width: 1px; border: 1px solid #95B8E7; background-color: #fff; border-radius: 5px 5px 5px 5px; line-height: 45px; text-align: center; width: 100px;">
 									<option value="">--搜索等级--</option>
-									<option value="0">普通</option>
-									<option value="1">会员</option>
-									<option value="2">VIP</option>
-									<option value="3">合伙人</option>
-									<option value="4">股东</option>
+									<option value="0">普通会员</option>
+									<option value="1">VIP</option>
+									<option value="2">商家</option>
+									<option value="3">社区合伙人</option>
+									<option value="4">城市合伙人</option>
+									<option value="5">省级合伙人</option>
+									<option value="6">股东</option>
+									<option value="7">董事</option>
 							</select></td>
 							<td class="tdfont" colspan="2">注册时间: <input type="text"
 								id="user_reg_startDate" name="user_reg_startDate"
