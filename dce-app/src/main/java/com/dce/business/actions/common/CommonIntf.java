@@ -98,7 +98,9 @@ public class CommonIntf extends BaseController {
 			page = "code";
 		}
 		
-		String content = "" + ((int) (Math.random() * 1000000));
+//		String content = "" + ((int) (Math.random() * 1000000));
+		
+		String content = "123456";
 		// 新的短信验证码发送
 		SendSmsResponse response;
 		try {
