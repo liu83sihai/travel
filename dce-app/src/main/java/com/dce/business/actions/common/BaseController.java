@@ -26,13 +26,13 @@ public class BaseController {
                 return "";
             }
             //反编码
-            try {
-            	System.out.println("=====================:" + paraVal );
-    			paraVal = URLDecoder.decode(paraVal,"UTF-8");
-    		} catch (UnsupportedEncodingException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
+//            try {
+//            	System.out.println("=====================:" + paraVal );
+//    			paraVal = URLDecoder.decode(paraVal,"UTF-8");
+//    		} catch (UnsupportedEncodingException e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
         }
         
       
