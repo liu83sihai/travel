@@ -55,6 +55,8 @@ public class GoodsController extends BaseAction {
 	
 	@Value("#{sysconfig['readImgUrl']}")
 	private String readImgUrl;
+	@Value("#{sysconfig['goodsDetailUrl']}")
+	private String goodsDetailUrl;
 	
 		
 	/**
@@ -164,7 +166,7 @@ public class GoodsController extends BaseAction {
 	 */
 	@RequestMapping("/saveGoods")
 	@ResponseBody
-	public void saveGoods(  CTGoodsDo CTGoodsDo, 	
+	public void saveGoods(  CTGoodsDo goodsDo, 	
 							HttpServletRequest request, 
 							HttpServletResponse response) {
 		
@@ -172,13 +174,14 @@ public class GoodsController extends BaseAction {
 
 		try {
 
-			Integer id = CTGoodsDo.getGoodsId();
+			Integer id = goodsDo.getGoodsId();
 			//上架时间
-			if (CTGoodsDo.getStatus() == 1) {
-				CTGoodsDo.setSaleTime(new Date());
+			if (goodsDo.getStatus().intValue() == 1) {
+				goodsDo.setSaleTime(new Date());
 			}
 			
-			int i = goodsService.updateGoodsById(CTGoodsDo);
+			goodsDo.setDetailLink(goodsDo.getShowDetailUrl(goodsDetailUrl));
+			int i = goodsService.updateGoodsById(goodsDo);
 			if (i <= 0) {
 				outPrint(response, this.toJSONString(Result.failureResult("操作失败")));
 				return;

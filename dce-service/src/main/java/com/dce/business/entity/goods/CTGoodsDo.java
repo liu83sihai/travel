@@ -359,6 +359,13 @@ public class CTGoodsDo implements Serializable {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
+	
+	public String getShowDetailUrl(String goodsDetailUrl) {
+		StringBuffer sb  = new StringBuffer();
+		sb.append(goodsDetailUrl).append("?goodsId=").append(this.getGoodsId()).append("&page=goods");
+		return sb.toString();
+	}
 	  
 	  
 }

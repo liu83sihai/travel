@@ -266,10 +266,10 @@ public class GoodsController extends BaseController {
         mav.addObject("goodsId", goodsId);
         CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(goodsId));
         if(StringUtils.isNotBlank(goods.getGoodsBanner())){
-        	mav.addObject("bannerImgs", goods.getGoodsBanner().split(";"));
+        	mav.addObject("bannerImgs", goods.getGoodsBanner().split(","));
         }
         if(StringUtils.isNotBlank(goods.getGoodsDetailImg())){
-        	mav.addObject("detailImgs", goods.getGoodsDetailImg().split(";"));
+        	mav.addObject("detailImgs", goods.getGoodsDetailImg().split(","));
         }
         mav.addObject("goods", goods);
         return mav;

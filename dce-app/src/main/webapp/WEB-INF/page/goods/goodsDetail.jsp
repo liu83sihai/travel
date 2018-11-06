@@ -24,17 +24,15 @@
 
 <body>
     <div id="app" v-loak>
+    	<c:if test="${not empty bannerImgs }">
         <yd-slider :autoplay="4000" pagination-activecolor="#ffffff" class="index-slider">
-            <c:if test="${not empty bannerImgs }">
 			<c:forEach items="${bannerImgs}"  var="oneImg">
        			<yd-slider-item>
             		<div class="index-slide-item" style="background-image: url(${oneImg})"></div>
 	      		</yd-slider-item>
        		</c:forEach>
-       		</c:if>
-        		
-            
         </yd-slider>
+        </c:if>
         <div class="prodcut-title">
         	<h2>${goods.title}</h2>
         	<div class="num">
