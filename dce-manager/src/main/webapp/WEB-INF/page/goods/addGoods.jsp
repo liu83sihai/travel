@@ -30,6 +30,7 @@
 						<input type="file" id="goodsImgFileObj" name="goodsImgFileObj"/>
 						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsImgFileObj','goodsImg');" />
 						<input type="hidden" id="goodsImg" name="goodsImg" value="${goods.goodsImg}"/>
+						<input type="button" onclick="cleanImg('goodsImg');" value="清除原图"/>
 					</td>
 				</tr>
 				
@@ -39,6 +40,7 @@
 						<input type="file" id="goodsBannerFileObj" name="goodsBannerFileObj"/>
 						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsBannerFileObj','goodsBanner');" />
 						<input type="hidden" id="goodsBanner" name="goodsBanner" value="${goods.goodsBanner}"/>
+						<input type="button" onclick="cleanImg('goodsBanner');" value="清除原图"/>
 					</td>
 				</tr>
 				
@@ -48,6 +50,7 @@
 						<input type="file" id="goodsDetailImgFileObj" name="goodsDetailImgFileObj"/>
 						<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('goodsDetailImgFileObj','goodsDetailImg');" />
 						<input type="hidden" id="goodsDetailImg" name="goodsDetailImg" value="${goods.goodsDetailImg}"/>
+						<input type="button" onclick="cleanImg('goodsDetailImg');" value="清除原图"/>
 					</td>
 				</tr>
 				
@@ -128,6 +131,11 @@
 <script type="text/javascript"	src="<c:url value='/js/ajax-fileupload.js?'/>v=${jsversion}"></script>
 	
 	<script type="text/javascript">
+	 function cleanImg(imgFieldName){
+		 $("#"+imgFieldName).val("");
+		 alert("已清除");
+	 }
+	
 	 function ajaxFileUpload(fileInputObj,urlObj) {
         $.ajaxFileUpload
         (
