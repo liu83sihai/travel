@@ -98,7 +98,6 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		int[] rateArray = buildRate(refUserArray);
 		
 		for (int i = 0 ; i <refUserArray.length;i++) {
-			IncomeType awardsShow = IncomeType.TYPE_AWARD_JIAJIN;
 
 			if(rateArray[i] == 0) {
 				logger.info("用户分润比例=0 userId:"+refUserArray[i].getId());
@@ -109,18 +108,60 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			BigDecimal wardAmount = order.getProfit();
 			BigDecimal rate = new BigDecimal(rateArray[i]/100d);
 			wardAmount = wardAmount.multiply(rate);
-			// 获取奖励账户
-			String accountType = "wallet_money";
-			if (wardAmount.compareTo(BigDecimal.ZERO) > 0) {
-				UserAccountDo accont = new UserAccountDo(wardAmount, refUserArray[i].getId(), accountType);
+			
+			//50%现金账户， 50%积分账户
+			BigDecimal moneyAccount = wardAmount.multiply(new BigDecimal("0.5"));
+			BigDecimal otherAccount =  wardAmount.subtract(moneyAccount);
+			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
+				//现金账户
+				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
+														refUserArray[i].getId(), 
+														AccountType.wallet_money.name());
+				buildAccountRemark(accontMoney);
+				// 账户对象增加金额
+				accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN);
+				
+				UserAccountDo accont = new UserAccountDo(otherAccount, 
+														 refUserArray[i].getId(), 
+														 AccountType.wallet_travel.name());
 				buildAccountRemark(accont);
 				// 账户对象增加金额
-				accountService.updateUserAmountById(accont, awardsShow);
+				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
 			}
 		
 			
 		}
 
+		
+		//找董事
+		List<UserDo> dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),7);
+		if(null == dsUserLst) {
+			return;
+		}
+		
+		for(UserDo ds : dsUserLst) {
+			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.05"));
+			
+			//50%现金账户， 50%积分账户
+			BigDecimal moneyAccount = dsAmt.multiply(new BigDecimal("0.5"));
+			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
+			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
+				//现金账户
+				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
+														ds.getId(), 
+														AccountType.wallet_money.name());
+				buildAccountRemark(accontMoney);
+				// 账户对象增加金额
+				accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN);
+				
+				UserAccountDo accont = new UserAccountDo(otherAccount, 
+														 ds.getId(), 
+														 AccountType.wallet_travel.name());
+				buildAccountRemark(accont);
+				// 账户对象增加金额
+				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
+			}
+		}
 	}
 
 	private UserDo[] buildRefUser(List<UserRefereeDo> refArray) {

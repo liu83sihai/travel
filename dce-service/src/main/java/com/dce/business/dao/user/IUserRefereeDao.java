@@ -3,6 +3,9 @@ package com.dce.business.dao.user;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserRefereeDo;
 
 public interface IUserRefereeDao {
@@ -42,5 +45,13 @@ public interface IUserRefereeDao {
 	List<Map<String, Object>> listMyRef(Map<String, Object> params);
 
 	List<Map<String, Object>> selectMyGroup(Map<String, Object> params);
+
+	/**
+	 * 指定等级的推荐人
+	 * @param userId
+	 * @param level
+	 * @return
+	 */
+	List<UserDo> selectRefUserByUserLevel(@Param("userid") Integer userId,@Param("userLevel") int level);
 
 }

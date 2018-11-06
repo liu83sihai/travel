@@ -106,6 +106,32 @@
 		</trim>
 		order by u.distance
 	</select>
+	
+	<!-- 指定等级的推荐用户 -->
+	<select id="selectRefUserByUserLevel" parameterType="java.util.Map" resultType="com.dce.business.entity.user.UserDo" >
+		select b.*		
+		from ct_user_referee u , ct_user b 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		     b.id = u.refereeid
+		     <if test="userLevel != null">
+				AND b.user_level = #{userLevel}
+			</if>
+			<if test="userid != null">
+				AND u.userid = #{userid}
+			</if>
+			<if test="refereeid != null">
+				AND u.refereeid = #{refereeid}
+			</if>
+			<if test="distance != null">
+				AND u.distance = #{distance}
+			</if>
+			<if test="maxDistance != null">
+			    <![CDATA[    AND u.distance <= '${maxDistance}']]>
+			</if>
+		</trim>
+		order by u.distance
+	</select>
+	
 
 	<select id="listMyRef" parameterType="Map" resultType="Map">
 		SELECT

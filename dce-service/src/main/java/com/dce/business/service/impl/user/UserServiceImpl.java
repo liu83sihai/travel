@@ -132,7 +132,7 @@ public class UserServiceImpl implements IUserService {
 		// 维护賬戶
 		maintainUserAccount(userDo.getId());
 
-		return result > 0 ? Result.successResult("注册成功!") : Result.failureResult("注册失败");
+		return result > 0 ? Result.successResult("注册成功!",userDo.getId()) : Result.failureResult("注册失败");
 	}
 
 	// 维护賬戶
