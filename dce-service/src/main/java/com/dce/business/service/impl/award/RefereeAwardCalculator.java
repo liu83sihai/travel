@@ -112,7 +112,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			// 获取奖励账户
 			String accountType = "wallet_money";
 			if (wardAmount.compareTo(BigDecimal.ZERO) > 0) {
-				UserAccountDo accont = new UserAccountDo(wardAmount, buyer.getId(), accountType);
+				UserAccountDo accont = new UserAccountDo(wardAmount, refUserArray[i].getId(), accountType);
 				buildAccountRemark(accont);
 				// 账户对象增加金额
 				accountService.updateUserAmountById(accont, awardsShow);
