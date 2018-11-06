@@ -1,5 +1,8 @@
 package com.dce.business.actions.common;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +25,17 @@ public class BaseController {
             if ("null".equalsIgnoreCase(paraVal) || "undefined".equalsIgnoreCase(paraVal)) {
                 return "";
             }
+            //反编码
+//            try {
+//            	System.out.println("=====================:" + paraVal );
+//    			paraVal = URLDecoder.decode(paraVal,"UTF-8");
+//    		} catch (UnsupportedEncodingException e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
         }
+        
+      
         return paraVal;
     }
 
