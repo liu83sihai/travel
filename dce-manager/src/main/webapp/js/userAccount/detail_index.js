@@ -45,16 +45,22 @@ $(function(){
 	 							return "普通用户";
 	 						}
 	 						if(value == "1"){
-	 							return "会员";
+	 							return "VIP";
 	 						}
 	 						if(value == "2"){
-	 							return "vip";
+	 							return "商家";
 	 						}
 	 						if(value == "3"){
-	 							return "城市合伙人";
+	 							return "社区合伙人";
 	 						}
 	 						if(value == "4"){
-	 							return "分红股东";
+	 							return "城市合伙人";
+	 						}
+	 						if(value == "5"){
+	 							return "省级 合伙人";
+	 						}
+	 						if(value == "6"){
+	 							return "股东";
 	 						}
 	 					}
 	 				},
@@ -151,13 +157,13 @@ $(function(){
 	 				{field:"accountType",title:"账户类型",width:80,align:"center",
 	 					formatter:function(value,row,index){
 	 						if(value == "wallet_money"){
-	 							return "账户余额";
+	 							return "现金账户";
 							}
 							if (value == "wallet_travel") {
-								return "奖励旅游";
+								return "积分";
 							}
 							if (value == "wallet_goods") {
-								return "奖励商品";
+								return "抵用券";
 							}
 							if (value == "wallet_active") {
 								return "奖励活动";
