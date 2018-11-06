@@ -526,8 +526,8 @@ public class UserController extends BaseController {
 			Assert.hasText(sex, "性别不能为空");
 			Assert.hasText(banktype, "开卡行不能为空");
 			Assert.hasText(banknumber, "卡号不能为空");
-			Assert.hasText(idcardFront, "身份证正背照片不能为空");
-			Assert.hasText(idcardBack, "身份证背面照片不能为空");
+//			Assert.hasText(idcardFront, "身份证正背照片不能为空");
+//			Assert.hasText(idcardBack, "身份证背面照片不能为空");
 			// 用户信息
 			UserDo userDo = new UserDo();
 			userDo.setId(Integer.valueOf(userId));
