@@ -100,6 +100,8 @@
 						<c:if test="${user.userLevel==5 }">selected="selected"</c:if>>省级合伙人</option>
 					<option value="6"
 						<c:if test="${user.userLevel==6 }">selected="selected"</c:if>>股东</option>
+					<option value="7"
+						<c:if test="${user.userLevel==7 }">selected="selected"</c:if>>董事</option>
 						
 			</select></td>
 		</tr>
