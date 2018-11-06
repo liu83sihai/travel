@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.exception.BusinessException;
+import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.dao.user.IUserRefereeDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.award.Awardlist;
@@ -92,9 +93,8 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 //			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
 //		}
 		
-		UserRefereeDo[] refArray = (UserRefereeDo[])list.toArray();
 		
-		UserDo[] refUserArray = buildRefUser(refArray);
+		UserDo[] refUserArray = buildRefUser(list);
 		int[] rateArray = buildRate(refUserArray);
 		
 		for (int i = 0 ; i <refUserArray.length;i++) {
@@ -112,7 +112,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			// 获取奖励账户
 			String accountType = "wallet_money";
 			if (wardAmount.compareTo(BigDecimal.ZERO) > 0) {
-				UserAccountDo accont = new UserAccountDo(wardAmount, buyer.getId(), accountType);
+				UserAccountDo accont = new UserAccountDo(wardAmount, refUserArray[i].getId(), accountType);
 				buildAccountRemark(accont);
 				// 账户对象增加金额
 				accountService.updateUserAmountById(accont, awardsShow);
@@ -123,10 +123,10 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 
 	}
 
-	private UserDo[] buildRefUser(UserRefereeDo[] refArray) {
-		UserDo[] refUserArray  = new UserDo[refArray.length];
-		for (int i = 0 ; i <refArray.length;i++) {
-			UserRefereeDo temp = refArray[i];
+	private UserDo[] buildRefUser(List<UserRefereeDo> refArray) {
+		UserDo[] refUserArray  = new UserDo[refArray.size()];
+		for (int i = 0 ; i <refArray.size();i++) {
+			UserRefereeDo temp = refArray.get(i);
 			UserDo u =  userService.getUser(temp.getRefereeid());
 			refUserArray[i] = u;
 		}
@@ -162,10 +162,10 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			byte currentUser = userLevelArray[i];
 			byte  idx1User = 0;
 			byte idx2User = 0;
-			if(idx1>0) {
+			if(idx1>=0) {
 				idx1User = userLevelArray[idx1];
 			}
-			if(idx2>0) {
+			if(idx2>=0) {
 				idx2User = userLevelArray[idx2];
 			}
 			
@@ -227,7 +227,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 					continue;
 				}
 			}
-			retArray[i] = rateArray[currentUser];
+			retArray[i] = rateArray[i];
 		}
 		
 		//计算 股东差级
@@ -283,7 +283,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("用户:").append(buyer.getUserName()).append("购买:").append(order.getQty()).append("盒").append("获得:")
-				.append(account.getAmount());
+				.append(CalculateUtils.round(account.getAmount().doubleValue()));
 		account.setRemark(sb.toString());
 		account.setRelevantUser(String.valueOf(buyer.getId()));// 关联用户
 

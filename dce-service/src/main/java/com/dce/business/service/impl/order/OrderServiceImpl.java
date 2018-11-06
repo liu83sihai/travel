@@ -495,7 +495,8 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			quantity += orderDetail.getQuantity(); // 商品总数量
 			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
-			profit.add(goods.getProfit());
+			BigDecimal oneGoodsProfit = goods.getProfit().multiply(new BigDecimal(orderDetail.getQuantity()));
+			profit = profit.add(oneGoodsProfit);
 			logger.debug("商品总金额---------》》》》》》》》》" + totalprice);
 		}
 
@@ -561,7 +562,8 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			quantity += orderDetail.getQuantity(); // 商品总数量
 			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
-			profit.add(goods.getProfit());
+			BigDecimal oneGoodsProfit = goods.getProfit().multiply(new BigDecimal(orderDetail.getQuantity()));
+			profit = profit.add(oneGoodsProfit);
 			logger.debug("商品总金额---------》》》》》》》》》" + totalprice);
 		}
 
