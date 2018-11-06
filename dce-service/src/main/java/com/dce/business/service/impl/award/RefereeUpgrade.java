@@ -47,7 +47,7 @@ public class RefereeUpgrade implements IAwardCalculator {
 
 	@Resource
 	private IOrderService orderService;
-
+	
 	/**
 	 * 推荐用户升级
 	 * 
@@ -60,15 +60,13 @@ public class RefereeUpgrade implements IAwardCalculator {
 	@Override
 	public void doAward(UserDo buyer, Order order) {
 		
-		
-	
 		UserDo refUser = userService.getUser(buyer.getRefereeid());
 		if(refUser == null){
 			return;
 		}
 		
 		//商家和代理商不升级
-		if(refUser.getUserType().intValue() == 1 || refUser.getUserType().intValue() == 3) {
+		if(refUser.getUserType().intValue() == 1 || refUser.getUserType().intValue() == 2) {
 			return ;
 		}
 		

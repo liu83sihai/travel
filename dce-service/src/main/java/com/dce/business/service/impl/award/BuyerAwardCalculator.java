@@ -2,6 +2,7 @@ package com.dce.business.service.impl.award;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -12,10 +13,14 @@ import org.springframework.stereotype.Service;
 import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.exception.BusinessException;
+import com.dce.business.dao.order.OrderDetailMapper;
 import com.dce.business.entity.account.UserAccountDo;
+import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.Order;
+import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
+import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.business.service.user.IUserService;
 
 /**
@@ -37,6 +42,13 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 	@Resource
 	private IAccountService accountService;
 	
+	@Resource
+	private OrderDetailMapper orderDetailDao;
+	
+	@Resource
+	private ICTGoodsService goodsService;
+	
+	
 	private ThreadLocal<Map<String,Object>> awardContextMap = new ThreadLocal<Map<String,Object>>() ;
 	
 	/**
@@ -55,11 +67,26 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		contextMap.put("order", order);
 		awardContextMap.set(contextMap);
 		
-		UserDo userDo = new UserDo();
-		userDo.setId(buyer.getId());
-		userDo.setStatus((byte)0);
-		userDo.setUserLevel((byte)1);//vip
-		userService.update(userDo );
+		
+		
+		//购买旅游卡才可以升级
+		boolean isBuyCard = false; 
+		List<OrderDetail> orderDetailLst = orderDetailDao.selectByOrderId(order.getOrderid());
+		for(OrderDetail od : orderDetailLst) {
+			CTGoodsDo goods = goodsService.selectById(Long.valueOf(od.getGoodsId()));
+			if(goods.getGoodsFlag().intValue() == 1) {
+				isBuyCard = true;
+			}
+			
+		}
+		
+		if(isBuyCard == true) {
+			UserDo userDo = new UserDo();
+			userDo.setId(buyer.getId());
+			userDo.setStatus((byte)0);
+			userDo.setUserLevel((byte)1);//vip
+			userService.update(userDo );
+		}
 
 		//送199 积分
 		UserAccountDo accont = new UserAccountDo(new BigDecimal(199), buyer.getId(), AccountType.wallet_travel.name());
