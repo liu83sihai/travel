@@ -95,7 +95,6 @@ public class GoodsController extends BaseAction {
 				param.put("endDate", endDate);
 				model.addAttribute("endDate", endDate);
 			}
-			param.put("statusRemarks", 1);
 			page = goodsService.getGoodsPage(param, page);
 			pagination = PageDoUtil.getPageValue(pagination, page);
 			outPrint(response, JSONObject.toJSON(pagination));
