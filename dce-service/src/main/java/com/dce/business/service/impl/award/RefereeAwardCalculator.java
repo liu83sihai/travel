@@ -92,9 +92,8 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 //			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
 //		}
 		
-		UserRefereeDo[] refArray = (UserRefereeDo[])list.toArray();
 		
-		UserDo[] refUserArray = buildRefUser(refArray);
+		UserDo[] refUserArray = buildRefUser(list);
 		int[] rateArray = buildRate(refUserArray);
 		
 		for (int i = 0 ; i <refUserArray.length;i++) {
@@ -123,10 +122,10 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 
 	}
 
-	private UserDo[] buildRefUser(UserRefereeDo[] refArray) {
-		UserDo[] refUserArray  = new UserDo[refArray.length];
-		for (int i = 0 ; i <refArray.length;i++) {
-			UserRefereeDo temp = refArray[i];
+	private UserDo[] buildRefUser(List<UserRefereeDo> refArray) {
+		UserDo[] refUserArray  = new UserDo[refArray.size()];
+		for (int i = 0 ; i <refArray.size();i++) {
+			UserRefereeDo temp = refArray.get(i);
 			UserDo u =  userService.getUser(temp.getRefereeid());
 			refUserArray[i] = u;
 		}
