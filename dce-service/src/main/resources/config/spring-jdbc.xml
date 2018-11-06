@@ -27,7 +27,7 @@
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl"
-			value="jdbc:mysql://${db.host}:3306/${db.dbname}?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true&amp;allowMultiQueries=true" />
+			value="jdbc:mysql://${db.host}:3306/${db.dbname}?useSSL=false&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true&amp;allowMultiQueries=true" />
 		<property name="user" value="${db.user}" />
 		<property name="password" value="${db.pwd}" />
 		<property name="initialPoolSize" value="1" />

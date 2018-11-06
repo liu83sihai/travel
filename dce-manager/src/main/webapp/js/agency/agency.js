@@ -31,6 +31,8 @@ $(function(){
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
 								{field:"userId",title:"用户ID",width:80,align:"center"},
+								{field:"userName",title:"用户名",width:80,align:"center"},
+								{field:"mobile",title:"联系方式",width:80,align:"center"},
 								{field:"city",title:"城市",width:150,align:"center"},
 								{field:"cityCode",title:"城市代码",width:150,align:"center"},
 								{field:"createDate",title:"创建时间",width:120,align:"center",formatter:dateTimeFormatter},
@@ -135,7 +137,6 @@ function to_auditAgency(id,status) {
 		$.messager.alert("消息", "id不能为空");
 		return;
 	}
-	debugger;
 	if (!status == 1) {
 		$.messager.alert("消息", "当前代理非待审核状态");
 		return;

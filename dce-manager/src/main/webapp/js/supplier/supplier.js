@@ -31,6 +31,8 @@ $(function(){
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
 								{field:"userId",title:"用户Id",width:80,align:"center"},
+								{field:"linkMan",title:"用户名",width:80,align:"center"},
+								{field:"telPhone",title:"联系方式",width:80,align:"center"},
 								{field:"supplierName",title:"供应商名",width:180,align:"center"},
 								{field:"synopsis",title:"简介",width:180,align:"center"},
 								{field:"content",title:"详情",width:180,align:"center"},

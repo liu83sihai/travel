@@ -322,7 +322,7 @@ public class SupplierController  extends BaseController{
 		 Assert.hasText(supplierDo.getCity(), "城市信息为空");
 
 		 supplierDo.setLinkMan(userDo.getTrueName());
-		 supplierDo.setLinkValue(userDo.getMobile());
+		 supplierDo.setTelPhone(userDo.getMobile());
 		 supplierDo.setStatus(1);
 		 supplierDo.setCreateDate(new Date(System.currentTimeMillis()));
 		 supplierDo.setCreateName("前台增加商家管理");
