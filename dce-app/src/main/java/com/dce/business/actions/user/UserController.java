@@ -89,7 +89,7 @@ public class UserController extends BaseController {
 	 *    data:{"http://xxx.do?xx"}
 	 *	}
 	 */ 
-	@RequestMapping(value = "/getRegUrl", method = RequestMethod.POST)
+	@RequestMapping(value = "/getRegUrl", method = {RequestMethod.POST,RequestMethod.GET})
 	public Result<?> getRegUrl( BindingResult bindingResult) {
 		String userId = getString("userId");
 		UserDo currentUser = userService.getUser(Integer.valueOf(userId));
@@ -555,7 +555,7 @@ public class UserController extends BaseController {
 
 			String  userId = getString("userId");
 			String trueName = getString("trueName");
-			String mobile = getString("mobile");
+			//String mobile = getString("mobile");
 			String idnumber = getString("idnumber");
 			String sex = getString("sex");
 			String banknumber = getString("banknumber");// 卡号
@@ -570,7 +570,7 @@ public class UserController extends BaseController {
 
 			Assert.hasText(userId, "用户ID为空");
 			Assert.hasText(trueName, "姓名不能为空");
-			Assert.hasText(mobile, "手机号码不能为空");
+			//Assert.hasText(mobile, "手机号码不能为空");
 			Assert.hasText(idnumber, "身份证不能为空");
 			Assert.hasText(sex, "性别不能为空");
 			Assert.hasText(banktype, "开卡行不能为空");
@@ -580,7 +580,7 @@ public class UserController extends BaseController {
 			// 用户信息
 			UserDo userDo = new UserDo();
 			userDo.setId(Integer.valueOf(userId));
-			userDo.setMobile(mobile);
+			//userDo.setMobile(mobile);
 			userDo.setTrueName(trueName);
 			userDo.setIdnumber(idnumber);
 			userDo.setSex(Integer.parseInt(sex));
