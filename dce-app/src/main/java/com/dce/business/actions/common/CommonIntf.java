@@ -2,6 +2,7 @@ package com.dce.business.actions.common;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,13 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
@@ -208,6 +212,78 @@ public class CommonIntf extends BaseController {
 		}
 		
 		return  Result.successResult("图片保存成功", resultMap);
+	}
+
+	/** 
+	 * 
+	 * @api {post} /commonIntf/uploadMultipartFile.do 上传MultipartFile文件 
+	 * @apiName uploadImg  
+	 * @apiGroup Common 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 上传图片接口,返回绝对路径,都是指定以png后辍结尾
+	 *  
+	 * @apiParam {String} fileData 文件数据流
+	 *  
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} filePath 文件保存的绝对路径 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	"model": {
+	 *		"filePath": "/upload/sc/images/20161227005210KOI5P4ew.png",
+	 *		"viewPath": "http://127.0.0.1:90/upload/sc/images/20161227005210KOI5P4ew.png"
+	 *	},
+	 *	"success": true,
+	 *	"errorMessage": null,
+	 *	"resultCode": 200
+	 *  }
+	 *   
+	 *  @apiError 305 对应<code>305</code> 图片保存失败  
+	 *  @apiUse ERROR_405
+	 */  
+	@RequestMapping(value = "uploadMultipartFile", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> fileUpload(@RequestParam("fileData") MultipartFile file, 
+			HttpServletRequest request) {
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (file != null && !file.isEmpty()) {
+			String originalFilename = file.getOriginalFilename();
+			logger.debug(originalFilename);
+
+			// 保存在项目的路径上
+			String savePath = uploadPath + "/app/images/";
+			File file1 = new File(savePath);
+			if (!file1.exists()) {
+				file1.mkdirs();
+			}
+
+			// 文件真实文件名
+			int fileSize = 5 * 1024 * 1204;
+			// 我们一般会根据某种命名规则对其进行重命名
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");// 设置日期格式
+			String date = df.format(new Date());
+			String saveFileName = "";
+			saveFileName = date + originalFilename;// 自定义文件名称
+
+			// 保存的文件dest File
+			File outFile = new File(saveFileName, file.getOriginalFilename());
+			logger.debug(outFile.getAbsolutePath());
+			try {
+				// 从缓存文件复制到目标文件
+				file.transferTo(outFile);
+
+				// 保存文件信息，返回ID
+				resultMap.put("filePath", savePath + saveFileName);
+				resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.debug(e);
+			}
+		}
+
+		return Result.successResult("图片保存成功", resultMap);
 	}
 
 }
