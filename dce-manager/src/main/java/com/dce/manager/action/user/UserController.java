@@ -285,6 +285,12 @@ public class UserController extends BaseAction {
 	public String edit(ModelMap model) {
 		String userId = getString("userId");
 		UserDo user = userService.getUser(Integer.parseInt(userId));
+		if(user.getRefereeid() != null) {
+			UserDo refUser = userService.getUser(user.getRefereeid());
+			if(refUser != null) {
+				user.setRefereeUserMobile(refUser.getMobile());
+			}
+		}
 		user.setUserPassword(DataDecrypt.decrypt(user.getUserPassword()));
 		user.setTwoPassword(DataDecrypt.decrypt(user.getTwoPassword()));
 		model.put("user", user);
@@ -325,6 +331,9 @@ public class UserController extends BaseAction {
 		logger.info("修改用户信息:banktype=" + banktype);
 
 		UserDo user = new UserDo();
+		user.setRefereeUserMobile(refereeUserMobile);
+		user.setId(Integer.parseInt(userId));
+		
 		if (StringUtils.isBlank(userId)) {
 			outPrint(response, JSON.toJSONString(Result.failureResult("请选择要修改的用户!")));
 			return;
@@ -355,16 +364,14 @@ public class UserController extends BaseAction {
 		if (StringUtils.isNotBlank(user.getRefereeUserMobile())) {
 
 			Map<String, Object> referrer = new HashMap<String, Object>();
-
 			referrer.put("refereeUserMobile", user.getRefereeUserMobile());
-
 			List<UserDo> refUserLst = this.userService.selectMobile(referrer);
 			if (refUserLst == null || refUserLst.size() < 1) {
 				outPrint(response, JSON.toJSONString(Result.failureResult("推荐人不存在！")));
+				return;
 			}
-			
-			
 			ref = refUserLst.get(0);
+			user.setRefereeid(ref.getId());
 		}
 
 		user.setTrueName(trueName);// 姓名
@@ -382,17 +389,8 @@ public class UserController extends BaseAction {
 		}
 
 		try {
-			user.setId(Integer.parseInt(userId));
-			Result<?> flag = Result.failureResult("信息修改失败!");
-			if (StringUtils.isNotBlank(userId)) {
-				flag = userService.update(user);
-			} else {
-				outPrint(response, JSON.toJSONString(Result.failureResult("用户不存在！")));
-				// Result.failureResult("用户不存在！");
-				// return ;
-			}
+			Result<?> flag =  userService.update(user);
 			logger.info("修改结果:" + JSON.toJSONString(flag));
-
 			outPrint(response, JSON.toJSONString(flag));
 		} catch (BusinessException e) {
 			logger.info("充值报错BusinessException:", e);
