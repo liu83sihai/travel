@@ -122,6 +122,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @apiParam {String} smsCode 手机验证码
 	 * @apiParam {String} userName 手机号码
+	 * @apiParam {String} mobile 手机号码
 	 * @apiParam {String} userPassword 登录密码
 	 * @apiParam {String} refereeUserMobile 用户推荐人，填写用户手机号
 	 * @apiParam {String} twoPassword 支付密码
