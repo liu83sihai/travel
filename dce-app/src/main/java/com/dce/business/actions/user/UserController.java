@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -61,10 +62,57 @@ public class UserController extends BaseController {
 	private ILoanDictService loanDictService;
 	@Resource
 	private UserAdressService addressService;
-	// @Resource
-	// private IReleaseService staticAwardService;
 	@Resource 
-	ISmsDao smsDao;
+	private ISmsDao smsDao;
+	@Value("${regUrl}")
+	private  String regUrl;
+	
+
+	
+	
+	/** 
+	 * @api {POST} /user/reg.do 用户分享二维码
+	 * @apiName getRegUrl
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 用户分享二维码
+	 * 
+	 * @apiParam {String} userId 用户id
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *    code: 1,
+	 *    msg: 'd',
+	 *    data:{"http://xxx.do?xx"}
+	 *	}
+	 */ 
+	@RequestMapping(value = "/getRegUrl", method = RequestMethod.POST)
+	public Result<?> getRegUrl( BindingResult bindingResult) {
+		String userId = getString("userId");
+		UserDo currentUser = userService.getUser(Integer.valueOf(userId));
+		if(currentUser == null) {
+			return Result.failureResult("请先登录");
+		}
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(regUrl).append("?referee=").append(currentUser.getUserName());
+		return Result.successResult("分享url", sb.toString());
+	}
+	
+
+	@RequestMapping(value = "/toReg", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView toReg() {
+        String refereeid = getString("referee");
+        ModelAndView mav = new ModelAndView("user/toReg");
+        mav.addObject("refereeid", refereeid);
+        return mav;
+    }
+	
+	
+	
 	/** 
 	 * @api {POST} /user/reg.do 用户注册
 	 * @apiName reg
