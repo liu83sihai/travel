@@ -670,24 +670,24 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		// 身份证号验证
-		if (userDo.getIdnumber() != null) {
-
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("idnumber", userDo.getIdnumber());
-
-			List<UserDo> user1 = userDao.selectUserCondition(map);
-
-			if (!user1.isEmpty()) {
-
-				System.err.println("用户id******" + user1.get(0).getId());
-				if (user1.get(0).getId() != userDo.getId()) {
-
-					return Result.failureResult("该身份证号已存在");
-
-				}
-			}
-
-		}
+//		if (userDo.getIdnumber() != null) {
+//
+//			Map<String, Object> map = new HashMap<String, Object>();
+//			map.put("idnumber", userDo.getIdnumber());
+//
+//			List<UserDo> user1 = userDao.selectUserCondition(map);
+//
+//			if (!user1.isEmpty()) {
+//
+//				System.err.println("用户id******" + user1.get(0).getId());
+//				if (user1.get(0).getId() != userDo.getId()) {
+//
+//					return Result.failureResult("该身份证号已存在");
+//
+//				}
+//			}
+//
+//		}
 
 		int flag = userDao.updateByPrimaryKeySelective(userDo);
 		if (flag > 0) {

@@ -217,10 +217,10 @@ public class CommonIntf extends BaseController {
 	/** 
 	 * 
 	 * @api {post} /commonIntf/uploadMultipartFile.do 上传MultipartFile文件 
-	 * @apiName uploadImg  
+	 * @apiName uploadMultipartFile  
 	 * @apiGroup Common 
 	 * @apiVersion 1.0.0 
-	 * @apiDescription 上传图片接口,返回绝对路径,都是指定以png后辍结尾
+	 * @apiDescription 上传图片接口,返回绝对路径
 	 *  
 	 * @apiParam {String} fileData 文件数据流
 	 *  
