@@ -125,15 +125,18 @@ function to_editaboutus(id){
 }
 
 function save_Aboutus(){
-	var formdata = $("#editAboutusForm").serialize();
-	console.info("formdata");
-	console.info(formdata);
+	var id =$("#editAboutusForm #id").val();
+    var url =$("#editAboutusForm #url").val();
+    var summarry =$("#editAboutusForm #summarry").val();
+    var aboutusBanner =$("#editAboutusForm #aboutusBanner").val();
+    var detailImg =$("#editAboutusForm #detailImg").val();
+	
 	var  url =httpUrl+"/aboutus/saveAboutus.html?&rand=" + Math.random();
 	 $.ajax({   
 		 type: 'POST',
 		 dataType: 'json',
 		 url: url,  
-		 data:$("#editAboutusForm").serialize(),
+		 data:{"id":id,"url":url,"summarry":summarry,"aboutusBanner":aboutusBanner,"detailImg":detailImg},
 		 success: function(data){ 
 			 if(data.code ==="0"){
 				 $("#editAboutusDiv").dialog("close");
@@ -147,10 +150,10 @@ function save_Aboutus(){
 }
 function to_deleteaboutus(id) {
 	if (!id) {
-		$.messager.alert("关于湘信", "id不能为空");
+		$.messager.alert("关于我们", "id不能为空");
 		return;
 	}
-	$.messager.confirm("关于湘信", "确认删除该选项吗，删除后不可恢复", function(r) {
+	$.messager.confirm("关于我们", "确认删除该选项吗，删除后不可恢复", function(r) {
 		if (r) {
 			$.ajax({
 				url : httpUrl + "/aboutus/deleteAboutUs.html?id=" + id,
@@ -158,10 +161,10 @@ function to_deleteaboutus(id) {
 				data : {},
 				success : function(data) {
 					if (data.ret == 1) {
-						$.messager.alert("关于湘信", "删除成功");
+						$.messager.alert( "删除成功");
 						$('#tableGrid').datagrid('reload');
 					} else {
-						$.messager.alert("关于湘信", "删除失败，请稍后再试");
+						$.messager.alert( "删除失败，请稍后再试");
 					}
 				}
 			});

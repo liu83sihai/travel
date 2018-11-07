@@ -28,6 +28,35 @@ public class AboutusDo  implements java.io.Serializable{
 	private java.lang.Integer id;
 	private java.lang.String url;
 	private Date createTime; // 订单创建之间
+    private String summarry;
+    private String aboutusBanner;
+    private String  detailImg;
+    
+    
+	public String getSummarry() {
+		return summarry;
+	}
+
+	public void setSummarry(String summarry) {
+		this.summarry = summarry;
+	}
+
+	public String getAboutusBanner() {
+		return aboutusBanner;
+	}
+
+	public void setAboutusBanner(String aboutusBanner) {
+		this.aboutusBanner = aboutusBanner;
+	}
+
+	public String getDetailImg() {
+		return detailImg;
+	}
+
+	public void setDetailImg(String detailImg) {
+		this.detailImg = detailImg;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}

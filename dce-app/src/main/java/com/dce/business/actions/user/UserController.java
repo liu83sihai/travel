@@ -71,7 +71,7 @@ public class UserController extends BaseController {
 	
 	
 	/** 
-	 * @api {POST} /user/reg.do 用户分享二维码
+	 * @api {POST} /user/getRegUrl.do 用户分享二维码
 	 * @apiName getRegUrl
 	 * @apiGroup user 
 	 * @apiVersion 1.0.0 

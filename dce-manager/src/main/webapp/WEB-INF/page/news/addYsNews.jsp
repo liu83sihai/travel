@@ -17,6 +17,7 @@
 		
 			<table width="100%" border="0" align="center" cellpadding="3">			  
 					<input type="hidden" id="id" name="id" value="${ysnews.id}"/>
+					<%--
 					<tr>	
 						<td align="right">
 							<label for="name">标题</label>
@@ -33,9 +34,9 @@
 								<input type="text" id="content" name="content" value="${ysnews.content}"/>												
 						</td>						   
 					</tr>
+					 --%>
 					
-					
-					<%-- <tr>	
+					 <tr>	
 						<td align="right">
 							<label for="name">标题</label>
 						</td>	

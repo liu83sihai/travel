@@ -6,6 +6,9 @@
 		<result property="id" column="id" jdbcType="INTEGER"/>
 		<result property="url" column="url" jdbcType="VARCHAR"/>
 		<result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+		<result property="summarry" column="summarry" jdbcType="VARCHAR"/>
+		<result property="aboutusBanner" column="aboutusBanner" jdbcType="VARCHAR"/>
+		<result property="detailImg" column="detailImg" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<select id="getById" parameterType="INTEGER" resultMap="aboutusResultMap">
@@ -29,17 +32,27 @@
 	
 	<update id="updateAboutusById" parameterType="aboutusDo">
 		UPDATE aboutus 
-		   SET 		<if test="url != null">  
-				url = #{url}
-		</if>		
-
+		<trim prefix="set" suffixOverrides=","> 		
+		   <if test="url != null">  
+				url = #{url},
+		  </if>
+		  <if test="summarry != null">  
+				summarry = #{summarry}
+		  </if>	
+		  <if test="aboutusBanner != null">  
+				aboutusBanner = #{aboutusBanner}
+		  </if>	
+		  <if test="detailImg != null">  
+				detailImg = #{detailImg}
+		  </if>	
+		</trim>
 		WHERE id = #{id}
 	</update>	
 	
 	<insert id="addAboutus" parameterType="aboutusDo" keyProperty="id"
 		useGeneratedKeys="true" >
-		INSERT INTO aboutus(url)
-		     VALUES (#{url});
+		INSERT INTO aboutus(url,summarry,aboutusBanner,detailImg)
+		     VALUES (#{url}，#{summarry},#{aboutusBanner},#{detailImg});
 	</insert>
 	
 	<delete id="deleteById" parameterType="INTEGER" >
