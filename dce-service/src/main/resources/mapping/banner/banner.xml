@@ -17,6 +17,8 @@
 		<result property="modifyName" column="modify_name" />
 		<result property="status" column="status" />
 		<result property="remark" column="remark" />
+		<result property="goodsId" column="goodsId" />
+		<result property="goodsName" column="goodsName" />
 	</resultMap>
 
 	<select id="getById" parameterType="int" resultMap="bannerResultMap">
@@ -164,6 +166,12 @@
 		</if>				
 		<if test="remark != null">  
 				remark = #{remark},
+		</if>
+		<if test="goodsId != null">  
+				goodsId = #{goodsId},
+		</if>
+		<if test="goodsName != null">  
+				goodsName = #{goodsName},
 		</if>				
 		</trim>
 		WHERE id = #{id} 
@@ -183,7 +191,7 @@
 		,modify_date
 		,modify_name
 		,status
-		,remark
+		,remark,goodsId,goodsName
 )
 		     VALUES (		#{icoName}
 		,#{icoImage}
@@ -198,6 +206,9 @@
 		,#{modifyName}
 		,#{status}
 		,#{remark}
+		,#{goodsId}
+		,#{goodsName}
+		
 )
 	</insert>
 	

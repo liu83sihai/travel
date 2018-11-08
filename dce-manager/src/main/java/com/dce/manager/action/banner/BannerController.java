@@ -1,53 +1,36 @@
 
 package com.dce.manager.action.banner;
 
-import java.util.Map;
-
-import java.text.SimpleDateFormat;
 import java.io.File;
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.ui.Model;
+import com.dce.business.common.exception.BusinessException;
+import com.dce.business.common.result.Result;
+import com.dce.business.entity.banner.BannerDo;
 import com.dce.business.entity.page.NewPagination;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.page.PageDoUtil;
-import com.dce.business.common.result.Result;
-
-import com.dce.business.common.exception.BusinessException;
+import com.dce.business.service.banner.IBannerService;
 import com.dce.manager.action.BaseAction;
 import com.dce.manager.util.ResponseUtils;
-
-import com.dce.business.service.banner.IBannerService;
-import com.dce.business.entity.banner.BannerDo;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 
 @Controller
@@ -63,6 +46,10 @@ public class BannerController extends BaseAction{
 	
 	@Value("#{sysconfig['readImgUrl']}")
 	private String readImgUrl;
+	
+	@Value("#{sysconfig['goodsDetailUrl']}")
+	private String goodsDetailUrl;
+	
 	/**
      * 去列表页面
      * @param model
@@ -134,36 +121,18 @@ public class BannerController extends BaseAction{
      */
     @RequestMapping("/saveBanner")
     @ResponseBody
-    public void saveBanner(BannerDo bannerDo, @RequestParam(value = "icoImages", required = false)  CommonsMultipartFile  files,
-    							  HttpServletRequest request, 
-    							  HttpServletResponse response) {
-        logger.info("----saveBanner2------");
-        if(files != null ){
-        	MultipartFile icoImage = files;
-			if (!icoImage.isEmpty()) {
-				try {
-					// 文件保存路径
-					String filePath =  "/" + icoImage.getOriginalFilename();
-					logger.debug(uploadPath);
-
-					// 转存文件
-					icoImage.transferTo(new File(uploadPath +filePath));
-
-					// 定死大小 不会根据比列压缩
-					//Thumbnails.of(filePath).size(200, 300).keepAspectRatio(false).toFile(filePath);
-
-					// 存数据库
-					bannerDo.setIcoImage(getReadImgUrl(filePath,readImgUrl));
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
-		}
+    public void saveBanner(BannerDo bannerDo, 
+						  HttpServletRequest request, 
+						  HttpServletResponse response) {
+        
         try{
             Integer id = bannerDo.getId();
             Long userId = new Long(this.getUserId());
+            
+            StringBuffer sb  = new StringBuffer();
+    		sb.append(goodsDetailUrl).append("?goodsId=").append(bannerDo.getGoodsId()).append("&page=goods");
+            bannerDo.setLinkValue(sb.toString());
+            
             int i = 0;
             if (id != null && id.intValue()>0) {
             	 bannerDo.setModifyName(this.getUserName() + ":" + userId);

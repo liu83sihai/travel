@@ -207,4 +207,10 @@ public interface IUserService {
 
 	PageDo<UserDo> getUserDistrictPage(Map<String, Object> param, PageDo<UserDo> page);
 
+	/**
+	 * 购买之后成为vip
+	 * @param userDo
+	 */
+	int updateUserByBuy(UserDo userDo);
+
 }

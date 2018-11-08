@@ -2036,17 +2036,32 @@
 	<!-- 自定义方法 -->
 	<update id="updateLevel" parameterType="com.dce.business.entity.user.UserDo">
 		update ct_user
-		<set>
+		<trim prefix="set" suffixOverrides=",">
 			<if test="userLevel != null">
 				user_level = #{userLevel,jdbcType=TINYINT},
 			</if>
 			<if test="district !=null">
-				district=#{district,jdbcType=VARCHAR}
+				district=#{district,jdbcType=VARCHAR},
 			</if>
-		</set>
+		</trim>
 		where id = #{id,jdbcType=INTEGER}
 
 	</update>
+	
+	<update id="updateUserByBuy" parameterType="com.dce.business.entity.user.UserDo">
+		update ct_user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userLevel != null">
+				user_level = #{userLevel},
+			</if>
+			<if test="status !=null">
+				status=#{status},
+			</if>
+		</trim>
+		where id = #{id} and user_level &lt;  #{userLevel}
+
+	</update>
+	
 	<select id="selectDistrictPage" parameterType="com.dce.business.entity.user.UserDo"
 		resultMap="BaseResultMap">
 		<![CDATA[

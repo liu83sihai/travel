@@ -85,7 +85,7 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 			userDo.setId(buyer.getId());
 			userDo.setStatus((byte)0);
 			userDo.setUserLevel((byte)1);//vip
-			userService.update(userDo );
+			userService.updateUserByBuy(userDo );
 		}
 
 		//送199 积分

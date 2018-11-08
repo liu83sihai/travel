@@ -908,4 +908,9 @@ public class UserServiceImpl implements IUserService {
 	public List<Map<String,Object>> shareList(Map<String,Object> map){
 		return userDao.shareList(map);
 	}
+
+	@Override
+	public int updateUserByBuy(UserDo userDo) {
+		return userDao.updateUserByBuy(userDo);
+	}
 }

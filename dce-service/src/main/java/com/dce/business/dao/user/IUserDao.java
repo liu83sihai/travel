@@ -147,4 +147,11 @@ public interface IUserDao {
 	 */
 	int updateLevel(UserDo record);
 
+	/**
+	 * 购买之后升级
+	 * @param userDo
+	 * @return
+	 */
+	int updateUserByBuy(UserDo userDo);
+
 }

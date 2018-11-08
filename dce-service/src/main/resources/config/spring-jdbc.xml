@@ -72,15 +72,7 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     
-    <bean id="awardService" class="com.dce.business.service.impl.award.AwardServiceImpl">
-        <property name="awardCalculatorList">
-            <list>
-                <ref bean="buyerAwardCalculator" />
-                <ref bean="refereeAwardCalculator" />
-                <ref bean="refereeUpgrade" />
-            </list>
-        </property>
-    </bean>
+    
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	<!-- ================The data source configuration end ============================== -->
 	

@@ -44,6 +44,8 @@ public class BannerController {
 	 * @apiSuccess {String} msg 返回成功信息
 	 * @apiSuccess {String} code 返回成功编码
 	 *	@apiSuccess {java.lang.Integer}  id id
+	 *  @apiSuccess {java.lang.Integer}  goodsId 商品id
+	 *  @apiSuccess {java.lang.Integer}  goodsName 商品名称
 	 *	@apiSuccess {java.lang.String}  icoName 图标名称
 	 *	@apiSuccess {java.lang.String}  icoImage 图片
 	 *	@apiSuccess {java.lang.Integer}  icoType 图标类型（1:banner图,2:导航小图标）

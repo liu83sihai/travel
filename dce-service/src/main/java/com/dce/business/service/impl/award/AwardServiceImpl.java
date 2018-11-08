@@ -6,6 +6,11 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -16,9 +21,13 @@ import com.dce.business.service.award.IAwardService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserService;
 
-public class AwardServiceImpl implements IAwardService {
+@Component("awardService")
+public class AwardServiceImpl implements IAwardService,InitializingBean, ApplicationContextAware  {
 
+	private static ApplicationContext applicationContext;
+	
 	private final static Logger logger = LoggerFactory.getLogger(AwardServiceImpl.class);
+	
 
 	private List<IAwardCalculator> awardCalculatorList;
 	
@@ -65,6 +74,28 @@ public class AwardServiceImpl implements IAwardService {
 			orderService.updateOrder(order);
 		}
 		logger.info("计算奖励结束 购买者ID:"+buyUserId+" 订单id"+orderId);
+	}
+
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		IAwardCalculator buyerCalc = (IAwardCalculator)applicationContext.getBean("buyerAwardCalculator");
+		IAwardCalculator refCalc =   (IAwardCalculator)applicationContext.getBean("refereeAwardCalculator");
+		IAwardCalculator upgradeCalc = (IAwardCalculator)applicationContext.getBean("refereeUpgrade");
+		System.out.println("======================================buyerCalc:"+buyerCalc.getClass());
+		System.out.println("======================================refCalc:"+refCalc.getClass());
+		System.out.println("======================================upgradeCalc:"+upgradeCalc.getClass());
+		
+		awardCalculatorList.add(buyerCalc);
+		awardCalculatorList.add(refCalc);
+		awardCalculatorList.add(upgradeCalc);
+	}
+
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;		
 	}
 
 }

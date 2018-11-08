@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.choose.ICommonChooseDao">
+	
+	<select id="getChooseGoodsPage" parameterType="map" resultType="Map">
+		SELECT goodsId AS id , title AS `name` FROM ct_goods 
+		<trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="searchName != null">  
+				AND title like CONCAT('%',#{searchName},'%')
+			</if>			
+         </trim> 
+	</select>
+	
+		
+	
+</mapper>
+

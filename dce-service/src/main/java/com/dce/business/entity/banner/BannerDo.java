@@ -26,6 +26,10 @@ public class BannerDo  implements java.io.Serializable{
 	private java.lang.Integer status;
 	private java.lang.String remark;
 	
+	//banner关联商品
+	private String goodsId;
+	private String goodsName;
+	
 
 
 	public void setId(java.lang.Integer id) {
@@ -154,6 +158,22 @@ public class BannerDo  implements java.io.Serializable{
 	}
 	
 	
+
+	public String getGoodsId() {
+		return goodsId;
+	}
+
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
+	}
+
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
 
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
