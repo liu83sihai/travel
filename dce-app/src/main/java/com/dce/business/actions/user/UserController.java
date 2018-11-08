@@ -90,7 +90,7 @@ public class UserController extends BaseController {
 	 *	}
 	 */ 
 	@RequestMapping(value = "/getRegUrl", method = {RequestMethod.POST,RequestMethod.GET})
-	public Result<?> getRegUrl( BindingResult bindingResult) {
+	public Result<?> getRegUrl() {
 		String userId = getString("userId");
 		UserDo currentUser = userService.getUser(Integer.valueOf(userId));
 		if(currentUser == null) {
