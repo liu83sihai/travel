@@ -1,5 +1,6 @@
 package com.dce.business.service.impl.award;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -85,7 +86,7 @@ public class AwardServiceImpl implements IAwardService,InitializingBean, Applica
 		System.out.println("======================================buyerCalc:"+buyerCalc.getClass());
 		System.out.println("======================================refCalc:"+refCalc.getClass());
 		System.out.println("======================================upgradeCalc:"+upgradeCalc.getClass());
-		
+		awardCalculatorList = new ArrayList<IAwardCalculator>();
 		awardCalculatorList.add(buyerCalc);
 		awardCalculatorList.add(refCalc);
 		awardCalculatorList.add(upgradeCalc);
