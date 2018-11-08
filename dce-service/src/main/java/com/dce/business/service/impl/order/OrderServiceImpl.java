@@ -412,12 +412,34 @@ public class OrderServiceImpl implements IOrderService {
 		// 维护订单地址
 		Integer orderAddressId = mainOrderAddress(order);
 		order.setAddressid(orderAddressId);
+		
+		//支付检查
+		//boolean isOk = checkPay(chooseGoodsLst);
+		
 		// 若传过来的订单id为空，则重新生成订单
 		if (order.getOrderid() == null) {
 			return this.createOrderToPay(payLst,chooseGoodsLst, order, request, response);
 		}else {
 			return this.updateOrderToPay(payLst,chooseGoodsLst, order, request, response);
 		}
+	}
+
+	
+	private boolean checkPay(List<OrderDetail> chooseGoodsLst) {
+		if(chooseGoodsLst == null){
+			return false;
+		}
+		for(OrderDetail orderDetail : chooseGoodsLst){
+			Integer goodsId = orderDetail.getGoodsId();
+			CTGoodsDo ctGoods = ctGoodsService.selectById(Long.valueOf(goodsId));
+			//积分商品
+			if( ctGoods.getGoodsFlag().intValue() == 2 || ctGoods.getGoodsFlag().intValue() == 3 ){
+				if(ctGoods.getShopCatId1().intValue() == 1){
+					//只能积分支付
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

@@ -647,10 +647,13 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		// 用户状态验证
-		if (user.getCertification() == 1) {
-
-			return Result.failureResult("该用户已认证");
-		}
+		/**
+		 * 2018-11-08 暂时放开
+		 */
+//		if (user.getCertification() == 1) {
+//
+//			return Result.failureResult("该用户已认证");
+//		}
 
 		// 手机号验证
 		if (userDo.getMobile() != null) {
