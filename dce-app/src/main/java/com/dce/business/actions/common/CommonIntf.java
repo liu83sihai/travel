@@ -94,7 +94,7 @@ public class CommonIntf extends BaseController {
 	 * }
 	* @apiUse ERROR_405
      */  
-	@RequestMapping(value = "/sendMessage", method = RequestMethod.GET)
+	@RequestMapping(value = "/sendMessage", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Result<?> sendMessage(String mobile,String page) {
 		Assert.hasText(mobile, "请输入手机号");
