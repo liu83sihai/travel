@@ -11,10 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.aboutUs.AboutusDo;
+import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.service.aboutUs.IAboutusService;
 
 @RestController
@@ -58,5 +61,22 @@ public class AboutUsController {
 		 map.put("url",aboutUs.get(0).getUrl());
 		 return Result.successResult("查询成功", map);
 	 }
+	 
+	 @RequestMapping(value = "/aboutusDetail", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView aboutusDetail() {
+        ModelAndView mav = new ModelAndView("aboutus/aboutusDetail");
+        List<AboutusDo> aboutUsLst = aboutusService.getAllAboutUs();
+        AboutusDo aboutUs = aboutUsLst.get(0);
+        
+        if(StringUtils.isNotBlank(aboutUs.getAboutusBanner())){
+        	mav.addObject("bannerImgs", aboutUs.getAboutusBanner().split(","));
+        }
+        if(StringUtils.isNotBlank(aboutUs.getDetailImg())){
+        	mav.addObject("detailImgs", aboutUs.getDetailImg().split(","));
+        }
+        mav.addObject("aboutus", aboutUs);
+        return mav;
+    }
+	 
 
 }

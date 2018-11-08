@@ -17,25 +17,6 @@
 		
 			<table width="100%" border="0" align="center" cellpadding="3">			  
 					<input type="hidden" id="id" name="id" value="${ysnews.id}"/>
-					<%--
-					<tr>	
-						<td align="right">
-							<label for="name">标题</label>
-						</td>	
-						<td>
-								<input type="text" id="title" name="title" value="${ysnews.title}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">新闻地址</label>
-						</td>	
-						<td>
-								<input type="text" id="content" name="content" value="${ysnews.content}"/>												
-						</td>						   
-					</tr>
-					 --%>
-					
 					 <tr>	
 						<td align="right">
 							<label for="name">标题</label>
@@ -44,14 +25,16 @@
 								<input type="text" id="title" name="title" value="${ysnews.title}"/>												
 						</td>						   
 					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">图片</label>
-						</td>	
+					<tr>
+						<td align="right"><label for="name">列表小图：</label></td>
 						<td>
-								<input type="file" id="image" name="image"/>												
-						</td>						   
+							<input type="file" id="imageFileObj" name="imageFileObj"/>
+							<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('imageFileObj','image');" />
+							<input type="hidden" id="image" name="image" value="${ysnews.image}"/>
+							<input type="button" onclick="cleanImg('image');" value="清除原图"/>
+						</td>
 					</tr>
+				
 					<tr>	
 						<td align="right">
 							<label for="name">内容</label>
@@ -86,8 +69,9 @@
 						<td>
 						<textarea rows="5" cols="20" id="remark" name="remark" >${ysnews.remark}</textarea>
 						</td>						   
-					</tr> --%>
-					<%-- <tr>	
+					</tr>
+					
+					<tr>	
 						<td align="right">
 							<label for="name">状态</label>
 						</td>	
@@ -97,86 +81,63 @@
 									<option value="1" <c:if test="${ysnews.status==1}">selected="selected"</c:if>>发布</option>
 							</select>
 						</td>						   
-					</tr> --%>
-					<%-- <tr>	
-						<td align="right">
-							<label for="name">创建日期</label>
-						</td>	
-						<td>
-								<input type="text" 
-								id="createDate" 
-								name="createDate" 
-								value="<fmt:formatDate value="${ysnews.createDate}" pattern="yyyy-MM-dd"/>"
-								class="easyui-datebox" size="14" data-options="editable : true"  
-								/>
-						</td>						   
-					</tr> --%>
-					<%-- <tr>	
-						<td align="right">
-							<label for="name">创建人</label>
-						</td>	
-						<td>
-								<input type="text" id="createName" name="createName" value="${ysnews.createName}"/>												
-						</td>						   
-					</tr> --%>
-					
-					<%-- <tr>	
-						<td align="right">
-							<label for="name">修改日期</label>
-						</td>	
-						<td>
-								<input type="text" 
-								id="updateDate" 
-								name="updateDate" 
-								value="<fmt:formatDate value="${ysnews.updateDate}" pattern="yyyy-MM-dd"/>"
-								class="easyui-datebox" size="14" data-options="editable : true"  
-								/>
-						</td>						   
-					</tr> --%>
-					<%-- <tr>	
-						<td align="right">
-							<label for="name">修改人</label>
-						</td>	
-						<td>
-								<input type="text" id="updateName" name="updateName" value="${ysnews.updateName}"/>												
-						</td>						   
-					</tr> --%>
-		
-				<!-- <tr>
-					<td colspan="2">
-						<input id="submitButton" name="submitButton" type="button" onclick="ysnews_submit();"  value="提交" />	
-					</td>
-				<tr>	 -->		 
+					</tr>
 			</table>	   
 		</div>	
 	</form>
-	<script type="text/javascript">
-		
-    function ysnews_submit(){
-    	alert( $("#editYsNewsForm").serialize());
-    	$.ajax({ 
-    			url: "<c:url value='/ysnews/saveYsNews.html'/>", 
-    			data: $("#editYsNewsForm").serialize(),
-    			type:"post",
-    			dataType:"json",
-    			success: function(ret){
-    	   	 		if(ret.code==="0"){
-    	   	 			$.messager.confirm("保存成功",
-    	   	 				           '是否继续添加？', 
-    	   	 				           function(r){
-						   	   			   if(r==false){
-						   	   				$("#editYsNewsDiv").dialog("close");
-						   	   			   }
-    	   						});
-    	   	 		}else{
-    	   	 			$.messager.alert("error",ret.msg);
-    	   	 		}
-    	      	}
-    	        });
-    }
 	
-</script>
-
+	<script type="text/javascript"	src="<c:url value='/js/ajax-fileupload.js?'/>v=${jsversion}"></script>
+	
+	<script type="text/javascript">
+	 function cleanImg(imgFieldName){
+		 $("#"+imgFieldName).val("");
+		 alert("已清除");
+	 }
+	
+	 function ajaxFileUpload(fileInputObj,urlObj) {
+        $.ajaxFileUpload
+        (
+            {
+                url: '<c:url value="/upload/imgUpload.html"/>', //用于文件上传的服务器端请求地址
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: fileInputObj, //文件上传域的ID
+                dataType: 'json', //返回值类型 一般设置为json
+                async:false,
+                success: function (data, status)  //服务器成功响应处理函数
+                {
+                    var urlVal = $("#"+urlObj).val();
+                    if(urlVal == ""){
+                    	urlVal = data.url;
+                    }else{
+	                    urlVal = urlVal+","+data.url;
+                    }
+                    $("#"+urlObj).val(urlVal);
+                    $("#imgDiv").append("<img style='width: 300px; height: 300px; align: center' src='"+data.url+"'>");
+                    if (typeof (data.error) != 'undefined') {
+                        if (data.error != '') {
+                            alert(data.error);
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (data, status, e)//服务器响应失败处理函数
+                {
+                    alert(e);
+                }
+            }
+        )
+        return false;
+    }
+	</script>
+	
+	<div align="center" id="imgDiv">
+		<c:if test="${not empty ysnews.image }">
+			<img style="width: 300px; height: 300px; align: center" id="img"
+				src="${ysnews.image}">
+		</c:if>
+	</div>
+	
 </body>
 
 </html>

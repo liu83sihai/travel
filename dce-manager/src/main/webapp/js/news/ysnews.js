@@ -56,39 +56,28 @@ $(function() {
 				title : "标题",
 				width : 180,
 				align : "center"
-			},
-			{
-				field : "content",
-				title : "新闻地址",
-				width : 180,
-				align : "center"
-			},
-			/*
-			 * { field : "content", title : "内容", width : 180, align : "center" }, {
-			 * field : "author", title : "作者", width : 180, align : "center" }, {
-			 * field : "topNews", title : "置顶新闻", width : 180, align : "center",
-			 * formatter : function(value, row, index) { if (row.topNews == "0") {
-			 * return "未置顶"; } else if (row.topNews == "1") { return "已置顶"; } } }, {
-			 * field : "remark", title : "备注", width : 180, align : "center" },
-			 */
-			/*
-			 * { field : "status", title : "状态", width : 180, align : "center",
-			 * formatter : function(value, row, index) { if (row.status == "0") {
-			 * return "未发布"; } else if (row.status == "1") { return "已发布"; } } },
-			 */
+			},			
+			{ field : "content", title : "内容简介", width : 180, align : "center" },
+			{ field : "author", title : "作者", width : 180, align : "center" }, 
+			{ field : "topNews", title : "置顶新闻", width : 180, align : "center",
+			  formatter : function(value, row, index) { 
+				  	if (row.topNews == "0") {
+				  			return "未置顶";  } 
+				  	else if (row.topNews == "1") {
+				  		return "已置顶"; } }
+			}, 
+			{field : "remark", title : "app显示地址", width : 180, align : "center" },
+			{ field : "status", title : "状态", width : 180, align : "center",
+			 formatter : function(value, row, index) { if (row.status == "0") {
+			  return "未发布"; } else if (row.status == "1") { return "已发布"; } } 
+			},			 
 			{
 				field : "createDate",
 				title : "创建日期",
 				width : 180,
 				align : "center",
 				formatter : dateTimeFormatter
-			},
-			// {field:"createName",title:"创建人",width:180,align:"center"},
-			/*
-			 * { field : "updateDate", title : "修改日期", width : 180, align :
-			 * "center", formatter : dateTimeFormatter },
-			 */
-			// {field:"updateName",title:"修改人",width:180,align:"center"},
+			},			
 			{
 				field : "操作",
 				title : "操作",
@@ -193,49 +182,25 @@ function to_editysNews(id) {
  * 保存更新
  */
 function save_YsNews() {
-	/*
-	 * var formdata = $("#editYsNewsForm").serialize();
-	 * console.info("formdata"); console.info(formdata);
-	 */
 
 	var object = new FormData();
 
 	// 获取表单数据
 	var id = document.getElementById("id").value;
 	var title = $("#editYsNewsForm #title").val();
-	// var file = document.getElementById("image").files[0];
+	var image = $("#editYsNewsForm #image").val();
 	var content = $("#editYsNewsForm #content").val();
-	/*
-	 * var author = document.getElementById("author").value; var topNews =
-	 * $("#editYsNewsForm #topNews").combobox('getValue'); var remark =
-	 * document.getElementById("remark").value; //var status =
-	 * $("#editYsNewsForm #status").combobox('getValue'); // var
-	 * createDate=$("#editYsNewsForm #createDate").datebox('getValue'); var
-	 * createName = $("#editYsNewsForm #createName").val(); // var
-	 * updateDate=$("#editYsNewsForm #updateDate").datebox('getValue'); var
-	 * updateName = $("#editYsNewsForm #updateName").val();
-	 */
+	var author = document.getElementById("author").value; 
+	var topNews = $("#editYsNewsForm #topNews").combobox('getValue'); 
+	var remark = document.getElementById("remark").value; 
+	var status = $("#editYsNewsForm #status").combobox('getValue');
 
 	if ($.isEmptyObject(title)) {
 		$.messager.alert("提示", "新闻标题不能为空");
 		return;
-	} else if ($.isEmptyObject(content)) {
-		$.messager.alert("提示", "地址不能为空");
-		return;
-	} /*
-		 * else if ($.isEmptyObject(author)) { $.messager.alert("提示", "作者不能为空");
-		 * return; }
-		 */
-	/*
-	 * else if($.isEmptyObject(createName)){ $.messager.alert("提示","创建人不能为空");
-	 * return false; }
-	 */
+	} 
 
-	// 校验上传的是否是图片
-	/*
-	 * if($.isEmptyObject(file)){ checkType(); }
-	 */
-
+	
 	// 校验姓名
 	// checkName(author);
 	/*
@@ -247,25 +212,16 @@ function save_YsNews() {
 	 * return; }
 	 */
 
-	/*
-	 * alert("id---->>" + id + "---title---" + title + "----file--" + file +
-	 * "---content---" + content + "---author----" + author + "----topNews----" +
-	 * topNews + "----remark---" + remark + "----status---" + status +
-	 * "----createDate---");
-	 */
+
 
 	object.append("id", id);
 	object.append("title", title);
 	object.append("content", content);
-	/*
-	 * object.append("content", content); object.append("author", author);
-	 * object.append("topNews", topNews); object.append("remark", remark);
-	 */
-	// object.append("status", status);
-	// object.append("createDate",createDate);
-	// object.append("createName",createName);
-	// object.append("updateDate",updateDate);
-	// object.append("updateName",updateName);
+	object.append("author", author);
+	object.append("topNews", topNews); 
+	object.append("remark", remark);
+	object.append("status", status);
+	object.append("image", image);
 	var url = httpUrl + "/ysnews/saveYsNews.html?&rand=" + Math.random();
 	$.ajax({
 		type : 'POST',

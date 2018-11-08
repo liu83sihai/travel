@@ -31,8 +31,17 @@ public class AboutusDo  implements java.io.Serializable{
     private String summarry;
     private String aboutusBanner;
     private String  detailImg;
+    private String title;
     
     
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getSummarry() {
 		return summarry;
 	}

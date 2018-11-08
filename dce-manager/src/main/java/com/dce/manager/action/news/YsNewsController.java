@@ -147,37 +147,16 @@ public class YsNewsController extends BaseAction {
 	 */
 	@RequestMapping("/saveYsNews")
 	@ResponseBody
-	public void saveYsNews(NewsDo ysnewsDo, @RequestParam(value = "file", required = false) MultipartFile file,
-			HttpServletRequest request, HttpServletResponse response) {
+	public void saveYsNews(NewsDo ysnewsDo, HttpServletRequest request, HttpServletResponse response) {
 
-		logger.info("----saveYsNews---------" + file);
-		String filePath="";
-		if (file != null) {
-			if (!file.isEmpty()) {
-				try {
-					// 文件保存路径
-					String imgFilePath = fileServerService.saveFileNoThumb(file.getInputStream(), file.getOriginalFilename());
-					// 存数据库
-					ysnewsDo.setImage(this.getReadImgUrl(imgFilePath,readImgUrl));
-				} catch (IllegalStateException | IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-		}
 		try {
 			Integer id = ysnewsDo.getId();
-			//String img = ysnewsDo.getImage();
-
 			Assert.hasText(ysnewsDo.getTitle(), "标题不能为空");
-			Assert.hasText(ysnewsDo.getContent(), "地址不能为空");
-			//Assert.hasText(ysnewsDo.getCreateName(), "创建人不能为空");
+			Assert.hasText(ysnewsDo.getImage(), "图片不能为空");
 
-			System.err.println("id---->>" + id);
 			int i = 0;
+			ysnewsDo.setUpdateDate(new Date());
 			if (id != null && id.intValue() > 0) {
-				//ysnewsDo.setUpdateDate(new Date());
-				//Assert.hasText(ysnewsDo.getUpdateName(), "修改人不能为空");
 				i = ysNewsService.updateYsNewsById(ysnewsDo);
 			} else {
 				ysnewsDo.setCreateDate(new Date());
@@ -189,8 +168,6 @@ public class YsNewsController extends BaseAction {
 				return;
 			}
 			outPrint(response, this.toJSONString(Result.successResult("操作成功")));
-			
-			
 			
 		} catch (Exception e) {
 			logger.error("保存更新失败", e);
@@ -208,7 +185,7 @@ public class YsNewsController extends BaseAction {
 	 */
 	@RequestMapping(value = "/img", method = {RequestMethod.GET})
 	
-	public void saveGoods(HttpServletRequest request,HttpServletResponse response) throws IOException {
+	public void img(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		ServletOutputStream out = null;
 		FileInputStream ips = null;
 		try {

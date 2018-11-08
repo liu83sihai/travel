@@ -37,13 +37,13 @@
 				url = #{url},
 		  </if>
 		  <if test="summarry != null">  
-				summarry = #{summarry}
+				summarry = #{summarry},
 		  </if>	
 		  <if test="aboutusBanner != null">  
-				aboutusBanner = #{aboutusBanner}
+				aboutusBanner = #{aboutusBanner},
 		  </if>	
 		  <if test="detailImg != null">  
-				detailImg = #{detailImg}
+				detailImg = #{detailImg},
 		  </if>	
 		</trim>
 		WHERE id = #{id}

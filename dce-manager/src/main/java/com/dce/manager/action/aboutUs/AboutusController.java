@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -52,10 +53,10 @@ import com.dce.manager.util.ResponseUtils;
 @Controller
 @RequestMapping("/aboutus")
 public class AboutusController extends BaseAction{
-	//默认多列排序,example: username desc,createTime asc
-	//protected static final String DEFAULT_SORT_COLUMNS = null; 
 	@Resource
 	private IAboutusService aboutusService;
+	@Value("#{sysconfig['aboutusUrl']}")
+	private String aboutusUrl;
 
 	/**
      * 去列表页面
@@ -125,6 +126,9 @@ public class AboutusController extends BaseAction{
         logger.info("----saveAboutus------");
         try{
             Integer id = aboutusDo.getId();
+            
+            //访问地址
+            aboutusDo.setUrl(aboutusUrl);
             int i = 0;
             if (id != null && id.intValue()>0) {
                 i = aboutusService.updateAboutusById(aboutusDo);
