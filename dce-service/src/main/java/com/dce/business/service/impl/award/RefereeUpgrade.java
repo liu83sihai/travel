@@ -59,7 +59,7 @@ public class RefereeUpgrade implements IAwardCalculator {
 	 */
 	@Override
 	public void doAward(UserDo buyer, Order order) {
-		
+		logger.warn("开始升级计算"+order);
 		UserDo refUser = userService.getUser(buyer.getRefereeid());
 		if(refUser == null){
 			return;
@@ -125,6 +125,7 @@ public class RefereeUpgrade implements IAwardCalculator {
 		user.setId(buyer.getRefereeid());
 		user.setUserLevel(upgradeLevel);
 		userService.updateUserByBuy(user);
+		logger.warn("结束升级计算"+order);
 	}
 
 	

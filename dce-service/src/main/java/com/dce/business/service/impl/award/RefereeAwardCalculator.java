@@ -66,7 +66,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	 */
 	@Override
 	public void doAward(UserDo buyer, Order order) {
-
+		logger.warn("开始计算推荐人奖励"+order);
 		if(order.getProfit() == null || BigDecimal.ZERO.compareTo(order.getProfit()) == 0) {
 			logger.warn("订单利润等于0 不计算分润"+order.getOrderid());
 			return;
@@ -162,6 +162,9 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
 			}
 		}
+		
+		logger.warn("结束计算推荐人奖励"+order);
+		
 	}
 
 	private UserDo[] buildRefUser(List<UserRefereeDo> refArray) {
