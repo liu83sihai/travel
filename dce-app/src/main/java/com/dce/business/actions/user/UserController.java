@@ -329,7 +329,7 @@ public class UserController extends BaseController {
 
 		Assert.hasText(userName, "请输入用户名");
 
-		List<UserDo> list = userService.list(userName);
+		List<UserDo> list = userService.searchLikeUserName(userName);
 
 		return Result.successResult("查询成功", list);
 	}

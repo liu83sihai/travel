@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import com.dce.business.common.enums.AccountType;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements IUserService {
 	public UserDo userName(String userName) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("userName", userName);
-		List<UserDo> list = userDao.selectUser(params);
+		List<UserDo> list = userDao.selectUserCondition(params);
 
 		if (CollectionUtils.isEmpty(list)) {
 			return null;
@@ -242,10 +243,12 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public List<UserDo> list(String userName) {
+	public List<UserDo> searchLikeUserName(String userName) {
+		Assert.hasText(userName, "请输入用户名");
+		
 		Map<String, Object> params = new HashMap<>();
 		params.put("userName", userName);
-		return userDao.list(params);
+		return userDao.searchLikeUserName(params);
 	}
 
 	@Override
@@ -290,10 +293,6 @@ public class UserServiceImpl implements IUserService {
 		userDao.updateTouched(params);
 	}
 
-	@Override
-	public List<UserDo> selectUser(Map<String, Object> params) {
-		return userDao.selectUser(params);
-	}
 
 	/**
 	 * 支付密码
@@ -336,81 +335,7 @@ public class UserServiceImpl implements IUserService {
 		}
 	}
 
-	/**
-	 * 此方法注释，重写， 2018-07-08
-	 */
-	/*
-	 * @SuppressWarnings("unchecked")
-	 * 
-	 * @Override public List<Map<String, Object>> listMyOrg(Integer userId,int
-	 * level) { List<Map<String, Object>> ret =
-	 * userParentDao.listMyOrg(userId,level); if(CollectionUtils.isEmpty(ret)){
-	 * return Collections.EMPTY_LIST; }
-	 * 
-	 * BigDecimal leftPerformance = BigDecimal.ZERO; BigDecimal rightPerformance
-	 * = BigDecimal.ZERO;
-	 * 
-	 * //填充左右业绩 for(Map<String,Object> m : ret){ Long recordUserId =
-	 * (Long)m.get("id");
-	 * 
-	 * calPerformance(recordUserId, m);
-	 * 
-	 * //统计root节点左右业绩 if(Integer.parseInt(m.get("id").toString()) !=
-	 * userId.intValue() && "2".equals(m.get("lr_district").toString())){ //右区
-	 * 
-	 * rightPerformance = rightPerformance.add((BigDecimal) m.get("lr_amount"));
-	 * rightPerformance = rightPerformance.add((BigDecimal) m.get("lf_amount"));
-	 * rightPerformance = rightPerformance.add((BigDecimal)
-	 * m.get("baodan_amount")).setScale(2, RoundingMode.HALF_DOWN); }
-	 * if(Integer.parseInt(m.get("id").toString()) != userId.intValue() &&
-	 * "1".equals(m.get("lr_district").toString())){ //左区
-	 * 
-	 * leftPerformance = leftPerformance.add((BigDecimal) m.get("lr_amount"));
-	 * leftPerformance = leftPerformance.add((BigDecimal) m.get("lf_amount"));
-	 * leftPerformance = leftPerformance.add((BigDecimal)
-	 * m.get("baodan_amount")).setScale(2, RoundingMode.HALF_DOWN); } }
-	 * 
-	 * 
-	 * for(Map<String,Object> m : ret){ Long recordUserId = (Long)m.get("id");
-	 * 
-	 * if(recordUserId.intValue() == userId.intValue()){ m.put("lf_amount",
-	 * leftPerformance); m.put("lr_amount", rightPerformance); break; } } return
-	 * ret; }
-	 * 
-	 * 
-	 * private void calPerformance(Long userId, Map<String, Object> m) {
-	 * BigDecimal todayPerformance = BigDecimal.ZERO; BigDecimal
-	 * totalPerformance = BigDecimal.ZERO; BigDecimal leftPerformance =
-	 * BigDecimal.ZERO; BigDecimal rightPerformance = BigDecimal.ZERO;
-	 * BigDecimal todayLeftPerformance = BigDecimal.ZERO; BigDecimal
-	 * todayRightPerformance = BigDecimal.ZERO; try { //总业绩 TouchBonusRecordDo
-	 * touchBonusRecordDo =
-	 * touchBonusRecordDao.getUserTouchBonusRecord(userId.intValue()); if
-	 * (touchBonusRecordDo != null) { if (touchBonusRecordDo.getBalanceLeft() !=
-	 * null) { totalPerformance =
-	 * totalPerformance.add(touchBonusRecordDo.getBalanceLeft());
-	 * leftPerformance =
-	 * leftPerformance.add(touchBonusRecordDo.getBalanceLeft()); } if
-	 * (touchBonusRecordDo.getBalanceRight() != null) { totalPerformance =
-	 * totalPerformance.add(touchBonusRecordDo.getBalanceRight());
-	 * rightPerformance =
-	 * rightPerformance.add(touchBonusRecordDo.getBalanceRight()); } }
-	 * 
-	 * //当日业绩 PerformanceDailyDo performanceDailyDo =
-	 * performanceDailyService.getPerformanceDaily(userId.intValue(), new
-	 * Date()); if (performanceDailyDo != null) { if
-	 * (performanceDailyDo.getBalance() != null) { todayPerformance =
-	 * todayPerformance.add(performanceDailyDo.getBalance()); } if
-	 * (performanceDailyDo.getBalance_left() != null) { todayLeftPerformance =
-	 * todayLeftPerformance.add(performanceDailyDo.getBalance_left()); } if
-	 * (performanceDailyDo.getBalance_right() != null) { todayRightPerformance =
-	 * todayRightPerformance.add(performanceDailyDo.getBalance_right()); } } }
-	 * catch (Exception e) { logger.error("统计总业绩异常：", e); }
-	 * m.put("today_performance", todayPerformance); m.put("total_performance",
-	 * totalPerformance); m.put("lf_amount", leftPerformance);
-	 * m.put("lr_amount", rightPerformance); m.put("today_lf_amount",
-	 * todayLeftPerformance); m.put("today_lr_amount", todayRightPerformance); }
-	 */
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Map<String, Object>> listMyOrg(Integer userId, int level) {
@@ -500,59 +425,7 @@ public class UserServiceImpl implements IUserService {
 		m.put("today_performance", totalPerformance); // 总业绩
 	}
 
-	// private void calPerformance(Long userId, Map<String, Object> m) {
-	// BigDecimal todayPerformance = BigDecimal.ZERO;
-	// BigDecimal totalPerformance = BigDecimal.ZERO;
-	// BigDecimal leftPerformance = BigDecimal.ZERO;
-	// BigDecimal rightPerformance = BigDecimal.ZERO;
-	// BigDecimal todayLeftPerformance = BigDecimal.ZERO;
-	// BigDecimal todayRightPerformance = BigDecimal.ZERO;
-	// try {
-	// //总业绩
-	// TouchBonusRecordDo touchBonusRecordDo =
-	// touchBonusRecordDao.getUserTouchBonusRecord(userId.intValue());
-	// if (touchBonusRecordDo != null) {
-	// if (touchBonusRecordDo.getBalanceLeft() != null) {
-	// totalPerformance =
-	// totalPerformance.add(touchBonusRecordDo.getBalanceLeft());
-	// leftPerformance =
-	// leftPerformance.add(touchBonusRecordDo.getBalanceLeft());
-	// }
-	// if (touchBonusRecordDo.getBalanceRight() != null) {
-	// totalPerformance =
-	// totalPerformance.add(touchBonusRecordDo.getBalanceRight());
-	// rightPerformance =
-	// rightPerformance.add(touchBonusRecordDo.getBalanceRight());
-	// }
-	// }
-	//
-	// //当日业绩
-	// PerformanceDailyDo performanceDailyDo =
-	// performanceDailyService.getPerformanceDaily(userId.intValue(), new
-	// Date());
-	// if (performanceDailyDo != null) {
-	// if (performanceDailyDo.getBalance() != null) {
-	// todayPerformance = todayPerformance.add(performanceDailyDo.getBalance());
-	// }
-	// if (performanceDailyDo.getBalance_left() != null) {
-	// todayLeftPerformance =
-	// todayLeftPerformance.add(performanceDailyDo.getBalance_left());
-	// }
-	// if (performanceDailyDo.getBalance_right() != null) {
-	// todayRightPerformance =
-	// todayRightPerformance.add(performanceDailyDo.getBalance_right());
-	// }
-	// }
-	// } catch (Exception e) {
-	// logger.error("统计总业绩异常：", e);
-	// }
-	// m.put("today_performance", todayPerformance);
-	// m.put("total_performance", totalPerformance);
-	// m.put("lf_amount", leftPerformance);
-	// m.put("lr_amount", rightPerformance);
-	// m.put("today_lf_amount", todayLeftPerformance);
-	// m.put("today_lr_amount", todayRightPerformance);
-	// }
+	
 
 	@Override
 	public List<Map<String, Object>> listMyRef(Integer userId, int startRow, int pageSize) {
@@ -573,7 +446,7 @@ public class UserServiceImpl implements IUserService {
 	public Result<?> setUserLevel(String userCode, String userLevel) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userName", userCode);
-		List<UserDo> users = userDao.selectUser(params);
+		List<UserDo> users = userDao.selectUserCondition(params);
 		if (CollectionUtils.isEmpty(users)) {
 			throw new BusinessException("用户" + userCode + "不存在");
 		}
@@ -874,7 +747,7 @@ public class UserServiceImpl implements IUserService {
 	public int updateUserDistrict(UserDo user) {
 		int i = 0;
 		if (user != null && user.getDistrict() != null) {
-			i = userDao.updateLevel(user);
+			i = userDao.updateByPrimaryKey(user);
 			District district = new District();
 			district.setUserId(user.getId());
 			District oldDistrict = districtService.selectByPrimaryKeySelective(district);

@@ -72,15 +72,7 @@ public interface IUserDao {
 	 */
 	List<UserDo> selectMobile(Map<String, Object> params);
 
-	/**
-	 * 查询所有用户名（手机号）
-	 * 
-	 * @param params
-	 * @return
-	 */
-	List<UserDo> selectUser(Map<String, Object> params);
-
-	List<UserDo> list(Map<String, Object> params);
+	List<UserDo> searchLikeUserName(Map<String, Object> params);
 
 	void updateStatic(Map<String, Object> params);
 
@@ -142,10 +134,6 @@ public interface IUserDao {
 	List<Map<String,Object>> shareList(Map<String,Object> map);
 	
 	
-	/**
-	 * 修改有用戶等级方法
-	 */
-	int updateLevel(UserDo record);
 
 	/**
 	 * 购买之后升级

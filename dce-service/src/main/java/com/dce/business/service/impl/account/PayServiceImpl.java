@@ -404,7 +404,7 @@ public class PayServiceImpl implements IPayService {
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("userName", receiver);
-		List<UserDo> receiverList = userDao.selectUser(params);
+		List<UserDo> receiverList = userDao.selectUserCondition(params);
 		if (CollectionUtils.isEmpty(receiverList)) {
 			return Result.failureResult("未查询到接收人");
 		}

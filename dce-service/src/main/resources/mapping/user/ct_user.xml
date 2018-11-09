@@ -1532,44 +1532,18 @@
 		<!-- where id = #{id,jdbcType=INTEGER} -->
 	</update>
 
-	<!-- 自定义查询 -->
-	<select id="selectUser" parameterType="java.util.Map" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from ct_user u
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="userName != null">
-				AND u.user_name = #{userName}
-			</if>
-			<if test="parentid != null">
-				AND u.parentid = #{parentid}
-			</if>
-		</trim>
-	</select>
+	
 
 	<!-- 查询所有电话号码 -->
-	<select id="selectMobile" parameterType="java.util.Map"
-		resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from ct_user u
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="mobile != null">
-				AND u.mobile = #{mobile}
-			</if>
-
-		</trim>
+	<select id="selectMobile" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from ct_user u where u.mobile = #{mobile}
 	</select>
 
 	<!-- identity VARCHAR isActivated INT certification INT district VARCHAR -->
-	<select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
+	<select id="searchLikeUserName" parameterType="java.util.Map" resultMap="BaseResultMap">
 		select id, user_name
 		from ct_user
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="userName != null">
-				AND user_name like concat('', #{userName}, '%')
-			</if>
-		</trim>
+		where  user_name like concat('', #{userName}, '%')
 		limit 10
 	</select>
 
@@ -2033,20 +2007,7 @@
 		</trim>
 	</select>
 
-	<!-- 自定义方法 -->
-	<update id="updateLevel" parameterType="com.dce.business.entity.user.UserDo">
-		update ct_user
-		<trim prefix="set" suffixOverrides=",">
-			<if test="userLevel != null">
-				user_level = #{userLevel,jdbcType=TINYINT},
-			</if>
-			<if test="district !=null">
-				district=#{district,jdbcType=VARCHAR},
-			</if>
-		</trim>
-		where id = #{id,jdbcType=INTEGER}
-
-	</update>
+	
 	
 	<update id="updateUserByBuy" parameterType="com.dce.business.entity.user.UserDo">
 		update ct_user

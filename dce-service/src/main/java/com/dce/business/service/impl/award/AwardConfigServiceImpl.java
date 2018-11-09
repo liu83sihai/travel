@@ -288,7 +288,7 @@ public class AwardConfigServiceImpl implements AwardConfigService {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("userLevel", 3);
 					map.put("refereeid", userid);
-					List<UserDo> listuser = userDao.selectUser(map);
+					List<UserDo> listuser = userDao.selectUserCondition(map);
 					if (listuser.size() >= 5) {
 						UserDo updatauser = new UserDo();
 						// 推荐人升级为股东
@@ -380,7 +380,7 @@ public class AwardConfigServiceImpl implements AwardConfigService {
 			// 判断该地区是否有区域代表
 			Map<String, Object> map = new HashMap<>();
 			map.put("district", area);
-			List<UserDo> userLst = userDao.selectUser(map);
+			List<UserDo> userLst = userDao.selectUserCondition(map);
 
 			if (userLst != null && userLst.size() == 1) {
 

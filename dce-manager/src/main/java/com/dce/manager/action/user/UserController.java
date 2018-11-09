@@ -171,7 +171,7 @@ public class UserController extends BaseAction {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userName", userName);
-		List<UserDo> list = userService.selectUser(params);
+		List<UserDo> list = userService.selectUserCondition(params);
 		if (CollectionUtils.isEmpty(list)) {
 			outPrint(response, JSON.toJSONString(Result.failureResult("用户不存在!")));
 			return;
@@ -343,7 +343,7 @@ public class UserController extends BaseAction {
 		// 新增或编辑重复的用户名
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userName", userName);
-		List<UserDo> list = userService.selectUser(params);
+		List<UserDo> list = userService.selectUserCondition(params);
 		if (CollectionUtils.isEmpty(list)) {
 			outPrint(response, JSON.toJSONString(Result.failureResult("用户不存在!")));
 			return;
@@ -366,7 +366,7 @@ public class UserController extends BaseAction {
 		if (StringUtils.isNotBlank(user.getRefereeUserMobile())) {
 
 			Map<String, Object> referrer = new HashMap<String, Object>();
-			referrer.put("refereeUserMobile", user.getRefereeUserMobile());
+			referrer.put("mobile", user.getRefereeUserMobile());
 			List<UserDo> refUserLst = this.userService.selectMobile(referrer);
 			if (refUserLst == null || refUserLst.size() < 1) {
 				outPrint(response, JSON.toJSONString(Result.failureResult("推荐人不存在！")));
@@ -514,7 +514,7 @@ public class UserController extends BaseAction {
 			Long time = System.currentTimeMillis();
 
 			Map<String, Object> params = new HashMap<String, Object>();
-			List<UserDo> userLst = userService.selectUser(params);
+			List<UserDo> userLst = userService.selectUserCondition(params);
 
 			String excelHead = "数据导出";
 			String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());

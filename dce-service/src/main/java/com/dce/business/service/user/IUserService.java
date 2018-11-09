@@ -57,7 +57,7 @@ public interface IUserService {
 	 * @param userName
 	 * @return
 	 */
-	List<UserDo> list(String userName);
+	List<UserDo> searchLikeUserName(String userName);
 
 	/**
 	 * 更新用户的总释放静态
@@ -82,14 +82,6 @@ public interface IUserService {
 	 * @param userId
 	 */
 	void updateTouched(BigDecimal touchedAmount, int userId);
-
-	/**
-	 * 修改用户等级
-	 * 
-	 * @param params
-	 * @return
-	 */
-	List<UserDo> selectUser(Map<String, Object> params);
 
 	/**
 	 * 用户登录密码修改
