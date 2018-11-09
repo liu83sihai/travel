@@ -186,13 +186,7 @@ public interface IUserService {
 	 */
 	List<UserDo> selectUserCondition(Map<String, Object> map);
 	
-	/**
-	 * 
-	 * 单独修改用户等级方法
-	 * @return
-	 */
 	
-	boolean updateLevel(UserDo record);
 	
 	
 	/**

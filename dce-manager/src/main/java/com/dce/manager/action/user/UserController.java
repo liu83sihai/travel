@@ -331,7 +331,9 @@ public class UserController extends BaseAction {
 		logger.info("修改用户信息:banktype=" + banktype);
 
 		UserDo user = new UserDo();
-		user.setRefereeUserMobile(refereeUserMobile);
+		if(StringUtils.isNotBlank(refereeUserMobile)){
+			user.setRefereeUserMobile(refereeUserMobile);
+		}
 		user.setId(Integer.parseInt(userId));
 		
 		if (StringUtils.isBlank(userId)) {
@@ -370,6 +372,10 @@ public class UserController extends BaseAction {
 				outPrint(response, JSON.toJSONString(Result.failureResult("推荐人不存在！")));
 				return;
 			}
+			if(refUserLst.size()>1){
+				outPrint(response, JSON.toJSONString(Result.failureResult("查出多个推荐人！")));
+				return;
+			}
 			ref = refUserLst.get(0);
 			user.setRefereeid(ref.getId());
 		}
@@ -378,7 +384,6 @@ public class UserController extends BaseAction {
 		user.setMobile(mobile); // 手机号
 		user.setUserPassword(DataEncrypt.encrypt(userPassword));// 登录密码
 		user.setTwoPassword(DataEncrypt.encrypt(twoPassword));// 支付密码
-		// user.setRefereeUserMobile(refereeUserMobile);// 推荐人
 		user.setIdnumber(idnumber);// 身份证
 		user.setBanknumber(banknumber);// 银行卡号
 		user.setBanktype(banktype);// 开户行
