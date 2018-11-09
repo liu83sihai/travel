@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
@@ -241,13 +244,21 @@ public class CommonIntf extends BaseController {
 	 *  @apiError 305 对应<code>305</code> 图片保存失败  
 	 *  @apiUse ERROR_405
 	 */  
-	@RequestMapping(value = "uploadMultipartFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadMultipartFile", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> fileUpload(@RequestParam("fileData") MultipartFile file, 
+	public Result<?> fileUpload( 
 			HttpServletRequest request) {
-
+		MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request; 
+		MultipartFile file = multipartRequest.getFile("fileData");//file是页面input的name名 
+		
+	
+		MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext()); 
+		
+		
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		if (file != null && !file.isEmpty()) {
+//		if (file != null && !file.isEmpty()) {
+		if (resolver.isMultipart(request)) {
 			String originalFilename = file.getOriginalFilename();
 			logger.debug(originalFilename);
 
