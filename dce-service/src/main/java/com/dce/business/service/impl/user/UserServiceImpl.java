@@ -232,6 +232,9 @@ public class UserServiceImpl implements IUserService {
 		userRefereeDo.setRefereeid(refereeId);
 		userRefereeDo.setDistance(1); // 直接推荐人
 		userRefereeDao.insertSelective(userRefereeDo);
+		
+		//增加推荐人推荐数
+		userDao.addRefereeNumber(refereeId);
 
 		// 3、间接推荐人
 		Map<String, Object> params = new HashMap<>();// userid
