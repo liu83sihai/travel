@@ -41,14 +41,17 @@
 								<input type="text" id="content" name="content" value="${activity.content}"/>												
 						</td>						   
 					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">图片</label>
-						</td>	
+					
+					<tr>
+						<td align="right"><label for="name">列表小图：</label></td>
 						<td>
-								<input type="text" id="images" name="images" value="${activity.images}"/>												
-						</td>						   
+							<input type="file" id="imagesFileObj" name="imagesFileObj"/>
+							<input type="button" value="上传" id="btn_upload" onclick="ajaxFileUpload('imagesFileObj','images');" />
+							<input type="hidden" id="images" name="images" value="${activity.images}"/>
+							<input type="button" onclick="cleanImg('images');" value="清除原图"/>
+						</td>
 					</tr>
+				
 					<tr>	
 						<td align="right">
 							<label for="name">点赞数</label>
@@ -102,7 +105,16 @@
 							<label for="name">状态</label>
 						</td>	
 						<td>
-								<input type="text" id="status" name="status" value="${activity.status}"/>												
+								<input type="text" id="status" name="status" value="${activity.status}"/>
+								
+								<select id="status" class="easyui-combobox"
+									style="width: 150px;">
+										<option value="0"
+											<c:if test="${activity.status==0}">selected="selected"</c:if>>删除</option>
+										<option value="1"
+											<c:if test="${activity.status==1}">selected="selected"</c:if>>发布</option>
+								</select>
+																	
 						</td>						   
 					</tr>
 					<tr>	
@@ -117,6 +129,57 @@
 		</div>	
 	</form>
 
+
+<script type="text/javascript"	src="<c:url value='/js/ajax-fileupload.js?'/>v=${jsversion}"></script>
+	
+<script type="text/javascript">
+
+function cleanImg(imgFieldName){
+	$("#"+imgFieldName).val("");
+	alert("已清除");
+}
+
+function ajaxFileUpload(fileInputObj,urlObj) {
+      $.ajaxFileUpload
+      (
+          {
+              url: '<c:url value="/upload/imgUpload.html"/>', //用于文件上传的服务器端请求地址
+              secureuri: false, //是否需要安全协议，一般设置为false
+              fileElementId: fileInputObj, //文件上传域的ID
+              dataType: 'json', //返回值类型 一般设置为json
+              async:false,
+              success: function (data, status)  //服务器成功响应处理函数
+              {
+                  var urlVal = $("#"+urlObj).val();
+                  if(urlVal == ""){
+                  	urlVal = data.url;
+                  }else{
+                   urlVal = urlVal+","+data.url;
+                  }
+                  $("#"+urlObj).val(urlVal);
+                  $("#imgDiv").append("<img style='width: 300px; height: 300px; align: center' src='"+data.url+"'>");
+                  if (typeof (data.error) != 'undefined') {
+                      if (data.error != '') {
+                          alert(data.error);
+                      } else {
+                          alert(data.message);
+                      }
+                  }
+              },
+              error: function (data, status, e)//服务器响应失败处理函数
+              {
+                  alert(e);
+              }
+          }
+      )
+      return false;
+ }
+</script>
+	
+<div align="center" id="imgDiv">
+	<img style="width: 300px; height: 300px; align: center" id="img" src="">
+</div>
+	
 </body>
 
 </html>

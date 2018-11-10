@@ -127,15 +127,13 @@ public class ActivityController extends BaseAction{
             Integer id = activityDo.getId();
             Long userId = new Long(this.getUserId());
             
+            //关联前台ct_user用户
+            activityDo.setUserId(1);
+            
             int i = 0;
             if (id != null && id.intValue()>0) {
-            	 //activityDo.setModifyName(this.getUserName() + ":" + userId);
-            	//activityDo.setModifyDate(new Date(System.currentTimeMillis()));;
                 i = activityService.updateActivityById(activityDo);
             } else {
-//				activityDo.setCreateName(this.getUserName() + ":" + userId);
-//				activityDo.setCreateDate(new Date(System.currentTimeMillis()));
-//				activityDo.setStatus(1);
                 i = activityService.addActivity(activityDo);
             }
 

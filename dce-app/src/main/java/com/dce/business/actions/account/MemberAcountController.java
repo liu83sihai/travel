@@ -29,6 +29,7 @@ import com.dce.business.entity.user.UserParentDo;
 import com.dce.business.service.grade.IGradeService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserParentService;
+import com.dce.business.service.user.IUserRefereeService;
 import com.dce.business.service.user.IUserService;
 
 /**
@@ -50,6 +51,10 @@ public class MemberAcountController extends BaseController {
 
 	@Resource
 	private IUserParentService userParentService;
+	
+	@Resource
+	private IUserRefereeService userRefereeService;
+	
 	@Resource
 	private IGradeService gradeService;
 
@@ -117,68 +122,55 @@ public class MemberAcountController extends BaseController {
 	public Result<Map<String, Object>> teamDetails() {
 
 		int userId = getUserId();
-
 		Assert.hasText("userId", "用户为空");
 
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put("userId", userId);
 
 		logger.info("用户id----->>" + userId);
-
 		UserDo userdo = userService.getUser(userId);
-
 		if (userdo == null) {
-
 			return Result.failureResult("用户不存在");
-
 		}
-
-		List<Map<String, Object>> list = userParentService.TeamDetails(params);
-
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		List<UserDo> refUserList = userRefereeService.selectRefUserByUserLevel(userId, 1);
 		Map<String, Object> map1 = new HashMap<String, Object>();
 
 		List<Object> listone = new ArrayList<>();
-		System.out.println("团员--------》》" + list);
-		String level = "";
+		System.out.println("团员--------》》" + refUserList);
 		try {
-			for (int j = 0; j <= 6; j++) {
+			for (int j = 0; j <= 7; j++) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				List<Map<String, Object>> maplist = new ArrayList<>();
-
-				Map<String, Object> param = new HashMap<String, Object>();
-				param.put("grade_mark", j);
-
+				List<Map> maplist = new ArrayList<Map>();
 				map.put("user_level", UserDo.getUserLevelName(j));
-
-				for (int i = 0; i < list.size(); i++) {
-
-					if (list.get(i).get("user_level").equals(j)) {
-						maplist.add(list.get(i));
+				for (int i = 0; i < refUserList.size(); i++) {
+					if (refUserList.get(i).getUserLevel().intValue() ==j) {
+						Map<String,Object> person = new HashMap<String,Object>();
+						person.put("true_name", refUserList.get(i).getTrueName());
+						person.put("user_name", refUserList.get(i).getUserName());
+						person.put("mobile", refUserList.get(i).getMobile());
+						person.put("refereeid", refUserList.get(i).getRefereeid());
+						person.put("id", refUserList.get(i).getId());
+						maplist.add(person);
 					}
-					System.out.println("级别-------》》》" + list);
 				}
 				map.put("user", maplist);
 				listone.add(map);
-
 			}
+			
 			map1.put("tuanduilist", listone);
-
+			
 			if (orderService.selectSum(params) == null) {
-
 				map1.put("totalYJ", "0");
 			} else {
-
 				map1.put("totalYJ", orderService.selectSum(params).get("Totalperformance"));
 			}
 
 		} catch (IllegalArgumentException t) {
-			// TODO Auto-generated catch block
 			t.printStackTrace();
 			return Result.failureResult(t.getMessage());
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Result.failureResult("查询失败");
 		}
@@ -192,7 +184,6 @@ public class MemberAcountController extends BaseController {
 		Integer userId = getUserId();
 		String price = getString("price");
 		String qty = getString("qty");
-		// String password = getString("password");
 		logger.info("会员充值, userId:" + userId + "; price:" + price + "; qty:" + qty);
 		Assert.hasText(price, "买入价格不能为空");
 		Assert.hasText(qty, "买入数量不能为空");
