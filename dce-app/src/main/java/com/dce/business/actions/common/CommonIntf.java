@@ -185,7 +185,8 @@ public class CommonIntf extends BaseController {
 	
 	           
 			//保存在项目的路径上
-			String savePath =uploadPath +  "/app/images/";
+	        String  filePath ="/app/images/";
+			String savePath =uploadPath +  filePath;
 			File file1 = new File(savePath);
 			if (!file1.exists()) {
 				file1.mkdirs();
@@ -208,7 +209,7 @@ public class CommonIntf extends BaseController {
 			
 			
 			resultMap.put("filePath", savePath + saveFileName);
-			resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+			resultMap.put("viewPath", readImgUrl + "?filePath=" + filePath + saveFileName);
 			
 		} catch (Exception e) {
 			logger.info("save file error " ,e);

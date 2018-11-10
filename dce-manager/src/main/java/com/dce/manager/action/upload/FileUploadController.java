@@ -73,7 +73,6 @@ public class FileUploadController extends BaseAction {
 			String imgFilePath = fileServerService.saveFileNoThumb(imgFile.getInputStream(), imgFile.getOriginalFilename());
 
 			// 文件保存服务器 和 文件保存数据库
-
 			if (StringUtils.isNotBlank(imgFilePath)) {
 				resultMap.put("error", 0);
 				resultMap.put("imgPath", imgFilePath);
