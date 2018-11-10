@@ -74,14 +74,6 @@
 					</tr>
 					<tr>	
 						<td align="right">
-							<label for="name">创建人</label>
-						</td>	
-						<td>
-								<input type="text" id="createName" name="createName" value="${activity.createName}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
 							<label for="name">更新时间</label>
 						</td>	
 						<td>
@@ -94,25 +86,16 @@
 					</tr>
 					<tr>	
 						<td align="right">
-							<label for="name">更新人</label>
-						</td>	
-						<td>
-								<input type="text" id="modifyName" name="modifyName" value="${activity.modifyName}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
 							<label for="name">状态</label>
 						</td>	
 						<td>
-								<input type="text" id="status" name="status" value="${activity.status}"/>
-								
 								<select id="status" class="easyui-combobox"
 									style="width: 150px;">
+									<option value="1"
+											<c:if test="${activity.status==1}">selected="selected"</c:if>>发布</option>
 										<option value="0"
 											<c:if test="${activity.status==0}">selected="selected"</c:if>>删除</option>
-										<option value="1"
-											<c:if test="${activity.status==1}">selected="selected"</c:if>>发布</option>
+										
 								</select>
 																	
 						</td>						   
