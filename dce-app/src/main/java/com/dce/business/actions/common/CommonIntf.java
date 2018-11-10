@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,10 +32,13 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
+import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.ImageUrlUtil;
 import com.dce.business.dao.sms.ISmsDao;
 import com.dce.business.entity.sms.SmsDo;
 
+import net.sf.json.JSONSerializer;
 import sun.misc.BASE64Decoder;
 
 
@@ -295,6 +300,89 @@ public class CommonIntf extends BaseController {
 		}
 
 		return Result.successResult("图片保存成功", resultMap);
+	}
+	
+	/** 
+	 * 
+	 * @api {post} /commonIntf/imgUpload.do 上传MultipartFile文件 
+	 * @apiName imgUpload  
+	 * @apiGroup Common 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 上传图片接口,返回绝对路径
+	 *  
+	 * @apiParam {String} fileData 文件数据流
+	 *  
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} filePath 文件保存的绝对路径 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	"model": {
+	 *		"filePath": "/upload/sc/images/20161227005210KOI5P4ew.png",
+	 *		"viewPath": "http://127.0.0.1:90/upload/sc/images/20161227005210KOI5P4ew.png"
+	 *	},
+	 *	"success": true,
+	 *	"errorMessage": null,
+	 *	"resultCode": 200
+	 *  }
+	 *   
+	 *  @apiError 305 对应<code>305</code> 图片保存失败  
+	 *  @apiUse ERROR_405
+	 */  
+	@RequestMapping(value = "/imgUpload")
+	@ResponseBody
+	public Result<?> imgUpload(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("error", 1);
+		resultMap.put("message", "上传图片失败！");
+		try {
+			
+			MultipartFile imgFile = null; 
+			if (request instanceof MultipartHttpServletRequest) {
+		            MultipartHttpServletRequest multipartHttpRequest = (MultipartHttpServletRequest) request;
+		            Map<String, MultipartFile> multFileMap = multipartHttpRequest.getFileMap();
+		            Iterator it = multFileMap.values().iterator();
+		            imgFile = (MultipartFile)it.next();
+			 }
+		
+			
+//			String imgFilePath = fileServerService.saveFileNoThumb(imgFile.getInputStream(), imgFile.getOriginalFilename());
+			String savePath = uploadPath + "/app/images/";
+			// 文件保存服务器 和 文件保存数据库
+			if (StringUtils.isNotBlank(savePath)) {
+				resultMap.put("error", 0);
+//				resultMap.put("imgPath", savePath);
+//				resultMap.put("fileName", imgFile.getOriginalFilename());
+				
+				String saveFileName = imgFile.getOriginalFilename();
+				File outFile = new File(savePath, imgFile.getOriginalFilename());
+				logger.debug(outFile.getAbsolutePath());
+				try {
+					// 从缓存文件复制到目标文件
+					imgFile.transferTo(outFile);
+
+					// 保存文件信息，返回ID
+					resultMap.put("filePath", savePath + saveFileName);
+					resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.debug(e);
+				}
+				resultMap.put("message","上传图片成功");
+//				log.info("保存结果成功.....");
+				return Result.successResult("图片保存成功", resultMap);
+			} else {
+				return Result.successResult("图片保存成功", resultMap);
+			}
+		} catch (BusinessException e) {
+			resultMap.put("message", e);
+			return Result.failureResult("发送失败!");
+		} catch (Exception e) {
+			resultMap.put("message", e);
+			return Result.failureResult("发送失败!");
+		}
 	}
 
 }
