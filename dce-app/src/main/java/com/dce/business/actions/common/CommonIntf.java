@@ -174,11 +174,9 @@ public class CommonIntf extends BaseController {
 		
 		try {
 	        // 去掉头部
-			System.out.println("imgeFile:" + imgeFile);
 			int zmHeaderLength = imgeFile.indexOf(";base64,") + ";base64,".length();
 	        String fileContext = imgeFile.substring(zmHeaderLength);
 	        fileContext = fileContext.replace("&#43;", "+");
-	        System.out.println("fileContext:" + fileContext);
 	        BASE64Decoder decoder = new BASE64Decoder();
 	
 	        byte[] decodedBytes = decoder.decodeBuffer(fileContext);
