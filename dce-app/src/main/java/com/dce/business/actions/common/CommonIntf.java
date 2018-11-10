@@ -304,13 +304,11 @@ public class CommonIntf extends BaseController {
 	
 	/** 
 	 * 
-	 * @api {post} /commonIntf/imgUpload.do 上传MultipartFile文件 
+	 * @api {post} /commonIntf/imgUpload.do MultipartFile文件不带参
 	 * @apiName imgUpload  
 	 * @apiGroup Common 
 	 * @apiVersion 1.0.0 
-	 * @apiDescription 上传图片接口,返回绝对路径
-	 *  
-	 * @apiParam {String} fileData 文件数据流
+	 * @apiDescription  MultipartFile文件不带参
 	 *  
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccess {String} filePath 文件保存的绝对路径 

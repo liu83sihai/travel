@@ -38,6 +38,13 @@
         </property>
     </bean>
     
+    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器指定所上传文件的总大小不能超过200M。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="400000000" />
+	</bean>
+    
+    
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
         <property name="properties" ref="sysconfig" />
         <property name="ignoreUnresolvablePlaceholders" value="true" />
