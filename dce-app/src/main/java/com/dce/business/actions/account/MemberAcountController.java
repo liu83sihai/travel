@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.dce.business.common.util.OrderCodeUtil;
 import com.dce.business.entity.order.OrderDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserParentDo;
+import com.dce.business.entity.user.UserRefereeDo;
 import com.dce.business.service.grade.IGradeService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserParentService;
@@ -132,29 +134,42 @@ public class MemberAcountController extends BaseController {
 		}
 		
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userId", userId);
-		List<UserDo> refUserList = userRefereeService.selectRefUserByUserLevel(userId, 1);
+		params.put("refereeid", userId);
+		params.put("distance", 1);
+		List<UserRefereeDo> refUserLst = userRefereeService.select(params);
 		Map<String, Object> map1 = new HashMap<String, Object>();
 
 		List<Object> listone = new ArrayList<>();
-		System.out.println("团员--------》》" + refUserList);
 		try {
+			//按级别分类
+			Map<Byte,List> levelMap = new HashMap<Byte,List>();
+			for (UserRefereeDo refUser :refUserLst ) {
+				UserDo myUser = userService.getUser(refUser.getUserid());
+				if(null == myUser) {
+					continue;
+				}
+				List<Map<String,Object>> levelLst = levelMap.get(myUser.getUserLevel());
+				if(null == levelLst) {
+					levelLst = new ArrayList<Map<String,Object>>();
+					levelMap.put(myUser.getUserLevel(), levelLst);
+				}
+				Map<String,Object> person = new HashMap<String,Object>();
+				person.put("true_name", myUser.getTrueName());
+				person.put("user_name", myUser.getUserName());
+				person.put("mobile", myUser.getMobile());
+				person.put("refereeid", myUser.getRefereeid());
+				person.put("user_level", myUser.getUserLevel());
+				person.put("id", myUser.getId());
+				levelLst.add(person);
+			}
+			
+			// 0-7级
 			for (int j = 0; j <= 7; j++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				List<Map> maplist = new ArrayList<Map>();
 				map.put("user_level", UserDo.getUserLevelName(j));
-				for (int i = 0; i < refUserList.size(); i++) {
-					if (refUserList.get(i).getUserLevel().intValue() ==j) {
-						Map<String,Object> person = new HashMap<String,Object>();
-						person.put("true_name", refUserList.get(i).getTrueName());
-						person.put("user_name", refUserList.get(i).getUserName());
-						person.put("mobile", refUserList.get(i).getMobile());
-						person.put("refereeid", refUserList.get(i).getRefereeid());
-						person.put("id", refUserList.get(i).getId());
-						maplist.add(person);
-					}
-				}
-				map.put("user", maplist);
+				List<Map<String,Object>> levelLst = levelMap.get((byte)j);
+				map.put("user", levelLst == null? Collections.emptyList(): levelLst);
 				listone.add(map);
 			}
 			
