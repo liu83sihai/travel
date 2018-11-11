@@ -70,7 +70,7 @@
 				AND remark = #{remark}
 			</if>
          </trim> 
-
+		order by a.id desc
 	</select>
 	<select id="selectActivityByPage" parameterType="Map" resultMap="activityResultMap">
 		SELECT a.*,u.user_name,u.true_name,u.user_face,
@@ -116,7 +116,7 @@
 				AND remark = #{remark}
 			</if>
          </trim> 
-
+		order by a.id desc
 	</select>
 	
 	<update id="updateActivityById" parameterType="activityDo">
