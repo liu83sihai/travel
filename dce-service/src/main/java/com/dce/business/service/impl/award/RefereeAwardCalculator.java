@@ -181,7 +181,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		//默认推荐分红比率
 		int[] rateArray  = {49,8,5,4,3};
 		//普通 0 , vip  1, 商家 2, 设区合伙人 3， 城市合伙人 4， 省级合伙人 5， 股东 6  董事 7
-		int[] firstRefRateArray  = {0,49,49,57,62,66,69,5};
+		int[] firstRefRateArray  = {0,49,49,57,62,66,69,69};
 		//分润用户等级
 		byte[] userLevelArray = new byte[refArray.length];
 		for (int i = 0 ; i <refArray.length;i++) {
@@ -189,6 +189,10 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			//商家跟社区合伙人平级，先处理成一致
 			if(currentUserLevel == 2) {
 				currentUserLevel =3;
+			}
+			//董事跟股东一样处理
+			if(currentUserLevel == 7) {
+				currentUserLevel = 6;
 			}
 			userLevelArray[i] = currentUserLevel;
 		}
@@ -278,7 +282,13 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		int total = 0;
 		for(int j = 0; j < retArray.length ;j++) {
 			if(userLevelArray[j]==6 ) {
-				retArray[j] = 69-total;
+				int remainRate = 69-total;
+				if(remainRate>=0) {
+					retArray[j] = remainRate;
+				}else {
+					retArray[j] = 0;
+				}
+				
 				break;
 			}
 			total=total+retArray[j];
