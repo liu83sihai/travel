@@ -225,6 +225,7 @@ public class ActivityController extends BaseController{
 		 *  
 		 *	@apiParam  {java.lang.Integer}  userId 用户ID
 		 *	@apiParam  {java.lang.String}  content 内容
+		 *	@apiParam  {java.lang.String}  synopsis 描述
 		 *	@apiParam  {java.lang.String}  images 图片多张图片以","号相隔 例a.png,b.png
 		 *
 		 * @apiUse activitySucces  

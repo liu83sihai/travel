@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.dce.business.dao.userCard.IUserCardDao">
+	<resultMap type="userCardDo" id="userCardResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="mobile" column="mobile" />
+		<result property="orderNo" column="order_no" />
+		<result property="userLevel" column="user_level" />
+		<result property="sex" column="sex" />
+		<result property="cardNo" column="card_no" />
+		<result property="bankNo" column="bank_no" />
+		<result property="idNumber" column="id_number" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="updateDate" column="update_date" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="getById" parameterType="int" resultMap="userCardResultMap">
+		SELECT * 
+		  FROM tr_user_card WHERE id = #{id}
+	</select>
+
+	<select id="selectUserCard" parameterType="Map" resultMap="userCardResultMap">
+		SELECT * 
+		  FROM tr_user_card
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND user_id = #{userId}
+			</if>
+			<if test="userName != null">  
+				AND user_name = #{userName}
+			</if>
+			<if test="mobile != null">  
+				AND mobile = #{mobile}
+			</if>
+			<if test="orderNo != null">  
+				AND order_no = #{orderNo}
+			</if>
+			<if test="userLevel != null">  
+				AND user_level = #{userLevel}
+			</if>
+			<if test="sex != null">  
+				AND sex = #{sex}
+			</if>
+			<if test="cardNo != null">  
+				AND card_no = #{cardNo}
+			</if>
+			<if test="bankNo != null">  
+				AND bank_no = #{bankNo}
+			</if>
+			<if test="idNumber != null">  
+				AND id_number = #{idNumber}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			<if test="createDate != null">  
+				AND create_date = #{createDate}
+			</if>
+			<if test="updateDate != null">  
+				AND update_date = #{updateDate}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+
+	</select>
+	<select id="selectUserCardByPage" parameterType="Map" resultMap="userCardResultMap">
+		SELECT * 
+		  FROM tr_user_card
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND user_id = #{userId}
+			</if>
+			<if test="userName != null">  
+				AND user_name = #{userName}
+			</if>
+			<if test="mobile != null">  
+				AND mobile = #{mobile}
+			</if>
+			<if test="orderNo != null">  
+				AND order_no = #{orderNo}
+			</if>
+			<if test="userLevel != null">  
+				AND user_level = #{userLevel}
+			</if>
+			<if test="sex != null">  
+				AND sex = #{sex}
+			</if>
+			<if test="cardNo != null">  
+				AND card_no = #{cardNo}
+			</if>
+			<if test="bankNo != null">  
+				AND bank_no = #{bankNo}
+			</if>
+			<if test="idNumber != null">  
+				AND id_number = #{idNumber}
+			</if>
+			<if test="remark != null">  
+				AND remark = #{remark}
+			</if>
+			<if test="createDate != null">  
+				AND create_date = #{createDate}
+			</if>
+			<if test="updateDate != null">  
+				AND update_date = #{updateDate}
+			</if>
+			<if test="status != null">  
+				AND status = #{status}
+			</if>
+         </trim> 
+
+	</select>
+	
+	<update id="updateUserCardById" parameterType="userCardDo">
+		UPDATE tr_user_card 
+		<trim prefix="SET" suffixOverrides=","> 
+		<if test="userId != null">  
+				user_id = #{userId},
+		</if>				
+		<if test="userName != null">  
+				user_name = #{userName},
+		</if>				
+		<if test="mobile != null">  
+				mobile = #{mobile},
+		</if>				
+		<if test="orderNo != null">  
+				order_no = #{orderNo},
+		</if>				
+		<if test="userLevel != null">  
+				user_level = #{userLevel},
+		</if>				
+		<if test="sex != null">  
+				sex = #{sex},
+		</if>				
+		<if test="cardNo != null">  
+				card_no = #{cardNo},
+		</if>				
+		<if test="bankNo != null">  
+				bank_no = #{bankNo},
+		</if>				
+		<if test="idNumber != null">  
+				id_number = #{idNumber},
+		</if>				
+		<if test="remark != null">  
+				remark = #{remark},
+		</if>				
+		<if test="createDate != null">  
+				create_date = #{createDate},
+		</if>				
+		<if test="updateDate != null">  
+				update_date = #{updateDate},
+		</if>				
+		<if test="status != null">  
+				status = #{status},
+		</if>				
+		</trim>
+		WHERE id = #{id} 
+	</update>	
+	
+	<insert id="addUserCard" parameterType="userCardDo" keyProperty="id"
+		useGeneratedKeys="true" >
+		INSERT INTO tr_user_card(		user_id
+		,user_name
+		,mobile
+		,order_no
+		,user_level
+		,sex
+		,card_no
+		,bank_no
+		,id_number
+		,remark
+		,create_date
+		,update_date
+		,status
+)
+		     VALUES (		#{userId}
+		,#{userName}
+		,#{mobile}
+		,#{orderNo}
+		,#{userLevel}
+		,#{sex}
+		,#{cardNo}
+		,#{bankNo}
+		,#{idNumber}
+		,#{remark}
+		,#{createDate}
+		,#{updateDate}
+		,#{status}
+)
+	</insert>
+	
+	<delete id="deleteById" parameterType="int" >
+		DELETE FROM tr_user_card WHERE id = #{id}
+	</delete>
+	
+</mapper>
+
