@@ -89,7 +89,7 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		}
 
 		//送199 积分
-		UserAccountDo accont = new UserAccountDo(new BigDecimal(199), buyer.getId(), AccountType.wallet_travel.name());
+		UserAccountDo accont = new UserAccountDo(order.getProfit(), buyer.getId(), AccountType.wallet_travel.name());
 		buildAccountRemark(accont);
 		// 账户对象增加金额
 		accountService.updateUserAmountById(accont, IncomeType.TYPE_PURCHASE_TRAVEL);
