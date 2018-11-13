@@ -9,7 +9,7 @@
 <jsp:include page="../common_easyui_cus.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/icons.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/common/js/jquery-easyui-1.4.1/extension/jquery-easyui-datagridview/datagrid-detailview.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/activity/activity.js?v='/>"></script>
+<script type="text/javascript" src="<c:url value='/js/activity/activity.js?v='/>${jsversion}"></script>
 <script type="text/javascript" src="<c:url value='/js/common/formatter.js?v=1.0'/>"></script>
 <style type="text/css">
 .tdfont{

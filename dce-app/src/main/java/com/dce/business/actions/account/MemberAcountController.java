@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +27,11 @@ import com.dce.business.common.util.OrderCodeUtil;
 import com.dce.business.entity.order.OrderDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserParentDo;
+import com.dce.business.entity.user.UserRefereeDo;
 import com.dce.business.service.grade.IGradeService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserParentService;
+import com.dce.business.service.user.IUserRefereeService;
 import com.dce.business.service.user.IUserService;
 
 /**
@@ -50,6 +53,10 @@ public class MemberAcountController extends BaseController {
 
 	@Resource
 	private IUserParentService userParentService;
+	
+	@Resource
+	private IUserRefereeService userRefereeService;
+	
 	@Resource
 	private IGradeService gradeService;
 
@@ -117,68 +124,68 @@ public class MemberAcountController extends BaseController {
 	public Result<Map<String, Object>> teamDetails() {
 
 		int userId = getUserId();
-
 		Assert.hasText("userId", "用户为空");
 
-		Map<String, Object> params = new HashMap<String, Object>();
-
-		params.put("userId", userId);
 
 		logger.info("用户id----->>" + userId);
-
 		UserDo userdo = userService.getUser(userId);
-
 		if (userdo == null) {
-
 			return Result.failureResult("用户不存在");
-
 		}
-
-		List<Map<String, Object>> list = userParentService.TeamDetails(params);
-
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("refereeid", userId);
+		params.put("distance", 1);
+		List<UserRefereeDo> refUserLst = userRefereeService.select(params);
 		Map<String, Object> map1 = new HashMap<String, Object>();
 
 		List<Object> listone = new ArrayList<>();
-		System.out.println("团员--------》》" + list);
-		String level = "";
 		try {
-			for (int j = 0; j <= 6; j++) {
-				Map<String, Object> map = new HashMap<String, Object>();
-				List<Map<String, Object>> maplist = new ArrayList<>();
-
-				Map<String, Object> param = new HashMap<String, Object>();
-				param.put("grade_mark", j);
-
-				map.put("user_level", UserDo.getUserLevelName(j));
-
-				for (int i = 0; i < list.size(); i++) {
-
-					if (list.get(i).get("user_level").equals(j)) {
-						maplist.add(list.get(i));
-					}
-					System.out.println("级别-------》》》" + list);
+			//按级别分类
+			Map<Byte,List> levelMap = new HashMap<Byte,List>();
+			for (UserRefereeDo refUser :refUserLst ) {
+				UserDo myUser = userService.getUser(refUser.getUserid());
+				if(null == myUser) {
+					continue;
 				}
-				map.put("user", maplist);
-				listone.add(map);
-
+				List<Map<String,Object>> levelLst = levelMap.get(myUser.getUserLevel());
+				if(null == levelLst) {
+					levelLst = new ArrayList<Map<String,Object>>();
+					levelMap.put(myUser.getUserLevel(), levelLst);
+				}
+				Map<String,Object> person = new HashMap<String,Object>();
+				person.put("true_name", myUser.getTrueName());
+				person.put("user_name", myUser.getUserName());
+				person.put("mobile", myUser.getMobile());
+				person.put("refereeid", myUser.getRefereeid());
+				person.put("user_level", myUser.getUserLevel());
+				person.put("id", myUser.getId());
+				levelLst.add(person);
 			}
+			
+			// 0-7级
+			for (int j = 0; j <= 7; j++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				List<Map> maplist = new ArrayList<Map>();
+				map.put("user_level", UserDo.getUserLevelName(j));
+				List<Map<String,Object>> levelLst = levelMap.get((byte)j);
+				map.put("user", levelLst == null? Collections.emptyList(): levelLst);
+				listone.add(map);
+			}
+			
 			map1.put("tuanduilist", listone);
-
+			
 			if (orderService.selectSum(params) == null) {
-
 				map1.put("totalYJ", "0");
 			} else {
-
 				map1.put("totalYJ", orderService.selectSum(params).get("Totalperformance"));
 			}
 
 		} catch (IllegalArgumentException t) {
-			// TODO Auto-generated catch block
 			t.printStackTrace();
 			return Result.failureResult(t.getMessage());
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Result.failureResult("查询失败");
 		}
@@ -192,7 +199,6 @@ public class MemberAcountController extends BaseController {
 		Integer userId = getUserId();
 		String price = getString("price");
 		String qty = getString("qty");
-		// String password = getString("password");
 		logger.info("会员充值, userId:" + userId + "; price:" + price + "; qty:" + qty);
 		Assert.hasText(price, "买入价格不能为空");
 		Assert.hasText(qty, "买入数量不能为空");

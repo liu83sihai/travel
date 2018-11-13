@@ -76,10 +76,10 @@ public class WithDrawController extends BaseController {
 		String sign = request.getParameter(TokenUtil.SIGN);
 		Integer userId = getUserId();
 		// 验证token
-		boolean flag = TokenUtil.checkToken(uri,userId, ts, sign);
-		if(!flag){
-			return Result.failureResult("登录失效，请重新登录！");
-		};
+//		boolean flag = TokenUtil.checkToken(uri,userId, ts, sign);
+//		if(!flag){
+//			return Result.failureResult("登录失效，请重新登录！");
+//		};
 		
 		
 		String password = getString("password");

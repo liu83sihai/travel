@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,13 +26,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
+import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.ImageUrlUtil;
 import com.dce.business.dao.sms.ISmsDao;
 import com.dce.business.entity.sms.SmsDo;
 
+import net.sf.json.JSONSerializer;
 import sun.misc.BASE64Decoder;
 
 
@@ -166,18 +174,17 @@ public class CommonIntf extends BaseController {
 		
 		try {
 	        // 去掉头部
-			System.out.println("imgeFile:" + imgeFile);
 			int zmHeaderLength = imgeFile.indexOf(";base64,") + ";base64,".length();
 	        String fileContext = imgeFile.substring(zmHeaderLength);
 	        fileContext = fileContext.replace("&#43;", "+");
-	        System.out.println("fileContext:" + fileContext);
 	        BASE64Decoder decoder = new BASE64Decoder();
 	
 	        byte[] decodedBytes = decoder.decodeBuffer(fileContext);
 	
 	           
 			//保存在项目的路径上
-			String savePath =uploadPath +  "/app/images/";
+	        String  filePath ="/app/images/";
+			String savePath =uploadPath +  filePath;
 			File file1 = new File(savePath);
 			if (!file1.exists()) {
 				file1.mkdirs();
@@ -200,7 +207,7 @@ public class CommonIntf extends BaseController {
 			
 			
 			resultMap.put("filePath", savePath + saveFileName);
-			resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+			resultMap.put("viewPath", readImgUrl + "?filePath=" + filePath + saveFileName);
 			
 		} catch (Exception e) {
 			logger.info("save file error " ,e);
@@ -241,13 +248,21 @@ public class CommonIntf extends BaseController {
 	 *  @apiError 305 对应<code>305</code> 图片保存失败  
 	 *  @apiUse ERROR_405
 	 */  
-	@RequestMapping(value = "uploadMultipartFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadMultipartFile", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> fileUpload(@RequestParam("fileData") MultipartFile file, 
+	public Result<?> fileUpload( 
 			HttpServletRequest request) {
-
+		MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request; 
+		MultipartFile file = multipartRequest.getFile("fileData");//file是页面input的name名 
+		
+	
+		MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext()); 
+		
+		
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		if (file != null && !file.isEmpty()) {
+//		if (file != null && !file.isEmpty()) {
+		if (resolver.isMultipart(request)) {
 			String originalFilename = file.getOriginalFilename();
 			logger.debug(originalFilename);
 
@@ -284,6 +299,87 @@ public class CommonIntf extends BaseController {
 		}
 
 		return Result.successResult("图片保存成功", resultMap);
+	}
+	
+	/** 
+	 * 
+	 * @api {post} /commonIntf/imgUpload.do MultipartFile文件不带参
+	 * @apiName imgUpload  
+	 * @apiGroup Common 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription  MultipartFile文件不带参
+	 *  
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} filePath 文件保存的绝对路径 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	"model": {
+	 *		"filePath": "/upload/sc/images/20161227005210KOI5P4ew.png",
+	 *		"viewPath": "http://127.0.0.1:90/upload/sc/images/20161227005210KOI5P4ew.png"
+	 *	},
+	 *	"success": true,
+	 *	"errorMessage": null,
+	 *	"resultCode": 200
+	 *  }
+	 *   
+	 *  @apiError 305 对应<code>305</code> 图片保存失败  
+	 *  @apiUse ERROR_405
+	 */  
+	@RequestMapping(value = "/imgUpload")
+	@ResponseBody
+	public Result<?> imgUpload(HttpServletRequest request, HttpServletResponse response) {
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("error", 1);
+		resultMap.put("message", "上传图片失败！");
+		try {
+			
+			MultipartFile imgFile = null; 
+			if (request instanceof MultipartHttpServletRequest) {
+		            MultipartHttpServletRequest multipartHttpRequest = (MultipartHttpServletRequest) request;
+		            Map<String, MultipartFile> multFileMap = multipartHttpRequest.getFileMap();
+		            Iterator it = multFileMap.values().iterator();
+		            imgFile = (MultipartFile)it.next();
+			 }
+		
+			
+//			String imgFilePath = fileServerService.saveFileNoThumb(imgFile.getInputStream(), imgFile.getOriginalFilename());
+			String savePath = uploadPath + "/app/images/";
+			// 文件保存服务器 和 文件保存数据库
+			if (StringUtils.isNotBlank(savePath)) {
+				resultMap.put("error", 0);
+//				resultMap.put("imgPath", savePath);
+//				resultMap.put("fileName", imgFile.getOriginalFilename());
+				
+				String saveFileName = imgFile.getOriginalFilename();
+				File outFile = new File(savePath, imgFile.getOriginalFilename());
+				logger.debug(outFile.getAbsolutePath());
+				try {
+					// 从缓存文件复制到目标文件
+					imgFile.transferTo(outFile);
+
+					// 保存文件信息，返回ID
+					resultMap.put("filePath", savePath + saveFileName);
+					resultMap.put("viewPath", readImgUrl + savePath + saveFileName);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.debug(e);
+				}
+				resultMap.put("message","上传图片成功");
+//				log.info("保存结果成功.....");
+				return Result.successResult("图片保存成功", resultMap);
+			} else {
+				return Result.successResult("图片保存成功", resultMap);
+			}
+		} catch (BusinessException e) {
+			resultMap.put("message", e);
+			return Result.failureResult("发送失败!");
+		} catch (Exception e) {
+			resultMap.put("message", e);
+			return Result.failureResult("发送失败!");
+		}
 	}
 
 }

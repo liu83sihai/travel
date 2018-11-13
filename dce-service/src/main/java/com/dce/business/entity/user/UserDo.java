@@ -180,6 +180,8 @@ public class UserDo {
 			return "省级合伙人";
 		}else if (userLevel == 6) {
 			return "股东";
+		}else if (userLevel == 7) {
+			return "董事";
 		}
 		return "";
 	}
