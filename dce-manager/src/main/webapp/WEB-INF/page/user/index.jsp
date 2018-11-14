@@ -52,7 +52,8 @@
 									<option value="4">城市合伙人</option>
 									<option value="5">省级合伙人</option>
 									<option value="6">股东</option>
-									<option value="7">董事</option>
+									<option value="7">总监</option>
+									<option value="8">董事</option>
 							</select></td>
 							<td class="tdfont" colspan="2">注册时间: <input type="text"
 								id="user_reg_startDate" name="user_reg_startDate"

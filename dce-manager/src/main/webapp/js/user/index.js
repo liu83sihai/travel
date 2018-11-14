@@ -104,6 +104,8 @@ $(function() {
 					} else if (value == "6") {
 						return "股东";
 					} else if (value == "7") {
+						return "总监";
+					}else if (value == "8") {
 						return "董事";
 					}
 				}

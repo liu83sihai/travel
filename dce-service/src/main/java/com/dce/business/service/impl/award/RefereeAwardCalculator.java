@@ -134,13 +134,44 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 
 		
 		//找董事
-		List<UserDo> dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),7);
+		List<UserDo> dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),8);
 		if(null == dsUserLst) {
 			return;
 		}
 		
 		for(UserDo ds : dsUserLst) {
 			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.05"));
+			
+			//50%现金账户， 50%积分账户
+			BigDecimal moneyAccount = dsAmt.multiply(new BigDecimal("0.5"));
+			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
+			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
+				//现金账户
+				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
+														ds.getId(), 
+														AccountType.wallet_money.name());
+				buildAccountRemark(accontMoney);
+				// 账户对象增加金额
+				accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN);
+				
+				UserAccountDo accont = new UserAccountDo(otherAccount, 
+														 ds.getId(), 
+														 AccountType.wallet_travel.name());
+				buildAccountRemark(accont);
+				// 账户对象增加金额
+				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
+			}
+		}
+		
+		
+		//找总监
+		dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),7);
+		if(null == dsUserLst) {
+			return;
+		}
+		
+		for(UserDo ds : dsUserLst) {
+			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.03"));
 			
 			//50%现金账户， 50%积分账户
 			BigDecimal moneyAccount = dsAmt.multiply(new BigDecimal("0.5"));
@@ -180,8 +211,8 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	private int[] buildRate(UserDo[] refArray) {
 		//默认推荐分红比率
 		int[] rateArray  = {49,8,5,4,3};
-		//普通 0 , vip  1, 商家 2, 设区合伙人 3， 城市合伙人 4， 省级合伙人 5， 股东 6  董事 7
-		int[] firstRefRateArray  = {0,49,49,57,62,66,69,69};
+		//普通 0 , vip  1, 商家 2, 设区合伙人 3， 城市合伙人 4， 省级合伙人 5， 股东 6  总监 7 董事 8
+		int[] firstRefRateArray  = {0,49,49,57,62,66,69,69,69};
 		//分润用户等级
 		byte[] userLevelArray = new byte[refArray.length];
 		for (int i = 0 ; i <refArray.length;i++) {
@@ -194,6 +225,12 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			if(currentUserLevel == 7) {
 				currentUserLevel = 6;
 			}
+			
+			//总监跟股东一样处理
+			if(currentUserLevel == 8) {
+				currentUserLevel = 6;
+			}
+			
 			userLevelArray[i] = currentUserLevel;
 		}
 		

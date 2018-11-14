@@ -22,6 +22,8 @@ public class UserPromoteDo {
 		}else if (userlevel.equals("6")){
 			return "市场股东";
 		}else if (userlevel.equals("7")){
+			return "总监";
+		}else if (userlevel.equals("8")){
 			return "董事";
 		}
 		return "";

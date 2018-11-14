@@ -181,6 +181,8 @@ public class UserDo {
 		}else if (userLevel == 6) {
 			return "股东";
 		}else if (userLevel == 7) {
+			return "总监";
+		}else if (userLevel == 8) {
 			return "董事";
 		}
 		return "";
