@@ -1,4 +1,4 @@
-﻿package com.dce.business.entity.userCard;
+package com.dce.business.entity.userCard;
 
 import org.apache.ibatis.type.Alias;
 
