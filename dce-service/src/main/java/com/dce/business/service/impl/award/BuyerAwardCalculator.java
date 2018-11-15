@@ -19,9 +19,11 @@ import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.user.UserDo;
+import com.dce.business.entity.userCard.UserCardDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.business.service.user.IUserService;
+import com.dce.business.service.userCard.IUserCardService;
 
 /**
  * 购买用户奖金计算类
@@ -48,6 +50,8 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 	@Resource
 	private ICTGoodsService goodsService;
 	
+	@Resource
+	private IUserCardService userCardService;
 	
 	private ThreadLocal<Map<String,Object>> awardContextMap = new ThreadLocal<Map<String,Object>>() ;
 	
@@ -93,6 +97,17 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		buildAccountRemark(accont);
 		// 账户对象增加金额
 		accountService.updateUserAmountById(accont, IncomeType.TYPE_PURCHASE_TRAVEL);
+		
+		UserCardDo userCardDo = new UserCardDo();
+		userCardDo.setMobile(buyer.getUserName());
+		userCardDo.setIdNumber(buyer.getIdnumber());
+		userCardDo.setUserId(buyer.getId());
+		userCardDo.setBankNo(buyer.getBanknumber());
+		userCardDo.setOrderNo(order.getOrdercode());
+		userCardDo.setUserName(buyer.getTrueName());
+		userCardDo.setSex(buyer.getSex());
+		//激活卡
+		userCardService.activeUserCard(userCardDo );
 
 	}
 

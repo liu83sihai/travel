@@ -63,50 +63,56 @@ public class UserCardServiceImpl implements IUserCardService {
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public int activeUserCard(UserCardDo userCardDo){
 		logger.debug("addUserCard: "+userCardDo);
-		//向第三方提交
-		String userName = userCardDo.getUserName();
-		String mobile = userCardDo.getMobile();
-		String orderNo = userCardDo.getOrderNo();
-		Integer userId =userCardDo.getUserId();
-		
-		if(StringUtils.isBlank(userName) || StringUtils.isBlank(mobile) 
-				|| StringUtils.isBlank(orderNo) || null == userId ){
-			return 4;
-		}
-		
-		
-		UserCardDo paramUserCard = new UserCardDo();
-		paramUserCard.setOrderNo(orderNo);
-		List<UserCardDo> userCardList = userCardDao.selectUserCard(paramUserCard);
-		//当前订单已存在
-		if(null != userCardList && userCardList.size() > 0){
-			UserCardDo userCard = userCardList.get(0);
-			int status = userCard.getStatus();
-			//已激活
-			if( 1 == status){
-				return 2;
-			}else{ //重新激活
-				
-				String cardNo=userCard.getCardNo();
-				String result = MeituLvUtil.virtualOpen(userName, mobile, cardNo);
-				if( "1".equals(result)){
-					//激活成功,更新用户卡表
-					userCard.setStatus(1);
-					userCard.setUpdateDate(new Date());
-					userCard.setRemark("用户卡激活成功");
-					userCardDao.updateUserCardById(userCard);
-					return 1;
-				}else{
-					userCard.setUpdateDate(new Date());
-					userCard.setRemark("用户卡激活失败,失败原因：" + result);
-					userCardDao.updateUserCardById(userCard);
-					return 3;
-				}
-				
+		try {
+			//向第三方提交
+			String userName = userCardDo.getUserName();
+			String mobile = userCardDo.getMobile();
+			String orderNo = userCardDo.getOrderNo();
+			Integer userId =userCardDo.getUserId();
+			
+			if(StringUtils.isBlank(userName) || StringUtils.isBlank(mobile) 
+					|| StringUtils.isBlank(orderNo) || null == userId ){
+				return 4;
 			}
+			
+			
+			UserCardDo paramUserCard = new UserCardDo();
+			paramUserCard.setOrderNo(orderNo);
+			List<UserCardDo> userCardList = userCardDao.selectUserCard(paramUserCard);
+			//当前订单已存在
+			if(null != userCardList && userCardList.size() > 0){
+				UserCardDo userCard = userCardList.get(0);
+				int status = userCard.getStatus();
+				//已激活
+				if( 1 == status){
+					return 2;
+				}else{ //重新激活
+					
+					String cardNo=userCard.getCardNo();
+					String result = MeituLvUtil.virtualOpen(userName, mobile, cardNo);
+					if( "1".equals(result)){
+						//激活成功,更新用户卡表
+						userCard.setStatus(1);
+						userCard.setUpdateDate(new Date());
+						userCard.setRemark("用户卡激活成功");
+						userCardDao.updateUserCardById(userCard);
+						return 1;
+					}else{
+						userCard.setUpdateDate(new Date());
+						userCard.setRemark("用户卡激活失败,失败原因：" + result);
+						userCardDao.updateUserCardById(userCard);
+						return 3;
+					}
+					
+				}
+			}
+			
+			return userCardDao.addUserCard(userCardDo);
+		}catch(Exception e) {
+			logger.error("激活卡失败:"+userCardDo);
+			logger.error(e);
+			return 3;
 		}
-		
-		return userCardDao.addUserCard(userCardDo);
 	}
 	
 	
