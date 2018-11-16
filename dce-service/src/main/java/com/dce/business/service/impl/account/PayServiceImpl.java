@@ -428,23 +428,19 @@ public class PayServiceImpl implements IPayService {
 		}
 
 		// 现金券钱包不做限制
-		if (!AccountType.wallet_money.getAccountType().equals(accountType)) {
-			if (!transOutDailyService.tryTransOut(userId, accountType, qty)) {
-				return Result.failureResult("转出超出限制");
-			}
-		}
+//		if (!AccountType.wallet_money.getAccountType().equals(accountType)) {
+//			if (!transOutDailyService.tryTransOut(userId, accountType, qty)) {
+//				return Result.failureResult("转出超出限制");
+//			}
+//		}
 
 		try {
-			AccountType toAccountType = AccountType.wallet_money; // 转入钱包，默认是积分钱包
-			if (AccountType.wallet_money.getAccountType().equals(accountType)) {
-				toAccountType = AccountType.wallet_money; // 如果是现金券钱包，默认转到现金券钱包
-			}
 			accountService.convertBetweenAccount(userId, receiverUser.getId(), qty, accountType,
-					toAccountType.getAccountType(), IncomeType.TYPE_POINT_OUT, IncomeType.TYPE_POINT_IN);
+					accountType, IncomeType.TYPE_POINT_OUT, IncomeType.TYPE_POINT_IN);
 
 			return Result.successResult("转出成功");
 		} catch (Exception e) {
-			logger.error("美元点转出报错:" + e);
+			logger.error("转出报错:" + e);
 			throw e;
 		}
 	}

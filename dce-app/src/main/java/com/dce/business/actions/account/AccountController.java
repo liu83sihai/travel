@@ -276,7 +276,7 @@ public class AccountController extends BaseController {
 		
 		Assert.hasText(fromAccount, "钱包类型不能为空");
 		Assert.hasText(payPassword, "交易密码不能为空");
-		Assert.hasText(targetUser, "转出用户不能为空");
+		Assert.hasText(targetUser, "转入用户不能为空");
 		
 		
 		if (null == sourceUserId || null == targetUser ) {
