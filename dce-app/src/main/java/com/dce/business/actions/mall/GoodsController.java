@@ -320,7 +320,7 @@ public class GoodsController extends BaseController {
 	 */
 	@RequestMapping(value = "/img", method = {RequestMethod.GET})
 	
-	public void saveGoods(HttpServletRequest request,HttpServletResponse response) throws IOException {
+	public void img(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		ServletOutputStream out = null;
 		FileInputStream ips = null;
 		try {
