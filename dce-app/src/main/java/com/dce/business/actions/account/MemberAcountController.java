@@ -164,7 +164,7 @@ public class MemberAcountController extends BaseController {
 			}
 			
 			// 0-7级
-			for (int j = 0; j <= 7; j++) {
+			for (int j = 0; j <= 8; j++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				List<Map> maplist = new ArrayList<Map>();
 				map.put("user_level", UserDo.getUserLevelName(j));
