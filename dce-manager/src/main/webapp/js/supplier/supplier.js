@@ -66,7 +66,7 @@ $(function(){
 								{field:"remark",title:"备注",width:180,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">查看</a>    <a href="javascript:void(0);" onclick="to_auditsupplier(\''+row.id+'\',\''+row.userId+'\',\''+row.city+'\',\''+row.status+'\');">审核</a>    <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.id+'\');">删除</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">查看</a>    <a href="javascript:void(0);" onclick="to_auditsupplier(\''+row.id+'\',\''+row.userId+'\',\''+row.city+'\',\''+row.status+'\');">审核</a>    <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.userId+'\');">删除</a>';
 	 					  return str; 
 	 					}
 	 				}	 				
