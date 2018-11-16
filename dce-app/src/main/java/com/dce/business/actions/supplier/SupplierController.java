@@ -57,6 +57,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiSuccess {java.lang.String}  supplierAddress 详细地址
 	 *	@apiSuccess {java.math.BigDecimal}  grade 评分
 	 *	@apiSuccess {java.math.BigDecimal}  average 人均
+	 *	@apiSuccess {java.lang.Integer}  supplierType 供应商类型  1： 区县代理 2：市代 3：省代
 	 *	@apiSuccess {java.math.BigDecimal}  longitude 经度
 	 *	@apiSuccess {java.math.BigDecimal}  latitude 纬度
 	 *	@apiSuccess {java.math.BigDecimal}  distance 距离
@@ -73,6 +74,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiParam {java.lang.String}  shopImage 门店照片
 	 *	@apiParam {java.lang.String}  city 省市/城市 拼装成'广东-深圳-罗湖区 '三级类型
 	 *	@apiParam {java.lang.String}  cityCode 城市代码
+	 *	@apiParam {java.lang.Integer}  supplierType 供应商类型  1： 区县代理 2：市代 3：省代
 	 *	@apiParam {java.lang.String}  supplierAddress 详细地址
 	 *	@apiParam {java.math.BigDecimal}  longitude 经度
 	 *	@apiParam {java.math.BigDecimal}  latitude 纬度

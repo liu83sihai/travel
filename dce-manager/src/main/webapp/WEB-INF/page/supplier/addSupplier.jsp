@@ -17,6 +17,14 @@
 		
 			<table width="100%" border="0" align="center" cellpadding="3">			  
 					<input type="hidden" id="id" name="id" value="${supplier.id}"/>
+					<input type="hidden" id="telPhone" name="telPhone" value="${supplier.telPhone}"/>
+					<input type="hidden" id="linkMan" name="linkMan" value="${supplier.linkMan}"/>
+					<input type="hidden" id="longitude" name="longitude" value="${supplier.longitude}"/>
+					<input type="hidden" id="latitude" name="latitude" value="${supplier.latitude}"/>
+					<input type="hidden" id="createDate" name="createDate" value="${supplier.createDate}"/>
+					<input type="hidden" id="createName" name="createName" value="${supplier.createName}"/>
+					<input type="hidden" id="modifyDate" name="modifyDate" value="${supplier.modifyDate}"/>
+					<input type="hidden" id="modifyName" name="modifyName" value="${supplier.modifyName}"/>
 					<tr>	
 						<td align="right">
 							<label for="name">空</label>
@@ -62,7 +70,8 @@
 							<label for="name">小图片</label>
 						</td>	
 						<td>
-								<input type="text" id="listImages" name="listImages" value="${supplier.listImages}"/>												
+<%-- 								<input type="text" id="listImages" name="listImages" value="${supplier.listImages}"/> --%>
+								<img src="${supplier.listImages}" width="100" height="100"	/>											
 						</td>						   
 					</tr>
 					<tr>	
@@ -70,7 +79,10 @@
 							<label for="name">banner图</label>
 						</td>	
 						<td>
-								<input type="text" id="bannerImages" name="bannerImages" value="${supplier.bannerImages}"/>												
+<%-- 								<input type="text" id="bannerImages" name="bannerImages" value="${supplier.bannerImages}"/>												 --%>
+								<c:forEach items="${bannerImages}" var ="li" varStatus="status">
+									<img src="${li}" width="100" height="100"	/>
+							</c:forEach>
 						</td>						   
 					</tr>
 					<tr>	
@@ -78,7 +90,11 @@
 							<label for="name">营业执照</label>
 						</td>	
 						<td>
-								<input type="text" id="busiImage" name="busiImage" value="${supplier.busiImage}"/>												
+<%-- 								<input type="text" id="busiImage" name="busiImage" value="${supplier.busiImage}"/>												 --%>
+								
+							<c:forEach items="${busiImages}" var ="li" varStatus="status">
+									<img src="${li}" width="100" height="100"	/>
+							</c:forEach>
 						</td>						   
 					</tr>
 					<tr>	
@@ -86,7 +102,26 @@
 							<label for="name">门店照片</label>
 						</td>	
 						<td>
-								<input type="text" id="shopImage" name="shopImage" value="${supplier.shopImage}"/>												
+<%-- 								<input type="text" id="shopImage" name="shopImage" value="${supplier.shopImage}"/>												 --%>
+								<c:forEach items="${shopImages}" var ="li" varStatus="status">
+									<img src="${li}" width="100" height="100"	/>
+							</c:forEach>
+						</td>						   
+					</tr>
+					<tr>	
+						<td align="right">
+							<label for="name">供应商类型</label>
+						</td>	
+						<td>
+								<select id="supplierType" name="supplierType" class="easyui-combobox" style="width: 150px;">
+								<option value="1"
+									<c:if test="${supplier.supplierType==1 || supplier.supplierType == null }">selected="selected"</c:if>>区县代理</option>
+								<option value="2"
+									<c:if test="${supplier.supplierType==2}">selected="selected"</c:if>>市代</option>
+								<option value="2"
+									<c:if test="${supplier.supplierType==3}">selected="selected"</c:if>>省代</option>
+								</select>	
+						
 						</td>						   
 					</tr>
 					<tr>	
@@ -107,30 +142,6 @@
 					</tr>
 					<tr>	
 						<td align="right">
-							<label for="name">电话</label>
-						</td>	
-						<td>
-								<input type="text" id="telPhone" name="telPhone" value="${supplier.telPhone}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">联系人</label>
-						</td>	
-						<td>
-								<input type="text" id="linkMan" name="linkMan" value="${supplier.linkMan}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">类型</label>
-						</td>	
-						<td>
-								<input type="text" id="supplierType" name="supplierType" value="${supplier.supplierType}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
 							<label for="name">评分</label>
 						</td>	
 						<td>
@@ -147,66 +158,10 @@
 					</tr>
 					<tr>	
 						<td align="right">
-							<label for="name">经度</label>
-						</td>	
-						<td>
-								<input type="text" id="longitude" name="longitude" value="${supplier.longitude}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">纬度</label>
-						</td>	
-						<td>
-								<input type="text" id="latitude" name="latitude" value="${supplier.latitude}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
 							<label for="name">点击数</label>
 						</td>	
 						<td>
 								<input type="text" id="hitNum" name="hitNum" value="${supplier.hitNum}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">创建时间</label>
-						</td>	
-						<td>
-								<input type="text" 
-								id="createDate" 
-								name="createDate" 
-								class="easyui-datebox" size="14" data-options="editable : true"  
-								/>
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">创建人</label>
-						</td>	
-						<td>
-								<input type="text" id="createName" name="createName" value="${supplier.createName}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">更新时间</label>
-						</td>	
-						<td>
-								<input type="text" 
-								id="modifyDate" 
-								name="modifyDate" 
-								class="easyui-datebox" size="14" data-options="editable : true"  
-								/>
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">更新人</label>
-						</td>	
-						<td>
-								<input type="text" id="modifyName" name="modifyName" value="${supplier.modifyName}"/>												
 						</td>						   
 					</tr>
 					<tr>	

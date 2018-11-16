@@ -108,6 +108,26 @@ public class SupplierController extends BaseAction{
                 SupplierDo supplierDo = supplierService.getById(Integer.valueOf(id));
                 if(null != supplierDo){
                     modelMap.addAttribute("supplier", supplierDo);
+                    String busiImage = supplierDo.getBusiImage();
+                    if(StringUtils.isNotBlank(busiImage)){
+	                    String[] busiImages = busiImage.split(",");
+	                    modelMap.addAttribute("busiImages", busiImages);
+                    }
+                    
+                    String shopImage = supplierDo.getShopImage();
+                    if(StringUtils.isNotBlank(shopImage)){
+	                    String[] shopImages = shopImage.split(",");
+	                    modelMap.addAttribute("shopImages", shopImages);
+                    }
+                   
+                    String bannerImage = supplierDo.getBannerImages();
+                    if(StringUtils.isNoneBlank(bannerImage)){
+	                    String[] bannerImages = bannerImage.split(",");
+	                    modelMap.addAttribute("bannerImages", bannerImages);
+                    }
+//                    String 
+                    
+                    
                 }
             }
             return "supplier/addSupplier";
@@ -138,7 +158,8 @@ public class SupplierController extends BaseAction{
             if (id != null && id.intValue()>0) {
             	 //supplierDo.setModifyName(this.getUserName() + ":" + userId);
             	//supplierDo.setModifyDate(new Date(System.currentTimeMillis()));;
-                i = supplierService.updateSupplierById(supplierDo);
+//                i = supplierService.updateSupplierById(supplierDo);
+                i = 1;
             } else {
 //				supplierDo.setCreateName(this.getUserName() + ":" + userId);
 //				supplierDo.setCreateDate(new Date(System.currentTimeMillis()));

@@ -18,11 +18,11 @@ $(function(){
 /*##########################grid init begin####################################################*/
 /*##########################grid toolbar begin#################################################*/
 	var toolbar_tt = [
-					{
-						iconCls:"icon-edit",
-						text:"新增",
-						handler:to_addsupplier
-					}
+//					{
+//						iconCls:"icon-edit",
+//						text:"新增",
+//						handler:to_addsupplier
+//					}
 	          	];
 	
 /*######################grid toolbar end##############################*/
@@ -41,6 +41,16 @@ $(function(){
 								{field:"bannerImages",title:"banner图",width:180,align:"center"},
 								{field:"busiImage",title:"营业执照",width:180,align:"center"},
 								{field:"shopImage",title:"门店照片",width:180,align:"center"},
+								{field:"supplierType",title:"供应商类型",width:180,align:"center",
+									formatter : function(value, row, index) {
+										if (value == 1) {
+											return "区县代理";
+										} else if (value == 2) {
+											return "市代";
+										} else if (value == 3) {
+											return "省代";
+										}
+									}},
 								{field:"city",title:"省市/城市",width:120,align:"center"},
 								{field:"supplierAddress",title:"详细地址",width:180,align:"center"},
 								{field:"grade",title:"评分",width:80,align:"center"},
@@ -56,7 +66,7 @@ $(function(){
 								{field:"remark",title:"备注",width:180,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">编辑</a>    <a href="javascript:void(0);" onclick="to_auditsupplier(\''+row.id+'\',\''+row.userId+'\',\''+row.city+'\');">审核</a>    <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.id+'\');">删除</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editsupplier(\''+row.userId+'\');">查看</a>    <a href="javascript:void(0);" onclick="to_auditsupplier(\''+row.id+'\',\''+row.userId+'\',\''+row.city+'\');">审核</a>    <a href="javascript:void(0);" onclick="to_delSupplier(\''+row.id+'\');">删除</a>';
 	 					  return str; 
 	 					}
 	 				}	 				
