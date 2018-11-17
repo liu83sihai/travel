@@ -42,8 +42,27 @@ public class SupplierDo  implements java.io.Serializable{
 	private Integer startNum;
 	private Integer rows;
 	
+	private Integer parentId;
+	private String parentName;
+
+	
 	
 
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
 
 	public void setId(java.lang.Integer id) {
 		this.id = id;

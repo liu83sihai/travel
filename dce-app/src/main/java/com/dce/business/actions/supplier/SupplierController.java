@@ -339,6 +339,15 @@ public class SupplierController  extends BaseController{
 		 supplierDo.setStatus(1);
 		 supplierDo.setCreateDate(new Date(System.currentTimeMillis()));
 		 supplierDo.setCreateName("前台增加商家管理");
+		 
+		 int parentId = userDo.getParentid();
+		 if( 0 !=parentId ){
+			 supplierDo.setParentId(parentId);
+			 UserDo parentDo =userService.getUser(parentId);
+			 supplierDo.setParentName(parentDo.getTrueName());
+			
+		 }
+		 
 		 supplierService.addSupplier(supplierDo);
 		 
 		 return Result.successResult("商家管理增加成功",supplierDo);

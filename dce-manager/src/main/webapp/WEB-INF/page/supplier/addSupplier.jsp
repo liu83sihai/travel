@@ -43,6 +43,14 @@
 					</tr>
 					<tr>	
 						<td align="right">
+							<label for="name">推荐人姓名</label>
+						</td>	
+						<td>
+								<input type="text" id="parentName" name="parentName" value="${supplier.parentName}"/>												
+						</td>						   
+					</tr>
+					<tr>	
+						<td align="right">
 							<label for="name">简介</label>
 						</td>	
 						<td>

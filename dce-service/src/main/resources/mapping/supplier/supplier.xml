@@ -31,6 +31,8 @@
 		<result property="remark" column="remark" />
 		<result property="distance" column="distance" />
 		<result property="cityCode" column="city_code" />
+		<result property="parentId" column="parent_id" />
+		<result property="parentName" column="parent_name" />
 	</resultMap>
 
 	<select id="getById" parameterType="int" resultMap="supplierResultMap">
@@ -113,6 +115,9 @@
 			</if>
 			<if test="remark != null">  
 				AND remark = #{remark}
+			</if>
+			<if test="parentName != null">  
+				AND parentName = #{parentName}
 			</if>
          </trim> 
          <if test="startNum != null">  
@@ -199,6 +204,9 @@
 			<if test="remark != null">  
 				AND remark = #{remark}
 			</if>
+			<if test="parentName != null">  
+				AND parentName = #{parentName}
+			</if>
          </trim> 
 
 	</select>
@@ -283,7 +291,13 @@
 		</if>				
 		<if test="remark != null">  
 				remark = #{remark},
-		</if>				
+		</if>	
+		<if test="parentName != null">  
+				 parentName = #{parentName}
+		</if>			
+		<if test="parentId != null">  
+				 parentId = #{parentId}
+		</if>			
 		</trim>
 		WHERE id = #{id} 
 	</update>	
@@ -316,6 +330,8 @@
 		,status
 		,remark
 		,city_code
+		,parentId
+		,parentName
 )
 		     VALUES (		#{userId}
 		,#{supplierName}
@@ -343,6 +359,8 @@
 		,#{status}
 		,#{remark}
 		,#{cityCode}
+		,#{parentId}
+		,#{parentName}
 )
 	</insert>
 	
