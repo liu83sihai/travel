@@ -39,7 +39,7 @@
 	</select>
 
 	<select id="selectSupplier" parameterType="Map" resultMap="supplierResultMap">
-		SELECT s.*,select  FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
+		SELECT s.*,  FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
 		  FROM tr_supplier s
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
@@ -49,7 +49,7 @@
 				AND user_id = #{userId}
 			</if>
 			<if test="supplierName != null">  
-				AND supplier_name = #{supplierName}
+				AND supplier_name like concat(concat('%',#{supplierName}),'%')
 			</if>
 			<if test="synopsis != null">  
 				AND synopsis = #{synopsis}
@@ -115,6 +115,9 @@
 				AND remark = #{remark}
 			</if>
          </trim> 
+         <if test="startNum != null">  
+				limit #{startNum},#{rows}
+		 </if>
 
 	</select>
 	<select id="selectSupplierByPage" parameterType="Map" resultMap="supplierResultMap">
@@ -128,7 +131,7 @@
 				AND user_id = #{userId}
 			</if>
 			<if test="supplierName != null">  
-				AND supplier_name like  '%#{supplierName}%'
+				AND supplier_name like  concat(concat('%',#{supplierName}),'%')
 			</if>
 			<if test="synopsis != null">  
 				AND synopsis = #{synopsis}

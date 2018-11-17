@@ -140,27 +140,38 @@ public class SupplierController  extends BaseController{
 	
 		 String pageNums = getString("pageNum");
 		 String row = getString("rows");
+		 Integer page = 0;
+		 Integer srows = 10;
 		// 不传 默认查询第一页
 		if (StringUtils.isNotBlank(pageNums)) {
-			pageNum = Long.parseLong(pageNums);
+			page = Integer.parseInt(pageNums);
 		}
 		if (StringUtils.isNotBlank(row)) {
-			rows = Long.parseLong(row);
+			srows = Integer.parseInt(row);
+		}
+		int startNum = page * srows;
+		supplierDo.setRows(srows);
+		supplierDo.setStartNum(startNum);
+		
+		if(StringUtils.isBlank(supplierDo.getSupplierName())){
+			supplierDo.setSupplierName(null);
 		}
 
-		Map<String,Object> paramMap = new HashMap<String,Object>();
-		if(StringUtils.isNotBlank(supplierDo.getSupplierName())){
-			paramMap.put("supplierName", supplierDo.getSupplierName());
-		}
-		paramMap.put("latitude", supplierDo.getLatitude());
-		paramMap.put("longitude", supplierDo.getLongitude());
+//		Map<String,Object> paramMap = new HashMap<String,Object>();
+//		if(StringUtils.isNotBlank(supplierDo.getSupplierName())){
+//			paramMap.put("supplierName", supplierDo.getSupplierName());
+//		}
+//		paramMap.put("latitude", supplierDo.getLatitude());
+//		paramMap.put("longitude", supplierDo.getLongitude());
 		
 		
-		PageDo<SupplierDo> supplierPage = new PageDo<SupplierDo>();
-		supplierPage.setCurrentPage(pageNum);
-		supplierPage.setPageSize(rows);
-		PageDo<SupplierDo> pageDo = supplierService.getSupplierPage(paramMap, supplierPage);
-		List<SupplierDo> supplierList = pageDo.getModelList();
+//		PageDo<SupplierDo> supplierPage = new PageDo<SupplierDo>();
+//		supplierPage.setCurrentPage(pageNum);
+//		supplierPage.setPageSize(rows);
+		
+		List<SupplierDo> supplierList= supplierService.selectSupplier(supplierDo);
+//		PageDo<SupplierDo> pageDo = supplierService.getSupplierPage(paramMap, supplierPage);
+//		List<SupplierDo> supplierList = pageDo.getModelList();
 		 
 		List<Map<String, Object>> result = new ArrayList<>();
 	    if (!CollectionUtils.isEmpty(supplierList)) {

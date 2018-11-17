@@ -39,6 +39,8 @@ public class SupplierDo  implements java.io.Serializable{
 	private java.lang.String modifyName;
 	private java.lang.Integer status;
 	private java.lang.String remark;
+	private Integer startNum;
+	private Integer rows;
 	
 	
 
@@ -295,6 +297,24 @@ public class SupplierDo  implements java.io.Serializable{
 
 	public void setCityCode(java.lang.String cityCode) {
 		this.cityCode = cityCode;
+	}
+
+	
+	
+	public Integer getStartNum() {
+		return startNum;
+	}
+
+	public void setStartNum(Integer startNum) {
+		this.startNum = startNum;
+	}
+
+	public Integer getRows() {
+		return rows;
+	}
+
+	public void setRows(Integer rows) {
+		this.rows = rows;
 	}
 
 	public String toString() {
