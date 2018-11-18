@@ -117,7 +117,7 @@
 				AND remark = #{remark}
 			</if>
 			<if test="parentName != null">  
-				AND parentName = #{parentName}
+				AND parent_Name = #{parentName}
 			</if>
          </trim> 
          <if test="startNum != null">  
@@ -205,7 +205,7 @@
 				AND remark = #{remark}
 			</if>
 			<if test="parentName != null">  
-				AND parentName = #{parentName}
+				AND parent_Name = #{parentName}
 			</if>
          </trim> 
 
@@ -293,10 +293,10 @@
 				remark = #{remark},
 		</if>	
 		<if test="parentName != null">  
-				 parentName = #{parentName}
+				 parent_Name = #{parentName}
 		</if>			
 		<if test="parentId != null">  
-				 parentId = #{parentId}
+				 parent_Id = #{parentId}
 		</if>			
 		</trim>
 		WHERE id = #{id} 
