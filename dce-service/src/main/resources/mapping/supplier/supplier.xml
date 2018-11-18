@@ -330,8 +330,8 @@
 		,status
 		,remark
 		,city_code
-		,parentId
-		,parentName
+		,parent_id
+		,parent_name
 )
 		     VALUES (		#{userId}
 		,#{supplierName}
