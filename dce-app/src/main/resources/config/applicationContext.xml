@@ -55,4 +55,16 @@
 
 	<import resource="classpath*:/config/spring-jdbc.xml" />
 	<import resource="classpath*:/config/spring-redis.xml" />
+	
+	<bean name="securityService2" class="com.kjtpay.gateway.common.util.security.SecurityService">
+	   <!-- 商户私钥 -->
+	   <constructor-arg index="0">
+	      <value>${privateKey}</value>
+	   </constructor-arg>
+	   <!-- 快捷通公钥 -->
+	   <constructor-arg index="1">
+	      <value>${kjtPublicKey}</value>
+	   </constructor-arg>
+	</bean>
+	
 </beans>
