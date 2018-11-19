@@ -31,6 +31,8 @@
 		<result property="remark" column="remark" />
 		<result property="distance" column="distance" />
 		<result property="cityCode" column="city_code" />
+		<result property="parentId" column="parent_id" />
+		<result property="parentName" column="parent_name" />
 	</resultMap>
 
 	<select id="getById" parameterType="int" resultMap="supplierResultMap">
@@ -39,7 +41,7 @@
 	</select>
 
 	<select id="selectSupplier" parameterType="Map" resultMap="supplierResultMap">
-		SELECT s.*,select  FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
+		SELECT s.*,  FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
 		  FROM tr_supplier s
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
@@ -49,7 +51,7 @@
 				AND user_id = #{userId}
 			</if>
 			<if test="supplierName != null">  
-				AND supplier_name = #{supplierName}
+				AND supplier_name like concat(concat('%',#{supplierName}),'%')
 			</if>
 			<if test="synopsis != null">  
 				AND synopsis = #{synopsis}
@@ -114,7 +116,13 @@
 			<if test="remark != null">  
 				AND remark = #{remark}
 			</if>
+			<if test="parentName != null">  
+				AND parent_Name = #{parentName}
+			</if>
          </trim> 
+         <if test="startNum != null">  
+				limit #{startNum},#{rows}
+		 </if>
 
 	</select>
 	<select id="selectSupplierByPage" parameterType="Map" resultMap="supplierResultMap">
@@ -128,7 +136,7 @@
 				AND user_id = #{userId}
 			</if>
 			<if test="supplierName != null">  
-				AND supplier_name like  '%#{supplierName}%'
+				AND supplier_name like  concat(concat('%',#{supplierName}),'%')
 			</if>
 			<if test="synopsis != null">  
 				AND synopsis = #{synopsis}
@@ -195,6 +203,9 @@
 			</if>
 			<if test="remark != null">  
 				AND remark = #{remark}
+			</if>
+			<if test="parentName != null">  
+				AND parent_Name = #{parentName}
 			</if>
          </trim> 
 
@@ -280,7 +291,13 @@
 		</if>				
 		<if test="remark != null">  
 				remark = #{remark},
-		</if>				
+		</if>	
+		<if test="parentName != null">  
+				 parent_Name = #{parentName}
+		</if>			
+		<if test="parentId != null">  
+				 parent_Id = #{parentId}
+		</if>			
 		</trim>
 		WHERE id = #{id} 
 	</update>	
@@ -313,6 +330,8 @@
 		,status
 		,remark
 		,city_code
+		,parent_id
+		,parent_name
 )
 		     VALUES (		#{userId}
 		,#{supplierName}
@@ -340,6 +359,8 @@
 		,#{status}
 		,#{remark}
 		,#{cityCode}
+		,#{parentId}
+		,#{parentName}
 )
 	</insert>
 	
