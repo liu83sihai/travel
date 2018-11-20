@@ -95,6 +95,36 @@
 		    <version>${groovy.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>bcmail</groupId>
+			<artifactId>bcmail</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/bcmail-jdk15-1.45.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>bcprov</groupId>
+			<artifactId>bcprov</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/bcprov-jdk15-1.45.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.kjt</groupId>
+			<artifactId>com.kjt.common</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/gateway-common-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.kjt</groupId>
+			<artifactId>com.kjt.domain</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/gateway-domain-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+		
 		
 	</dependencies>
 

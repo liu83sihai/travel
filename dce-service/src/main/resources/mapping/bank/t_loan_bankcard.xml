@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dce.business.dao.bank.IBankCardDao">
+  <resultMap id="BaseResultMap" type="com.dce.business.entity.bank.BankCardDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userId" jdbcType="BIGINT" property="userId" />
+    <result column="cardUserName" jdbcType="VARCHAR" property="cardUserName" />
+    <result column="bankName" jdbcType="VARCHAR" property="bankName" />
+    <result column="branchBankName" jdbcType="VARCHAR" property="branchBankName" />
+    <result column="cardNo" jdbcType="VARCHAR" property="cardNo" />
+    <result column="cardMode" jdbcType="INTEGER" property="cardMode" />
+    <result column="cardStatus" jdbcType="INTEGER" property="cardStatus" />
+    <result column="openBankCode" jdbcType="VARCHAR" property="openBankCode" />
+    <result column="bankCode" jdbcType="VARCHAR" property="bankCode" />
+    <result column="provinceId" jdbcType="VARCHAR" property="provinceId" />
+    <result column="cityId" jdbcType="VARCHAR" property="cityId" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="auditUser" jdbcType="VARCHAR" property="auditUser" />
+    <result column="auditTime" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="isDefault" jdbcType="INTEGER" property="isDefault" />
+    <result column="isExpress" jdbcType="INTEGER" property="isExpress" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="regionStr" jdbcType="VARCHAR" property="regionStr" />
+    <result column="payChannelType" jdbcType="CHAR" property="payChannelType" />
+    <result column="cardType" jdbcType="INTEGER" property="cardType" />
+    <result column="bankMobile" jdbcType="VARCHAR" property="bankMobile" />
+    <result column="branchOrgCode" jdbcType="VARCHAR" property="branchOrgCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, cardUserName, bankName, branchBankName, cardNo, cardMode, cardStatus, 
+    openBankCode, bankCode, provinceId, cityId, region, auditUser, auditTime, remark, 
+    isDefault, isExpress, createTime, updateTime, province, city, regionStr, payChannelType, 
+    cardType, bankMobile,branchOrgCode
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_loan_bankcard
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_loan_bankcard
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bank.BankCardDo" useGeneratedKeys="true">
+    insert into t_loan_bankcard (userId, cardUserName, bankName, 
+      branchBankName, cardNo, cardMode, 
+      cardStatus, openBankCode, bankCode, 
+      provinceId, cityId, region, 
+      auditUser, auditTime, remark, 
+      isDefault, isExpress, createTime, 
+      updateTime, province, city, 
+      regionStr, payChannelType, cardType, branchOrgCode,
+      bankMobile)
+    values (#{userId,jdbcType=BIGINT}, #{cardUserName,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+      #{branchBankName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardMode,jdbcType=INTEGER}, 
+      #{cardStatus,jdbcType=INTEGER}, #{openBankCode,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, 
+      #{auditUser,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{isDefault,jdbcType=INTEGER}, #{isExpress,jdbcType=INTEGER}, now(), 
+      #{updateTime,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{regionStr,jdbcType=VARCHAR}, #{payChannelType,jdbcType=CHAR}, #{cardType,jdbcType=INTEGER}, 
+      #{branchOrgCode,jdbcType=VARCHAR}),
+      #{bankMobile,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bank.BankCardDo" useGeneratedKeys="true">
+    insert into t_loan_bankcard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="cardUserName != null">
+        cardUserName,
+      </if>
+      <if test="bankName != null">
+        bankName,
+      </if>
+      <if test="branchBankName != null">
+        branchBankName,
+      </if>
+      <if test="cardNo != null">
+        cardNo,
+      </if>
+      <if test="cardMode != null">
+        cardMode,
+      </if>
+      <if test="cardStatus != null">
+        cardStatus,
+      </if>
+      <if test="openBankCode != null">
+        openBankCode,
+      </if>
+      <if test="bankCode != null">
+        bankCode,
+      </if>
+      <if test="provinceId != null">
+        provinceId,
+      </if>
+      <if test="cityId != null">
+        cityId,
+      </if>
+      <if test="region != null">
+        region,
+      </if>
+      <if test="auditUser != null">
+        auditUser,
+      </if>
+      <if test="auditTime != null">
+        auditTime,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="isDefault != null">
+        isDefault,
+      </if>
+      <if test="isExpress != null">
+        isExpress,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="regionStr != null">
+        regionStr,
+      </if>
+      <if test="payChannelType != null">
+        payChannelType,
+      </if>
+      <if test="cardType != null">
+        cardType,
+      </if>
+      <if test="bankMobile != null">
+        bankMobile,
+      </if>
+      <if test="branchOrgCode != null">
+        branchOrgCode,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="cardUserName != null">
+        #{cardUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchBankName != null">
+        #{branchBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardMode != null">
+        #{cardMode,jdbcType=INTEGER},
+      </if>
+      <if test="cardStatus != null">
+        #{cardStatus,jdbcType=INTEGER},
+      </if>
+      <if test="openBankCode != null">
+        #{openBankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="auditUser != null">
+        #{auditUser,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        #{isDefault,jdbcType=INTEGER},
+      </if>
+      <if test="isExpress != null">
+        #{isExpress,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="regionStr != null">
+        #{regionStr,jdbcType=VARCHAR},
+      </if>
+      <if test="payChannelType != null">
+        #{payChannelType,jdbcType=CHAR},
+      </if>
+      <if test="cardType != null">
+        #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="bankMobile != null">
+        #{bankMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="branchOrgCode != null">
+        #{branchOrgCode,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.bank.BankCardDo">
+    update t_loan_bankcard
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="cardUserName != null">
+        cardUserName = #{cardUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchBankName != null">
+        branchBankName = #{branchBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardMode != null">
+        cardMode = #{cardMode,jdbcType=INTEGER},
+      </if>
+      <if test="cardStatus != null">
+        cardStatus = #{cardStatus,jdbcType=INTEGER},
+      </if>
+      <if test="openBankCode != null">
+        openBankCode = #{openBankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        bankCode = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        provinceId = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        cityId = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="auditUser != null">
+        auditUser = #{auditUser,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+        auditTime = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        isDefault = #{isDefault,jdbcType=INTEGER},
+      </if>
+      <if test="isExpress != null">
+        isExpress = #{isExpress,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="regionStr != null">
+        regionStr = #{regionStr,jdbcType=VARCHAR},
+      </if>
+      <if test="payChannelType != null">
+        payChannelType = #{payChannelType,jdbcType=CHAR},
+      </if>
+      <if test="cardType != null">
+        cardType = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="bankMobile != null">
+        bankMobile = #{bankMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="branchOrgCode != null">
+        branchOrgCode = #{branchOrgCode,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dce.business.entity.bank.BankCardDo">
+    update t_loan_bankcard
+    set userId = #{userId,jdbcType=BIGINT},
+      cardUserName = #{cardUserName,jdbcType=VARCHAR},
+      bankName = #{bankName,jdbcType=VARCHAR},
+      branchBankName = #{branchBankName,jdbcType=VARCHAR},
+      cardNo = #{cardNo,jdbcType=VARCHAR},
+      cardMode = #{cardMode,jdbcType=INTEGER},
+      cardStatus = #{cardStatus,jdbcType=INTEGER},
+      openBankCode = #{openBankCode,jdbcType=VARCHAR},
+      bankCode = #{bankCode,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=VARCHAR},
+      cityId = #{cityId,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      auditUser = #{auditUser,jdbcType=VARCHAR},
+      auditTime = #{auditTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      isDefault = #{isDefault,jdbcType=INTEGER},
+      isExpress = #{isExpress,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      regionStr = #{regionStr,jdbcType=VARCHAR},
+      payChannelType = #{payChannelType,jdbcType=CHAR},
+      cardType = #{cardType,jdbcType=INTEGER},
+      bankMobile = #{bankMobile,jdbcType=VARCHAR},
+      branchOrgCode=#{branchOrgCode,jdbcType=VARCHAR}
+      
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectBankcard" parameterType="Map" resultMap="BaseResultMap">
+		SELECT * 
+		  FROM t_loan_bankcard
+		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+			<if test="id != null">  
+				AND id = #{id}
+			</if>
+			<if test="userId != null">  
+				AND userId = #{userId}
+			</if>
+			<if test="cardUserName != null">  
+				AND cardUserName like #{cardUserName}
+			</if>
+			<if test="bankName != null">  
+				AND bankName like #{bankName}
+			</if>
+			<if test="branchBankName != null">  
+				AND branchBankName like #{branchBankName}
+			</if>
+			<if test="bankCode != null">  
+				AND bankCode = #{bankCode}
+			</if>
+			<if test="cardNo != null">  
+				AND cardNo like #{cardNo}
+			</if>
+			<if test="cardMode != null">  
+				AND cardMode like #{cardMode}
+			</if>
+			<if test="cardStatus != null">  
+				AND cardStatus = #{cardStatus}
+			</if>
+			<if test="cardType != null">  
+				AND cardType = #{cardType}
+			</if>
+			<if test="payChannelType != null">  
+				AND payChannelType = #{payChannelType}
+			</if>
+			<if test="openBankCode != null">  
+				AND openBankCode like #{openBankCode}
+			</if>
+			<if test="provinceId != null">  
+				AND provinceId like #{provinceId}
+			</if>
+			<if test="cityId != null">  
+				AND cityId = #{cityId}
+			</if>
+			<if test="region != null">  
+				AND region = #{region}
+			</if>
+			<if test="auditUser != null">  
+				AND auditUser = #{auditUser}
+			</if>
+			<if test="auditTime != null">  
+				AND auditTime like #{auditTime}
+			</if>
+			<if test="remark != null">  
+				AND remark like #{remark}
+			</if>
+			<if test="isDefault != null">  
+				AND isDefault = #{isDefault}
+			</if>
+			<if test="isExpress != null">  
+				AND isExpress = #{isExpress}
+			</if>
+			<if test="createTime != null">  
+				AND createTime like #{createTime}
+			</if>
+			<if test="updateTime != null">  
+				AND updateTime like #{updateTime}
+			</if>
+			<if test="branchOrgCode != null">  
+				AND branchOrgCode = #{branchOrgCode}
+			</if>
+
+         </trim> 
+
+	</select>
+	
+	<!-- 银行卡分页查询 -->
+	<select id="selectBankcardPage" parameterType="Map" resultMap="BaseResultMap">
+        SELECT * 
+          FROM t_loan_bankcard
+          <trim prefix="WHERE" prefixOverrides="AND |OR "> 
+            <if test="id != null">  
+                AND id = #{id}
+            </if>
+            <if test="userId != null">  
+                AND userId = #{userId}
+            </if>
+            <if test="cardUserName != null">  
+                AND cardUserName like #{cardUserName}
+            </if>
+            <if test="bankName != null">  
+                AND bankName like #{bankName}
+            </if>
+            <if test="branchBankName != null">  
+                AND branchBankName like #{branchBankName}
+            </if>
+            <if test="bankCode != null">  
+                AND bankCode = #{bankCode}
+            </if>
+            <if test="cardNo != null">  
+                AND cardNo like #{cardNo}
+            </if>
+            <if test="cardMode != null">  
+                AND cardMode like #{cardMode}
+            </if>
+            <if test="cardStatus != null">  
+                AND cardStatus = #{cardStatus}
+            </if>
+            <if test="cardType != null">  
+                AND cardType = #{cardType}
+            </if>
+            <if test="payChannelType != null">  
+                AND payChannelType = #{payChannelType}
+            </if>
+            <if test="openBankCode != null">  
+                AND openBankCode like #{openBankCode}
+            </if>
+            <if test="provinceId != null">  
+                AND provinceId like #{provinceId}
+            </if>
+            <if test="cityId != null">  
+                AND cityId = #{cityId}
+            </if>
+            <if test="region != null">  
+                AND region = #{region}
+            </if>
+            <if test="auditUser != null">  
+                AND auditUser = #{auditUser}
+            </if>
+            <if test="auditTime != null">  
+                AND auditTime like #{auditTime}
+            </if>
+            <if test="remark != null">  
+                AND remark like #{remark}
+            </if>
+            <if test="isDefault != null">  
+                AND isDefault = #{isDefault}
+            </if>
+            <if test="isExpress != null">  
+                AND isExpress = #{isExpress}
+            </if>
+            <if test="createTime != null">  
+                AND createTime like #{createTime}
+            </if>
+            <if test="updateTime != null">  
+                AND updateTime like #{updateTime}
+            </if>
+            <if test="branchOrgCode != null">  
+                AND branchOrgCode = #{branchOrgCode}
+            </if>
+
+            
+         </trim> 
+
+    </select>
+  
+</mapper>

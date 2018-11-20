@@ -1,4 +1,4 @@
-package com.dce.business.actions.bank;
+package com.dce.business.service.impl.pay;
 
 import javax.annotation.Resource;
 
@@ -10,8 +10,8 @@ import com.kjtpay.gateway.common.util.security.SecurityService;
 @Component("payComponent")
 public class PayComponent {
 	
-	@Resource(name="securityService2")
-	private SecurityService securityService2;
+	@Resource(name="securityService")
+	private SecurityService rsaSecurityService;
 	
 	/**
 	 * 商户签名
@@ -20,7 +20,7 @@ public class PayComponent {
 	 */
     public String sign(RequestBase requestBase) {
 		//RSA签名
-		return securityService2.sign(requestBase, requestBase.getCharset());
+		return rsaSecurityService.sign(requestBase, requestBase.getCharset());
     }
 	
     
@@ -33,7 +33,7 @@ public class PayComponent {
 	 */
 	public String encrypt( String oriText, String charset){
 		//RSA加密
-		return securityService2.encrypt(oriText, charset);
+		return rsaSecurityService.encrypt(oriText, charset);
 	}
 	
 }

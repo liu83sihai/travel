@@ -317,7 +317,7 @@ public class EthereumController extends BaseController {
         		}
         	}
         	
-            if (map.get("type") != null && ((Integer) map.get("type")) != 1) { //不是转入的时候，修改账号显示的问题
+            if (map.get("type") != null && ((Integer) map.get("type")).intValue() != 1) { //不是转入的时候，修改账号显示的问题
                 map.put("fromAccount", map.get("toAccount"));
             }
         }

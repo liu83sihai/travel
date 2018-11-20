@@ -206,7 +206,7 @@ public class ActivityController extends BaseController{
 	 
 	 public Result<?> getId(ActivityDo activityDo) {
 		 logger.info("获取活动风彩...");
-		 if(null == activityDo.getId() || 0 == activityDo.getId()){
+		 if(null == activityDo.getId() || 0 == activityDo.getId().intValue()){
 			 return Result.failureResult("风采ID不能为空!");
 		 }
 		 
@@ -258,7 +258,7 @@ public class ActivityController extends BaseController{
 	 @RequestMapping(value = "/add", method = RequestMethod.POST)
 	 public Result<?> add(ActivityDo activityDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == activityDo.getUserId() || 0 == activityDo.getUserId()){
+		 if(null == activityDo.getUserId() || 0 == activityDo.getUserId().intValue()){
 			 return Result.failureResult("用户ID不能为空!");
 		 }
 		 
@@ -314,7 +314,7 @@ public class ActivityController extends BaseController{
 	 @RequestMapping(value = "/edit", method = RequestMethod.POST)
 	 public Result<?> edit(ActivityDo activityDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == activityDo.getId() || 0 == activityDo.getId()){
+		 if(null == activityDo.getId() || 0 == activityDo.getId().intValue()){
 			 return Result.failureResult("风采ID不能为空!");
 		 }
 		
@@ -345,7 +345,7 @@ public class ActivityController extends BaseController{
 	 @RequestMapping(value = "/del", method = RequestMethod.POST)
 	 public Result<?> del(ActivityDo activityDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == activityDo.getId() || 0 == activityDo.getId()){
+		 if(null == activityDo.getId() || 0 == activityDo.getId().intValue()){
 			 return Result.failureResult("风采ID不能为空!");
 		 }
 		 activityService.deleteById(activityDo.getId());
@@ -393,10 +393,10 @@ public class ActivityController extends BaseController{
 		 @RequestMapping(value = "/addGood", method = RequestMethod.POST)
 		 public Result<?> addGood(ActivityGoodDo  activityGoodDo,HttpServletRequest request, HttpServletResponse response) {
 			 
-			 if(null == activityGoodDo.getUserId() || 0 == activityGoodDo.getUserId()){
+			 if(null == activityGoodDo.getUserId() || 0 == activityGoodDo.getUserId().intValue()){
 				 return Result.failureResult("用户ID不能为空!");
 			 }
-			 if(null == activityGoodDo.getActivityId() || 0 == activityGoodDo.getActivityId()){
+			 if(null == activityGoodDo.getActivityId() || 0 == activityGoodDo.getActivityId().intValue()){
 				 return Result.failureResult("活动ID不能为空!");
 			 }
 			 List<ActivityGoodDo> activityGoodList = activityGoodService.selectActivityGood(activityGoodDo);
@@ -430,10 +430,10 @@ public class ActivityController extends BaseController{
 		 @RequestMapping(value = "/delGood", method = RequestMethod.POST)
 		 public Result<?> del( ActivityGoodDo  activityGoodDo,HttpServletRequest request, HttpServletResponse response) {
 			 
-			 if(null == activityGoodDo.getUserId() || 0 == activityGoodDo.getUserId()){
+			 if(null == activityGoodDo.getUserId() || 0 == activityGoodDo.getUserId().intValue()){
 				 return Result.failureResult("用户ID不能为空!");
 			 }
-			 if(null == activityGoodDo.getActivityId() || 0 == activityGoodDo.getActivityId()){
+			 if(null == activityGoodDo.getActivityId() || 0 == activityGoodDo.getActivityId().intValue()){
 				 return Result.failureResult("活动ID不能为空!");
 			 }
 			 List<ActivityGoodDo> activityGoodList = activityGoodService.selectActivityGood(activityGoodDo);

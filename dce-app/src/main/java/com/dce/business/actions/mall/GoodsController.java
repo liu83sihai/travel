@@ -275,6 +275,75 @@ public class GoodsController extends BaseController {
         return mav;
     }
 	
+	/** 
+	 * @api {POST} /mall/goodsDetailAPI.do 商品详情api
+	 * @apiName goodsDetailAPI
+	 * @apiGroup mall 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 商品详情api
+	 * @apiParam {int} goodsId  商品Id
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {Object[]} goods  商品对象       
+	 * @apiSuccess {int} goods.goodsId 商品id
+	 * @apiSuccess {String} goods.title 商品标题
+	 * @apiSuccess {String} goods.GoodsDesc 商品的描述
+	 * @apiSuccess {json} goods.goodsImg 商品图片地址
+	 * @apiSuccess {json} goods.goodsBanner 商品详情页面banner图片地址
+	 * @apiSuccess {String} goods.goodsDetailImg 商品详情图片地址
+	 * @apiSuccess {double} goods.shopPrice 商品价格
+	 * @apiSuccess {double} goods.marketPrice 商品优惠价格
+	 * @apiSuccess {int} goods.saleCount 已售数量
+	 * @apiSuccess {String} goods.brandName 商品品牌名称
+	 * @apiSuccess {String} goods.cateName 商品类别名称
+	 * @apiSuccess {Decimal} goods.profit 商品利润
+	 * @apiSuccess {String} goods.detailLink 商品详情连接
+	 * @apiSuccess {String} goods.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * 
+	 * @apiSuccess {String[]} bannerImgs  商品banner图片src数组
+	 * @apiSuccess {String[]} detailImgs  商品明细图片src数组
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "code": 0
+	 *	"msg": 返回成功,
+	 *	"data": {"goods":{
+	 *		      "goodsId": "1",
+	 *		      "title": "鹿无忧",
+	 *		      "goodsDtails": "提神抗疲劳",
+	 *		      "goodsImg": 
+	 *		                {
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *		      "saleTime": "2018-8-6 10：19：56",
+	 *		      "shopPrice":4999.00,
+	 *		    },
+	 *          "detailImgs":[
+	 *		      "http://xxx1",
+	 *		      "http://xxx2"
+	 *		    ],"bannerImgs":[
+	 *		      "http://xxx1",
+	 *		      "http://xxx2"
+	 *		    ]
+	 *	}
+	 */	
+	@RequestMapping(value = "/goodsDetailAPI", method = { RequestMethod.GET, RequestMethod.POST })
+    public Map<String,Object> goodsDetailAPI() {
+        String goodsId = getString("goodsId");
+        Map<String,Object> mav = new HashMap<String,Object>();
+        mav.put("goodsId", goodsId);
+        CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(goodsId));
+        if(StringUtils.isNotBlank(goods.getGoodsBanner())){
+        	mav.put("bannerImgs", goods.getGoodsBanner().split(","));
+        }
+        if(StringUtils.isNotBlank(goods.getGoodsDetailImg())){
+        	mav.put("detailImgs", goods.getGoodsDetailImg().split(","));
+        }
+        mav.put("goods", goods);
+        return mav;
+    }
+	
 
 	@RequestMapping(value = "/address", method = {RequestMethod.POST})
 	public Result<?> address(){

@@ -75,6 +75,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/user/reg", 
         												 "/user/list", 
         												 "/bank/list",
+        												 "/bank/toBindBankCard",
         												 "/award/query",
         												 "/award/save",
         												 "/eth/accounts",

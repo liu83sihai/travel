@@ -425,7 +425,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
 	public Result<?> getUserInfo(Integer userId) {
 
-		if(null == userId || 0 == userId){
+		if(null == userId || 0 == userId.intValue()){
 
 			return Result.failureResult("用户ID为空");
 		}

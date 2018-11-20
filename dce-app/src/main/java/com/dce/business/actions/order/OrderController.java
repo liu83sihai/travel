@@ -664,7 +664,7 @@ public class OrderController extends BaseController {
 			OrderDetail orderDetail = new OrderDetail();
 			JSONObject obj = jsonArray.getJSONObject(i);
 			// 过滤数量为0的商品
-			if (Integer.valueOf(obj.getString("qty")) == 0) {
+			if (Integer.valueOf(obj.getString("qty")).intValue() == 0) {
 				continue;
 			}
 			orderDetail.setGoodsId(Integer.valueOf(obj.getString("goodsId")));

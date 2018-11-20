@@ -202,7 +202,7 @@ public class UserCardController  extends BaseController{
 	 @RequestMapping("/getId")
 	 public Result<?> getId(UserCardDo userCardDo) {
 		 logger.info("获取用户激活卡...");
-		 if(null == userCardDo.getId() || 0 == userCardDo.getId()){
+		 if(null == userCardDo.getId() || 0 == userCardDo.getId().intValue()){
 			 return Result.failureResult("用户激活卡ID不能为空!");
 		 }
 		 
@@ -338,7 +338,7 @@ public class UserCardController  extends BaseController{
 	 @RequestMapping(value = "/del", method = RequestMethod.POST)
 	 public Result<?> del( UserCardDo  userCardDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == userCardDo.getId() || 0 == userCardDo.getId()){
+		 if(null == userCardDo.getId() || 0 == userCardDo.getId().intValue()){
 			 return Result.failureResult("ID不能为空!");
 		 }
 //		 

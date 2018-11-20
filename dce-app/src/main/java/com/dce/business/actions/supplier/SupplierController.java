@@ -251,7 +251,7 @@ public class SupplierController  extends BaseController{
 	 @RequestMapping("/getId")
 	 public Result<?> getId(SupplierDo supplierDo) {
 		 logger.info("获取商家管理...");
-		 if(null == supplierDo.getUserId() || 0 == supplierDo.getUserId()){
+		 if(null == supplierDo.getUserId() || 0 == supplierDo.getUserId().intValue()){
 			 return Result.failureResult("商家用户ID不能为空!");
 		 }
 		 
@@ -313,7 +313,7 @@ public class SupplierController  extends BaseController{
 	 @RequestMapping(value = "/add", method = RequestMethod.POST)
 	 public Result<?> add( SupplierDo  supplierDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == supplierDo.getUserId() || 0 == supplierDo.getUserId()){
+		 if(null == supplierDo.getUserId() || 0 == supplierDo.getUserId().intValue()){
 			 return Result.failureResult("用户ID不能为空!");
 		 }
 		 SupplierDo  supplier =supplierService.getById(supplierDo.getUserId());
@@ -406,7 +406,7 @@ public class SupplierController  extends BaseController{
 	 @RequestMapping(value = "/edit", method = RequestMethod.POST)
 	 public Result<?> edit( SupplierDo  supplierDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == supplierDo.getId() || 0 == supplierDo.getId()){
+		 if(null == supplierDo.getId() || 0 == supplierDo.getId().intValue()){
 			 return Result.failureResult("ID不能为空!");
 		 }
 //		 
@@ -437,7 +437,7 @@ public class SupplierController  extends BaseController{
 	 @RequestMapping(value = "/del", method = RequestMethod.POST)
 	 public Result<?> del( SupplierDo  supplierDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == supplierDo.getUserId() || 0 == supplierDo.getUserId()){
+		 if(null == supplierDo.getUserId() || 0 == supplierDo.getUserId().intValue()){
 			 return Result.failureResult("ID不能为空!");
 		 }
 //		 

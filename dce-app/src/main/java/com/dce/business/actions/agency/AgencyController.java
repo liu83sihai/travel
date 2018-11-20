@@ -212,7 +212,7 @@ public class AgencyController  extends BaseController{
 	 @RequestMapping("/getId")
 	 public Result<?> getId(District agencyDo) {
 		 logger.info("获取代理管理...");
-		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId()){
+		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId().intValue()){
 			 return Result.failureResult("代理用户ID不能为空!");
 		 }
 		 
@@ -245,7 +245,7 @@ public class AgencyController  extends BaseController{
 	 @RequestMapping(value = "/add", method = RequestMethod.POST)
 	 public Result<?> add( AgencyDo  agencyDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId()){
+		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId().intValue()){
 			 return Result.failureResult("用户ID不能为空!");
 		 }
 		 AgencyDo  agency =agencyService.getById(agencyDo.getUserId());
@@ -328,7 +328,7 @@ public class AgencyController  extends BaseController{
 	 @RequestMapping(value = "/edit", method = RequestMethod.POST)
 	 public Result<?> edit( AgencyDo  agencyDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == agencyDo.getId() || 0 == agencyDo.getId()){
+		 if(null == agencyDo.getId() || 0 == agencyDo.getId().intValue()){
 			 return Result.failureResult("ID不能为空!");
 		 }
 //		 
@@ -359,7 +359,7 @@ public class AgencyController  extends BaseController{
 	 @RequestMapping(value = "/del", method = RequestMethod.POST)
 	 public Result<?> del( AgencyDo  agencyDo,HttpServletRequest request, HttpServletResponse response) {
 		 
-		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId()){
+		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId().intValue()){
 			 return Result.failureResult("ID不能为空!");
 		 }
 //		 
