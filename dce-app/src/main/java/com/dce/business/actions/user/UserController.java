@@ -249,6 +249,63 @@ public class UserController extends BaseController {
 	}
 
 	/** 
+	 * @api {POST} /user/resetpass.do 重置登录密码
+	 * @apiName resetpass
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 重置登录密码
+	 * 
+	 * @apiParam {String} mobile 用户手机号码
+	 * @apiParam {String} smsCode 用户手机验证码
+	 * @apiParam {String} userPassword 用户需修改的密码
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {String} msg 修改成功
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {}
+	 */ 
+	@RequestMapping(value = "/resetpass", method = RequestMethod.POST)
+	public Result<?> resetpass(UserDo userDo) {
+		try {
+			String mobile = userDo.getMobile();
+			Assert.hasText(userDo.getUserPassword(), "修改的密码为空");
+			Assert.hasText(mobile, "手机号码为空");
+			logger.info("修改用户登录密码的ID，moblie:" + mobile);
+			
+			//判断验证码
+			SmsDo codeDo = smsDao.getLastIdentifyCode(userDo.getMobile(), "rec");
+			if( null == codeDo){
+				return Result.failureResult("验证码不存在");
+			}else{
+				String smsCode = getString("smsCode");
+				if(!smsCode.equals(codeDo.getMessage())){
+					return Result.failureResult("验证码错误");
+				}
+			}
+			
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("mobile", mobile);
+			List<UserDo> mobileUserList = userService.selectMobile(params);
+			if(null == mobileUserList || mobileUserList.size() == 0 ){
+				return Result.failureResult("当前手机不存在用户");
+			}
+			
+			UserDo mobileUser = mobileUserList.get(0);
+			// 登录密码加密
+			if (StringUtils.isNotBlank(userDo.getUserPassword())) {
+				mobileUser.setUserPassword(DataEncrypt.encrypt(userDo.getUserPassword()));
+			}
+			
+			return userService.updateByPrimaryKeyLogPass(mobileUser);
+		} catch (Exception e) {
+			return Result.failureResult("用户未登录,密码修改失败");
+		}
+	}
+	
+	
+	/** 
 	 * @api {POST} /user/alterpass.do 修改登录密码
 	 * @apiName alterpass
 	 * @apiGroup user 
@@ -371,7 +428,9 @@ public class UserController extends BaseController {
 		String row = getString("rows");
 		// 不传 默认查询第一页
 		if (StringUtils.isNotBlank(pageNums)) {
-			pageNum = Integer.parseInt(pageNums);
+			if(!pageNums.startsWith("-")){
+				pageNum = Integer.parseInt(pageNums);
+			}
 		}
 		if (StringUtils.isNotBlank(row)) {
 			rows = Integer.parseInt(row);
