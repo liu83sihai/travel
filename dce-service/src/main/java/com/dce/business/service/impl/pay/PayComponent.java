@@ -1,5 +1,7 @@
 package com.dce.business.service.impl.pay;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
@@ -21,6 +23,16 @@ public class PayComponent {
     public String sign(RequestBase requestBase) {
 		//RSA签名
 		return rsaSecurityService.sign(requestBase, requestBase.getCharset());
+    }
+    
+	/**
+	 * 商户签名
+	 * @param signData
+	 * @return
+	 */
+    public String sign(Map<String,String> param) {
+		//RSA签名
+		return rsaSecurityService.sign(param, "UTF-8");
     }
 	
     

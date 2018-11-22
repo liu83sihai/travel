@@ -3,9 +3,9 @@ package com.dce.business.service.impl.pay;
 import com.alibaba.fastjson.JSONObject;
 import com.kjtpay.gateway.common.domain.base.RequestBase;
 
-public class GetBankCodeCommand extends BaseCommand{
-	
-	public GetBankCodeCommand(String serviceName,
+public class InstantTradeCommand extends BaseCommand {
+
+	public InstantTradeCommand(String serviceName,
 							  String version,
 							  String idno, 
 							  String realName, 
@@ -13,7 +13,7 @@ public class GetBankCodeCommand extends BaseCommand{
 							  String cardNo,
 							  Integer userId
 							  ){
-		
+
 		JSONObject getBankCodeCommand = new JSONObject();
 		getBankCodeCommand.put("bank_account_name", realName);
 		getBankCodeCommand.put("certificates_type", "01");//证件类型
@@ -30,8 +30,8 @@ public class GetBankCodeCommand extends BaseCommand{
 		requestBase = new RequestBase();
 		requestBase.setVersion(version);
 		requestBase.setService(serviceName);
-		requestBase.setBizContent(getBankCodeCommand.toString());
+		requestBase.setBizContent(getBankCodeCommand.toJSONString());
 	}
 
-	
+
 }

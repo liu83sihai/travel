@@ -8,13 +8,13 @@ public interface IKJTPayService {
 	 * 获取短信验证码
 	 * @return
 	 */
-	Result<?> executeGetBankCardCode(String idno, String realName, String mobile,String cardNo) throws Throwable;
+	Result<?> executeGetBankCardCode(String idno, String realName, String mobile,String cardNo,Integer userId) throws Throwable;
 
 	/**
 	 * 验证短信验证码
 	 * @return
 	 */
-	Result<?> executeCheckCode() throws Throwable;
+	Result<?> executeCheckCode(String tokenId,String verifyCode,Integer userId) throws Throwable;
 	
 	
 

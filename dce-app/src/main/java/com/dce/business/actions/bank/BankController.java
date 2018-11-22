@@ -73,7 +73,8 @@ public class BankController extends BaseController {
     public Result<?> getBankCardCode(HttpServletRequest request,Model model) {
     	try {
     		
-    		Integer userId = getUserId();
+    		//Integer userId = getUserId();
+    		Integer userId =1;
 	    	String bankId = getString("bankId");//
 	    	String cardUserName = getString("cardUserName");
 	    	String cardNo = getString("cardNo");
@@ -94,7 +95,7 @@ public class BankController extends BaseController {
             	return Result.failureResult("身份证不能为空");
             }
         	
-        	Result<?> retResult = kjtPayService.executeGetBankCardCode(idNo,cardUserName,mobile,cardNo);
+        	Result<?> retResult = kjtPayService.executeGetBankCardCode(idNo,cardUserName,mobile,cardNo,userId);
         	return retResult;
     	}catch (Throwable e){
         	logger.error("error", e);
@@ -103,49 +104,8 @@ public class BankController extends BaseController {
     }
     
     
-    
     /**
-     * 验证卡信息获取验证码
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/checkCardGetCode")
-    public Result<?> checkCardGetCode(HttpServletRequest request,Model model) {
-    	try {
-    		Integer userId = getUserId();
-	    	String bankId = getString("bankId");//
-	    	String cardUserName = getString("cardUserName");
-	    	String cardNo = getString("cardNo");
-	    	String mobile = getString("mobile");//
-	    	String idNo = getString("idNo");//
-	    	
-	  
-        	if(StringUtils.isBlank(cardUserName)){
-            	return Result.failureResult("银行所属户名不能为空");
-            }
-        	if(StringUtils.isBlank(mobile)){
-            	return Result.failureResult("手机号不能为空");
-            }
-        	if(StringUtils.isBlank(cardNo)){
-            	return Result.failureResult("银行卡号不能为空");
-            }
-        	if(StringUtils.isBlank(idNo)){
-            	return Result.failureResult("身份证不能为空");
-            }
-        	
-        	
-        	BankCardDo card = bankCardService.selectBankcardByCardNo(cardNo,null,null);
-        	Result<?> retResult = kjtPayService.executeCheckCode();
-        	return retResult;
-    	}catch (Throwable e){
-        	logger.error("error", e);
-            return Result.failureResult("系统正忙请稍后重试");
-        }
-    }
-    
-    /**
-     * 绑定银行卡
+              *   绑定银行卡
      * @param request
      * @return
      */
@@ -163,7 +123,7 @@ public class BankController extends BaseController {
         	String addressInput = getString("addressInput");
         	String idNo = getString("idNo");//
         	String token = getString("token");//
-        	String externalRefNumber = getString("externalRefNumber");
+        	String tokenId = getString("externalRefNumber"); //协议支付号
         	String userType = getString("userType");//0  主借款人   2 共同借款人  3 有房担保人
         	if(StringUtils.isBlank(userType)){
         		userType="0";
@@ -197,15 +157,15 @@ public class BankController extends BaseController {
         	if(StringUtils.isBlank(idNo)){
             	return Result.failureResult("身份证不能为空");
             }
-        	if(StringUtils.isBlank(token) || StringUtils.isBlank(externalRefNumber)){
+        	if(StringUtils.isBlank(token) || StringUtils.isBlank(tokenId)){
             	return Result.failureResult("请获取验证码");
             }
         	
-        	
-        }catch (Exception e){
+        	Result<?> retResult = kjtPayService.executeCheckCode(tokenId,mobileCode,userId);
+        	return retResult;
+        }catch (Throwable e){
         	logger.error("error", e);
             return Result.failureResult("系统正忙请稍后重试");
         }
-        return Result.failureResult("系统正忙请稍后重试");
     }
 }

@@ -67,7 +67,7 @@
 
 	<div class="litem">
 		<span class="lright">
-			<input type="text" id="mobile" placeholder="请输入手机号码" class="linput" value="${mobile}" readonly="readonly">
+			<input type="text" id="mobile" placeholder="请输入手机号码" class="linput" value="${mobile}" >
 		</span>
 		<span class="ltext"><span style="color: red;">*</span>手机号码</span>
 	</div>
@@ -86,7 +86,7 @@
 	</div>
 	<div class="content selecting">
 		<c:forEach var="item" items="${bankCodes}" varStatus="noBank">
-			<div class="litem<c:if test="${noBank.first}"> space</c:if>" id="${item.bankCodeId}">
+			<div class="litem<c:if test="${noBank.first}"> space</c:if>" id="${item.id}">
 				<span class="ltext">${item.bankName}</span>
 			</div>
         </c:forEach>
@@ -153,8 +153,6 @@ $(function(){
 
 <script type="text/javascript">
 
-
-
   //验证手机格式
   function mobile_check(mobile){
   	var msg = verifyMsg(mobile);
@@ -216,140 +214,148 @@ $(function(){
 			    mobile = $('#mobile').val(),
 			    userType = $('#userType').val();	
 	    	if(bankId == null || bankId == ''){
-					HHN.popup("请选择所属银行", 'danger');
+				HHN.popup("请选择所属银行", 'danger');
+	    		return false;
+			}
+
+			if(cardUserName == null || cardUserName == ''){
+					HHN.popup("户名不能为空", 'danger');
+  		    		return false;
+			}
+			if(idNo == null || idNo == ''){
+				HHN.popup("身份证不能为空", 'danger');
+ 		    		return false;
+			}
+			if(cardNo == null || cardNo == ''){
+					HHN.popup("请填写银行卡号", 'danger');
 		    		return false;
-				}else{
-					if(cardUserName == null || cardUserName == ''){
-   						HHN.popup("户名不能为空", 'danger');
-   	   		    		return false;
-   					}else{
-   						if(idNo == null || idNo == ''){
-   							HHN.popup("身份证不能为空", 'danger');
-   	   	   		    		return false;
-   						}else{
-   							if(cardNo == null || cardNo == ''){
-   	   	   						HHN.popup("请填写银行卡号", 'danger');
-   	   	   	   		    		return false;
-   	   	   					}else{
-   	   	   						if(!luhnCheck(cardNo)){
-   		   	   						HHN.popup("银行卡号错误", 'danger');
-   		   	   	   		    		return false;
-   	   	   						}else{
-   		   	   						if(mobile_check(mobile)){
-   		   	   							countdown();
-   		   	   							var param = {"bankId":bankId,"cardUserName":cardUserName,
-   		  		  							 "cardNo":cardNo,"mobile":mobile,"idNo":idNo,"userType":userType};
-   		   	   							checkCardGetCode(param);
-   		   	   						}
-   	   	   						}
-   	   	   					}
-   						}
-   					}
-				}
-	    }
-	    //验证卡获取验证码
-	    function checkCardGetCode(param){
-	    	$.post('<c:url value="/bank/getBankCardCode.do"/>', param, function(data) {
-    			if(data.success && data.resultCode == '0'){
-    				$('#tokenHidden').val(data.model.token);
-    				$('#externalRefNumber').val(data.model.externalRefNumber);
-    				HHN.popup(data.resultMessage);
-    			}else{
-    				countup();
-    				HHN.popup(data.resultMessage);
-    			}
-    		},"json");
-	    }
+			}
+			
+			//if(!luhnCheck(cardNo)){
+			//HHN.popup("银行卡号错误", 'danger');
+    		//return false;
+    		
+			if(!mobile_check(mobile)){
+				HHN.popup("请填正确的手机号码", 'danger');
+    			return false;
+			}
+			
+			countdown();
+			var param = {"bankId":bankId,
+						 "cardUserName":cardUserName,
+				 		 "cardNo":cardNo,
+				 		 "mobile":mobile,
+				 		 "idNo":idNo,
+				 		 "userType":userType};
+			checkCardGetCode(param);
+
+	 }
+    
+    //验证卡获取验证码
+    function checkCardGetCode(param){
+    	$.post('<c:url value="/bank/getBankCardCode.do"/>', param, function(data) {
+   			if(data.code == '0'){
+   				$('#tokenHidden').val(data.data.token);
+   				$('#externalRefNumber').val(data.data.token);
+   				HHN.popup(data.msg);
+   			}else{
+   				countup();
+   				HHN.popup(data.msg);
+   			}
+   		},"json");
+    }
 	    
     		
-	    //绑卡========================
-   		$submit.on('click',function(){
-   			var bankId = $('#bankNameSelect').val(),
-			   	branchBankName = $('#branchBankName').val(),
-			 	cardUserName = $('#cardUserName').val(),
-			 	idNo = $('#idNo').val(),
-			 	cardNo = $('#cardNo').val(),
-			    mobile = $('#mobile').val(),
-			    mobileCode = $('#mobileCode').val(),
-			    token = $('#tokenHidden').val(),
-			    externalRefNumber = $('#externalRefNumber').val(),
-			    addressInput = $('#addressInput').val(),
-			    fromHidden = $('#fromHidden').val(),
-   				userType = $('#userType').val();	
-   			
-   				if(bankId == null || bankId == ''){
-   					HHN.popup("请选择所属银行", 'danger');
+    //绑卡========================
+ 	$submit.on('click',function(){
+  			var bankId = $('#bankNameSelect').val(),
+		   	branchBankName = $('#branchBankName').val(),
+		 	cardUserName = $('#cardUserName').val(),
+		 	idNo = $('#idNo').val(),
+		 	cardNo = $('#cardNo').val(),
+		    mobile = $('#mobile').val(),
+		    mobileCode = $('#mobileCode').val(),
+		    token = $('#tokenHidden').val(),
+		    externalRefNumber = $('#externalRefNumber').val(),
+		    addressInput = $('#addressInput').val(),
+		    fromHidden = $('#fromHidden').val(),
+  			userType = $('#userType').val();	
+  			
+			if(cardUserName == null || cardUserName == ''){
+				HHN.popup("户名不能为空", 'danger');
+	    		return false;
+			}
+			if(idNo == null || idNo == ''){
+				HHN.popup("身份证不能为空", 'danger');
+	    		return false;
+			}
+			if(cardNo == null || cardNo == ''){
+				HHN.popup("请填写银行卡号", 'danger');
+	    		return false;
+			}
+			if(!mobile_check(mobile)){
+				HHN.popup("请填正确的手机号码", 'danger');
+    			return false;
+			}
+			if(mobileCode == null || mobileCode == "" || mobileCode.length == 0){//验证码
+        		HHN.popup("请输入验证码", 'danger');
+        		return false;
+        	}
+			/*
+			if(!luhnCheck(cardNo)){
+					HHN.popup("银行卡号必须符合luhn校验", 'danger');
    		    		return false;
-   				}else{
-   					if(cardUserName == null || cardUserName == ''){
-	   						HHN.popup("户名不能为空", 'danger');
-	   	   		    		return false;
-	   					}else{
-	   						if(idNo == null || idNo == ''){
-	   							HHN.popup("身份证不能为空", 'danger');
-	   	   	   		    		return false;
-	   						}else{
-	   							if(cardNo == null || cardNo == ''){
-		   	   						HHN.popup("请填写银行卡号", 'danger');
-		   	   	   		    		return false;
-		   	   					}else{
-		   	   					if(!luhnCheck(cardNo)){
-			   	   						HHN.popup("银行卡号必须符合luhn校验", 'danger');
-			   	   	   		    		return false;
-		   	   						}else{
-			   	   						if(mobile_check(mobile)){
-				   	   						if(mobileCode == null || mobileCode == "" || mobileCode.length == 0){//验证码
-					   	   		        		HHN.popup("请输入验证码", 'danger');
-					   	   		        		return false;
-					   	   		        	}else{
-						   	   		        	if(addressInput == null || addressInput == ''){
-							   						HHN.popup("请选择开户所在地", 'danger');
-							   	   		    		return false;
-							   					}else{
-							   						if(branchBankName == null || branchBankName == ''){
-							   	   						HHN.popup("请填写所属银行支行", 'danger');
-							   	   	   		    		return false;
-							   	   					}else{
-							   	   						if(!HHN.checkChinese(branchBankName) || branchBankName.length >50){
-							   	   							HHN.popup("支行名称为长度50以内的汉字", 'danger');
-								   	   	   		    		return false;
-							   	   						}else{
-								   	   						if(token == null || token == '' || externalRefNumber == null || externalRefNumber == ''){
-											    				HHN.popup('请获取验证码','danger');
-											    				countup();
-													    		return false;
-											    			}else{ 
-											    				var param = {"bankId":bankId,  "branchBankName":branchBankName,"cardUserName":cardUserName
-									   	   								,"cardNo":cardNo,"addressInput":addressInput,"mobile":mobile,"mobileCode":mobileCode
-									   	   								,"idNo":idNo,"token":token,"externalRefNumber":externalRefNumber,"from":fromHidden,"userType":userType};
-							   			   						submitBindBankInfo(param);
-					   			   							 }
-							   	   						} 
-							   	   					}
-							   					 } 
-					   	   		        	}
-			   	   						}
-		   	   						}
-		   	   					}
-	   						}
-	   					}
-   				}
-   		});
+			}
+        	if(addressInput == null || addressInput == ''){
+				HHN.popup("请选择开户所在地", 'danger');
+	    		return false;
+			}
+			if(branchBankName == null || branchBankName == ''){
+				HHN.popup("请填写所属银行支行", 'danger');
+  		    		return false;
+			}
+			if(!HHN.checkChinese(branchBankName) || branchBankName.length >50){
+				HHN.popup("支行名称为长度50以内的汉字", 'danger');
+ 		    		return false;
+			}
+			*/
+			if(token == null || token == '' || externalRefNumber == null || externalRefNumber == ''){
+				HHN.popup('请获取验证码','danger');
+				countup();
+   				return false;
+			}
+
+			var param = {"bankId":bankId,  
+						 "branchBankName":branchBankName,
+						 "cardUserName":cardUserName,
+						 "cardNo":cardNo,
+						 "addressInput":addressInput,
+						 "mobile":mobile,
+						 "mobileCode":mobileCode,
+						 "idNo":idNo,
+						 "token":token,
+						 "externalRefNumber":externalRefNumber,
+						 "from":fromHidden,
+						 "userType":userType};
+			submitBindBankInfo(param);
+  	});
    		
 	//提交绑卡信息
 	function submitBindBankInfo(param){
 		HHN.loading("请求中,请稍后");
 		$.post("<c:url value='/bank/bindBankCard.do'/>", param, function(data) {
-			if(data.success && data.resultCode == '0'){
-				HHN.popup(data.resultMessage);
+			if(data.code == '0'){
+				HHN.popup(data.msg);
+				/*
 				var fromHidden = $('#fromHidden').val();
 				if(formHidden != ""){
 					window.location.href = fromHidden;					
 				}else{
 					window.location.href = "<c:url value='/bank/toBankCardManager.do'/>";
 				}
+				*/
 			}else{
-				HHN.popup(data.resultMessage);
+				HHN.popup(data.msg);
 			}
 		},"json");
 	}
