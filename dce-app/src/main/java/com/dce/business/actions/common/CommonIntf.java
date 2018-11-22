@@ -75,7 +75,7 @@ public class CommonIntf extends BaseController {
      * @apiDescription 根据手机号码返回短信验证码
      *  
      * @apiParam {String} mobile 手机号码  
-     * @apiParam {String} page 发送类型,空为验证码。code:验证码，扫描支付： scan，  卖单：  sale，  美元转让：  tran
+     * @apiParam {String} page 发送类型,空为验证码。code:验证码，rec:忘记密码 , 扫描支付： scan，  卖单：  sale，  美元转让：  tran
      *  
      * @apiUse RETURN_MESSAGE
      * @apiSuccess {String} model 验证码
