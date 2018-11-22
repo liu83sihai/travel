@@ -56,7 +56,9 @@ public class WithDrawController extends BaseController {
 	 *  @apiParam {Decimal} qty	是	用户要提现的金额（整百整百的取如100,200,300）
 	 *  @apiParam {String} password	交易密码
 	 *  @apiParam {int} type	是	提现类型 1支付宝 2银行卡 3微信
-	 *  @apiParam {String} bank_no	是	账号 （提现到银行卡，账号不显示）
+	 *  @apiParam {String} bankNo	 提现账号
+	 *  @apiParam {String} bank	提现银行 
+	 *  @apiParam {String} bankContent	提现支行 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -85,13 +87,15 @@ public class WithDrawController extends BaseController {
 		String password = getString("password");
 		String qty = getString("qty");
 		String type = getString("type");
-		String bank_no = getString("bank_no"); // 账号
+		String bankNo = getString("bankNo"); // 账号
+		String bank = getString("bank"); //银行名称
+		String bankContent = getString("bankContent"); //银行支行
 
 		Assert.hasText(password, "提现密码不能为空");
 		Assert.hasText(qty, "提现数量不能为空");
 		Assert.hasText(type, "提现方式不能为空");
 		if (!type.equals("2")) {
-			Assert.hasText(bank_no, "账号不能为空");
+			Assert.hasText(bankNo, "账号不能为空");
 		}
 		logger.info("用户提现, userId:" + userId + "; qty:" + qty + "type:" + type);
 
@@ -103,7 +107,7 @@ public class WithDrawController extends BaseController {
 
 		}
 
-		return payService.withdraw(getUserId(), password, type, new BigDecimal(qty), bank_no);
+		return payService.withdraw(getUserId(), password, type, new BigDecimal(qty), bankNo);
 	}
 
 	/**

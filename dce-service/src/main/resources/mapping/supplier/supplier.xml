@@ -41,7 +41,7 @@
 	</select>
 
 	<select id="selectSupplier" parameterType="Map" resultMap="supplierResultMap">
-		SELECT s.*,  FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
+		SELECT s.*,  ROUND(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance 
 		  FROM tr_supplier s
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
@@ -126,7 +126,7 @@
 
 	</select>
 	<select id="selectSupplierByPage" parameterType="Map" resultMap="supplierResultMap">
-		SELECT s.*,FORMAT(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance
+		SELECT s.*,ROUND(geo_distance(longitude,latitude, #{longitude}, #{latitude})/1000,2) as distance
 		  FROM tr_supplier s
 		  <trim prefix="WHERE" prefixOverrides="AND |OR "> 
 			<if test="id != null">  
