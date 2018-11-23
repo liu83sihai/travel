@@ -87,7 +87,7 @@ public class WithDrawController extends BaseController {
 		String password = getString("password");
 		String qty = getString("qty");
 		String type = getString("type");
-		String bankNo = getString("bankNo"); // 账号
+		String bankNo = getString("bank_no"); // 账号
 		String bank = getString("bank"); //银行名称
 		String bankContent = getString("bankContent"); //银行支行
 
