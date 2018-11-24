@@ -16,6 +16,7 @@
 	<http pattern="/auth/login.action" security="none" />
 	<http pattern="/auth/sendMobileCode.action" security="none" />
 	<http pattern="/auth/accessDenied.action" security="none" />
+	<http pattern="/supplier/protocolLink.html" security="none" />
 	<global-method-security jsr250-annotations="enabled" />
 
 	<http create-session="always" entry-point-ref="authenticationEntryPoint">

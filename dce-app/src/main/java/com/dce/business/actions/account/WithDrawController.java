@@ -56,7 +56,7 @@ public class WithDrawController extends BaseController {
 	 *  @apiParam {Decimal} qty	是	用户要提现的金额（整百整百的取如100,200,300）
 	 *  @apiParam {String} password	交易密码
 	 *  @apiParam {int} type	是	提现类型 1支付宝 2银行卡 3微信
-	 *  @apiParam {String} bankNo	 提现账号
+	 *  @apiParam {String} bank_no	 提现账号
 	 *  @apiParam {String} bank	提现银行 
 	 *  @apiParam {String} bankContent	提现支行 
 	 * @apiUse RETURN_MESSAGE
@@ -107,7 +107,7 @@ public class WithDrawController extends BaseController {
 
 		}
 
-		return payService.withdraw(getUserId(), password, type, new BigDecimal(qty), bankNo);
+		return payService.withdraw(getUserId(), password, type, new BigDecimal(qty), bankNo,bank,bankContent);
 	}
 
 	/**

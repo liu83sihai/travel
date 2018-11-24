@@ -57,6 +57,8 @@ $(function(){
 	 					}
 	 				},
 	 				{field:"bank_no",title:"提现账号",width:45,align:"center"},
+	 				{field:"bank",title:"提现银行",width:45,align:"center"},
+	 				{field:"bankContent",title:"提现支行",width:45,align:"center"},
 	 				{field:"paymentDateStr",title:"到账日期",width:80,align:"center"},
 	 				
 	 				{field:"edit",title:"审核",width:80,align:"center",

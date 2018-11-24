@@ -24,6 +24,7 @@ public class ActivityDo  implements java.io.Serializable{
 	private java.lang.Integer status;
 	private java.lang.String remark;
 	private java.lang.Integer activityGood;
+	private java.lang.Integer activityCount;
 	private String userName;
 	private String trueName;
 	private java.lang.Integer userFace;
@@ -157,6 +158,16 @@ public class ActivityDo  implements java.io.Serializable{
 
 	public String getTrueName() {
 		return trueName;
+	}
+	
+	
+
+	public java.lang.Integer getActivityCount() {
+		return activityCount;
+	}
+
+	public void setActivityCount(java.lang.Integer activityCount) {
+		this.activityCount = activityCount;
 	}
 
 	public void setTrueName(String trueName) {

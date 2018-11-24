@@ -134,7 +134,7 @@ public class PayServiceImpl implements IPayService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	public Result<?> withdraw(Integer userId, String password, String type, BigDecimal qty, String bank_no) {
+	public Result<?> withdraw(Integer userId, String password, String type, BigDecimal qty, String bank_no,String bank,String bankContent) {
 
 		/*
 		 * //判断系统设置是否可交易 CtCurrencyDo ct =
@@ -216,6 +216,8 @@ public class PayServiceImpl implements IPayService {
 			record.setWithdrawDate((new Date()).getTime() / 1000);
 			record.setType(type);
 			record.setMoneyType(userDo.getTrueName());// 真实姓名
+			record.setBank(bank);
+			record.setBankContent(bankContent);
 			// 提现到银行卡
 			if (type.equals("2")) {
 				record.setBank(userDo.getBanktype());// 开卡行

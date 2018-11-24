@@ -12,7 +12,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/flexslider.css'/>" />
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/icons.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/common/js/jquery-easyui-1.4.1/extension/jquery-easyui-datagridview/datagrid-detailview.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/withdraw/index.js?v=${jsversion}232'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/withdraw/index.js?v=${jsversion}2442'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery.flexslider-min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/common/formatter.js?v=${jsversion}'/>"></script>
 <style type="text/css">

@@ -78,6 +78,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiParam {java.lang.String}  supplierAddress 详细地址
 	 *	@apiParam {java.math.BigDecimal}  longitude 经度
 	 *	@apiParam {java.math.BigDecimal}  latitude 纬度
+	 *	@apiParam {java.lang.String}  protocolLink 协议地址
 	 */
 	
 	/** 
@@ -265,7 +266,7 @@ public class SupplierController  extends BaseController{
 		 * @apiName addSupplier
 		 * @apiGroup supplier 
 		 * @apiVersion 1.0.0 
-		 * @apiDescription 添加商家管理
+		 * @apiDescription 添加商家管理 协议固定地址：http://app.zjzwly.com/dce-manager/supplier/protocolLink.html
 		 *  
 		 * @apiUse  supplierParam 
 		 *  

@@ -57,6 +57,7 @@ public class ActivityController extends BaseController{
 	 *	@apiSuccess {java.lang.Integer}  status 状态
 	 *	@apiSuccess {java.lang.String}  remark 备注
 	 *	@apiSuccess {java.lang.String}  activityGood 用户是否点赞 0：未点赞 1：已点赞
+	 *	@apiSuccess {java.lang.String}  activityCount 风彩点赞次数
 	 *	@apiSuccess {java.lang.String}  userName 用户名
 	 *	@apiSuccess {java.lang.String}  trueName 真名
 	 *	@apiSuccess {java.lang.String}  userFace 用户头像
@@ -157,6 +158,7 @@ public class ActivityController extends BaseController{
 				map.put("status", activity.getStatus());
 				map.put("remark", activity.getRemark());
 				map.put("activityGood", activity.getActivityGood());
+				map.put("activityCount", activity.getActivityCount());
 				map.put("userName", activity.getUserName());
 				map.put("trueName", activity.getTrueName());
 				map.put("userFace", activity.getUserFace());

@@ -64,6 +64,15 @@ public class SupplierController extends BaseAction{
     public String index(Model model){
         return "supplier/listSupplier";
     }
+    /**
+     * 去列表页面
+     * @param model
+     * @return
+     */
+    @RequestMapping("/protocolLink")
+    public String protocolLink(Model model){
+    	return "supplier/protocol";
+    }
 	
 	@RequestMapping("/listSupplier")
     public void listSupplier(NewPagination<SupplierDo> pagination,
