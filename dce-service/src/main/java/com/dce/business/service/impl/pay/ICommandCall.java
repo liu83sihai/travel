@@ -4,6 +4,6 @@ import com.dce.business.common.result.Result;
 
 public interface ICommandCall {
 
-	Result<?> parseRetVal(IKJTCommand kjtCommand, String retVal);
+	Result<?> parseRetVal(String retVal);
 
 }

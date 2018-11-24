@@ -111,4 +111,40 @@ public interface IBankCardService {
      * @return
      */
     Result<?> saveCbtBankCardInfo(BankCardDo bankCardDo);
+
+    /**
+     *	绑卡的时候 获取短信验证码
+     * @param idNo
+     * @param cardUserName
+     * @param mobile
+     * @param cardNo
+     * @param userId
+     * @return
+     */
+	public Result<?> getBankCardCode(String idNo, 
+									 String cardUserName, 
+									 String mobile, 
+									 String cardNo,
+									 Integer userId) throws Throwable;
+
+	/**
+	 * 	 绑卡时验证短信验证码， 如果首次绑卡 还会支付
+	 * @param userId
+	 * @param bankId
+	 * @param mobileCode
+	 * @param mobile
+	 * @param cardNo
+	 * @param idNo
+	 * @param tokenId
+	 * @return
+	 */
+	Result<?> bindBankCard(Integer userId, 
+							String bankId, 
+							String mobileCode, 
+							String mobile, 
+							String cardNo, 
+							String idNo,
+							String tokenId,
+							String money,
+							String orderCode) throws Throwable;
 }

@@ -95,7 +95,7 @@ public class BankController extends BaseController {
             	return Result.failureResult("身份证不能为空");
             }
         	
-        	Result<?> retResult = kjtPayService.executeGetBankCardCode(idNo,cardUserName,mobile,cardNo,userId);
+        	Result<?> retResult = bankCardService.getBankCardCode(idNo,cardUserName,mobile,cardNo,userId);
         	return retResult;
     	}catch (Throwable e){
         	logger.error("error", e);
@@ -125,6 +125,10 @@ public class BankController extends BaseController {
         	String token = getString("token");//
         	String tokenId = getString("externalRefNumber"); //协议支付号
         	String userType = getString("userType");//0  主借款人   2 共同借款人  3 有房担保人
+        	
+        	String money = getString("payMoney");
+        	String orderCode = getString("orderCode");
+        	
         	if(StringUtils.isBlank(userType)){
         		userType="0";
         	}
@@ -161,7 +165,7 @@ public class BankController extends BaseController {
             	return Result.failureResult("请获取验证码");
             }
         	
-        	Result<?> retResult = kjtPayService.executeCheckCode(tokenId,mobileCode,userId);
+        	Result<?> retResult = bankCardService.bindBankCard(userId,bankId,mobileCode,mobile,cardNo,idNo,tokenId,money,orderCode);
         	return retResult;
         }catch (Throwable e){
         	logger.error("error", e);

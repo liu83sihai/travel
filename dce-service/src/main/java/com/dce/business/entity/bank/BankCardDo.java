@@ -48,6 +48,16 @@ public class BankCardDo implements Serializable {
 	
 	private String branchOrgCode;
 	
+	private String token;   //第三方支付，协议支付号
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public String getBranchOrgCode() {
 		return branchOrgCode;
 	}

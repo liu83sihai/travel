@@ -85,27 +85,9 @@ public class PayKJTServiceImpl implements IKJTPayService {
 		requestBase.setTimestamp(DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
 		String sign = payComponent.sign(requestBase);
 		requestBase.setSign(sign);
-		
-		/*
-		Map<String, String> param = new HashMap<String,String>();
-		//url编码
-		param.put("biz_content", requestBase.getBizContent());
-		param.put("charset", requestBase.getCharset());
-		param.put("format", requestBase.getFormat());
-		param.put("partner_id", requestBase.getPartnerId());
-		param.put("request_no", requestBase.getRequestNo());
-		param.put("service", requestBase.getService());
-		param.put("sign_type", requestBase.getSignType());
-		param.put("timestamp", requestBase.getTimestamp());
-		param.put("version", requestBase.getVersion());
-		param.put("sign", requestBase.getSign());
-		String sign = payComponent.sign(param);
-		
-		requestBase.setSign(sign);
-		*/
-		
+	
 		String retVal =  posKJTRequest(requestBase);
-		return kjtCommandCall.parseRetVal(kjtCommand,retVal);
+		return KJTCallFactory.getCommandCallByCommand(requestBase.getService()).parseRetVal(retVal);
 		
 	}
 	

@@ -29,12 +29,13 @@
     <result column="cardType" jdbcType="INTEGER" property="cardType" />
     <result column="bankMobile" jdbcType="VARCHAR" property="bankMobile" />
     <result column="branchOrgCode" jdbcType="VARCHAR" property="branchOrgCode" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
   </resultMap>
   <sql id="Base_Column_List">
     id, userId, cardUserName, bankName, branchBankName, cardNo, cardMode, cardStatus, 
     openBankCode, bankCode, provinceId, cityId, region, auditUser, auditTime, remark, 
     isDefault, isExpress, createTime, updateTime, province, city, regionStr, payChannelType, 
-    cardType, bankMobile,branchOrgCode
+    cardType, bankMobile,branchOrgCode,token
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -55,7 +56,7 @@
       isDefault, isExpress, createTime, 
       updateTime, province, city, 
       regionStr, payChannelType, cardType, branchOrgCode,
-      bankMobile)
+      bankMobile,token)
     values (#{userId,jdbcType=BIGINT}, #{cardUserName,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
       #{branchBankName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardMode,jdbcType=INTEGER}, 
       #{cardStatus,jdbcType=INTEGER}, #{openBankCode,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, 
@@ -64,8 +65,10 @@
       #{isDefault,jdbcType=INTEGER}, #{isExpress,jdbcType=INTEGER}, now(), 
       #{updateTime,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{regionStr,jdbcType=VARCHAR}, #{payChannelType,jdbcType=CHAR}, #{cardType,jdbcType=INTEGER}, 
-      #{branchOrgCode,jdbcType=VARCHAR}),
-      #{bankMobile,jdbcType=VARCHAR})
+      #{branchOrgCode,jdbcType=VARCHAR},
+      #{bankMobile,jdbcType=VARCHAR},
+      #{token,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.bank.BankCardDo" useGeneratedKeys="true">
     insert into t_loan_bankcard
@@ -148,7 +151,9 @@
       <if test="branchOrgCode != null">
         branchOrgCode,
       </if>
-      
+      <if test="token != null">
+        token,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -229,7 +234,9 @@
       <if test="branchOrgCode != null">
         #{branchOrgCode,jdbcType=VARCHAR},
       </if>
-
+	  <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dce.business.entity.bank.BankCardDo">
@@ -313,6 +320,9 @@
       <if test="branchOrgCode != null">
         branchOrgCode = #{branchOrgCode,jdbcType=VARCHAR},
       </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
 
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -344,8 +354,8 @@
       payChannelType = #{payChannelType,jdbcType=CHAR},
       cardType = #{cardType,jdbcType=INTEGER},
       bankMobile = #{bankMobile,jdbcType=VARCHAR},
-      branchOrgCode=#{branchOrgCode,jdbcType=VARCHAR}
-      
+      branchOrgCode=#{branchOrgCode,jdbcType=VARCHAR},
+      token=#{token,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   

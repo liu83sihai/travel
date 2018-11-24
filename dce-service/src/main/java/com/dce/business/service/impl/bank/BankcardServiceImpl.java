@@ -27,6 +27,7 @@ import com.dce.business.entity.bank.BankCardDo.PayChannelTypeEnum;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.bank.IBankCardService;
+import com.dce.business.service.pay.IKJTPayService;
 import com.dce.business.service.user.IUserService;
 
 /**
@@ -42,6 +43,10 @@ public class BankcardServiceImpl implements IBankCardService {
     private IBankCardDao bankCardDao;
     @Resource
     private IUserService userService;
+    
+    @Resource
+    private IKJTPayService  kjtPayService;
+    
    
     @Override
     public BankCardDo selectDefaultBankcard(Long userId, String payChannelType, String cardType) {
@@ -388,4 +393,54 @@ public class BankcardServiceImpl implements IBankCardService {
             return Result.failureResult("保存银行卡失败");
         }
     }
+
+	@Override
+	public Result<?> getBankCardCode(String idNo, 
+									 String cardUserName, 
+									 String mobile, 
+									 String cardNo,
+									 Integer userId) throws Throwable {
+		
+		Map<String, Object> param = new HashMap<String,Object>();
+		param.put("userId", userId);
+		param.put("cardNo", cardNo);
+		List<BankCardDo> cardLst = bankCardDao.selectBankcard(param);
+		
+		BankCardDo record = null;
+		if(null == cardLst || cardLst.size()<1) {
+			record = new BankCardDo();
+			record.setUserId(Long.valueOf(userId));
+			record.setCardNo(cardNo);
+			record.setBankMobile(mobile);
+			record.setCardUserName(cardUserName);
+			record.setCardStatus(0);
+			bankCardDao.insertSelective(record );
+		}else {
+			record = cardLst.get(0);
+			if(record.getCardStatus().intValue() == 1) {
+				return Result.successResult("ok");
+			}
+		}
+		Result<?> ret =  kjtPayService.executeGetBankCardCode(idNo,cardUserName,mobile,cardNo,userId);
+		if(ret.isSuccess()) {
+			Map<String,Object> dataModel = (Map)ret.getData();
+			if(null != dataModel) {
+				String token = (String) dataModel.get("token");
+				if(null != token) {
+					record.setToken(token);
+					bankCardDao.updateByPrimaryKeySelective(record);
+				}
+			}
+		}
+		
+		return ret;
+		
+		
+	}
+
+	@Override
+	public Result<?> bindBankCard(Integer userId, String bankId, String mobileCode, String mobile, String cardNo,
+			String idNo, String tokenId, String money, String orderCode) throws Throwable {
+		 return kjtPayService.executeCheckCode(tokenId,mobileCode,userId);
+	}
 }
