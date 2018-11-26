@@ -1,6 +1,7 @@
 package com.dce.business.common.util;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +38,9 @@ public class MeituLvUtil {
 		 String uname = userName;
 //		 String unameCode= getUnicode(uname);
 //		 String sings = Sha1Util.getSha1(PRIVATEKEY+uname+QIUCODE+pnum).substring(2, 34);
-		 String sings = DigestUtils.shaHex(PRIVATEKEY+uname+QIUCODE+pnum).substring(2, 34);
-//		 System.out.println(Sha1Util.getSha1(PRIVATEKEY+uname+QIUCODE+pnum));
+//		 String sings = DigestUtils.shaHex(PRIVATEKEY+uname+QIUCODE+pnum).substring(2, 34);
+		 String sings = SHA1Tools.encode(PRIVATEKEY+uname+QIUCODE+pnum);
+		 System.out.println(sings);
 //		 System.out.println(DigestUtils.shaHex(PRIVATEKEY+uname+QIUCODE+pnum));
 		 Map<String,String> param = new HashMap<String,String>();
 		 param.put("UID", cardNo);
@@ -57,13 +59,43 @@ public class MeituLvUtil {
 		 return result;
 	 }
 	 
+	 /**
+	  * 登录行旅通
+	  * @param userName
+	  * @param mobile
+	  * @param cardNo
+	  * @return 1:激活成功 其他激活失败
+	  */
+	 public static String virtualOpenSSL(String userName,String mobile,String cardNo) {
+		 logger.info("登录行旅通,userName:" + userName + ";mobile:"+mobile +";cardNo:" + cardNo);
+		 Map<String, String> param = new HashMap<>();
+			
+			param.put( "UID", cardNo);
+			
+			param.put( "PNUM", mobile);
+			
+			param.put( "UNAME",userName);
+			
+//			param.put("IN("INUM", "610111198810100025");
+			
+			param.put("QIUCODE",QIUCODE);
+			
+			param.put("DAYS", "365");
+			String sings = SHA1Tools
+					.encode(PRIVATEKEY + userName + QIUCODE + mobile);
+			String retStr =HttpClientUtil.doPost("https://qiuapi.meitulv.com/virtual_open",  param, sings);
+		 
+		 return retStr;
+	 }
+	 
 	
 	 
-	 public static void main(String[] args) {
+	 public static void main(String[] args) throws UnsupportedEncodingException {
 		 MeituLvUtil  meitu = new MeituLvUtil();
-		 String name ="LIU";
-		 String mobile = "13723410575";
-		 String cardNo = "UID4421452144";
+		 String name ="刘德华";
+//		 String nameStr = URLEncoder.encode(name, "UTF-8");
+		 String mobile = "13723410565";
+		 String cardNo = "UID4421452141421";
 		 String result =  meitu.virtualOpen(name,mobile,cardNo);
 		 System.out.println("=============" + result);
 //		 meitu.list();

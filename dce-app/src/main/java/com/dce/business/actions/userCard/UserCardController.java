@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.MeituLvUtil;
 import com.dce.business.entity.activity.ActivityDo;
 import com.dce.business.entity.notice.NoticeDo;
 import com.dce.business.entity.page.PageDo;
@@ -47,11 +48,6 @@ public class UserCardController  extends BaseController{
 	 *	@apiSuccess {java.lang.String}  userName 用户名
 	 *	@apiSuccess {java.lang.String}  mobile 用户手机
 	 *	@apiSuccess {java.lang.String}  orderNo 流水单号
-	 *	@apiSuccess {java.lang.Integer}  userLevel 用户等级
-	 *	@apiSuccess {java.lang.Integer}  sex 性别
-	 *	@apiSuccess {java.lang.String}  cardNo 第三方卡号
-	 *	@apiSuccess {java.lang.String}  bankNo 银行卡号
-	 *	@apiSuccess {java.lang.String}  idNumber 身份证号
 	 *	@apiSuccess {java.lang.String}  remark 备注
 	 *	@apiSuccess {java.sql.Date}  createDate 创建时间
 	 *	@apiSuccess {java.sql.Date}  updateDate 修改时间
@@ -64,16 +60,6 @@ public class UserCardController  extends BaseController{
 	 *	@apiParam {java.lang.Integer}  userId 用户ID
 	 *	@apiParam {java.lang.String}  userName 用户名
 	 *	@apiParam {java.lang.String}  mobile 用户手机
-	 *	@apiParam {java.lang.String}  orderNo 流水单号
-	 *	@apiParam {java.lang.Integer}  userLevel 用户等级
-	 *	@apiParam {java.lang.Integer}  sex 性别
-	 *	@apiParam {java.lang.String}  cardNo 第三方卡号
-	 *	@apiParam {java.lang.String}  bankNo 银行卡号
-	 *	@apiParam {java.lang.String}  idNumber 身份证号
-	 *	@apiParam {java.lang.String}  remark 备注
-	 *	@apiParam {java.sql.Date}  createDate 创建时间
-	 *	@apiParam {java.sql.Date}  updateDate 修改时间
-	 *	@apiParam {java.lang.Integer}  status 状态
 	 */
 	
 	/** 
@@ -83,6 +69,7 @@ public class UserCardController  extends BaseController{
 	 * @apiVersion 1.0.0 
 	 * @apiDescription 用户激活卡列表
 	 *  
+	 * @apiParam  {java.lang.Integer}  userId 用户ID
 	 * @apiUse pageParam  
 	 
 	 * @apiUse userCardSucces  
@@ -116,8 +103,12 @@ public class UserCardController  extends BaseController{
 	 *	}
 	 */ 
 	 @RequestMapping("/index")
-	 public Result<?> list() {
+	 public Result<?> list(Integer userId) {
 		 logger.info("查询用户激活卡...");
+		 if( null == userId){
+			 return Result.failureResult("激活卡用户ID不能为空!");
+		 }
+		 
 	
 		 String pageNums = getString("pageNum");
 		 String row = getString("rows");
@@ -130,6 +121,7 @@ public class UserCardController  extends BaseController{
 		}
 
 		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("userId", userId);
 		PageDo<UserCardDo> userCardPage = new PageDo<UserCardDo>();
 		userCardPage.setCurrentPage(pageNum);
 		userCardPage.setPageSize(rows);
@@ -211,67 +203,13 @@ public class UserCardController  extends BaseController{
 		 return Result.successResult("获取用户激活卡成功", userCard);
 	 }
 	 
-	 /** 
-		 * @api {POST} /userCard/add.do 添加用户激活卡
-		 * @apiName addUserCard
-		 * @apiGroup userCard 
-		 * @apiVersion 1.0.0 
-		 * @apiDescription 添加用户激活卡
-		 *  
-		 * @apiUse  userCardParam 
-		 *  
-		 * @apiUse  userCardSucces  
-		 * @apiUse RETURN_MESSAGE
-		 * @apiSuccessExample Success-Response: 
-		 *  HTTP/1.1 200 OK 
-		 * {
-		 *  "code": 0
-		 *	"msg": 返回成功,
-		 *	"data": {
-		 *	    [
-		 *			{
-	  	 * 				id id
-	  	 * 				userId 用户ID
-	  	 * 				userName 用户名
-	  	 * 				mobile 用户手机
-	  	 * 				orderNo 流水单号
-	  	 * 				userLevel 用户等级
-	  	 * 				sex 性别
-	  	 * 				cardNo 第三方卡号
-	  	 * 				bankNo 银行卡号
-	  	 * 				idNumber 身份证号
-	  	 * 				remark 备注
-	  	 * 				createDate 创建时间
-	  	 * 				updateDate 修改时间
-	  	 * 				status 状态
-		 *			}
-		 *		]
-		 *	  }
-		 *	}
-		 */ 
-	 @RequestMapping(value = "/add", method = RequestMethod.POST)
-	 public Result<?> add( UserCardDo  userCardDo,HttpServletRequest request, HttpServletResponse response) {
-		 
-//		 if(null == userCardDo.getUserId() || 0 == userCardDo.getUserId()){
-//			 return Result.failureResult("用户ID不能为空!");
-//		 }
-//		 
-//		 if(StringUtils.isBlank(UserCardDo.getContent())){
-//			 return Result.failureResult("内容为空!");
-//		 }
-//		 userCardDo.setStatus(1);
-//		 userCardDo.setCreateDate(new Date(System.currentTimeMillis()));
-//		 userCardDo.setCreateName("前台增加用户激活卡");
-		 userCardService.addUserCard(userCardDo);
-		 return Result.successResult("用户激活卡增加成功",userCardDo);
-	 }
 	 
 	 /** 
-	  * @api {POST} /userCard/edit.do 修改用户激活卡
-	  * @apiName editUserCard
+	  * @api {POST} /userCard/active.do 用户激活卡
+	  * @apiName active
 	  * @apiGroup userCard 
 	  * @apiVersion 1.0.0 
-	  * @apiDescription 修改用户激活卡
+	  * @apiDescription 用户激活卡
 	  *  
 	  * @apiUse  userCardParam 
 	  *  
@@ -304,46 +242,36 @@ public class UserCardController  extends BaseController{
 	  *	  }
 	  *	}
 	  */ 
-	 @RequestMapping(value = "/edit", method = RequestMethod.POST)
-	 public Result<?> edit( UserCardDo  userCardDo,HttpServletRequest request, HttpServletResponse response) {
-		 
-//		 if(null == userCardDo.getId() || 0 == userCardDo.getId()){
-//			 return Result.failureResult("ID不能为空!");
-//		 }
-//		 
-//		 userCardDo.setModifyDate(new Date(System.currentTimeMillis()));
-//		 userCardDo.setModifyName("前台修改风采");
-		 userCardService.updateUserCardById(userCardDo);
-		 return Result.successResult("用户激活卡修改成功",userCardDo);
-	 }
-	 
-	 /** 
-	  * @api {POST} /userCard/del.do 删除用户激活卡
-	  * @apiName delUserCard
-	  * @apiGroup userCard 
-	  * @apiVersion 1.0.0 
-	  * @apiDescription 删除用户激活卡
-	  *  
-	  * @apiUse  userCardParam 
-	  *  
-	  * @apiUse RETURN_MESSAGE
-	  * @apiSuccessExample Success-Response: 
-	  *  HTTP/1.1 200 OK 
-	  * {
-	  *  "code": 0
-	  *	"msg": 删除成功,
-	  *	"data": {}
-	  *	}
-	  */ 
-	 @RequestMapping(value = "/del", method = RequestMethod.POST)
-	 public Result<?> del( UserCardDo  userCardDo,HttpServletRequest request, HttpServletResponse response) {
-		 
-		 if(null == userCardDo.getId() || 0 == userCardDo.getId().intValue()){
-			 return Result.failureResult("ID不能为空!");
-		 }
-//		 
-		 userCardService.deleteById(userCardDo.getId());
-		 return Result.successResult("用户激活卡删除成功");
-	 }
+	 @RequestMapping(value = "/active", method = RequestMethod.POST)
+	 public Result<?> active( UserCardDo  userCardDo,HttpServletRequest request, 
+			HttpServletResponse response) {
 
+		if (null == userCardDo.getId() || 0 == userCardDo.getId()) {
+			return Result.failureResult("ID不能为空!");
+		}
+
+		if (StringUtils.isBlank(userCardDo.getMobile())) {
+			return Result.failureResult("手机号码不能为空!");
+		}
+
+		if (StringUtils.isBlank(userCardDo.getUserName())) {
+			return Result.failureResult("用户名不能为空!");
+		}
+
+		UserCardDo userCard = userCardService.getById(userCardDo.getId());
+		String result = MeituLvUtil.virtualOpen(userCardDo.getUserName(), userCardDo.getMobile(), userCard.getCardNo());
+		int status = 0;
+		String remark = "激活卡失败,失败代码：" + result;
+		if ("1".equals(result)) {
+			status = 1;
+			remark = "激活卡成功";
+		}
+		userCardDo.setStatus(status);
+		userCardDo.setRemark(remark);
+		userCardDo.setUpdateDate(new Date(System.currentTimeMillis()));
+		userCardService.updateUserCardById(userCardDo);
+		return Result.successResult(remark, userCardDo);
+	}
+	 
+	
 }
