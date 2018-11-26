@@ -107,49 +107,48 @@ public class PayKJTServiceImpl implements IKJTPayService {
 		return executeCommand(getCardCodeCommand);
 	}
 
+
+
 	@Override
-	public Result<?> executeCheckCode(String tokenId, String verifyCode, Integer userId) throws Throwable {
-		// TODO Auto-generated method stub
-		return null;
+	public Result<?> executeCheckCode(String tokenId, String verifyCode, Integer userId) throws Throwable{
+		IKJTCommand checkCodeCommand = new CheckCodeCommand(IKJTCommand.COMMAND_CHECK_BANK_CARD_CODE
+				                                            ,"1.0"
+				                                            ,tokenId
+				                                            ,verifyCode
+				                                            ,userId);
+		
+		return executeCommand(checkCodeCommand );
 	}
 
-
-//	@Override
-//	public Result<?> executeCheckCode(String tokenId, String verifyCode, Integer userId) throws Throwable{
-//		IKJTCommand checkCodeCommand = new CheckCodeCommand(IKJTCommand.COMMAND_CHECK_BANK_CARD_CODE
-//				                                            ,"1.0"
-//				                                            ,tokenId
-//				                                            ,verifyCode
-//				                                            ,userId);
-//		
-//		Result<?> retVal =  executeCommand(checkCodeCommand );
-////		if(retVal.isSuccess()) {
-////			String tokenId = retVal.getData();
-////			return executePayInstantTrade();
-////		}
-//	}
-
-	/*
+	
 	@Override
-	public Result<?> executePayInstantTrade(String tokenId, 
-											String verifyCode, 
-											Integer userId) throws Throwable{
+	public Result<?> executePayInstantTrade(String payProductCode
+									      	  ,String amount
+									      	  ,String tokenId
+									      	  ,String signingPay
+									      	  ,String bankCardNo
+									      	  ,String phoneNum
+									      	  ,String bankAccountName
+									      	  ,String cvv2
+									      	  ,String validDate
+									      	  ,String idNo
+									      	  ,Integer userId) throws Throwable{
 		
 		IKJTCommand instantTradeCommand = new InstantTradeCommand(IKJTCommand.COMMAND_PAY_instant_trade
 				                                            	  ,"1.0"
-				                                            	  ,pay_product_code
+				                                            	  ,payProductCode
 				                                            	  ,amount
-				                                            	  ,token_id
-				                                            	  ,signing_pay
-				                                            	  ,bank_card_no
-				                                            	  ,phone_num
-				                                            	  ,bank_account_name
+				                                            	  ,tokenId
+				                                            	  ,signingPay
+				                                            	  ,bankCardNo
+				                                            	  ,phoneNum
+				                                            	  ,bankAccountName
 				                                            	  ,cvv2
-				                                            	  ,valid_date
-				                                            	  ,certificates_type
-				                                            	  ,certificates_number );
+				                                            	  ,validDate
+				                                            	  ,idNo
+				                                            	  ,userId);
 		return executeCommand(instantTradeCommand );
 	}
-	*/
+	
 	
 }

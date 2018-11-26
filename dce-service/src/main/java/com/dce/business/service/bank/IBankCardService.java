@@ -146,5 +146,6 @@ public interface IBankCardService {
 							String idNo,
 							String tokenId,
 							String money,
+							String bankAccountName,
 							String orderCode) throws Throwable;
 }

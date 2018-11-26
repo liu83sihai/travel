@@ -418,7 +418,7 @@ public class BankcardServiceImpl implements IBankCardService {
 		}else {
 			record = cardLst.get(0);
 			if(record.getCardStatus().intValue() == 1) {
-				return Result.successResult("ok");
+				return Result.successResult("此银行卡已绑定");
 			}
 		}
 		Result<?> ret =  kjtPayService.executeGetBankCardCode(idNo,cardUserName,mobile,cardNo,userId);
@@ -432,15 +432,38 @@ public class BankcardServiceImpl implements IBankCardService {
 				}
 			}
 		}
-		
 		return ret;
-		
-		
 	}
 
 	@Override
-	public Result<?> bindBankCard(Integer userId, String bankId, String mobileCode, String mobile, String cardNo,
-			String idNo, String tokenId, String money, String orderCode) throws Throwable {
-		 return kjtPayService.executeCheckCode(tokenId,mobileCode,userId);
+	public Result<?> bindBankCard(Integer userId, 
+								  String bankId, 
+								  String mobileCode, 
+								  String mobile, 
+								  String cardNo,
+								  String idNo, 
+								  String tokenId, 
+								  String amount,
+								  String bankAccountName,
+								  String orderCode) throws Throwable {
+		
+		//Result<?> chckRet = kjtPayService.executeCheckCode(tokenId, mobileCode, userId);
+		
+		String signingPay = "Y";
+		String cvv2 ="";
+		String validDate = "";
+		Result<?> tradeRet = kjtPayService.executePayInstantTrade("51", 
+											 amount, 
+											 tokenId, 
+											 signingPay, 
+											 cardNo,
+											 mobile,
+											 bankAccountName,
+											 cvv2, 
+											 validDate, 
+											 idNo, 
+											 userId);
+		
+		return tradeRet;
 	}
 }

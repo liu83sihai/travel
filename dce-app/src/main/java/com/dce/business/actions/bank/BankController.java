@@ -32,9 +32,6 @@ public class BankController extends BaseController {
     @Resource
     private IBankCardService bankCardService;
     
-    @Resource
-    private IKJTPayService  kjtPayService;
-
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result<?> getBankList() {
         List<BankDo> list = bankService.getBankList();
@@ -42,7 +39,7 @@ public class BankController extends BaseController {
     }
     
     /**
-     * 去添加新的银行卡信息
+     *	 去添加新的银行卡信息
      * @return
      */
     @RequestMapping("/toBindBankCard")
@@ -51,10 +48,21 @@ public class BankController extends BaseController {
     	ModelAndView mav = new ModelAndView("bank/bindBankCard");
     	List<BankDo> list = bankService.getBankList();
     	mav.addObject("bankCodes",list);
-		String mobile = "";
+    	
+    	String mobile = "";
 		String realName = "";
 		String idNo = "";
 		String bankCardNum = "";
+		
+//    	//查询是否已绑卡
+//    	//Integer userId = getUserId();
+//		Integer userId =1;
+//		String isDefault = "1";
+//		List<BankCardDo> bankLst = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault );
+//		if(bankLst != null && bankLst.size()>0) {
+//			
+//		}
+		
 		mav.addObject("realName",realName);
 		mav.addObject("idNo",idNo);
 		mav.addObject("mobile",mobile);
@@ -64,7 +72,7 @@ public class BankController extends BaseController {
     
     
     /**
-     * 验证卡信息获取验证码
+     *	 验证卡信息获取验证码
      * @param request
      * @param model
      * @return
@@ -83,7 +91,7 @@ public class BankController extends BaseController {
 	    	
 	  
         	if(StringUtils.isBlank(cardUserName)){
-            	return Result.failureResult("银行所属户名不能为空");
+            	return Result.failureResult("银行开户名不能为空");
             }
         	if(StringUtils.isBlank(mobile)){
             	return Result.failureResult("手机号不能为空");
@@ -165,7 +173,8 @@ public class BankController extends BaseController {
             	return Result.failureResult("请获取验证码");
             }
         	
-        	Result<?> retResult = bankCardService.bindBankCard(userId,bankId,mobileCode,mobile,cardNo,idNo,tokenId,money,orderCode);
+        	Result<?> retResult = bankCardService.bindBankCard(userId,bankId,mobileCode,mobile,cardNo,idNo,tokenId,money,cardUserName,orderCode);
+        	
         	return retResult;
         }catch (Throwable e){
         	logger.error("error", e);
