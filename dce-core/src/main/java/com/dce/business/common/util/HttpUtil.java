@@ -305,7 +305,7 @@ public class HttpUtil {
 			conn.setRequestProperty("accept", "*/*");
 			conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-			conn.setRequestProperty("Content-Type", "text/plain;charset=utf-8");
+			conn.setRequestProperty("Content-Type", "text/plain;charset=UTF-8");
 			conn.setRequestProperty("SINGS", param.get("SINGS"));
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			conn.setRequestMethod("POST");
