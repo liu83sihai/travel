@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ import com.dce.business.common.enums.DictCode;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
+import com.dce.business.common.util.Base64Coder;
 import com.dce.business.common.util.DataEncrypt;
 import com.dce.business.common.util.NumberUtil;
 import com.dce.business.dao.sms.ISmsDao;
@@ -475,6 +477,7 @@ public class UserController extends BaseController {
 	 *@apiSuccess {Bigdecimal} amount  现金用户
 	 *@apiSuccess {Bigdecimal} originalAmount  抵用券
 	 *@apiSuccess {Bigdecimal} pointAmount  积分
+	 *@apiSuccess {String} payCode 用户付款码
 	 * 
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
@@ -507,6 +510,9 @@ public class UserController extends BaseController {
 		newUserDo.setIdcardBack(userDo.getIdcardBack());
 		newUserDo.setIdcardFront(userDo.getIdcardFront());
 		
+		String userPayCode = UUID.randomUUID().toString().substring(0, 10) + userId;
+		String payCode = Base64Coder.encodeString(userPayCode);
+		newUserDo.setPayCode(payCode);
 		
 		// 用户等级
 		List<LoanDictDtlDo> leves = loanDictService.queryDictDtlListByDictCode(DictCode.BaoDanFei.getCode());
@@ -876,6 +882,7 @@ public class UserController extends BaseController {
 	 *@apiSuccess {String} refereeid 用户推荐人的手机号码
 	 *@apiSuccess {String} banknumber 银行卡卡号
 	 *@apiSuccess {String} banktype 银行卡开户行
+	 *@apiSuccess {String} payCode 用户付款码
 	 * 
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
@@ -888,6 +895,9 @@ public class UserController extends BaseController {
 		logger.info("查询用户基本信息，userId:" + userId);
 		// 用户信息
 		UserDo userDo = userService.getUser(userId);
+		
+		String userPayCode = UUID.randomUUID().toString().substring(0, 10) + userId;
+		String payCode = Base64Coder.encodeString(userPayCode);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("trueName", userDo.getTrueName()); // 姓名
@@ -898,6 +908,64 @@ public class UserController extends BaseController {
 		map.put("refereeUserMobile", userDo.getRefereeUserMobile()); // 用户推荐人
 		map.put("banknumber", userDo.getBanknumber());// 银行卡卡号
 		map.put("banktype", userDo.getBanktype());// 银行卡开户行
+		map.put("payCode", payCode);// 银行卡开户行
+		return Result.successResult("查询成功", map);
+	}
+	
+	
+	/** 
+	 * @api {GET} /user/payCodeUser.do 根据付款返回用户信息
+	 * @apiName payCodeUser
+	 * @apiGroup user 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription  根据付款返回用户信息
+	 * 
+	 * @apiParam {String} payCode 用户付款码
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {int} id 用户ID
+	 *
+	 *@apiSuccess {int} userLevel 用户等级，默认为：0：普通用户；1：会员;2：VIP；3：城市合伙人；4：股东
+	 *@apiSuccess {String} mobile 手机号
+	 *@apiSuccess {String} trueName 用户姓名
+	 *@apiSuccess {String} idnumber 身份证号码
+	 *@apiSuccess {String} sex 默认为：0（无）；男为：1；女为：2
+	 *@apiSuccess {String} refereeid 用户推荐人的手机号码
+	 *@apiSuccess {String} banknumber 银行卡卡号
+	 *@apiSuccess {String} banktype 银行卡开户行
+	 *@apiSuccess {String} payCode 用户付款码
+	 * 
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *	}
+	 */ 
+	@RequestMapping(value = "/payCodeUser", method = RequestMethod.GET)
+	public Result<?> payCodeUser(String payCode) {
+
+		if(StringUtils.isBlank(payCode) ){
+			return Result.failureResult("用户付款码为空");
+		}
+		
+		String dePayCode = Base64Coder.decodeString(payCode);
+		if(dePayCode.length() < 11){
+			return Result.failureResult("用户付款码错误");
+		}
+		String payUser = dePayCode.substring(10);
+		
+		// 用户信息
+		UserDo userDo = userService.getUser(Integer.valueOf(payUser));
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userDo.getId()); // 姓名
+		map.put("trueName", userDo.getTrueName()); // 姓名
+		map.put("mobile", userDo.getMobile()); // 手机号码
+		map.put("userLevel", userDo.getUserLevel()); // 用户等级
+		map.put("idnumber", userDo.getIdnumber()); // 用户身份证号
+		map.put("sex", userDo.getSex()); // 用户性别
+		map.put("refereeUserMobile", userDo.getRefereeUserMobile()); // 用户推荐人
+		map.put("banknumber", userDo.getBanknumber());// 银行卡卡号
+		map.put("banktype", userDo.getBanktype());// 银行卡开户行
+		map.put("payCode", payCode);// 银行卡开户行
 		return Result.successResult("查询成功", map);
 	}
 

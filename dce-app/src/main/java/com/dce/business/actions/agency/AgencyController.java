@@ -210,13 +210,13 @@ public class AgencyController  extends BaseController{
 	  *	}
 	  */ 
 	 @RequestMapping("/getId")
-	 public Result<?> getId(District agencyDo) {
+	 public Result<?> getId(AgencyDo agencyDo) {
 		 logger.info("获取代理管理...");
 		 if(null == agencyDo.getUserId() || 0 == agencyDo.getUserId().intValue()){
 			 return Result.failureResult("代理用户ID不能为空!");
 		 }
 		 
-		 District district = districtService.getById(agencyDo.getUserId());
+		 AgencyDo district = agencyService.getById(agencyDo.getUserId());
 		 
 		 return Result.successResult("获取代理管理成功", district);
 	 }
@@ -275,11 +275,11 @@ public class AgencyController  extends BaseController{
 		 agencyService.addAgency(agencyDo);
 		 
 		 
-		 District  district = new District();
-		 district.setUserId(agencyDo.getUserId());
-		 district.setDistrict(agencyDo.getCity());
-		 district.setDistrictStatus(0);
-		 districtService.addDistrict(district);
+//		 District  district = new District();
+//		 district.setUserId(agencyDo.getUserId());
+//		 district.setDistrict(agencyDo.getCity());
+//		 district.setDistrictStatus(0);
+//		 districtService.addDistrict(district);
 		 
 		 return Result.successResult("代理管理增加成功",agencyDo);
 	 }

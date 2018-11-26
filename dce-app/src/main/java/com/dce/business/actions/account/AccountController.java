@@ -24,9 +24,11 @@ import com.dce.business.common.util.NumberUtil;
 import com.dce.business.entity.account.UserAccountDetailDo;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.etherenum.EthereumAccountDo;
+import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.account.IPayService;
 import com.dce.business.service.third.IEthereumService;
+import com.dce.business.service.user.IUserService;
 
 @RestController
 @RequestMapping("/account")
@@ -38,6 +40,8 @@ public class AccountController extends BaseController {
 	private IEthereumService etservice;
 	@Resource
 	private IPayService payService;
+	@Resource
+	private IUserService userService;
 
 	/** 
 	 * 财务流水
@@ -174,16 +178,22 @@ public class AccountController extends BaseController {
 		Integer userId = getUserId();
 		String accountType = getString("accountType"); 
 		
+		
+//		UserDo user = userService.getUser(userId);
 		UserAccountDo account = accountService.getUserAccount(userId,AccountType.getAccountType(accountType));
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (account == null || account.getAmount() == null) {
 			result.put("amount", "0.0");
 			result.put("accountType", accountType);
+//			result.put("trueName", user.getTrueName());
+//			result.put("mobile", user.getMobile());
 			return Result.successResult("获取账户信息成功!", result);
 		} else {
 			result.put("amount", account.getAmount());
 			result.put("accountType", accountType);
+//			result.put("trueName", user.getTrueName());
+//			result.put("mobile", user.getMobile());
 			return Result.successResult("获取账户信息成功!", result);
 		}
 	}

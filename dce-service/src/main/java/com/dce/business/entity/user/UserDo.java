@@ -341,6 +341,9 @@ public class UserDo {
 	// 用户是否已激活（状态），
 	private Integer isActivated;
 	private String displayIsActivated;
+	
+	//用户付款码
+	private String payCode;
 
 	public String getDisplayIsActivated() {
 		displayIsActivated = null;
@@ -1211,6 +1214,16 @@ public class UserDo {
 
 	public void setUserImage(String userImage) {
 		this.userImage = userImage;
+	}
+	
+	
+
+	public String getPayCode() {
+		return payCode;
+	}
+
+	public void setPayCode(String payCode) {
+		this.payCode = payCode;
 	}
 
 	@Override
