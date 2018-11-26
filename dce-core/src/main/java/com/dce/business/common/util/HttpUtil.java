@@ -168,6 +168,52 @@ public class HttpUtil {
 		}
 		return null;
 	}
+	
+	public static String httpPostAndHeader(String url, Map<String, String> param,Map<String,String> headerMap) throws Throwable {
+
+		logger.info("http请求，url:" + url + "; params:" + param);
+		Long time = System.currentTimeMillis();
+		CloseableHttpResponse response = null;
+		try {
+			CloseableHttpClient httpclient = HttpClients.createDefault();
+			HttpPost httpPost = new HttpPost(url);
+			
+			for (String key : headerMap.keySet()) {
+				httpPost.setHeader(key, headerMap.get(key));
+			}
+			
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+			for (String key : param.keySet()) {
+				nameValuePairs.add(new BasicNameValuePair(key, param.get(key)));
+			}
+
+			
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+
+			response = httpclient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			String result = EntityUtils.toString(entity, "UTF-8");
+
+			logger.info("http请求，url:" + url + "; 耗时ms" + (System.currentTimeMillis() - time) + "; response:" + result);
+
+			// Map<String, Object> map = JSONObject.parseObject(result, new
+			// TypeReference<Map<String, Object>>() {
+			// });
+			return result;
+		} catch (Exception e) {
+			logger.error("http请求失败，url:" + url, e);
+		} finally {
+			if (response != null) {
+				try {
+					response.close();
+				} catch (IOException e) {
+					logger.error(e);
+				}
+			}
+		}
+		return null;
+	}
+	
 
 	public static String httpCertPost(String url, Map<String, String> param, String signs, String certFile,
 			String certPassord) throws Throwable {
@@ -280,7 +326,8 @@ public class HttpUtil {
 					sBuffer.append(key + "=" + param.get(key) + "&");
 				}
 			}
-			out.writeBytes(sBuffer.toString());
+			byte[] contxt = sBuffer.toString().getBytes("UTF-8");
+			out.write(contxt);
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
