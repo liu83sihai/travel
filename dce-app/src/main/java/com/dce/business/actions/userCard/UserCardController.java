@@ -259,6 +259,11 @@ public class UserCardController  extends BaseController{
 		}
 
 		UserCardDo userCard = userCardService.getById(userCardDo.getId());
+		if( null == userCard){
+			return Result.failureResult("当前ID不存在激活卡!");
+		}
+		
+		
 		String result = MeituLvUtil.virtualOpen(userCardDo.getUserName(), userCardDo.getMobile(), userCard.getCardNo());
 		int status = 0;
 		String remark = "激活卡失败,失败代码：" + result;

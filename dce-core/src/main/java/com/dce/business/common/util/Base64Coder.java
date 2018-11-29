@@ -8,6 +8,7 @@
 package com.dce.business.common.util;
 
 import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -61,5 +62,15 @@ public class Base64Coder {
   public static byte[] decodeBase64(String content){
     return Base64.decodeBase64(content);
   }
+  
+  public static void main(String[] args) {
+	String uuid = UUID.randomUUID().toString().substring(0, 10);
+	String useid = uuid + "51";
+	String ecode = encodeString(useid);
+	System.out.println("加密：" +ecode);
+	
+	System.out.println("解密：" +decodeString(ecode));
+	
+}
 
 }

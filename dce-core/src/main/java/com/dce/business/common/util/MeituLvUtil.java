@@ -40,7 +40,6 @@ public class MeituLvUtil {
 //		 String sings = Sha1Util.getSha1(PRIVATEKEY+uname+QIUCODE+pnum).substring(2, 34);
 //		 String sings = DigestUtils.shaHex(PRIVATEKEY+uname+QIUCODE+pnum).substring(2, 34);
 		 String sings = SHA1Tools.encode(PRIVATEKEY+uname+QIUCODE+pnum);
-		 System.out.println(sings);
 //		 System.out.println(DigestUtils.shaHex(PRIVATEKEY+uname+QIUCODE+pnum));
 		 Map<String,String> param = new HashMap<String,String>();
 		 param.put("UID", cardNo);

@@ -134,6 +134,7 @@ public class UserCardServiceImpl implements IUserCardService {
 			status = 1;
 			remark = "激活卡成功";
 		}
+		newUserCardDo.setCardNo(cardNo);
 		newUserCardDo.setStatus(status);
 		newUserCardDo.setRemark(remark);
 		newUserCardDo.setCreateDate(new Date());
