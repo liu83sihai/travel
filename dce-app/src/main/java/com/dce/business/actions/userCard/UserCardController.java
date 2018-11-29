@@ -263,6 +263,9 @@ public class UserCardController  extends BaseController{
 			return Result.failureResult("当前ID不存在激活卡!");
 		}
 		
+		if(1 == userCard.getStatus()){
+			return Result.failureResult("当前激活卡已激活!不用再进行激活");
+		}
 		
 		String result = MeituLvUtil.virtualOpen(userCardDo.getUserName(), userCardDo.getMobile(), userCard.getCardNo());
 		int status = 0;

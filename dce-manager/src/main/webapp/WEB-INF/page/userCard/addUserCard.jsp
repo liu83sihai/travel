@@ -17,14 +17,7 @@
 		
 			<table width="100%" border="0" align="center" cellpadding="3">			  
 					<input type="hidden" id="id" name="id" value="${usercard.id}"/>
-					<tr>	
-						<td align="right">
-							<label for="name">用户ID</label>
-						</td>	
-						<td>
-								<input type="text" id="userId" name="userId" value="${usercard.userId}"/>												
-						</td>						   
-					</tr>
+					<input type="hidden" id="userId" name="userId" value="${usercard.userId}"/>
 					<tr>	
 						<td align="right">
 							<label for="name">用户名</label>
@@ -51,42 +44,10 @@
 					</tr>
 					<tr>	
 						<td align="right">
-							<label for="name">用户等级</label>
-						</td>	
-						<td>
-								<input type="text" id="userLevel" name="userLevel" value="${usercard.userLevel}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">性别</label>
-						</td>	
-						<td>
-								<input type="text" id="sex" name="sex" value="${usercard.sex}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
 							<label for="name">第三方卡号</label>
 						</td>	
 						<td>
 								<input type="text" id="cardNo" name="cardNo" value="${usercard.cardNo}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">银行卡号</label>
-						</td>	
-						<td>
-								<input type="text" id="bankNo" name="bankNo" value="${usercard.bankNo}"/>												
-						</td>						   
-					</tr>
-					<tr>	
-						<td align="right">
-							<label for="name">身份证号</label>
-						</td>	
-						<td>
-								<input type="text" id="idNumber" name="idNumber" value="${usercard.idNumber}"/>												
 						</td>						   
 					</tr>
 					<tr>	
