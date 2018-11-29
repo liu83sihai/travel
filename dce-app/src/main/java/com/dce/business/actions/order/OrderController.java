@@ -725,7 +725,7 @@ public class OrderController extends BaseController {
 
 		List<OrderPayDetail>  payLst = new ArrayList<OrderPayDetail>();
 		JSONArray jsonArray = JSONArray.parseArray(payListJson);
-		for (int i = 0; i < payLst.size(); i++) {
+		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject obj = jsonArray.getJSONObject(i);
 			BigDecimal payAmt  =  new BigDecimal (obj.getString("payAmt") );
 			// 过滤支付金额为0的

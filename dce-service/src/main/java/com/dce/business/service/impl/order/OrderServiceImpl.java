@@ -343,6 +343,7 @@ public class OrderServiceImpl implements IOrderService {
 			Order oldOrder = orderDao.selectByPrimaryKey(order.getOrderid());
 			logger.debug("获取的订单明细类型=====》》》》" + goodstype);
 			if (payList == null) {
+				logger.error("支付类型未空：===》"+payList);
 				return oldOrder;
 			}
 
