@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -140,10 +141,10 @@
 					<td align="right"><label for="name"></label></td>
 					<td>
 						<select id="payType" name ="payType" multiple="multiple" style="width: 150px;">
-								<option value="wallet_money">现金账户</option>
-								<option value="wallet_travel">积分</option>
-								<option value="wallet_goods">抵用券</option>
-								<option value="bank">第三方现金支付</option>
+								<option value="wallet_money"  <c:if test="test="${fn:contains(goods.payType,'wallet_money')==false}"">selected="selected"</c:if> >现金账户</option>
+								<option value="wallet_travel" <c:if test="test="${fn:contains(goods.payType,'wallet_travel')==false}"">selected="selected"</c:if> >积分</option>
+								<option value="wallet_goods" <c:if test="test="${fn:contains(goods.payType,'wallet_goods')==false}"">selected="selected"</c:if> >抵用券</option>
+								<option value="bank"  <c:if test="test="${fn:contains(goods.payType,'bank')==false}"">selected="selected"</c:if>>第三方现金支付</option>
 						</select>							
 					</td>
 				</tr>
