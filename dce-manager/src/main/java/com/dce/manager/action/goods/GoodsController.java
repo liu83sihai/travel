@@ -178,9 +178,6 @@ public class GoodsController extends BaseAction {
 			if (goodsDo.getStatus().intValue() == 1) {
 				goodsDo.setSaleTime(new Date());
 			}
-			
-			String ff = goodsDo.getPayType();
-			
 			goodsDo.setDetailLink(goodsDo.getShowDetailUrl(goodsDetailUrl));
 			int i = goodsService.updateGoodsById(goodsDo);
 			if (i <= 0) {

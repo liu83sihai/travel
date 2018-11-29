@@ -133,7 +133,11 @@
 						value="${goods.postage}" /></td>
 				</tr>
 				<tr>
-					<td align="right"><label for="name">支付方式：${goods.payTypeName }</label></td>
+					<td align="right"><label for="name">支付方式:</label></td>
+					<td>${goods.payTypeName }</td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name"></label></td>
 					<td>
 						<select id="payType" name ="payType" multiple="multiple" style="width: 150px;">
 								<option value="wallet_money">现金账户</option>

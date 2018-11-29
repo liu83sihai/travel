@@ -84,7 +84,7 @@ public class CTGoodsDo implements Serializable {
 		for(String pay : payArr) {
 			AccountType payTp = AccountType.getAccountType(pay);
 			if(null != payTp) {
-				pTName.append(payTp.name()).append("/");
+				pTName.append(payTp.getRemark()).append("/");
 			}
 		}
 		return pTName.toString();
