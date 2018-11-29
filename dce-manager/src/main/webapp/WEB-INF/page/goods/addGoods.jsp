@@ -141,10 +141,10 @@
 					<td align="right"><label for="name"></label></td>
 					<td>
 						<select id="payType" name ="payType" multiple="multiple" style="width: 150px;">
-								<option value="wallet_money"  <c:if test="test="${fn:contains(goods.payType,'wallet_money')==false}"">selected="selected"</c:if> >现金账户</option>
-								<option value="wallet_travel" <c:if test="test="${fn:contains(goods.payType,'wallet_travel')==false}"">selected="selected"</c:if> >积分</option>
-								<option value="wallet_goods" <c:if test="test="${fn:contains(goods.payType,'wallet_goods')==false}"">selected="selected"</c:if> >抵用券</option>
-								<option value="bank"  <c:if test="test="${fn:contains(goods.payType,'bank')==false}"">selected="selected"</c:if>>第三方现金支付</option>
+								<option value="wallet_money"  <c:if test="test="${fn:contains(goods.payType,'wallet_money')==false}">selected="selected"</c:if> >现金账户</option>
+								<option value="wallet_travel" <c:if test="test="${fn:contains(goods.payType,'wallet_travel')==false}">selected="selected"</c:if> >积分</option>
+								<option value="wallet_goods" <c:if test="test="${fn:contains(goods.payType,'wallet_goods')==false}">selected="selected"</c:if> >抵用券</option>
+								<option value="bank"  <c:if test="test="${fn:contains(goods.payType,'bank')==false}">selected="selected"</c:if>>第三方现金支付</option>
 						</select>							
 					</td>
 				</tr>
