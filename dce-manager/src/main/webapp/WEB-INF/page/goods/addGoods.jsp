@@ -117,13 +117,31 @@
 				
 				<tr>
 					<td align="right"><label for="name">商品上架状态：</label></td>
-					<td><select id="status" class="easyui-combobox"
-						style="width: 150px;">
-							<option value="0"
-								<c:if test="${goods.status==0}">selected="selected"</c:if>>未上架</option>
-							<option value="1"
-								<c:if test="${goods.status==1}">selected="selected"</c:if>>已上架</option>
-					</select></td>
+					<td>
+						<select id="status" class="easyui-combobox"
+							style="width: 150px;">
+								<option value="0"
+									<c:if test="${goods.status==0}">selected="selected"</c:if>>未上架</option>
+								<option value="1"
+									<c:if test="${goods.status==1}">selected="selected"</c:if>>已上架</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name">邮费：</label></td>
+					<td><input type="text" id="postage" name="postage"
+						value="${goods.postage}" /></td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name">支付方式：${goods.payTypeName }</label></td>
+					<td>
+						<select id="payType" name ="payType" multiple="multiple" style="width: 150px;">
+								<option value="wallet_money">现金账户</option>
+								<option value="wallet_travel">积分</option>
+								<option value="wallet_goods">抵用券</option>
+								<option value="bank">第三方现金支付</option>
+						</select>							
+					</td>
 				</tr>
 			</table>
 		</div>

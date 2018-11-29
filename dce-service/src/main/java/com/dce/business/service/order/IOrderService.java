@@ -64,13 +64,13 @@ public interface IOrderService {
 	 * @param chooseGoodsLst
 	 * @return
 	 */
-	Result<String> saveOrder( List<OrderPayDetail> payLst,List<OrderDetail> chooseGoodsLst, Order order,
+	Result<Map<String,String>> saveOrder( List<OrderPayDetail> payLst,List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response);
 
 	// 查询总业绩
 	Map<String, Object> selectSum(Map<String, Object> paraMap);
 
-	public Result<String> getAlipayorderStr(Order order);
+	public String getAlipayorderStr(Order order);
 
 	public String notify(Map<String, String> conversionParams) throws Exception;
 

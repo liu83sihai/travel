@@ -1,5 +1,7 @@
 package com.dce.business.entity.order;
 
+import java.math.BigDecimal;
+
 public class OrderDetail {
 
 	private Integer orderdetailid; // 订单明细表，主键
@@ -15,6 +17,8 @@ public class OrderDetail {
 	private String goodsName; // 商品名称
 
 	private String remark; // 0为赠品1为商品
+
+	private BigDecimal profit; //利润
 
 	public String getRemark() {
 		return remark;
@@ -72,11 +76,22 @@ public class OrderDetail {
 		this.quantity = quantity;
 	}
 
+	public BigDecimal getProfit() {
+		return this.profit;
+		
+	}
+	
+	public void setProfit(BigDecimal profit) {
+		this.profit = profit;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderDetail [orderdetailid=" + orderdetailid + ", orderid=" + orderid + ", goodsId=" + goodsId
 				+ ", quantity=" + quantity + ", price=" + price + ", goodsName=" + goodsName + ", remark=" + remark
 				+ "]";
 	}
+
+	
 
 }

@@ -73,6 +73,8 @@ $(function(){
 								},
 								{field:"saleTime",title:"商品上架时间",width:80,align:"center",formatter:dateTimeFormatter},
 								{field:"createTime",title:"商品创建时间",width:80,align:"center",formatter:dateTimeFormatter},
+								{field:"payTypeName",title:"支付方式",width:80,align:"center",formatter:dateTimeFormatter},
+								{field:"postage",title:"邮费",width:80,align:"center",formatter:dateTimeFormatter},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
 	 					  var str= '<a href="javascript:void(0);" onclick="to_editgoods(\''+row.goodsId+'\');">编辑</a> <a href="javascript:void(0);" onclick="deleteNotice(\''+row.goodsId+'\');">删除</a>';
@@ -223,6 +225,8 @@ function save_Goods(){
     var goodsDetailImg =$("#editGoodsForm #goodsDetailImg").val();
     var goodsFlag =$("#editGoodsForm #goodsFlag").combobox('getValue');
     var shopCatId1 =$("#editGoodsForm #shopCatId1").combobox('getValue');
+    var payType =$("#editGoodsForm #payType").val();
+    var postage =$("#editGoodsForm #postage").val();
     
     //var file = document.getElementById("goodsImg").files[0];
     if(title == null || title == ""){
@@ -259,6 +263,9 @@ function save_Goods(){
     obj.append("shopCatId1", shopCatId1);
     obj.append("goodsBanner", goodsBanner);
     obj.append("goodsDetailImg", goodsDetailImg);
+    obj.append("postage", postage);
+    obj.append("payType", payType);
+    
     
     
     $.ajax({   

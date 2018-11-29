@@ -50,6 +50,8 @@
 		<result column="payType" property="payType" />
 		<result column="score" property="score" />
 		<result column="starLevel" property="starLevel" />
+		<result column="postage" property="postage" />
+		
 	</resultMap>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
@@ -102,7 +104,8 @@
 		goodsKeywords,
 		goodsFlag,
 		statusRemarks,
-		profit
+		profit,
+		postage
 		)
 		values (
 		#{goodsSn},
@@ -144,7 +147,8 @@
 		#{goodsKeywords},
 		#{goodsFlag},
 		#{statusRemarks},
-		#{profit}
+		#{profit},
+		#{postage}
 		)
 	</insert>
 
@@ -296,6 +300,9 @@
 			<if test="goodsBanner != null">
 				goodsBanner,
 			</if>
+			<if test="postage != null">
+				postage,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -439,6 +446,9 @@
 			<if test="goodsBanner != null">
 				#{goodsBanner}
 			</if>
+			<if test="postage != null">
+				#{postage}
+			</if>
 		</trim>
 	</insert>
 
@@ -524,7 +534,10 @@
 				goodsDetailImg = #{goodsDetailImg},
 			</if>
 			<if test="goodsBanner != null">
-				goodsBanner = #{goodsBanner}
+				goodsBanner = #{goodsBanner},
+			</if>
+			<if test="postage != null">
+				postage = #{postage},
 			</if>
 		</trim>
 		where goodsId = #{goodsId}

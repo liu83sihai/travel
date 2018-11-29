@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.dce.business.common.enums.AccountType;
+
 /**
  * 商品
  * @author zhangcymf
@@ -69,8 +73,30 @@ public class CTGoodsDo implements Serializable {
 	  private String  payType;    //支付方式设置
 	  private Integer starLevel; //路线级别 星级
 	  private Float score; //路线评分
+	  private BigDecimal postage; //邮寄费
+	  
+	public String getPayTypeName() {
+		if(StringUtils.isBlank(payType)) {
+			return "";
+		}
+		StringBuffer pTName = new StringBuffer();
+		String[] payArr = payType.split(",");
+		for(String pay : payArr) {
+			AccountType payTp = AccountType.getAccountType(pay);
+			if(null != payTp) {
+				pTName.append(payTp.name()).append("/");
+			}
+		}
+		return pTName.toString();
+	}
 	  
 	  
+	public BigDecimal getPostage() {
+		return postage;
+	}
+	public void setPostage(BigDecimal postage) {
+		this.postage = postage;
+	}
 	public Integer getStarLevel() {
 		return starLevel;
 	}

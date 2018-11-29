@@ -3,6 +3,8 @@ package com.dce.business.entity.order;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.dce.business.entity.goods.CTGoodsDo;
+
 public class Order {
 
 	private Integer orderid; // 订单主键id
@@ -60,6 +62,11 @@ public class Order {
 	private Long goodsid;
 	
 	private BigDecimal profit; //订单利润
+
+	//订单支付明细
+	private List<OrderPayDetail> payDetailList;
+
+	private BigDecimal cashAmt = BigDecimal.ZERO;
 	
 
 	public BigDecimal getProfit() {
@@ -286,6 +293,63 @@ public class Order {
 		this.giftAmount = giftAmount;
 	}
 
+	
+	public void setPayDetailList(List<OrderPayDetail> payLst) {
+		this.payDetailList = payLst;		
+	}
+	
+	public List<OrderPayDetail> getPayDetailList() {
+		return payDetailList;
+	}
+	
+	public void setCashAmt(BigDecimal cashAmt) {
+		this.cashAmt = cashAmt;
+	}
+
+	public boolean checkPayAmt() {
+		if(this.getTotalprice().compareTo(BigDecimal.ZERO)<=0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void calOrderProfit() {
+		Integer quantity = 0; // 商品总数量
+		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
+		Integer salqty = 0; // 赠品数量
+		BigDecimal profit = BigDecimal.ZERO; //订单利润
+		// 循环遍历出商品信息，计算商品总价格和商品总数量
+		for (OrderDetail orderDetail : this.orderDetailList) {
+			quantity += orderDetail.getQuantity(); // 商品总数量
+			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
+			BigDecimal oneGoodsProfit = orderDetail.getProfit().multiply(new BigDecimal(orderDetail.getQuantity()));
+			profit = profit.add(oneGoodsProfit);
+		}
+		
+		this.calNonCashAmt();
+		
+		this.profit = profit;
+		this.qty = quantity;
+		this.totalprice = totalprice;
+		this.goodsprice = totalprice;
+	}
+	
+	public BigDecimal getCashAmt() {
+		return this.cashAmt;
+	}
+
+	private void calNonCashAmt() {
+		if(null == this.payDetailList||this.payDetailList.size()<1) {
+			cashAmt = this.totalprice;
+			return;
+		}
+		BigDecimal tmpPrice = BigDecimal.ZERO; 
+		for(OrderPayDetail pay : payDetailList){
+			tmpPrice = tmpPrice.add(pay.getPayAmt()); // 商品总金额
+		}
+		cashAmt = this.totalprice.subtract(tmpPrice);
+	}
+
 	@Override
 	public String toString() {
 		return "Order [orderid=" + orderid + ", ordercode=" + ordercode + ", userid=" + userid + ", qty=" + qty
@@ -297,5 +361,7 @@ public class Order {
 				+ phone + ", recaddress=" + recaddress + ", awardStatus=" + awardStatus + ", awardRemark=" + awardRemark
 				+ ", matchorderid=" + matchorderid + ", accounttype=" + accounttype + ", goodsid=" + goodsid + "]";
 	}
+
+	
 
 }

@@ -14,7 +14,9 @@ public enum AccountType {
 	/**日息钱包*/
 	wallet_goods("wallet_goods", "抵用券"),
 	/**赠送活动：沙龙*/
-	wallet_active("wallet_active", "赠送活动");
+	wallet_active("wallet_active", "赠送活动"),
+	/*银行卡支付*/
+	wallet_bank("bank", "银行卡");
 
     private String accountType;
     private String remark;
