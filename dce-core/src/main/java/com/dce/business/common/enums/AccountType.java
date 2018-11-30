@@ -16,7 +16,7 @@ public enum AccountType {
 	/**赠送活动：沙龙*/
 	wallet_active("wallet_active", "赠送活动"),
 	/*银行卡支付*/
-	wallet_bank("bank", "银行卡");
+	wallet_bank("bank", "银行卡"), wallet_ALI("Ali", "支付宝"), wallet_WX("WX", "微信");
 
     private String accountType;
     private String remark;

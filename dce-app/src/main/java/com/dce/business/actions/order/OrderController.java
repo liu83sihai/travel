@@ -180,20 +180,26 @@ public class OrderController extends BaseController {
 			String[] payArr = payType.split(",");
 			for(String pay :payArr) {
 				//bank没有数据库记录 没有bank账户
-				if(AccountType.wallet_bank.getAccountType().equalsIgnoreCase(pay)) {
-					continue;
-				}
-				UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay)); 
 				Map<String, Object> payMap1 = new HashMap<String,Object>();
-				payMap1.put("payCode", amount.getAccountType());
-				payMap1.put("totalAmt", amount.getAmount());
-				payMap1.put("useableAmt", amount.getAmount());
+				if(AccountType.wallet_bank.getAccountType().equalsIgnoreCase(pay)
+						||AccountType.wallet_ALI.getAccountType().equalsIgnoreCase(pay)
+						|| AccountType.wallet_WX.getAccountType().equalsIgnoreCase(pay)) {
+					payMap1.put("payCode", pay);
+					payMap1.put("totalAmt", 0);
+					payMap1.put("useableAmt", 0);
+				}else {
+					UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay)); 
+					payMap1.put("payCode", amount.getAccountType());
+					payMap1.put("totalAmt", amount.getAmount());
+					payMap1.put("useableAmt", amount.getAmount());
+					
+				}
 				accountInfo.add(payMap1);
 			}
 		}
 		
 		//没有现金支付和其他账户支付的配置
-		if(!payType.contains(AccountType.wallet_bank.getAccountType()) && accountInfo.size()<1) {
+		if(accountInfo.size()<1) {
 			return Result.failureResult("没有找到合适的支付方式");
 		}
 

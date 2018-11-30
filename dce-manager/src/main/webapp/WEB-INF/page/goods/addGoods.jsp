@@ -145,6 +145,8 @@
 								<option value="wallet_travel" <c:if test="${fn:contains(goods.payType,'wallet_travel')==false}">selected="selected"</c:if> >积分</option>
 								<option value="wallet_goods" <c:if test="${fn:contains(goods.payType,'wallet_goods')==false}">selected="selected"</c:if> >抵用券</option>
 								<option value="bank"  <c:if test="${fn:contains(goods.payType,'bank')==false}">selected="selected"</c:if>>第三方现金支付</option>
+								<option value="Ali"  <c:if test="${fn:contains(goods.payType,'Ali')==false}">selected="selected"</c:if>>支付宝支付</option>
+								<option value="WX"  <c:if test="${fn:contains(goods.payType,'WX')==false}">selected="selected"</c:if>>微信支付</option>
 						</select>							
 					</td>
 				</tr>
