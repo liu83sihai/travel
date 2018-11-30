@@ -179,6 +179,10 @@ public class OrderController extends BaseController {
 		if(StringUtils.isNotBlank(payType)) {
 			String[] payArr = payType.split(",");
 			for(String pay :payArr) {
+				//bank没有数据库记录 没有bank账户
+				if(AccountType.wallet_bank.getAccountType().equalsIgnoreCase(pay)) {
+					continue;
+				}
 				UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay)); 
 				Map<String, Object> payMap1 = new HashMap<String,Object>();
 				payMap1.put("payCode", amount.getAccountType());
@@ -188,7 +192,8 @@ public class OrderController extends BaseController {
 			}
 		}
 		
-		if(accountInfo.size()<1) {
+		//没有现金支付和其他账户支付的配置
+		if(!payType.contains(AccountType.wallet_bank.getAccountType()) && accountInfo.size()<1) {
 			return Result.failureResult("没有找到合适的支付方式");
 		}
 
@@ -769,7 +774,7 @@ public class OrderController extends BaseController {
 			}
 			orderDetail.setGoodsId(Integer.valueOf(obj.getString("goodsId")));
 			orderDetail.setQuantity(Integer.valueOf(obj.getString("qty")));
-			orderDetail.setPrice(Double.valueOf(obj.getString("price")));
+			//orderDetail.setPrice(Double.valueOf(obj.getString("price")));
 			orderList.add(orderDetail);
 		}
 		return orderList;

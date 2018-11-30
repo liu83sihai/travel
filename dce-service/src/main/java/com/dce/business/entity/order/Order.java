@@ -326,12 +326,15 @@ public class Order {
 			profit = profit.add(oneGoodsProfit);
 		}
 		
-		this.calNonCashAmt();
+		
 		
 		this.profit = profit;
 		this.qty = quantity;
 		this.totalprice = totalprice;
 		this.goodsprice = totalprice;
+		
+		this.calNonCashAmt();
+		
 	}
 	
 	public BigDecimal getCashAmt() {

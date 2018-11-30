@@ -544,6 +544,9 @@ public class OrderServiceImpl implements IOrderService {
 		if(order.getCashAmt().compareTo(BigDecimal.ZERO)>0) {
 			// 获取加签后的订单
 			return getSignByPayType(request, response, order);
+		}else {
+			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
+			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
 		}
 		
 		Map<String,String> payRet = new HashMap<String,String>();
