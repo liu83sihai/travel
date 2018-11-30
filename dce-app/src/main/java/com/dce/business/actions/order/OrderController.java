@@ -173,6 +173,7 @@ public class OrderController extends BaseController {
 		
 		// 财务信息
 		List<Map<String, Object>> accountInfo = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> cashPayTypeLst = new ArrayList<Map<String,Object>>();
 		OrderDetail orderDetail = chooseGoodsLst.get(0);
 		CTGoodsDo gDo = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
 		String  payType = gDo.getPayType();
@@ -180,32 +181,35 @@ public class OrderController extends BaseController {
 			String[] payArr = payType.split(",");
 			for(String pay :payArr) {
 				//bank没有数据库记录 没有bank账户
-				Map<String, Object> payMap1 = new HashMap<String,Object>();
+				
 				if(AccountType.wallet_bank.getAccountType().equalsIgnoreCase(pay)
 						||AccountType.wallet_ALI.getAccountType().equalsIgnoreCase(pay)
 						|| AccountType.wallet_WX.getAccountType().equalsIgnoreCase(pay)) {
+					Map<String, Object> payMap1 = new HashMap<String,Object>();
 					payMap1.put("payCode", pay);
 					payMap1.put("totalAmt", 0);
 					payMap1.put("useableAmt", 0);
+					cashPayTypeLst.add(payMap1);
 				}else {
-					UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay)); 
+					UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay));
+					Map<String, Object> payMap1 = new HashMap<String,Object>();
 					payMap1.put("payCode", amount.getAccountType());
 					payMap1.put("totalAmt", amount.getAmount());
 					payMap1.put("useableAmt", amount.getAmount());
-					
+					accountInfo.add(payMap1);
 				}
-				accountInfo.add(payMap1);
 			}
 		}
 		
 		//没有现金支付和其他账户支付的配置
-		if(accountInfo.size()<1) {
+		if(accountInfo.size()<1&&cashPayTypeLst.size()<1) {
 			return Result.failureResult("没有找到合适的支付方式");
 		}
 
 		Map<String ,Object> ret = new HashMap<String,Object>();
 		ret.put("remark", "");
-		ret.put("payList", accountInfo);
+		ret.put("accountPayList", accountInfo);
+		ret.put("cashPayList", accountInfo);
 		return Result.successResult("获取订单支付方式成功", ret);
 		
 	}
