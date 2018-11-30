@@ -510,7 +510,7 @@ public class OrderServiceImpl implements IOrderService {
 		
 		boolean chkAmt = order.checkPayAmt();
 		if(chkAmt == false) {
-			return Result.failureResult("支付失败错误代码：pay_check_nopass");
+			return Result.failureResult("支付失败错误代码：pay_check_nopass, 现金支付时传了无效的支付方式");
 		}
 		
 		// 添加订单
@@ -589,6 +589,8 @@ public class OrderServiceImpl implements IOrderService {
 		} else if (order.getOrdertype().equals("3")) {//银行卡支付
 			payRetMap.put("payType", "H5");
 			payRetMap.put("payString","http://app.zjzwly.com/dce-app/bank/bankCardPay.do?orderId="+order.getOrderid());
+		}else {//账户支付
+			return Result.failureResult("现金支付时传了无效的支付方式");
 		}
 		return Result.successResult("支付订单成功", payRetMap);
 	}

@@ -227,14 +227,15 @@ public class OrderController extends BaseController {
 			return false;
 		}
 		Map<String ,Object> payMap = (Map)ret.getData();
-		List<Map<String, Object>> accountInfoLst = (List) payMap.get("payList");
+		List<Map<String, Object>> cashPayList = (List) payMap.get("cashPayList");
+		List<Map<String, Object>> accountPayList = (List) payMap.get("accountPayList");
 		for(OrderPayDetail pDetail : payLst) {
 			boolean found = false;
-			for(Map<String,Object> m : accountInfoLst) {
+			for(Map<String,Object> m : accountPayList) {
 				String payCode = (String)m.get("payCode");
 				found = pDetail.getAccountType().equalsIgnoreCase(payCode);
 				//如果支持这种方式，检查金额
-				if(found && (!AccountType.wallet_bank.getAccountType().equals(payCode))) {
+				if(found) {
 					BigDecimal useAmt =(BigDecimal) m.get("useableAmt");
 					if(pDetail.getPayAmt().compareTo(useAmt)>0) {
 						logger.error("支付检查失败,配置的支付:"+m+"  实际支付："+pDetail.toString());
@@ -246,6 +247,18 @@ public class OrderController extends BaseController {
 					break;
 				}
 			}
+			
+			if(false == found) {
+				for(Map<String,Object> m : cashPayList) {
+					String payCode = (String)m.get("payCode");
+					found = pDetail.getAccountType().equalsIgnoreCase(payCode);
+					//如果支持这种方式，检查金额
+					if(found) {
+						break;
+					}
+				}
+			}
+			
 			if(false == found) {
 				logger.error("支付检查失败，商品没有配置这种支付方式："+pDetail);
 				return false;
