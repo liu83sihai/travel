@@ -91,10 +91,10 @@ public class MeituLvUtil {
 	 
 	 public static void main(String[] args) throws UnsupportedEncodingException {
 		 MeituLvUtil  meitu = new MeituLvUtil();
-		 String name ="刘德华";
+		 String name ="陈红梅";
 //		 String nameStr = URLEncoder.encode(name, "UTF-8");
-		 String mobile = "13723410565";
-		 String cardNo = "UID4421452141421";
+		 String mobile = "13857112374";
+		 String cardNo = "UID12312312123132";
 		 String result =  meitu.virtualOpen(name,mobile,cardNo);
 		 System.out.println("=============" + result);
 //		 meitu.list();

@@ -438,7 +438,10 @@ public class UserController extends BaseController {
 			rows = Integer.parseInt(row);
 		}
 		
-		int offset = (int) ((pageNum - 1) * rows);
+		
+		
+		
+		int offset = (int) (pageNum * rows);
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("offset", offset);
 		paramMap.put("rows", rows);
