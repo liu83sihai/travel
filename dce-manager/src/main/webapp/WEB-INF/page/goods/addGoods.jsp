@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -117,13 +118,35 @@
 				
 				<tr>
 					<td align="right"><label for="name">商品上架状态：</label></td>
-					<td><select id="status" class="easyui-combobox"
-						style="width: 150px;">
-							<option value="0"
-								<c:if test="${goods.status==0}">selected="selected"</c:if>>未上架</option>
-							<option value="1"
-								<c:if test="${goods.status==1}">selected="selected"</c:if>>已上架</option>
-					</select></td>
+					<td>
+						<select id="status" class="easyui-combobox"
+							style="width: 150px;">
+								<option value="0"
+									<c:if test="${goods.status==0}">selected="selected"</c:if>>未上架</option>
+								<option value="1"
+									<c:if test="${goods.status==1}">selected="selected"</c:if>>已上架</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name">邮费：</label></td>
+					<td><input type="text" id="postage" name="postage"
+						value="${goods.postage}" /></td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name">支付方式:</label></td>
+					<td>${goods.payTypeName }</td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name"></label></td>
+					<td>
+						<select id="payType" name ="payType" multiple="multiple" style="width: 150px;">
+								<option value="wallet_money"  <c:if test="${fn:contains(goods.payType,'wallet_money')==false}">selected="selected"</c:if> >现金账户</option>
+								<option value="wallet_travel" <c:if test="${fn:contains(goods.payType,'wallet_travel')==false}">selected="selected"</c:if> >积分</option>
+								<option value="wallet_goods" <c:if test="${fn:contains(goods.payType,'wallet_goods')==false}">selected="selected"</c:if> >抵用券</option>
+								<option value="bank"  <c:if test="${fn:contains(goods.payType,'bank')==false}">selected="selected"</c:if>>第三方现金支付</option>
+						</select>							
+					</td>
 				</tr>
 			</table>
 		</div>

@@ -34,6 +34,12 @@ public class OrderPayDetail implements Serializable {
 		this.remark = remark;
 	}
 	
+	@Override
+	public String toString() {
+		return "OrderPayDetail [accountType=" + accountType + ", payAmt=" + payAmt + ", orderid=" + orderid
+				+ ", remark=" + remark + "]";
+	}
+	
 	
 	
 }

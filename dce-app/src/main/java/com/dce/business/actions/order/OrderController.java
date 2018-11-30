@@ -23,6 +23,7 @@ import org.jdom2.JDOMException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -33,11 +34,13 @@ import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.DateUtil;
-import com.dce.business.common.util.NumberUtil;
 import com.dce.business.common.wxPay.util.XMLUtil;
 import com.dce.business.dao.account.IUserAccountDetailDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
+import com.dce.business.entity.bank.BankDo;
+import com.dce.business.entity.dict.LoanDictDo;
+import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.order.OrderPayDetail;
@@ -45,6 +48,7 @@ import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.accountRecord.AccountRecordService;
 import com.dce.business.service.bonus.IBonusLogService;
+import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.business.service.impl.order.AlipaymentOrderService;
 import com.dce.business.service.order.IOrderService;
@@ -74,6 +78,9 @@ public class OrderController extends BaseController {
 	private AlipaymentOrderService alipaymentOrderService;
 	@Resource
 	private IUserService userService;
+	
+	@Resource
+	private ILoanDictService  dictService;
 	
 	/**
 	 * 订单支付方式
@@ -122,42 +129,114 @@ public class OrderController extends BaseController {
 //			return Result.failureResult("登录失效，请重新登录！");
 //		}
 
+		String goods = request.getParameter("chooseGoods") == null ? "" : request.getParameter("chooseGoods");
+		
+		// 将商品信息的JSON数据解析为list集合
+		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
+		logger.info("======用户选择的商品信息：" + chooseGoodsLst + "=====用户id：" + userId);
+		
+		// 假如获取参数某一个为空，直接返回结果至前端
+		if (userId ==  null) {
+			return Result.failureResult("请登录!");
+		}
+		
+		// 商品信息
+		if (StringUtils.isBlank(goods)) {
+			return Result.failureResult("chooseGoods参数为空！");
+		}
+		if(chooseGoodsLst == null ||chooseGoodsLst.size()<1) {
+			return Result.failureResult("提交的购买商品为空!");
+		}
+				
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
 		if (user == null) {
-			return Result.successResult("该用户不存在！", new JSONArray());
+			return Result.failureResult("该用户不存在！");
 		}
 		
+		return getGoodsPay(userId, chooseGoodsLst);
+		
+	}
 
+
+	/**
+	 * 根据商品获取，商品配置的支付方式
+	 * @param userId
+	 * @param chooseGoodsLst
+	 * @return
+	 */
+	private Result<?>  getGoodsPay(Integer userId, List<OrderDetail> chooseGoodsLst) {
+		
+		if(null == chooseGoodsLst || chooseGoodsLst.size()<1) {
+			return Result.failureResult("请选择商品");
+		}
+		
 		// 财务信息
 		List<Map<String, Object>> accountInfo = new ArrayList<Map<String,Object>>();
-		UserAccountDo amount = accountService.getUserAccount(userId, AccountType.wallet_money); // 现金账户
-		UserAccountDo originalAmount = accountService.getUserAccount(userId, AccountType.wallet_travel); // 抵用券
-		UserAccountDo pointAmount = accountService.getUserAccount(userId, AccountType.wallet_goods); // 积分
+		OrderDetail orderDetail = chooseGoodsLst.get(0);
+		CTGoodsDo gDo = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
+		String  payType = gDo.getPayType();
+		if(StringUtils.isNotBlank(payType)) {
+			String[] payArr = payType.split(",");
+			for(String pay :payArr) {
+				UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay)); 
+				Map<String, Object> payMap1 = new HashMap<String,Object>();
+				payMap1.put("payCode", amount.getAccountType());
+				payMap1.put("totalAmt", amount.getAmount());
+				payMap1.put("useableAmt", amount.getAmount());
+				accountInfo.add(payMap1);
+			}
+		}
 		
-		Map<String, Object> payMap1 = new HashMap<String,Object>();
-		payMap1.put("payCode", amount.getAccountType());
-		payMap1.put("totalAmt", amount.getAmount());
-		payMap1.put("useableAmt", amount.getAmount());
-		
-		Map<String, Object> payMap2 = new HashMap<String,Object>();
-		payMap2.put("payCode", originalAmount.getAccountType());
-		payMap2.put("totalAmt", originalAmount.getAmount());
-		payMap2.put("useableAmt", originalAmount.getAmount());
-		
-		Map<String, Object> payMap3 = new HashMap<String,Object>();
-		payMap3.put("payCode", pointAmount.getAccountType());
-		payMap3.put("totalAmt", pointAmount.getAmount());
-		payMap3.put("useableAmt", pointAmount.getAmount());
-		
-		accountInfo.add(payMap1);
-		accountInfo.add(payMap2);
-		accountInfo.add(payMap3);
-		
+		if(accountInfo.size()<1) {
+			return Result.failureResult("没有找到合适的支付方式");
+		}
+
 		Map<String ,Object> ret = new HashMap<String,Object>();
-		ret.put("remark", "积分商品只能用积分支付");
+		ret.put("remark", "");
 		ret.put("payList", accountInfo);
-		return Result.successResult("获取订单成功", ret);
+		return Result.successResult("获取订单支付方式成功", ret);
+		
+	}
+	
+	/**
+	 * 下单的时候检查支付方式
+	 * @param chooseGoodsLst
+	 * @param payLst
+	 * @return
+	 */
+	private boolean checkPay(Long userId,List<OrderDetail> chooseGoodsLst, List<OrderPayDetail> payLst) {
+		Result ret = this.getGoodsPay(userId.intValue(), chooseGoodsLst);
+		if(ret.isSuccess() == false) {
+			logger.error("支付检查失败，商品没有正确配置支付方式");
+			return false;
+		}
+		Map<String ,Object> payMap = (Map)ret.getData();
+		List<Map<String, Object>> accountInfoLst = (List) payMap.get("payList");
+		for(OrderPayDetail pDetail : payLst) {
+			boolean found = false;
+			for(Map<String,Object> m : accountInfoLst) {
+				String payCode = (String)m.get("payCode");
+				found = pDetail.getAccountType().equalsIgnoreCase(payCode);
+				//如果支持这种方式，检查金额
+				if(found && (!AccountType.wallet_bank.getAccountType().equals(payCode))) {
+					BigDecimal useAmt =(BigDecimal) m.get("useableAmt");
+					if(pDetail.getPayAmt().compareTo(useAmt)>0) {
+						logger.error("支付检查失败,配置的支付:"+m+"  实际支付："+pDetail.toString());
+						return false;
+					}
+					
+				}
+				if(found) {
+					break;
+				}
+			}
+			if(false == found) {
+				logger.error("支付检查失败，商品没有配置这种支付方式："+pDetail);
+				return false;
+			}
+		}
+		return true;
 	}
 	
 
@@ -357,7 +436,7 @@ public class OrderController extends BaseController {
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
 		if (user == null) {
-			return Result.successResult("该用户不存在！", new JSONArray());
+			return Result.failureResult("该用户不存在！");
 		}
 
 		Order order = new Order();
@@ -401,11 +480,8 @@ public class OrderController extends BaseController {
 	 *  "code": 0
 	 *	"msg": 返回成功,
 	 *	"data": {
-	 *	    [
-	 *			{
-	 * 				唤起支付json字符串
-	 *			}
-	 *		]
+	 *			"payType" : payType   H5,WX,Ali
+	 *          "payString": payString //唤起支付json字符串
 	 *	  }
 	 *	}
 	 */ 
@@ -441,7 +517,7 @@ public class OrderController extends BaseController {
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
 		if (user == null) {
-			return Result.successResult("该用户不存在！", new JSONArray());
+			return Result.failureResult("该用户不存在！");
 		}
 
 		Order order = new Order();
@@ -457,6 +533,15 @@ public class OrderController extends BaseController {
 		//支付明细
 		List<OrderPayDetail> payLst = convertPayJson(payList);
 		
+		LoanDictDo dictDo = dictService.getLoanDict("checkPay");
+		if(null != dictDo) {
+			if("T".equalsIgnoreCase(dictDo.getRemark())) {
+				boolean isOk = checkPay(Long.valueOf(userId),chooseGoodsLst,payLst);
+				if(false == isOk) {
+					return Result.failureResult("不正确的支付方式！");
+				}
+			}
+		}
 
 		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
@@ -464,6 +549,9 @@ public class OrderController extends BaseController {
 		// 生成预付单，保存订单和订单明显
 		return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
 	}
+
+	
+
 
 	/**
 	 * 支付宝支付异步通知该接口
@@ -606,6 +694,18 @@ public class OrderController extends BaseController {
 
 		return orderService.alipayQuery(outTradeNo);
 	}
+	
+	 /**
+     *	 去添加新的银行卡信息
+     * @return
+     */
+    @RequestMapping("/paySucc")
+    public ModelAndView paySucc(HttpServletRequest request){
+    	
+    	ModelAndView mav = new ModelAndView("order/paySucc");
+    	return mav;
+    }
+    
 
 	
 	/**
@@ -625,7 +725,7 @@ public class OrderController extends BaseController {
 
 		List<OrderPayDetail>  payLst = new ArrayList<OrderPayDetail>();
 		JSONArray jsonArray = JSONArray.parseArray(payListJson);
-		for (int i = 0; i < payLst.size(); i++) {
+		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject obj = jsonArray.getJSONObject(i);
 			BigDecimal payAmt  =  new BigDecimal (obj.getString("payAmt") );
 			// 过滤支付金额为0的

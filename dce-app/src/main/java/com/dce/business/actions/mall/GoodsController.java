@@ -2,7 +2,6 @@ package com.dce.business.actions.mall;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +24,6 @@ import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
 import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.goods.CTUserAddressDo;
-import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.business.service.goods.ICTUserAddressService;
 import com.dce.business.service.user.IUserService;
@@ -73,6 +70,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
 	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
 	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} hotGoodsList.postage //邮费
 	 * 
 	 * @apiSuccess {Object[]} normalGoodsList  正常商品      
 	 * @apiSuccess {int} normalGoodsList.goodsId 商品id
@@ -86,9 +84,10 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {int} normalGoodsList.saleCount 已售数量
 	 * @apiSuccess {String} normalGoodsList.brandName 商品品牌名称
 	 * @apiSuccess {String} normalGoodsList.cateName 商品类别名称 
-	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
-	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
-	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {Decimal} normalGoodsList.profit 商品利润
+	 * @apiSuccess {String} normalGoodsList.detailLink 商品详情连接
+	 * @apiSuccess {String} normalGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} normalGoodsList.postage //邮费
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
 	 * {
@@ -412,4 +411,5 @@ public class GoodsController extends BaseController {
 		}
 		 
 	 }
+	
 }

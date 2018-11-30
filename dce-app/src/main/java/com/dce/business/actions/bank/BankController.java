@@ -69,6 +69,42 @@ public class BankController extends BaseController {
 		mav.addObject("bankCardNum",bankCardNum);
     	return mav;
     }
+    /**
+     *	 去添加新的银行卡信息
+     * @return
+     */
+    @RequestMapping("/bankCardPay")
+    public ModelAndView BankCardPay(HttpServletRequest request){
+    	
+    	ModelAndView mav = new ModelAndView("bank/bindBankCard");
+    	
+    	//支付订单id
+    	String orderId = request.getParameter("orderId");
+    	
+    	
+    	List<BankDo> list = bankService.getBankList();
+    	mav.addObject("bankCodes",list);
+    	
+    	String mobile = "";
+    	String realName = "";
+    	String idNo = "";
+    	String bankCardNum = "";
+    	
+//    	//查询是否已绑卡
+//    	//Integer userId = getUserId();
+//		Integer userId =1;
+//		String isDefault = "1";
+//		List<BankCardDo> bankLst = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault );
+//		if(bankLst != null && bankLst.size()>0) {
+//			
+//		}
+    	
+    	mav.addObject("realName",realName);
+    	mav.addObject("idNo",idNo);
+    	mav.addObject("mobile",mobile);
+    	mav.addObject("bankCardNum",bankCardNum);
+    	return mav;
+    }
     
     
     /**

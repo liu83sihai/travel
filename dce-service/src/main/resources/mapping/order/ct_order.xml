@@ -24,6 +24,7 @@
 		<result column="awardStatus" jdbcType="VARCHAR" property="awardStatus" />
 		<result column="awardRemark" jdbcType="VARCHAR" property="awardRemark" />
 		<result column="profit" jdbcType="DECIMAL" property="profit" />
+		<result column="cashAmt" jdbcType="DECIMAL" property="cashAmt" />
 		
 		
 	</resultMap>
@@ -36,7 +37,7 @@
 		salqty, accountType, goodsId,
 		goodsprice,giftAmount,
 		addressId,
-		alipayStatus,awardStatus,awardRemark,profit
+		alipayStatus,awardStatus,awardRemark,profit,cashAmt
 	</sql>
 
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
@@ -51,7 +52,8 @@
 		a.alipayStatus
 		alipayStatus,a.awardStatus awardStatus,a.awardRemark awardRemark,
 		CONCAT(b.address,b.addressDetails) address,
-		a.profit
+		a.profit,
+		a.cashAmt
 		from ct_order a left join
 		ct_order_address b on b.addressId = a.addressId
 		where a.orderId =
@@ -97,7 +99,8 @@
 		b.orderId, b.goods_id, b.quantity
 		quantity, b.price,
 		b.remark,
-		a.profit
+		a.profit,
+		a.cashAmt
 		from ct_order a left join 
 		ct_orderdetail b on a.orderId=b.orderId
 		where
@@ -145,7 +148,7 @@
 		orderType, matchOrderId,
 		salqty, accountType,
 		goodsId,
-		addressId, alipayStatus,awardStatus,awardRemark
+		addressId, alipayStatus,awardStatus,awardRemark,cashAmt,profit
 		)
 		values
 		(#{orderid,jdbcType=BIGINT},
@@ -167,7 +170,9 @@
 		#{addressid,jdbcType=INTEGER},
 		#{alipayStatus,jdbcType=VARCHAR},
 		#{awardStatus,jdbcType=VARCHAR},
-		#{awardRemark,jdbcType=VARCHAR}
+		#{awardRemark,jdbcType=VARCHAR},
+		#{profit,jdbcType=DECIMAL},
+		#{cashAmt,jdbcType=DECIMAL}
 		)
 	</insert>
 
@@ -227,6 +232,9 @@
 			<if test="profit != null">
 				profit,
 			</if>
+			<if test="cashAmt != null">
+				cashAmt,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="ordercode != null">
@@ -279,6 +287,9 @@
 			</if>
 			<if test="profit != null">
 				#{profit,jdbcType=DECIMAL},
+			</if>
+			<if test="cashAmt != null">
+				#{cashAmt,jdbcType=DECIMAL},
 			</if>
 		</trim>
 	</insert>
@@ -352,6 +363,9 @@
 			<if test="profit != null">
 				profit = #{profit,jdbcType=DECIMAL},
 			</if>
+			<if test="cashAmt != null">
+				cashAmt = #{cashAmt,jdbcType=DECIMAL},
+			</if>
 		</set>
 		where orderId = #{orderid,jdbcType=BIGINT}
 	</update>
@@ -422,6 +436,9 @@
 			<if test="profit != null">
 				profit = #{profit,jdbcType=DECIMAL},
 			</if>
+			<if test="cashAmt != null">
+				cashAmt = #{cashAmt,jdbcType=DECIMAL},
+			</if>
 		</set>
 		where ordercode = #{ordercode,jdbcType=INTEGER}
 	</update>
@@ -460,7 +477,8 @@
 		awardStatus =
 		#{awardStatus,jdbcType=VARCHAR},
 		awardRemark =
-		#{awardRemark,jdbcType=VARCHAR}
+		#{awardRemark,jdbcType=VARCHAR},
+		cashAmt = #{cashAmt,jdbcType=DECIMAL}
 		where orderId =
 		#{orderid,jdbcType=BIGINT}
 	</update>
@@ -617,6 +635,9 @@
 			</if>
 			<if test="awardRemark != null">
 				awardRemark = #{awardRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="cashAmt != null">
+				cashAmt = #{cashAmt,jdbcType=DECIMAL},
 			</if>
 		</trim>
 		WHERE orderId = #{orderId} and payStatus = #{oldStatus}

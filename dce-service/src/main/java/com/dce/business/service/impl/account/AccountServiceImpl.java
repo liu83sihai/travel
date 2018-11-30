@@ -151,6 +151,10 @@ public class AccountServiceImpl implements IAccountService {
 		}
 
 		Integer userId = userAccountDo.getUserId();
+		if (userId == null) {
+			throw new BusinessException("更新账户余额用户Id未空");
+		}
+		
 		String accountType = userAccountDo.getAccountType();
 		// 判断用户是否存在此帐户 没有刚增加
 		UserAccountDo udo = selectUserAccount(userId, accountType);
