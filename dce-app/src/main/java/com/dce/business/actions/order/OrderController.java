@@ -209,7 +209,7 @@ public class OrderController extends BaseController {
 		Map<String ,Object> ret = new HashMap<String,Object>();
 		ret.put("remark", "");
 		ret.put("accountPayList", accountInfo);
-		ret.put("cashPayList", accountInfo);
+		ret.put("cashPayList", cashPayTypeLst);
 		return Result.successResult("获取订单支付方式成功", ret);
 		
 	}

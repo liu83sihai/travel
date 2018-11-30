@@ -31,7 +31,7 @@ public class Order {
 
 	private String paytime; // 支付时间
 
-	private String ordertype; // 订单支付方式（1微信2支付宝）
+	private String ordertype; // 订单支付方式（1微信2支付宝 3 银行卡）
 
 	private Integer addressid; // 收获地址表id，从该表中获取收货人的信息
 
