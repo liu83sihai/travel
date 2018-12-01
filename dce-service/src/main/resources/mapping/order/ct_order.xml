@@ -831,10 +831,14 @@
 
 	<!-- 查询总业绩 -->
 	<select id="selectSum" parameterType="Map" resultType="map">
-		SELECT SUM(goodsprice) as Totalperformance from ct_order where 1=1
-		<if test="userId!=null">
-			and userId=#{userId}
-		</if>
-		and payStatus=1
+		SELECT SUM(tt.goodsprice) as Totalperformance 
+		from (select a.goodsprice
+			from ct_order a  left join (
+				select userId from ct_user_referee where refereeid = #{userId}
+			)rf on a.userId = rf.userId	and a.payStatus=1
+			union all
+			select a.goodsprice
+			from ct_order a where a.userId = #{userId} and a.payStatus=1
+		)as tt
 	</select>
 </mapper>

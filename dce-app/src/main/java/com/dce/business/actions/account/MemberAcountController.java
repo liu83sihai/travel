@@ -148,6 +148,8 @@ public class MemberAcountController extends BaseController {
 		try {
 			//按级别分类
 			Map<Byte,List> levelMap = new HashMap<Byte,List>();
+			
+			Map<String, Object> paraMap = new HashMap<String,Object>();
 			for (UserRefereeDo refUser :refUserLst ) {
 				UserDo myUser = userService.getUser(refUser.getUserid());
 				if(null == myUser) {
@@ -161,7 +163,15 @@ public class MemberAcountController extends BaseController {
 				Map<String,Object> person = new HashMap<String,Object>();
 				person.put("true_name", myUser.getTrueName());
 				person.put("user_name", myUser.getUserName());
-				person.put("mobile",80);
+				
+				paraMap.clear();
+				paraMap.put("userId", myUser.getId());
+				Map<String, Object> totalMap = orderService.selectSum(paraMap);
+				if(null != totalMap && totalMap.get("Totalperformance") != null) {
+					person.put("mobile",totalMap.get("Totalperformance"));
+				}else {
+					person.put("mobile",0);
+				}
 				person.put("refereeid", myUser.getRefereeid());
 				person.put("user_level", myUser.getUserLevel());
 				person.put("id", myUser.getId());
@@ -179,10 +189,35 @@ public class MemberAcountController extends BaseController {
 			}
 			
 			map1.put("tuanduilist", listone);
-			map1.put("totalYJ", CalculateUtils.round(userdo.getTotalPerformance().doubleValue()));
-			map1.put("personCount", 50);
+			
+			//团队总业绩
+			paraMap.clear();
+			paraMap.put("userId", userdo.getId());
+			Map<String, Object> totalMap = orderService.selectSum(paraMap);
+			if(null != totalMap && totalMap.get("Totalperformance") != null) {
+				map1.put("totalYJ",totalMap.get("Totalperformance"));
+			}else {
+				map1.put("totalYJ","0");
+			}
+			//总推荐人数
+			paraMap.clear();
+			paraMap.put("refereeid", userId);
+			List<UserRefereeDo> refUserLst2 = userRefereeService.select(params);
+			map1.put("personCount", refUserLst2==null? 0 : refUserLst2.size());
 			//计算小区业绩
-			map1.put("communityYJ", 10);
+			BigDecimal totalYj = BigDecimal.ZERO;
+			BigDecimal maxYj = BigDecimal.ZERO;
+			for(List<Map<String,Object>>  l : levelMap.values()) {
+				for(Map<String,Object> m : l) {
+					BigDecimal yj =  new BigDecimal(m.get("mobile").toString());
+					totalYj =totalYj.add(yj);
+					if(yj.compareTo(maxYj)>0) {
+						maxYj = yj;
+					}
+				}
+			}
+			//除最大一个数的和=小区业绩
+			map1.put("communityYJ", totalYj.subtract(maxYj));
 			
 		} catch (IllegalArgumentException t) {
 			t.printStackTrace();
