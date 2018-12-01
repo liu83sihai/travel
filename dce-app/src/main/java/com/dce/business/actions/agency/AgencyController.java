@@ -67,8 +67,9 @@ public class AgencyController  extends BaseController{
 	 *	@apiSuccess {java.lang.String}  createName 创建人
 	 *	@apiSuccess {java.sql.Date}  modifyDate 更新时间
 	 *	@apiSuccess {java.lang.String}  modifyName 更新人
-	 *	@apiSuccess {java.lang.Integer}  status 状态(0:删除  1:正常 2:审核通过)
+	 *	@apiSuccess {java.lang.Integer}  status 状态(0:删除  1:正常 2:审核通过 3：等待正付保证金 4:拒绝)
 	 *	@apiSuccess {java.lang.String}  remark 备注
+	 *	@apiSuccess {java.lang.String}  assignCity 分配的城市
 	 */
 	
 	/**
@@ -162,6 +163,7 @@ public class AgencyController  extends BaseController{
 	             map.put("modifyName", agency.getModifyName());
 	             map.put("status", agency.getStatus());
 	             map.put("remark", agency.getRemark());
+	             map.put("assignCity", agency.getAssignCity());
 	                result.add(map);
 	           }
 	        }

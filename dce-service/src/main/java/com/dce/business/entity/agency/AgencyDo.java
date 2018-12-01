@@ -30,6 +30,7 @@ public class AgencyDo  implements java.io.Serializable{
 	private java.lang.Integer status;
 	private java.lang.Integer sex;
 	private java.lang.String remark;
+	private java.lang.String  assignCity;
 	
 
 
@@ -196,6 +197,14 @@ public class AgencyDo  implements java.io.Serializable{
 	
 	
 	
+
+	public java.lang.String getAssignCity() {
+		return assignCity;
+	}
+
+	public void setAssignCity(java.lang.String assignCity) {
+		this.assignCity = assignCity;
+	}
 
 	public java.lang.Integer getSex() {
 		return sex;
