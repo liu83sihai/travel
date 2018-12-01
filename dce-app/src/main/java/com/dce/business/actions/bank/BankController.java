@@ -45,7 +45,7 @@ public class BankController extends BaseController {
      * @return
      */
     @RequestMapping("/toAddBankCard")
-    public ModelAndView toBindCard(HttpServletRequest request){
+    public ModelAndView toAddBankCard(HttpServletRequest request){
     	
     	ModelAndView mav = new ModelAndView("bank/bindBankCard");
     	List<BankDo> list = bankService.getBankList();
@@ -225,8 +225,9 @@ public class BankController extends BaseController {
      * @return
      */
     @RequestMapping("/toBindBankCard")
-    public String toBankCardManager(HttpServletRequest request,Model model){
-    	String view = "bank/bankCardManager";
+    public ModelAndView toBankCardManager(HttpServletRequest request,Model model){
+    	
+    	ModelAndView mav = new ModelAndView("bank/bankCardManager");
     	Integer userId = this.getUserId();
     	
     	String isDefault = "1";
@@ -247,6 +248,6 @@ public class BankController extends BaseController {
     	}
     	model.addAttribute("bankCardList",list);
     	
-    	return view;
+    	return mav;
     }
 }
