@@ -62,6 +62,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiSuccess {java.math.BigDecimal}  latitude 纬度
 	 *	@apiSuccess {java.math.BigDecimal}  distance 距离
 	 *	@apiSuccess {java.lang.Integer}  status 状态 0:删除 1：正常 2:审核通过
+	 *  @apiParam {java.lang.String}  shopDetailsUrl 商家明细地址
 	 */
 	
 	/**
@@ -79,6 +80,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiParam {java.math.BigDecimal}  longitude 经度
 	 *	@apiParam {java.math.BigDecimal}  latitude 纬度
 	 *	@apiParam {java.lang.String}  protocolLink 协议地址
+	
 	 */
 	
 	/** 
@@ -193,6 +195,7 @@ public class SupplierController  extends BaseController{
 	             map.put("latitude", supplier.getLatitude());
 	             map.put("status", supplier.getStatus());
 	             map.put("distance", supplier.getDistance());
+	             map.put("shopDetailsUrl", "www.baidu.com");
 	             result.add(map);
 	           }
 	        }
