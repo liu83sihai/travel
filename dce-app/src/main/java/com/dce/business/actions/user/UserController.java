@@ -1,12 +1,15 @@
 package com.dce.business.actions.user;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,12 +33,14 @@ import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.Base64Coder;
 import com.dce.business.common.util.DataEncrypt;
+import com.dce.business.common.util.MeituLvUtil;
 import com.dce.business.common.util.NumberUtil;
 import com.dce.business.dao.sms.ISmsDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.sms.SmsDo;
 import com.dce.business.entity.user.UserDo;
+import com.dce.business.entity.userCard.UserCardDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.message.INewsService;
@@ -167,6 +172,34 @@ public class UserController extends BaseController {
 		logger.info("用户注册结果:" + JSON.toJSONString(result));
 		return result;
 	}
+	
+	 /** 
+	  * @api {POST} /userCard/activeUser.do 激活新用户
+	  * @apiName activeUser
+	  * @apiGroup userCard 
+	  * @apiVersion 1.0.0 
+	  * @apiDescription 激活新用户
+	  *  
+	  * @apiUse  userCardParam 
+	  *  
+	  * @apiUse RETURN_MESSAGE
+	  * @apiSuccessExample Success-Response: 
+	  *  HTTP/1.1 200 OK 
+	  * {
+	  *  "code": 0
+	  *	"msg": 返回成功,
+	  *	"data": {
+	  *      
+	  *	  }
+	  *	}
+	  */ 
+	 @RequestMapping(value = "/activeUser", method = RequestMethod.POST)
+	 public Result<?> regByTravelCard( UserCardDo  userCardDo,
+			 						   HttpServletRequest request, 
+			 						   HttpServletResponse response) {
+		return Result.successResult("激活失败，这个用户已存在");
+	}
+	
 
 	/** 
 	 * @api {POST} /user/login.do 用户登录
