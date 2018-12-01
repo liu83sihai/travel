@@ -64,9 +64,6 @@ public class TravelPathController extends BaseController{
     public Result<?> list() {
         logger.info("查询所有路线.....");
         List<TravelPathDo> pathList = travelPathService.selectAll();
-        for(TravelPathDo travelPath : pathList) {
-        	System.out.println("pathList:"+travelPath);
-        }
         return Result.successResult("查询成功", pathList);
     }
 	

@@ -100,6 +100,8 @@
 								<c:if test="${goods.goodsFlag==3}">selected="selected"</c:if>>会员商品 </option>
 							<option value="4"
 								<c:if test="${goods.goodsFlag==4}">selected="selected"</c:if>>旅游路线</option>
+							<option value="5"
+								<c:if test="${goods.goodsFlag==5}">selected="selected"</c:if>>代理商保证金</option>
 					</select>
 					</td>
 				</tr>

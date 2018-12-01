@@ -57,8 +57,10 @@ $(function(){
 				 							return "积分商品";
 				 						}else if(row.goodsFlag == "3"){
 				 							return "会员商品";
-				 						}else{
+				 						}else if(row.goodsFlag == "4"){
 				 							return "旅游路线";
+				 						}else if(row.goodsFlag == "5"){
+				 							return "代理商保证金";
 				 						}
 									}
 								},
