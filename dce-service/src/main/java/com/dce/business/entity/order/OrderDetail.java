@@ -19,6 +19,10 @@ public class OrderDetail {
 	private String remark; // 0为赠品1为商品
 
 	private BigDecimal profit; //利润
+	
+	private BigDecimal postage; //邮寄费
+	
+	private Integer goodsFlag; //商品类别
 
 	public String getRemark() {
 		return remark;
@@ -85,12 +89,31 @@ public class OrderDetail {
 		this.profit = profit;
 	}
 
+	public BigDecimal getPostage() {
+		return postage;
+	}
+
+	public void setPostage(BigDecimal postage) {
+		this.postage = postage;
+	}
+	
+	public void setGoodsFlag(Integer goodsFlag) {
+		this.goodsFlag = goodsFlag;
+		
+	}
+
+	public Integer getGoodsFlag() {
+		return goodsFlag;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderDetail [orderdetailid=" + orderdetailid + ", orderid=" + orderid + ", goodsId=" + goodsId
 				+ ", quantity=" + quantity + ", price=" + price + ", goodsName=" + goodsName + ", remark=" + remark
 				+ "]";
 	}
+
+	
 
 	
 

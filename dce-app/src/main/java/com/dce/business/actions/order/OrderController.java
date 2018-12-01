@@ -99,10 +99,14 @@ public class OrderController extends BaseController {
 	 * @apiParam {int} chooseGoods.goodsId 商品id
 	 * @apiParam {decimal} chooseGoods.qty 购买数量
 	 * 
-	 * @apiSuccess {Object[]} payList	支付方式列表
-	*  @apiSuccess {String} payList.payCode 支付账户类别
-	*  @apiSuccess {Decimal} payList.totalAmt	账户余额
-	*  @apiSuccess {Decimal} payList.useableAmt	本次可用金额
+	 * @apiSuccess {Object[]} cashPayList	现金支付方式列表： wx：微信， bank 银行卡 ， Ali 支付宝
+	*  @apiSuccess {String} cashPayList.payCode 支付账户类别 wx：微信， bank 银行卡 ， Ali 支付宝
+	*  @apiSuccess {Decimal} cashPayList.totalAmt	0 
+	*  @apiSuccess {Decimal} cashPayList.useableAmt	 0
+	*  @apiSuccess {Object[]} accountPayList	券支付方式列表： wallet_money 现金券， wallet_travel 积分， wallet_goods 抵扣券
+	*  @apiSuccess {String} accountPayList.payCode 支付账户类别 wx：微信， bank 银行卡 ， Ali 支付宝
+	*  @apiSuccess {Decimal} accountPayList.totalAmt	账户金额 
+	*  @apiSuccess {Decimal} accountPayList.useableAmt	 可以用金额
 	*  @apiSuccess {String} remark	备注
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
@@ -173,28 +177,52 @@ public class OrderController extends BaseController {
 		
 		// 财务信息
 		List<Map<String, Object>> accountInfo = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> cashPayTypeLst = new ArrayList<Map<String,Object>>();
 		OrderDetail orderDetail = chooseGoodsLst.get(0);
 		CTGoodsDo gDo = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
 		String  payType = gDo.getPayType();
 		if(StringUtils.isNotBlank(payType)) {
 			String[] payArr = payType.split(",");
 			for(String pay :payArr) {
-				UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay)); 
-				Map<String, Object> payMap1 = new HashMap<String,Object>();
-				payMap1.put("payCode", amount.getAccountType());
-				payMap1.put("totalAmt", amount.getAmount());
-				payMap1.put("useableAmt", amount.getAmount());
-				accountInfo.add(payMap1);
+				//bank没有数据库记录 没有bank账户
+				
+				if(AccountType.wallet_bank.getAccountType().equalsIgnoreCase(pay)
+						||AccountType.wallet_ALI.getAccountType().equalsIgnoreCase(pay)
+						|| AccountType.wallet_WX.getAccountType().equalsIgnoreCase(pay)) {
+					Map<String, Object> payMap1 = new HashMap<String,Object>();
+					payMap1.put("payCode", pay);
+					payMap1.put("totalAmt", 0);
+					payMap1.put("useableAmt", 0);
+					cashPayTypeLst.add(payMap1);
+				}else {
+					UserAccountDo amount = accountService.getUserAccount(userId, AccountType.getAccountType(pay));
+					Map<String, Object> payMap1 = new HashMap<String,Object>();
+					payMap1.put("payCode", amount.getAccountType());
+					payMap1.put("totalAmt", amount.getAmount());
+					payMap1.put("useableAmt", amount.getAmount());
+					accountInfo.add(payMap1);
+				}
 			}
 		}
 		
-		if(accountInfo.size()<1) {
+		//没有现金支付和其他账户支付的配置
+		if(accountInfo.size()<1&&cashPayTypeLst.size()<1) {
 			return Result.failureResult("没有找到合适的支付方式");
+		}
+		
+		//含邮费需要添加现金支付
+		if(gDo.getPostage().compareTo(BigDecimal.ZERO)>0 && !payType.contains(AccountType.wallet_bank.getAccountType())) {
+			Map<String, Object> payMap1 = new HashMap<String,Object>();
+			payMap1.put("payCode", AccountType.wallet_bank.getAccountType());
+			payMap1.put("totalAmt", 0);
+			payMap1.put("useableAmt", 0);
+			cashPayTypeLst.add(payMap1);
 		}
 
 		Map<String ,Object> ret = new HashMap<String,Object>();
 		ret.put("remark", "");
-		ret.put("payList", accountInfo);
+		ret.put("accountPayList", accountInfo);
+		ret.put("cashPayList", cashPayTypeLst);
 		return Result.successResult("获取订单支付方式成功", ret);
 		
 	}
@@ -212,14 +240,15 @@ public class OrderController extends BaseController {
 			return false;
 		}
 		Map<String ,Object> payMap = (Map)ret.getData();
-		List<Map<String, Object>> accountInfoLst = (List) payMap.get("payList");
+		List<Map<String, Object>> cashPayList = (List) payMap.get("cashPayList");
+		List<Map<String, Object>> accountPayList = (List) payMap.get("accountPayList");
 		for(OrderPayDetail pDetail : payLst) {
 			boolean found = false;
-			for(Map<String,Object> m : accountInfoLst) {
+			for(Map<String,Object> m : accountPayList) {
 				String payCode = (String)m.get("payCode");
 				found = pDetail.getAccountType().equalsIgnoreCase(payCode);
 				//如果支持这种方式，检查金额
-				if(found && (!AccountType.wallet_bank.getAccountType().equals(payCode))) {
+				if(found) {
 					BigDecimal useAmt =(BigDecimal) m.get("useableAmt");
 					if(pDetail.getPayAmt().compareTo(useAmt)>0) {
 						logger.error("支付检查失败,配置的支付:"+m+"  实际支付："+pDetail.toString());
@@ -231,6 +260,18 @@ public class OrderController extends BaseController {
 					break;
 				}
 			}
+			
+			if(false == found) {
+				for(Map<String,Object> m : cashPayList) {
+					String payCode = (String)m.get("payCode");
+					found = pDetail.getAccountType().equalsIgnoreCase(payCode);
+					//如果支持这种方式，检查金额
+					if(found) {
+						break;
+					}
+				}
+			}
+			
 			if(false == found) {
 				logger.error("支付检查失败，商品没有配置这种支付方式："+pDetail);
 				return false;
@@ -481,7 +522,7 @@ public class OrderController extends BaseController {
 	 *	"msg": 返回成功,
 	 *	"data": {
 	 *			"payType" : payType   H5,WX,Ali
-	 *          "payString": payString //唤起支付json字符串
+	 *          "payString": payString //如果payType payString 是url字符串， 其他是唤起支付json字符串
 	 *	  }
 	 *	}
 	 */ 
@@ -547,7 +588,11 @@ public class OrderController extends BaseController {
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
 
 		// 生成预付单，保存订单和订单明显
-		return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
+		try {
+			return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
+		}catch(Exception e) {
+			return Result.failureResult(e.getMessage());
+		}
 	}
 
 	
@@ -769,7 +814,7 @@ public class OrderController extends BaseController {
 			}
 			orderDetail.setGoodsId(Integer.valueOf(obj.getString("goodsId")));
 			orderDetail.setQuantity(Integer.valueOf(obj.getString("qty")));
-			orderDetail.setPrice(Double.valueOf(obj.getString("price")));
+			//orderDetail.setPrice(Double.valueOf(obj.getString("price")));
 			orderList.add(orderDetail);
 		}
 		return orderList;

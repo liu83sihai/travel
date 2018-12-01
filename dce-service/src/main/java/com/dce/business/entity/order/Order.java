@@ -3,6 +3,8 @@ package com.dce.business.entity.order;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.dce.business.common.enums.AccountType;
+import com.dce.business.common.result.Result;
 import com.dce.business.entity.goods.CTGoodsDo;
 
 public class Order {
@@ -31,7 +33,7 @@ public class Order {
 
 	private String paytime; // 支付时间
 
-	private String ordertype; // 订单支付方式（1微信2支付宝）
+	private String ordertype; // 订单支付方式（1微信2支付宝 3 银行卡）
 
 	private Integer addressid; // 收获地址表id，从该表中获取收货人的信息
 
@@ -306,11 +308,32 @@ public class Order {
 		this.cashAmt = cashAmt;
 	}
 
-	public boolean checkPayAmt() {
+	public Result<String> checkPayAmt() {
 		if(this.getTotalprice().compareTo(BigDecimal.ZERO)<=0) {
-			return false;
+			return Result.failureResult("总付款金额不能小于等于0");
 		}
-		return true;
+		
+		
+		BigDecimal walletTravel = BigDecimal.ZERO; //积分
+		
+		// 循环遍历出商品信息，计算商品总价格和商品总数量
+		for (OrderDetail orderDetail : this.orderDetailList) {
+			//积分商品,累计积分
+			if("2".equals(orderDetail.getGoodsFlag())){
+				walletTravel = BigDecimal.valueOf(orderDetail.getPrice() * orderDetail.getQuantity()).add(walletTravel);
+			}
+		}
+		
+		BigDecimal walletTravel2 = BigDecimal.ZERO; //积分
+		for(OrderPayDetail pDetail : payDetailList) {
+			if(AccountType.wallet_travel.equals(pDetail.getAccountType())) {
+				walletTravel2.add(pDetail.getPayAmt());
+			}
+		}
+		if(walletTravel2.compareTo(walletTravel) != 0 ) {
+			return Result.failureResult("积分商品需要用积分支付");
+		}
+		return Result.successResult("ok");
 	}
 	
 	public void calOrderProfit() {
@@ -318,20 +341,26 @@ public class Order {
 		BigDecimal totalprice = new BigDecimal(0); // 订单总金额
 		Integer salqty = 0; // 赠品数量
 		BigDecimal profit = BigDecimal.ZERO; //订单利润
+		BigDecimal postage = BigDecimal.ZERO; //邮费
+		
 		// 循环遍历出商品信息，计算商品总价格和商品总数量
 		for (OrderDetail orderDetail : this.orderDetailList) {
 			quantity += orderDetail.getQuantity(); // 商品总数量
 			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
 			BigDecimal oneGoodsProfit = orderDetail.getProfit().multiply(new BigDecimal(orderDetail.getQuantity()));
 			profit = profit.add(oneGoodsProfit);
+			postage = orderDetail.getPostage();
 		}
 		
-		this.calNonCashAmt();
+		
 		
 		this.profit = profit;
 		this.qty = quantity;
-		this.totalprice = totalprice;
 		this.goodsprice = totalprice;
+		this.totalprice = totalprice.add(postage);
+		
+		this.calNonCashAmt();
+		
 	}
 	
 	public BigDecimal getCashAmt() {

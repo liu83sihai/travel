@@ -95,11 +95,13 @@
 							<option value="1"
 								<c:if test="${goods.goodsFlag==1}">selected="selected"</c:if>>旅游卡</option>
 							<option value="2"
-								<c:if test="${goods.goodsFlag==2}">selected="selected"</c:if>>爆款商品</option>
+								<c:if test="${goods.goodsFlag==2}">selected="selected"</c:if>>积分商品</option>
 							<option value="3"
-								<c:if test="${goods.goodsFlag==3}">selected="selected"</c:if>>常规商品</option>
+								<c:if test="${goods.goodsFlag==3}">selected="selected"</c:if>>会员商品 </option>
 							<option value="4"
 								<c:if test="${goods.goodsFlag==4}">selected="selected"</c:if>>旅游路线</option>
+							<option value="5"
+								<c:if test="${goods.goodsFlag==5}">selected="selected"</c:if>>代理商保证金</option>
 					</select>
 					</td>
 				</tr>
@@ -109,9 +111,9 @@
 					<select id="shopCatId1" class="easyui-combobox"
 						style="width: 150px;">
 							<option value="1"
-								<c:if test="${goods.shopCatId1==1}">selected="selected"</c:if>>积分商品</option>
+								<c:if test="${goods.shopCatId1==1}">selected="selected"</c:if>>爆款商品</option>
 							<option value="2"
-								<c:if test="${goods.shopCatId1==2}">selected="selected"</c:if>>会员商品</option>
+								<c:if test="${goods.shopCatId1==2}">selected="selected"</c:if>>常规商品</option>
 					</select>
 					</td>
 				</tr>
@@ -145,6 +147,8 @@
 								<option value="wallet_travel" <c:if test="${fn:contains(goods.payType,'wallet_travel')==false}">selected="selected"</c:if> >积分</option>
 								<option value="wallet_goods" <c:if test="${fn:contains(goods.payType,'wallet_goods')==false}">selected="selected"</c:if> >抵用券</option>
 								<option value="bank"  <c:if test="${fn:contains(goods.payType,'bank')==false}">selected="selected"</c:if>>第三方现金支付</option>
+								<option value="Ali"  <c:if test="${fn:contains(goods.payType,'Ali')==false}">selected="selected"</c:if>>支付宝支付</option>
+								<option value="WX"  <c:if test="${fn:contains(goods.payType,'WX')==false}">selected="selected"</c:if>>微信支付</option>
 						</select>							
 					</td>
 				</tr>

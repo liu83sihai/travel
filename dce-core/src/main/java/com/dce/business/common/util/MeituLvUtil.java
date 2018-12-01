@@ -16,9 +16,12 @@ public class MeituLvUtil {
 	
 	final static String MEITU_LOGIN="https://qiuapi.meitulv.com/virtual_open";
 	final static String MEITU_LIST="https://qiuapi.meitulv.com/services_list";
-	final static String QIUCODE="356a192b7913b04c54574d18c28d4111";
-	
-	final static String PRIVATEKEY ="48e0e503e262e9b7416de7c308b17e";
+	//测试
+	//final static String QIUCODE="356a192b7913b04c54574d18c28d4111";
+	//final static String PRIVATEKEY ="48e0e503e262e9b7416de7c308b17e";
+	//生产
+	final static String QIUCODE="afd12e7f86d307142y7d97e03ec70e0f";
+	final static String PRIVATEKEY ="ce3099leff856777771e827fdea493";
 	
 	final String certFileName = "qiuapi.meitulv.com.cer"; 
 	final String certFilePassword = "48e0e503e262e9b7416de7c308b17e"; 

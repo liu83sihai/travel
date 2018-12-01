@@ -31,7 +31,7 @@ public class WeixiPayUtil {
 	static String apiKey = "1dd7398de4ac33c541e609d22b19dc11";
 
 	
-	public static Map getWeixiPayInfo(String orderNo,String body,BigDecimal amount,int orderType){
+	public static Map getWeixiPayInfo(String orderNo,String body,BigDecimal amount,int orderType)throws Exception{
 		
 		String createIp = "212.16.26.45";
 		String tradeType = "APP";
@@ -110,6 +110,7 @@ public class WeixiPayUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("生成预支付订单("+")失败"+e.getMessage());
+			throw e;
 		}
 		
 		return map;

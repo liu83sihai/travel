@@ -13,11 +13,29 @@ public class TravelPathDo {
 	private Integer starLevel; //路线级别 星级
 	private BigDecimal price;  //路线价格
 	private Float score; //路线评分
+	private String payType;  //支付方式
+	private BigDecimal postage; //邮费
 	
 	
 	
 	
-    public String getBannerImg() {
+    public String getPayType() {
+		return payType;
+	}
+
+	public void setPayType(String payType) {
+		this.payType = payType;
+	}
+
+	public BigDecimal getPostage() {
+		return postage;
+	}
+
+	public void setPostage(BigDecimal postage) {
+		this.postage = postage;
+	}
+
+	public String getBannerImg() {
 		return bannerImg;
 	}
 

@@ -410,7 +410,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * @param chooseGoodsLst
 	 */
 	public Result<Map<String,String>> saveOrder( List<OrderPayDetail> payLst,List<OrderDetail> chooseGoodsLst, Order order,
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response)throws Exception {
 
 		// 维护订单地址
 		Integer orderAddressId = mainOrderAddress(order);
@@ -468,7 +468,7 @@ public class OrderServiceImpl implements IOrderService {
 											List<OrderDetail> chooseGoodsLst,
 											Order order, 
 											HttpServletRequest request, 
-											HttpServletResponse response) {
+											HttpServletResponse response)throws Exception {
 
 		
 		// 选择的商品信息为空
@@ -494,6 +494,8 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			orderDetail.setProfit(goods.getProfit());
 			orderDetail.setPrice(goods.getShopPrice().doubleValue());
+			orderDetail.setPostage(goods.getPostage());
+			orderDetail.setGoodsFlag(goods.getGoodsFlag());
 		}
 		
 
@@ -508,9 +510,9 @@ public class OrderServiceImpl implements IOrderService {
 		//计算订单，订单总金额，商品总数量，订单利润
 		order.calOrderProfit();
 		
-		boolean chkAmt = order.checkPayAmt();
-		if(chkAmt == false) {
-			return Result.failureResult("支付失败错误代码：pay_check_nopass");
+		Result checkRet =  order.checkPayAmt();
+		if(checkRet.isSuccess() == false) {
+			return checkRet;
 		}
 		
 		// 添加订单
@@ -544,6 +546,9 @@ public class OrderServiceImpl implements IOrderService {
 		if(order.getCashAmt().compareTo(BigDecimal.ZERO)>0) {
 			// 获取加签后的订单
 			return getSignByPayType(request, response, order);
+		}else {
+			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
+			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
 		}
 		
 		Map<String,String> payRet = new HashMap<String,String>();
@@ -567,7 +572,9 @@ public class OrderServiceImpl implements IOrderService {
 	 * @param order
 	 * @return
 	 */
-	private Result<Map<String,String>> getSignByPayType(HttpServletRequest request, HttpServletResponse response, Order order) {
+	private Result<Map<String,String>> getSignByPayType(HttpServletRequest request, 
+														HttpServletResponse response, 
+														Order order)throws Exception {
 		if (order.getOrdertype() == null) {
 			return Result.failureResult("获取的订单支付方式为空！！！");
 		}
@@ -586,6 +593,8 @@ public class OrderServiceImpl implements IOrderService {
 		} else if (order.getOrdertype().equals("3")) {//银行卡支付
 			payRetMap.put("payType", "H5");
 			payRetMap.put("payString","http://app.zjzwly.com/dce-app/bank/bankCardPay.do?orderId="+order.getOrderid());
+		}else {//账户支付
+			return Result.failureResult("订单需要现金支付，没有给出正确的现金支付方式");
 		}
 		return Result.successResult("支付订单成功", payRetMap);
 	}

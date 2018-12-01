@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.common.util.DateUtil;
+import com.dce.business.common.util.NumberUtil;
 import com.dce.business.common.util.OrderCodeUtil;
 import com.dce.business.entity.order.OrderDo;
 import com.dce.business.entity.user.UserDo;
@@ -74,7 +76,9 @@ public class MemberAcountController extends BaseController {
 	 * 
 	 * @apiParam {String} userId 用户id
 	 * 
-	 * @apiSuccess {Decimal} totalYJ	double	总业绩
+	 * @apiSuccess {Decimal} totalYJ	总业绩
+	 * @apiSuccess {int} personCount	团队总人数
+	 * @apiSuccess {Decimal} communityYJ	小区业绩
 	 * @apiSuccess {int} user_level	int	用户级别
 	 * @apiSuccess {int} refereeid	int	推荐人id
 	 * @apiSuccess {String} true_name	用户真实姓名
@@ -88,6 +92,7 @@ public class MemberAcountController extends BaseController {
 	*   "msg": "查询成功",
 	*   "data": {
 	*     "totalYJ": "0",
+	*     "personCount":团队总人数
 	*     "tuanduilist": [*     
 	*       {
 	*         "user_level": "vip",
@@ -143,6 +148,8 @@ public class MemberAcountController extends BaseController {
 		try {
 			//按级别分类
 			Map<Byte,List> levelMap = new HashMap<Byte,List>();
+			
+			Map<String, Object> paraMap = new HashMap<String,Object>();
 			for (UserRefereeDo refUser :refUserLst ) {
 				UserDo myUser = userService.getUser(refUser.getUserid());
 				if(null == myUser) {
@@ -156,7 +163,15 @@ public class MemberAcountController extends BaseController {
 				Map<String,Object> person = new HashMap<String,Object>();
 				person.put("true_name", myUser.getTrueName());
 				person.put("user_name", myUser.getUserName());
-				person.put("mobile", myUser.getMobile());
+				
+				paraMap.clear();
+				paraMap.put("userId", myUser.getId());
+				Map<String, Object> totalMap = orderService.selectSum(paraMap);
+				if(null != totalMap && totalMap.get("Totalperformance") != null) {
+					person.put("mobile",totalMap.get("Totalperformance"));
+				}else {
+					person.put("mobile",0);
+				}
 				person.put("refereeid", myUser.getRefereeid());
 				person.put("user_level", myUser.getUserLevel());
 				person.put("id", myUser.getId());
@@ -175,12 +190,35 @@ public class MemberAcountController extends BaseController {
 			
 			map1.put("tuanduilist", listone);
 			
-			if (orderService.selectSum(params) == null) {
-				map1.put("totalYJ", "0");
-			} else {
-				map1.put("totalYJ", orderService.selectSum(params).get("Totalperformance"));
+			//团队总业绩
+			paraMap.clear();
+			paraMap.put("userId", userdo.getId());
+			Map<String, Object> totalMap = orderService.selectSum(paraMap);
+			if(null != totalMap && totalMap.get("Totalperformance") != null) {
+				map1.put("totalYJ",totalMap.get("Totalperformance"));
+			}else {
+				map1.put("totalYJ","0");
 			}
-
+			//总推荐人数
+			paraMap.clear();
+			paraMap.put("refereeid", userId);
+			List<UserRefereeDo> refUserLst2 = userRefereeService.select(params);
+			map1.put("personCount", refUserLst2==null? 0 : refUserLst2.size());
+			//计算小区业绩
+			BigDecimal totalYj = BigDecimal.ZERO;
+			BigDecimal maxYj = BigDecimal.ZERO;
+			for(List<Map<String,Object>>  l : levelMap.values()) {
+				for(Map<String,Object> m : l) {
+					BigDecimal yj =  new BigDecimal(m.get("mobile").toString());
+					totalYj =totalYj.add(yj);
+					if(yj.compareTo(maxYj)>0) {
+						maxYj = yj;
+					}
+				}
+			}
+			//除最大一个数的和=小区业绩
+			map1.put("communityYJ", totalYj.subtract(maxYj));
+			
 		} catch (IllegalArgumentException t) {
 			t.printStackTrace();
 			return Result.failureResult(t.getMessage());

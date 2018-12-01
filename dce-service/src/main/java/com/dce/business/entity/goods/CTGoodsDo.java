@@ -47,7 +47,7 @@ public class CTGoodsDo implements Serializable {
 	  private Long cid1 ;
 	  private Long cid2 ;
 	  private Long cid3 ;
-	  private Long shopCatId1 ; //2 会员商品， 1 积分商品 
+	  private Long shopCatId1 ; // 1： 爆款商品， 2： 常规商品
 	  private Long shopCatId2 ;
 	  // 商品的详情
 	  private String goodsDesc ;
@@ -61,7 +61,7 @@ public class CTGoodsDo implements Serializable {
 	  private Date saleTime ;
 	  private Long attrCatId ;
 	  private String goodsKeywords ;
-	  private Integer goodsFlag ;  //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品  4： 旅游路线 
+	  private Integer goodsFlag ;  //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品  4： 旅游路线 
 	  private String statusRemarks ; //商品状态：0为删除1为未删除（逻辑删除）
 	  //商品创建时间
 	  private Date createTime ;
