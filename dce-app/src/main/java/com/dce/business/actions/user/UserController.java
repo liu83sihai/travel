@@ -208,13 +208,13 @@ public class UserController extends BaseController {
 		UserDo userDo = userService.userName(userName);
 		Assert.notNull(userDo, "手机号不存在");
 
-//		if (!userName.equals(userDo.getUserName()) || !password.equals(userDo.getUserPassword())) {
-//			return Result.failureResult("手机号或者密码不正确");
-//		}
-//
-//		if (userDo.getStatus().intValue() != 0) {
-//			return Result.failureResult("当前用户已被锁定,不允许登录!");
-//		}
+		if (!userName.equals(userDo.getUserName()) || !password.equals(userDo.getUserPassword())) {
+			return Result.failureResult("手机号或者密码不正确");
+		}
+
+		if (userDo.getStatus().intValue() != 0) {
+			return Result.failureResult("当前用户已被锁定,不允许登录!");
+		}
 		String token = TokenUtil.createToken(userDo.getId());
 		Map<String, Object> map = new HashMap<>();
 		map.put("token", token);
