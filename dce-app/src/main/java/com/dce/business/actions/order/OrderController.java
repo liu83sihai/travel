@@ -32,13 +32,11 @@ import com.dce.business.common.alipay.util.AlipayConfig;
 import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
-import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.DateUtil;
 import com.dce.business.common.wxPay.util.XMLUtil;
 import com.dce.business.dao.account.IUserAccountDetailDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
-import com.dce.business.entity.bank.BankDo;
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.Order;
@@ -122,17 +120,6 @@ public class OrderController extends BaseController {
 	public Result<?> getOrderPayType(HttpServletRequest request) {
 
 		Integer userId = getUserId();
-		// 验证用户token参数
-		//String uri = request.getRequestURI(); // 获得发出请求字符串的客户端地址
-//		String uri = "";
-//		String ts = request.getParameter(TokenUtil.TS);
-//		String sign = request.getParameter(TokenUtil.SIGN);
-//		// 验证token
-//		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
-//		if (!flag) {
-//			return Result.failureResult("登录失效，请重新登录！");
-//		}
-
 		String goods = request.getParameter("chooseGoods") == null ? "" : request.getParameter("chooseGoods");
 		
 		// 将商品信息的JSON数据解析为list集合
@@ -421,16 +408,6 @@ public class OrderController extends BaseController {
 	public Result<?> getOrder(HttpServletRequest request) {
 
 		Integer userId = getUserId();
-		// 验证用户token参数
-		//String uri = request.getRequestURI(); // 获得发出请求字符串的客户端地址
-//		String uri = "";
-//		String ts = request.getParameter(TokenUtil.TS);
-//		String sign = request.getParameter(TokenUtil.SIGN);
-//		// 验证token
-//		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
-//		if (!flag) {
-//			return Result.failureResult("登录失效，请重新登录！");
-//		}
 
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
@@ -456,22 +433,12 @@ public class OrderController extends BaseController {
 	@RequestMapping(value = "/chooseGoods", method = RequestMethod.POST)
 	public Result<?> chooseGoods(HttpServletRequest request, HttpServletResponse response) {
 
-		//String uri = request.getRequestURI(); // 获得发出请求字符串的客户端地址
-		String uri = "";
-		String ts = request.getParameter(TokenUtil.TS);
-		String sign = request.getParameter(TokenUtil.SIGN);
 		String goods = request.getParameter("cart") == null ? "" : request.getParameter("cart");
 		String userId = getString("userId") == null ? "" : request.getParameter("userId");
 
 		// 假如获取参数某一个为空，直接返回结果至前端
 		if (userId == "" || goods == "") {
 			return Result.successResult("获取userId、cart参数为空！", new JSONArray());
-		}
-
-		// 验证token
-		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
-		if (!flag) {
-			return Result.failureResult("登录失效，请重新登录！");
 		}
 
 		// 判断该用户是否存在
@@ -530,30 +497,21 @@ public class OrderController extends BaseController {
 	public Result<?> insertOrder(HttpServletRequest request, HttpServletResponse response) {
 
 		// token验证参数
-		//String uri = request.getRequestURI(); // 获得发出请求字符串的客户端地址
-		String uri = "";
-		String ts = request.getParameter(TokenUtil.TS);
-		String sign = request.getParameter(TokenUtil.SIGN);
+		Integer userId=this.getUserId();
 
 		// 订单参数
 		String goods = request.getParameter("cart") == null ? "" : request.getParameter("cart");
 		String payList = request.getParameter("payList") == null ? "" : request.getParameter("payList");
-		String userId = request.getParameter("userId") == null ? "" : request.getParameter("userId");
 		String addressId = request.getParameter("addressId") == null ? "" : request.getParameter("addressId");
 		String orderType = request.getParameter("orderType") == null ? "" : request.getParameter("orderType");
 		//String orderId = getString("orderId") == null ? "" : request.getParameter("orderId");
 
 		// 假如获取参数某一个为空，直接返回结果至前端
-		if (userId == "" || goods == "" || addressId == "" || orderType == "" ) {
-
+		if ( goods == "" || addressId == "" || orderType == "" ) {
 			return Result.successResult("获取userId、addressId、orderType、cart参数为空！", new JSONArray());
 		}
 
-		// 验证token
-//		boolean flag = TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign);
-//		if (!flag) {
-//			return Result.failureResult("登录失效，请重新登录！");
-//		}
+
 
 		// 判断该用户是否存在
 		UserDo user = userService.getUser(Integer.valueOf(userId));
@@ -819,27 +777,5 @@ public class OrderController extends BaseController {
 		}
 		return orderList;
 	}
-	/*
-	 * private List<OrderDetail> convertGoodsFromJson(String goods) {
-	 * 
-	 * List<OrderDetail> orderList = new ArrayList<OrderDetail>();
-	 * 
-	 * if (goods != null && goods.startsWith("\ufeff")) { goods =
-	 * goods.substring(1); }
-	 * 
-	 * JSONArray json = JSONArray.fromObject(goods); for (int i = 0; i <
-	 * json.size(); i++) { OrderDetail orderDetail = new OrderDetail();
-	 * JSONObject obj = JSONObject.fromObject(json.get(i));
-	 * orderDetail.setGoodsId(Integer.valueOf(obj.getString("goodsId")));
-	 * orderDetail.setQty(Integer.valueOf(obj.getString("qty")));
-	 * orderDetail.setPrice(Double.valueOf(obj.getString("price")));
-	 * orderList.add(orderDetail); }
-	 * 
-	 * List<OrderDetail> goodsList = new ArrayList<OrderDetail>(); Gson gson =
-	 * new Gson(); goodsList = (List<OrderDetail>) gson.fromJson(goodsStr,
-	 * OrderDetail.class); return goodsList;
-	 * 
-	 * return orderList; }
-	 */
 
 }

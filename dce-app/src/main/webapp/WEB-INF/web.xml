@@ -57,7 +57,7 @@
 	</filter-mapping>
 
 
-	<!-- <filter>
+	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>com.dce.business.common.filter.LoginFilter</filter-class>
 	</filter>
@@ -65,7 +65,7 @@
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping>
 
 	<error-page>
 		<error-code>404</error-code>
