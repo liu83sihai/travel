@@ -59,7 +59,7 @@ public class AboutusController extends BaseAction{
 	private String aboutusUrl;
 
 	/**
-     * 去列表页面
+     * 	去列表页面
      * @param model
      * @return
      */
