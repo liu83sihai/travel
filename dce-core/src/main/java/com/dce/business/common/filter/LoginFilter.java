@@ -43,11 +43,6 @@ public class LoginFilter extends OncePerRequestFilter {
                 print(response, Result.failureCode, "用户未登录");
                 return;
             }
-
-            //Assert.notNull(userId, "用户未登录");
-            //Assert.notNull(ts, "用户未登录");
-            //Assert.notNull(sign, "用户未登录");
-
             //token判断，不加uri加签
             if (!TokenUtil.checkToken("", Integer.valueOf(userId), ts, sign)) {
                 //未登录
@@ -73,30 +68,17 @@ public class LoginFilter extends OncePerRequestFilter {
     private boolean isNotFilterUri(String uri) {
         List<String> list = Arrays.asList(new String[] { "/user/login", 
         												 "/user/reg", 
-        												 "/user/list", 
-        												 "/bank/list",
         												 "/bank/toBindBankCard",
-        												 "/award/query",
-        												 "/award/save",
-        												 "/eth/accounts",
-        												 "/eth/platform/accounts",
-        												 "/eth/platform/accounts/default",
-        												 "/eth/queryPlatFormEth",
-        												 "/eth/tranPlatFormEth",
-        												 "/eth/setCenterAcc",
-        												 "/eth/getCenterAcc",
-        												 "/user/toLevel",
-        												 "/user/setUserLevel",
-        												 "/eth/listWithdraw",
-        												 "/eth/auditWithdraw",
-        												 "/eth/queryEth",
-        												 "/eth/export",
-        												 "/order/export",
-        												 "/order/selectOrderForReport",
-        												 "/user/calStaticByAdmin",
-        												 "/order/redoAwardForError",
-        												 "/user/listTotal",
-        												 "/account/create" });
+        												 "/mall/",
+        												 "/travelPath/",
+        												 "/aboutus/",
+        												 "/news/",
+        												 "/notice/",
+        												 "/activity/addGood",
+        												 "/activity/delGood",
+        												 "/activity/index",
+        												 "/supplier/index",
+        												 "/order/notifyUrl" });
         for (String str : list) {
             if (uri.indexOf(str) != -1) {
                 return true;

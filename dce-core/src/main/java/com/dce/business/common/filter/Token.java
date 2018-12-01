@@ -14,14 +14,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Token {
 	/**
-     * 添加token的开关[true：添加；false:不添加，default：false]
+     * 	添加token的开关[true：添加；false:不添加，default：false]
      *
      * @return
      */
     boolean add() default false;
 
     /**
-     * 移除token的开关[true：删除；false:不删除，default：false]
+     * 	移除token的开关[true：删除；false:不删除，default：false]
      *
      * @return
      */

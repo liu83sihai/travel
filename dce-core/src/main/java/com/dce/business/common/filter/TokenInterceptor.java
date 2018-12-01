@@ -51,7 +51,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter  {
     }
 
     /**
-     * 判断是否是重复提交
+     * 	判断是否是重复提交
      *
      * @param request
      * @return

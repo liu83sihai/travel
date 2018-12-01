@@ -306,6 +306,11 @@ public class GoodsController extends BaseController {
 	 */	
 	@RequestMapping(value = "/proxyfee", method = {RequestMethod.GET,RequestMethod.POST})
 	public Result<?> proxyFee(){
+		Integer userId = getUserId();
+		
+		if(null == userId) {
+			return Result.failureResult("缺少用户id参数!");
+		}
 		
 		Map<String, Object> param = new HashMap<String,Object>();
 		 param.put("goodsFlag", 5);

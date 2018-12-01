@@ -28,9 +28,6 @@ public class TokenUtil {
     }
 
     public static boolean checkToken(String uri, Integer userId, String ts, String sign) {
-        // TODO 先屏蔽测试
-        /*        if (true)
-            return true;*/
 
         long currentTime = System.currentTimeMillis();
         long requestTime = Long.valueOf(ts);
@@ -59,10 +56,9 @@ public class TokenUtil {
     }
 
     /**
-     * 从缓存中获取用户令牌
+     * 	从缓存中获取用户令牌
      * 
-     * @param userId
-     *            用户id
+     * @param userId 用户id
      * @return
      */
     private static String getToken(Integer userId) {
@@ -78,12 +74,10 @@ public class TokenUtil {
     }
 
     /**
-     * 更新令牌
+     * 	更新令牌
      * 
-     * @param userId
-     *            用户id
-     * @param token
-     *            令牌
+     * @param userId 用户id
+     * @param token 令牌
      */
     private static void setToken(Integer userId, String token) {
         logger.info("用户token变更，userId:" + userId);
