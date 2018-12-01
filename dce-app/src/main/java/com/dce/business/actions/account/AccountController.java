@@ -247,7 +247,7 @@ public class AccountController extends BaseController {
 		}
 
 		Integer userId = getUserId();
-		return payService.transOut(userId, qtyVal, accountType, receiver,password);
+		return payService.transOut(userId, qtyVal, accountType, receiver,password,2);
 	}
 	
 	
@@ -264,6 +264,7 @@ public class AccountController extends BaseController {
 	 * @apiParam {String} fromAccount  转出账户类型 券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户”
 	 * @apiParam {String} toAccount  转入账户类型,默认为空与转出账户一样 
 	 * @apiParam {String} payPassword 转出人支付密码  
+	 * @apiParam {Integer} convertType 转出类型 1：当面付款  2：用户转账
 	 * 
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
@@ -279,7 +280,7 @@ public class AccountController extends BaseController {
 	**/
 	@RequestMapping(value = "/convertBetweenAccount", method = RequestMethod.POST)
 	public Result<?> convertBetweenAccount(Integer sourceUserId, String targetUser, BigDecimal sourceAmount,
-			 String fromAccount, String toAccount,String payPassword) {
+			 String fromAccount, String toAccount,String payPassword,Integer convertType) {
 		
 		
 		logger.info("账户转出:sourceUserId=" + sourceUserId + ",targetUserId=" + targetUser);
@@ -301,6 +302,10 @@ public class AccountController extends BaseController {
 			return Result.failureResult("转出数量必须大于0!");
 		}
 		
-		return payService.transOut(sourceUserId, sourceAmount, fromAccount, targetUser,payPassword);
+		if(null == convertType ){
+			convertType = 1;
+		}
+		
+		return payService.transOut(sourceUserId, sourceAmount, fromAccount, targetUser,payPassword,convertType);
 	}
 }

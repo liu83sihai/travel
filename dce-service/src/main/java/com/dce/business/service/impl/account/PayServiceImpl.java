@@ -394,7 +394,7 @@ public class PayServiceImpl implements IPayService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	public Result<?> transOut(Integer userId, BigDecimal qty, String accountType, String receiver, String password) {
+	public Result<?> transOut(Integer userId, BigDecimal qty, String accountType, String receiver, String password,Integer convertType) {
 
 		UserDo userDo = userService.getUser(userId);
 		// 2、校验密码是否正确
@@ -435,10 +435,15 @@ public class PayServiceImpl implements IPayService {
 //				return Result.failureResult("转出超出限制");
 //			}
 //		}
-
+		IncomeType  out = IncomeType.ACCOUNT_OUT;
+		IncomeType  in = IncomeType.ACCOUNT_IN;
+		if( 1 == convertType){
+			out = IncomeType.PAY_OUT;
+			in = IncomeType.PAY_IN;
+		}
 		try {
 			accountService.convertBetweenAccount(userId, receiverUser.getId(), qty, accountType,
-					accountType, IncomeType.TYPE_POINT_OUT, IncomeType.TYPE_POINT_IN);
+					accountType, out, in);
 
 			return Result.successResult("转出成功");
 		} catch (Exception e) {
