@@ -86,6 +86,9 @@
 			<if test="modifyName != null">  
 				AND modify_name = #{modifyName}
 			</if>
+			<if test="assignCity != null">  
+				AND assign_city = #{assignCity}
+			</if>
 			<if test="status != null">  
 				AND status = #{status}
 			</if>
@@ -137,6 +140,9 @@
 			</if>
 			<if test="city != null">  
 				AND city = #{city}
+			</if>
+			<if test="assignCity != null">  
+				AND assign_city = #{assignCity}
 			</if>
 			<if test="createDate != null">  
 				AND create_date = #{createDate}
@@ -220,6 +226,9 @@
 		<if test="remark != null">  
 				remark = #{remark},
 		</if>				
+		<if test="assignCity != null">  
+				assign_city = #{assignCity},
+		</if>				
 		</trim>
 		WHERE id = #{id} 
 	</update>	
@@ -244,6 +253,7 @@
 		,remark
 		,sex
 		,city_code
+		,assign_city
 )
 		     VALUES (		#{userId}
 		,#{userName}
@@ -263,6 +273,7 @@
 		,#{remark}
 		,#{sex}
 		,#{cityCode}
+		,#{assignCity}
 )
 	</insert>
 	
