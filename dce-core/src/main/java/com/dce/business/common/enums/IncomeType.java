@@ -11,6 +11,13 @@ public enum IncomeType {
      * 静态释放
      */
     TYPE_STATIC(1, "静态释放"),
+    /**
+     * 静态释放
+     */
+    ACCOUNT_OUT(21, "现金账户转出"),
+    ACCOUNT_IN(22, "现金账户转入"),
+    PAY_OUT(23, "二维码付款支付"),
+    PAY_IN(24, "二维码付款收入"),
     /** 
      * 购买订单
      * @return  

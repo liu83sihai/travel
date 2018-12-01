@@ -42,9 +42,10 @@ public interface IPayService {
      * @param accountType 钱包类型
      * @param receiver 接收人
      * @param password 交易密码
+     * @param convertType 转出类型 
      * @return
      */
-    Result<?> transOut(Integer userId, BigDecimal qty, String accountType, String receiver,String password);
+    Result<?> transOut(Integer userId, BigDecimal qty, String accountType, String receiver,String password,Integer convertType);
     
     /**
 	 * 购买商品支付

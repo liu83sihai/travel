@@ -237,6 +237,7 @@ public class AccountServiceImpl implements IAccountService {
 		source.setAccountType(fromAccount);
 		source.setSeqId(seqId);
 		source.setRelevantUser(targetUserDo.getUserName());
+		source.setRemark("用户:"+sourceUserDo.getMobile());
 		this.updateUserAmountById(source, sourceMsg);
 
 		UserAccountDo target = new UserAccountDo();
@@ -245,6 +246,7 @@ public class AccountServiceImpl implements IAccountService {
 		target.setAccountType(toAccount);
 		target.setSeqId(seqId);
 		target.setRelevantUser(sourceUserDo.getUserName());
+		target.setRemark("用户:"+sourceUserDo.getMobile());
 		this.updateUserAmountById(target, targetMsg);
 	}
 
