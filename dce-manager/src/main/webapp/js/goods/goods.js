@@ -54,20 +54,20 @@ $(function(){
 				 						if(row.goodsFlag == "1"){
 				 							return "旅游卡";
 				 						}else if(row.goodsFlag == "2"){
-				 							return "爆款商品";
+				 							return "积分商品";
 				 						}else if(row.goodsFlag == "3"){
-				 							return "常规商品";
+				 							return "会员商品";
 				 						}else{
 				 							return "旅游路线";
 				 						}
 									}
 								},
-								{field:"shopCatId1",title:"积分/会员",width:80,align:"center",
+								{field:"shopCatId1",title:"常规/爆款",width:80,align:"center",
 									formatter:function(value,row,index){
 				 						if(row.shopCatId1 == "1"){
-				 							return "积分商品";
+				 							return "爆款商品";
 				 						}else if(row.shopCatId1 == "2"){
-				 							return "会员商品";
+				 							return "常规商品";
 				 						}
 									}
 								},

@@ -95,9 +95,9 @@
 							<option value="1"
 								<c:if test="${goods.goodsFlag==1}">selected="selected"</c:if>>旅游卡</option>
 							<option value="2"
-								<c:if test="${goods.goodsFlag==2}">selected="selected"</c:if>>爆款商品</option>
+								<c:if test="${goods.goodsFlag==2}">selected="selected"</c:if>>积分商品</option>
 							<option value="3"
-								<c:if test="${goods.goodsFlag==3}">selected="selected"</c:if>>常规商品</option>
+								<c:if test="${goods.goodsFlag==3}">selected="selected"</c:if>>会员商品 </option>
 							<option value="4"
 								<c:if test="${goods.goodsFlag==4}">selected="selected"</c:if>>旅游路线</option>
 					</select>
@@ -109,9 +109,9 @@
 					<select id="shopCatId1" class="easyui-combobox"
 						style="width: 150px;">
 							<option value="1"
-								<c:if test="${goods.shopCatId1==1}">selected="selected"</c:if>>积分商品</option>
+								<c:if test="${goods.shopCatId1==1}">selected="selected"</c:if>>爆款商品</option>
 							<option value="2"
-								<c:if test="${goods.shopCatId1==2}">selected="selected"</c:if>>会员商品</option>
+								<c:if test="${goods.shopCatId1==2}">selected="selected"</c:if>>常规商品</option>
 					</select>
 					</td>
 				</tr>

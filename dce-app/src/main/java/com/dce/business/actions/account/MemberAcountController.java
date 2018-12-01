@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.common.util.DateUtil;
+import com.dce.business.common.util.NumberUtil;
 import com.dce.business.common.util.OrderCodeUtil;
 import com.dce.business.entity.order.OrderDo;
 import com.dce.business.entity.user.UserDo;
@@ -74,7 +76,9 @@ public class MemberAcountController extends BaseController {
 	 * 
 	 * @apiParam {String} userId 用户id
 	 * 
-	 * @apiSuccess {Decimal} totalYJ	double	总业绩
+	 * @apiSuccess {Decimal} totalYJ	总业绩
+	 * @apiSuccess {int} personCount	团队总人数
+	 * @apiSuccess {Decimal} communityYJ	小区业绩
 	 * @apiSuccess {int} user_level	int	用户级别
 	 * @apiSuccess {int} refereeid	int	推荐人id
 	 * @apiSuccess {String} true_name	用户真实姓名
@@ -88,6 +92,7 @@ public class MemberAcountController extends BaseController {
 	*   "msg": "查询成功",
 	*   "data": {
 	*     "totalYJ": "0",
+	*     "personCount":团队总人数
 	*     "tuanduilist": [*     
 	*       {
 	*         "user_level": "vip",
@@ -156,7 +161,7 @@ public class MemberAcountController extends BaseController {
 				Map<String,Object> person = new HashMap<String,Object>();
 				person.put("true_name", myUser.getTrueName());
 				person.put("user_name", myUser.getUserName());
-				person.put("mobile", myUser.getMobile());
+				person.put("mobile",80);
 				person.put("refereeid", myUser.getRefereeid());
 				person.put("user_level", myUser.getUserLevel());
 				person.put("id", myUser.getId());
@@ -174,13 +179,11 @@ public class MemberAcountController extends BaseController {
 			}
 			
 			map1.put("tuanduilist", listone);
+			map1.put("totalYJ", CalculateUtils.round(userdo.getTotalPerformance().doubleValue()));
+			map1.put("personCount", 50);
+			//计算小区业绩
+			map1.put("communityYJ", 10);
 			
-			if (orderService.selectSum(params) == null) {
-				map1.put("totalYJ", "0");
-			} else {
-				map1.put("totalYJ", orderService.selectSum(params).get("Totalperformance"));
-			}
-
 		} catch (IllegalArgumentException t) {
 			t.printStackTrace();
 			return Result.failureResult(t.getMessage());

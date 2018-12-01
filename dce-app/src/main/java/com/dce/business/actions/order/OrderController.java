@@ -99,10 +99,14 @@ public class OrderController extends BaseController {
 	 * @apiParam {int} chooseGoods.goodsId 商品id
 	 * @apiParam {decimal} chooseGoods.qty 购买数量
 	 * 
-	 * @apiSuccess {Object[]} payList	支付方式列表
-	*  @apiSuccess {String} payList.payCode 支付账户类别
-	*  @apiSuccess {Decimal} payList.totalAmt	账户余额
-	*  @apiSuccess {Decimal} payList.useableAmt	本次可用金额
+	 * @apiSuccess {Object[]} cashPayList	现金支付方式列表： wx：微信， bank 银行卡 ， Ali 支付宝
+	*  @apiSuccess {String} cashPayList.payCode 支付账户类别 wx：微信， bank 银行卡 ， Ali 支付宝
+	*  @apiSuccess {Decimal} cashPayList.totalAmt	0 
+	*  @apiSuccess {Decimal} cashPayList.useableAmt	 0
+	*  @apiSuccess {Object[]} accountPayList	券支付方式列表： wallet_money 现金券， wallet_travel 积分， wallet_goods 抵扣券
+	*  @apiSuccess {String} accountPayList.payCode 支付账户类别 wx：微信， bank 银行卡 ， Ali 支付宝
+	*  @apiSuccess {Decimal} accountPayList.totalAmt	账户金额 
+	*  @apiSuccess {Decimal} accountPayList.useableAmt	 可以用金额
 	*  @apiSuccess {String} remark	备注
 	 * @apiUse RETURN_MESSAGE
 	 * @apiSuccessExample Success-Response: 
@@ -204,6 +208,15 @@ public class OrderController extends BaseController {
 		//没有现金支付和其他账户支付的配置
 		if(accountInfo.size()<1&&cashPayTypeLst.size()<1) {
 			return Result.failureResult("没有找到合适的支付方式");
+		}
+		
+		//含邮费需要添加现金支付
+		if(gDo.getPostage().compareTo(BigDecimal.ZERO)>0 && !payType.contains(AccountType.wallet_bank.getAccountType())) {
+			Map<String, Object> payMap1 = new HashMap<String,Object>();
+			payMap1.put("payCode", AccountType.wallet_bank.getAccountType());
+			payMap1.put("totalAmt", 0);
+			payMap1.put("useableAmt", 0);
+			cashPayTypeLst.add(payMap1);
 		}
 
 		Map<String ,Object> ret = new HashMap<String,Object>();
@@ -509,7 +522,7 @@ public class OrderController extends BaseController {
 	 *	"msg": 返回成功,
 	 *	"data": {
 	 *			"payType" : payType   H5,WX,Ali
-	 *          "payString": payString //唤起支付json字符串
+	 *          "payString": payString //如果payType payString 是url字符串， 其他是唤起支付json字符串
 	 *	  }
 	 *	}
 	 */ 
@@ -575,7 +588,11 @@ public class OrderController extends BaseController {
 				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
 
 		// 生成预付单，保存订单和订单明显
-		return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
+		try {
+			return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
+		}catch(Exception e) {
+			return Result.failureResult(e.getMessage());
+		}
 	}
 
 	

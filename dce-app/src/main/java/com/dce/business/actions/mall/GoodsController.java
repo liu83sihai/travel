@@ -124,10 +124,10 @@ public class GoodsController extends BaseController {
 		
 		 String pageNum = getString("pageNum");  //当前页码
 		 String rows = getString("rows");   //每页显示记录数
-		 String shopCatId1Para = getString("shopCatId1");   //2 会员商品， 1 积分商品 
+		 String goodsFlag = getString("shopCatId1");  // 2 积分商品  3 会员商品
 		 
-		 if(shopCatId1Para == null) {
-			 shopCatId1Para = "1";
+		 if(goodsFlag == null) {
+			 goodsFlag = "2";
 		 }
 		 
 		 logger.info("查询商品列表：查询页码--" + pageNum);
@@ -145,12 +145,12 @@ public class GoodsController extends BaseController {
 		 maps.put("rows", rows);
 		 
 		 Map<String, Object> param = new HashMap<String,Object>();
-		 param.put("goodsFlag", 2);
-		 param.put("shopCatId1", shopCatId1Para);
+		 param.put("goodsFlag", goodsFlag);
+		 param.put("shopCatId1", "1");
 		 List<CTGoodsDo> hotGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows), param );
 		 param.clear();
-		 param.put("shopCatId1", shopCatId1Para);
-		 param.put("goodsFlag", 3);
+		 param.put("shopCatId1", "2");
+		 param.put("goodsFlag", goodsFlag);
 		 List<CTGoodsDo> normalGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows),param);
 		 
 		 Map<String,List<CTGoodsDo>> goodsLst = new HashMap<String,List<CTGoodsDo>>();
