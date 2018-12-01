@@ -124,12 +124,13 @@ public class GoodsController extends BaseController {
 		
 		 String pageNum = getString("pageNum");  //当前页码
 		 String rows = getString("rows");   //每页显示记录数
+		 //因为前台传的商品类别跟后台不一致转换一下
 		 String goodsFlag = getString("shopCatId1");  // 2 积分商品  3 会员商品
-		 
 		 if(goodsFlag == null) {
 			 goodsFlag = "2";
 		 }
-		 
+		 int goodsCat = Integer.valueOf(goodsFlag)+1;
+		 //end 因为前台传的商品类别跟后台不一致转换一下
 		 logger.info("查询商品列表：查询页码--" + pageNum);
 		 
 		 if(StringUtils.isBlank(pageNum)){  //如果为空则查询第一页
@@ -145,12 +146,12 @@ public class GoodsController extends BaseController {
 		 maps.put("rows", rows);
 		 
 		 Map<String, Object> param = new HashMap<String,Object>();
-		 param.put("goodsFlag", goodsFlag);
+		 param.put("goodsFlag", goodsCat);
 		 param.put("shopCatId1", "1");
 		 List<CTGoodsDo> hotGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows), param );
 		 param.clear();
 		 param.put("shopCatId1", "2");
-		 param.put("goodsFlag", goodsFlag);
+		 param.put("goodsFlag", goodsCat);
 		 List<CTGoodsDo> normalGoodsList=ctGoodsService.selectByPage(Integer.parseInt(pageNum), Integer.parseInt(rows),param);
 		 
 		 Map<String,List<CTGoodsDo>> goodsLst = new HashMap<String,List<CTGoodsDo>>();
