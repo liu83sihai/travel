@@ -69,7 +69,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {String} hotGoodsList.cateName 商品类别名称
 	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
 	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
-	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金
 	 * @apiSuccess {String} hotGoodsList.postage //邮费
 	 * 
 	 * @apiSuccess {Object[]} normalGoodsList  正常商品      
@@ -86,7 +86,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {String} normalGoodsList.cateName 商品类别名称 
 	 * @apiSuccess {Decimal} normalGoodsList.profit 商品利润
 	 * @apiSuccess {String} normalGoodsList.detailLink 商品详情连接
-	 * @apiSuccess {String} normalGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} normalGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金
 	 * @apiSuccess {String} normalGoodsList.postage //邮费
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
@@ -185,7 +185,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {String} travelCardList.cateName 商品类别名称
 	 * @apiSuccess {Decimal} travelCardList.profit 商品利润
 	 * @apiSuccess {String} travelCardList.detailLink 商品详情连接
-	 * @apiSuccess {String} travelCardList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} travelCardList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金
 	 * @apiSuccess {String} travelCardList.postage //邮费
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
@@ -260,6 +260,66 @@ public class GoodsController extends BaseController {
 		}
 	}
 	
+	
+	/** 
+	 * @api {POST} /mall/proxyfee.do 代理商，保证金支付
+	 * @apiName proxyfee
+	 * @apiGroup mall 
+	 * @apiVersion 1.0.0 
+	 * @apiDescription 代理商，保证金支付
+	 * @apiParam {int} userId 用户id
+	 * 
+	 * @apiUse RETURN_MESSAGE
+	 * @apiSuccess {int} goodsId 商品id
+	 * @apiSuccess {String} title 商品标题
+	 * @apiSuccess {String} GoodsDesc 商品的描述
+	 * @apiSuccess {json} goodsImg 商品图片地址
+	 * @apiSuccess {json} goodsBanner 商品详情页面banner图片地址
+	 * @apiSuccess {String} goodsDetailImg 商品详情图片地址
+	 * @apiSuccess {double} shopPrice 商品价格
+	 * @apiSuccess {double} marketPrice 商品优惠价格
+	 * @apiSuccess {int} saleCount 已售数量
+	 * @apiSuccess {String} brandName 商品品牌名称
+	 * @apiSuccess {String} cateName 商品类别名称
+	 * @apiSuccess {Decimal} profit 商品利润
+	 * @apiSuccess {String} detailLink 商品详情连接
+	 * @apiSuccess {String} goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金
+	 * @apiSuccess {String} postage //邮费
+	 * @apiSuccessExample Success-Response: 
+	 *  HTTP/1.1 200 OK 
+	 * {
+	 *  "code": 0
+	 *	"msg": 返回成功,
+	 *	"data": {
+	 *		      "goodsId": "1",
+	 *		      "title": "鹿无忧",
+	 *		      "goodsDtails": "提神抗疲劳",
+	 *		      "goodsImg": 
+	 *		                {
+	 *		                 "img1":"d:/sasd.jgp",
+	 *		                 "img2":"d:/sasd.jgp",
+	 *		                  } ,
+	 *		      "saleTime": "2018-8-6 10：19：56",
+	 *		      "shopPrice":4999.00,
+	 *		    }
+	 *	}
+	 */	
+	@RequestMapping(value = "/proxyfee", method = {RequestMethod.GET,RequestMethod.POST})
+	public Result<?> proxyFee(){
+		
+		Map<String, Object> param = new HashMap<String,Object>();
+		 param.put("goodsFlag", 5);
+		 List<CTGoodsDo> hotGoodsList=ctGoodsService.selectByPage(1, 20, param );
+		 
+		
+		if(hotGoodsList != null && hotGoodsList.size()>0){
+			return Result.successResult("代理商保证金查询成功!", hotGoodsList.get(0));
+		}else{
+			return Result.failureResult("没有配置代理商保证金!");
+		}
+	}
+	
+	
 	@RequestMapping(value = "/goodsDetail", method = { RequestMethod.GET, RequestMethod.POST })
     public ModelAndView goodsDetail() {
         String goodsId = getString("goodsId");
@@ -299,7 +359,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {String} goods.cateName 商品类别名称
 	 * @apiSuccess {Decimal} goods.profit 商品利润
 	 * @apiSuccess {String} goods.detailLink 商品详情连接
-	 * @apiSuccess {String} goods.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} goods.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金 
 	 * @apiSuccess {String} goods.postage //邮费 
 	 * 
 	 * @apiSuccess {String[]} bannerImgs  商品banner图片src数组
