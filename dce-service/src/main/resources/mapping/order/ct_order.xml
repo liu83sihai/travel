@@ -835,7 +835,8 @@
 		from (select a.goodsprice
 			from ct_order a  left join (
 				select userId from ct_user_referee where refereeid = #{userId}
-			)rf on a.userId = rf.userId	and a.payStatus=1
+			)rf on a.userId = rf.userId	
+            where a.payStatus=1
 			union all
 			select a.goodsprice
 			from ct_order a where a.userId = #{userId} and a.payStatus=1

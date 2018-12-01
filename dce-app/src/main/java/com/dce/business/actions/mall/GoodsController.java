@@ -183,9 +183,10 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {int} travelCardList.saleCount 已售数量
 	 * @apiSuccess {String} travelCardList.brandName 商品品牌名称
 	 * @apiSuccess {String} travelCardList.cateName 商品类别名称
-	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
-	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
-	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {Decimal} travelCardList.profit 商品利润
+	 * @apiSuccess {String} travelCardList.detailLink 商品详情连接
+	 * @apiSuccess {String} travelCardList.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} travelCardList.postage //邮费
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 
 	 * {
@@ -299,6 +300,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {Decimal} goods.profit 商品利润
 	 * @apiSuccess {String} goods.detailLink 商品详情连接
 	 * @apiSuccess {String} goods.goodsFlag //商品类别 1： 旅游卡， 2： 爆款商品， 3： 常规商品 
+	 * @apiSuccess {String} goods.postage //邮费 
 	 * 
 	 * @apiSuccess {String[]} bannerImgs  商品banner图片src数组
 	 * @apiSuccess {String[]} detailImgs  商品明细图片src数组
