@@ -31,19 +31,17 @@
 					<td class="tdfont">
 						<c:choose>
 							<c:when test="${li.accountType eq 'wallet_money' }">
-							现金奖励
+							现金券账户: ${li.amount}
 							</c:when>
 						<c:when test="${li.accountType eq 'wallet_travel' }">
-							旅游奖励
+							换购积分券账户: ${li.amount}
 						</c:when>
 						<c:when test="${li.accountType eq 'wallet_active' }">
-							活动奖励
+							抵用券账户: ${li.amount}
 						</c:when>
-						<c:when test="${li.accountType eq 'wallet_goods' }">
-							商品赠送
-						</c:when>
+
 						</c:choose>
-						    : ${li.amount}
+						    
 					</td>
 		        </tr>
 		        </c:forEach>
