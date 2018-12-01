@@ -1,6 +1,9 @@
 package com.dce.business.actions.bank;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +23,6 @@ import com.dce.business.entity.bank.BankCardDo;
 import com.dce.business.entity.bank.BankDo;
 import com.dce.business.service.bank.IBankCardService;
 import com.dce.business.service.bank.IBankService;
-import com.dce.business.service.pay.IKJTPayService;
 
 @RestController
 @RequestMapping("bank")
@@ -42,7 +44,7 @@ public class BankController extends BaseController {
      *	 去添加新的银行卡信息
      * @return
      */
-    @RequestMapping("/toBindBankCard")
+    @RequestMapping("/toAddBankCard")
     public ModelAndView toBindCard(HttpServletRequest request){
     	
     	ModelAndView mav = new ModelAndView("bank/bindBankCard");
@@ -117,8 +119,7 @@ public class BankController extends BaseController {
     public Result<?> getBankCardCode(HttpServletRequest request,Model model) {
     	try {
     		
-    		//Integer userId = getUserId();
-    		Integer userId =1;
+    		Integer userId = getUserId();
 	    	String bankId = getString("bankId");//
 	    	String cardUserName = getString("cardUserName");
 	    	String cardNo = getString("cardNo");
@@ -216,5 +217,36 @@ public class BankController extends BaseController {
         	logger.error("error", e);
             return Result.failureResult("系统正忙请稍后重试");
         }
+    }
+    
+    
+    /**
+     * 	去银行卡管理页面
+     * @return
+     */
+    @RequestMapping("/toBindBankCard")
+    public String toBankCardManager(HttpServletRequest request,Model model){
+    	String view = "bank/bankCardManager";
+    	Integer userId = this.getUserId();
+    	
+    	String isDefault = "1";
+    	List<BankCardDo>  list = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault);
+    	//处理显示卡变*************1254
+    	if(list != null && list.size() > 0){
+    		for (BankCardDo bankCardDo : list) {
+    			String cardNo = bankCardDo.getCardNo();
+    			if(StringUtils.isNotBlank(cardNo)){
+    				int count = cardNo.length() - 4;
+    				String xCount = "";
+    				for (int i = 0; i < count; i++) {
+    					xCount += "*";
+					}
+    				bankCardDo.setCardNoShow(xCount+cardNo.substring(cardNo.length() - 4,cardNo.length()));
+    			}
+			}
+    	}
+    	model.addAttribute("bankCardList",list);
+    	
+    	return view;
     }
 }

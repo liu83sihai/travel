@@ -309,7 +309,7 @@ public class OrderController extends BaseController {
 	*  @apiSuccess {int} orderstatus	int	订单状态：1已发货 0未发货
 	*  @apiSuccess {int} paystatus	int	付款状态：1支付成功 0支付失败
 	*  @apiSuccess {timestamp} paytime	timestamp	支付时间
-	*  @apiSuccess {int} ordertype	int	支付方式：1微信 2支付宝
+	*  @apiSuccess {int} ordertype	int	支付方式：支付方式 1微信2支付宝3 银行卡  4 券支付
 	*  @apiSuccess {Object[]} orderDetailList	String	商品明细：quantity商品数量；price商品单价；remark 0为赠品1为商品
 	*  @apiSuccess {String} orderDetailList.quantity 商品数量
 	*  @apiSuccess {String} orderDetailList.price 商品单价
@@ -508,7 +508,7 @@ public class OrderController extends BaseController {
 	 * @apiDescription 生成预支付订单
 	 * 
 	 * @apiParam {String} userId 用户id
-	 * @apiParam {String} orderType 支付方式 1微信2支付宝3其他 
+	 * @apiParam {String} orderType 支付方式 1微信2支付宝3 银行卡  4 券支付
 	 * @apiParam {String} addressId 订单送货地址id
 	 * @apiParam {json} cart 商品信息：qty商品数量；goodsId商品编号；price商品单价
 	 * @apiParam {json} payList 支付信息：accountType 账户类型；payAmt 支付金额      账户类别说明    券账户类别 “wallet_money”：”现金券账户” “wallet_travel”： “换购积分券账户” “wallet_goods”： “抵用券账户” "cash" ：代表用支付宝和微信的现金支付
@@ -567,8 +567,9 @@ public class OrderController extends BaseController {
 		order.setAddressid(Integer.valueOf(addressId));
 		order.setOrdertype(orderType);
 
-		logger.info("获取的商品信息-------》》》》》" + goods);
-
+		logger.info("======用户选择的商品信息：" + goods  + "=====获取的地址id：" + addressId
+				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
+		
 		// 将商品信息的JSON数据解析为list集合
 		List<OrderDetail> chooseGoodsLst = convertGoodsFromJson(goods);
 		//支付明细
@@ -584,8 +585,7 @@ public class OrderController extends BaseController {
 			}
 		}
 
-		logger.info("======用户选择的商品信息：" + chooseGoodsLst  + "=====获取的地址id：" + addressId
-				+ "=====获取的支付方式：" + orderType + "=====用户id：" + userId+"====支付明细："+payList);
+		
 
 		// 生成预付单，保存订单和订单明显
 		try {

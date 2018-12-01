@@ -202,7 +202,7 @@ public class MemberAcountController extends BaseController {
 			//总推荐人数
 			paraMap.clear();
 			paraMap.put("refereeid", userId);
-			List<UserRefereeDo> refUserLst2 = userRefereeService.select(params);
+			List<UserRefereeDo> refUserLst2 = userRefereeService.select(paraMap);
 			map1.put("personCount", refUserLst2==null? 0 : refUserLst2.size());
 			//计算小区业绩
 			BigDecimal totalYj = BigDecimal.ZERO;
