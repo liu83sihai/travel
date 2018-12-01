@@ -4,10 +4,10 @@
   "description": "旅游项目接口列表",
   "apidoc": {
     "title": "旅游项目接口列表",
-    "ur1l" : "http://127.0.0.1:8080/dce-app",
-    "sampleUrl1" : "http://127.0.0.1:8080/dce-app",
-    "url" : "http://app.zjzwly.com/dce-app",
-    "sampleUrl" : "http://app.zjzwly.com/dce-app"
+    "url" : "http://127.0.0.1:8080/dce-app",
+    "sampleUrl" : "http://127.0.0.1:8080/dce-app",
+    "url1" : "http://app.zjzwly.com/dce-app",
+    "sampleUrl1" : "http://app.zjzwly.com/dce-app"
  },
  "template":{
     	"forceLanguage":"zh-cn"
