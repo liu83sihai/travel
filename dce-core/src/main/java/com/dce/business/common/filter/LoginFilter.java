@@ -77,6 +77,10 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/activity/delGood",
         												 "/activity/index",
         												 "/supplier/index",
+        												 "/user/shareList",
+        												 "/user/resetpass",
+        												 "/commonIntf/sendMessage",
+        												 "/commonIntf/uploadImg",
         												 "/order/notifyUrl" });
         for (String str : list) {
             if (uri.indexOf(str) != -1) {
