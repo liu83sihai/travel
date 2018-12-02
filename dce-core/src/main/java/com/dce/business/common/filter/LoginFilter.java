@@ -40,13 +40,13 @@ public class LoginFilter extends OncePerRequestFilter {
 
             logger.info("token校验， uri:" + uri + "; ts:" + ts + "; sign:" + sign + "; userId:" + userId);
             if (StringUtils.isBlank(userId) || StringUtils.isBlank(ts) || StringUtils.isBlank(sign)) {
-                print(response, Result.failureCode, "用户未登录");
+                print(response, "8888", "用户未登录");
                 return;
             }
             //token判断，不加uri加签
             if (!TokenUtil.checkToken("", Integer.valueOf(userId), ts, sign)) {
                 //未登录
-                print(response, "-1", "登录已过期，请重新登录");
+                print(response, "8888", "登录已过期，请重新登录");
                 return;
             }
 
