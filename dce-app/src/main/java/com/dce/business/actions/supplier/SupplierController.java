@@ -62,7 +62,7 @@ public class SupplierController  extends BaseController{
 	 *	@apiSuccess {java.math.BigDecimal}  latitude 纬度
 	 *	@apiSuccess {java.math.BigDecimal}  distance 距离
 	 *	@apiSuccess {java.lang.Integer}  status 状态 0:删除 1：正常 2:审核通过
-	 *  @apiParam {java.lang.String}  shopDetailsUrl 商家明细地址
+	 *  @apiSuccess {java.lang.String}  shopDetailsUrl 商家明细地址
 	 */
 	
 	/**

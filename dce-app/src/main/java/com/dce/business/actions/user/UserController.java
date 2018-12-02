@@ -46,6 +46,7 @@ import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.message.INewsService;
 import com.dce.business.service.user.IUserService;
 import com.dce.business.service.user.UserAdressService;
+import com.dce.business.service.userCard.IUserCardService;
 
 /**
  * 账户处理器，注册、登录等
@@ -73,7 +74,8 @@ public class UserController extends BaseController {
 	private ISmsDao smsDao;
 	@Value("${regUrl}")
 	private  String regUrl;
-	
+	@Resource
+	private IUserCardService userCardService;
 
 	
 	
@@ -196,8 +198,38 @@ public class UserController extends BaseController {
 	 @RequestMapping(value = "/activeUser", method = RequestMethod.POST)
 	 public Result<?> regByTravelCard( UserCardDo  userCardDo,
 			 						   HttpServletRequest request, 
-			 						   HttpServletResponse response) {
-		return Result.successResult("激活失败，这个用户已存在");
+			HttpServletResponse response) {
+		Integer oldUserId = userCardDo.getUserId();
+		if (null == oldUserId) {
+			return Result.failureResult("用户ID不存在");
+		}
+
+		UserDo oldUserDo = userService.getUser(oldUserId);
+		if (null == oldUserDo) {
+			return Result.failureResult("用户ID不存在用户");
+		}
+		
+		UserDo userDo = new UserDo();
+		userDo.setRefereeid(userCardDo.getUserId());
+		userDo.setRefereeUserMobile(oldUserDo.getMobile());
+		userDo.setMobile(userCardDo.getMobile());
+		userDo.setUserName(userCardDo.getMobile());
+		userDo.setTrueName(userCardDo.getUserName());
+		userDo.setUserPassword("123456");
+		userDo.setTwoPassword("123456");
+		Result<?> result = userService.reg(userDo);
+		if ("0".equals(result.getCode())) {
+
+			Integer userId = (Integer) result.getData();
+			userCardDo.setUserId(userId);
+			userCardDo.setRemark("原用户ID：" + oldUserId + "赠送给新用户：" + userCardDo.getMobile());
+			userCardDo.setUpdateDate(new Date(System.currentTimeMillis()));
+			userCardService.updateUserCardById(userCardDo);
+		}
+
+		// 修改卡号
+		logger.info("用户注册结果:" + JSON.toJSONString(result));
+		return result;
 	}
 	
 

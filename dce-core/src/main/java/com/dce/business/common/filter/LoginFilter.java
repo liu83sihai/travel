@@ -78,6 +78,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/activity/index",
         												 "/supplier/index",
         												 "/user/shareList",
+        												 "/user/activeUser",
         												 "/user/resetpass",
         												 "/commonIntf/sendMessage",
         												 "/commonIntf/uploadImg",
