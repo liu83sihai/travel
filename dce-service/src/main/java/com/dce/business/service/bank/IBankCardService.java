@@ -148,4 +148,6 @@ public interface IBankCardService {
 							String money,
 							String bankAccountName,
 							String orderCode) throws Throwable;
+
+	Result<?> pay(String orderId);
 }

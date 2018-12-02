@@ -466,4 +466,10 @@ public class BankcardServiceImpl implements IBankCardService {
 		
 		return tradeRet;
 	}
+
+	@Override
+	public Result<?> pay(String orderId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

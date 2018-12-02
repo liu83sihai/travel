@@ -32,7 +32,7 @@ public class TokenUtil {
         long currentTime = System.currentTimeMillis();
         long requestTime = Long.valueOf(ts);
         System.out.println("currentTime:" + currentTime);
-        long diffTime = (currentTime - requestTime) / 7200;
+        long diffTime = (currentTime - requestTime) / 7200*30;
         if (diffTime > TOKEN_TIMEOUT_TIME) {
             logger.info("用户登录失效， userId:" + userId);
             logger.info("系统时间：" + currentTime);

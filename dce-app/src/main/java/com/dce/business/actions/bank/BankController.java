@@ -1,9 +1,6 @@
 package com.dce.business.actions.bank;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +19,10 @@ import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.entity.bank.BankCardDo;
 import com.dce.business.entity.bank.BankDo;
+import com.dce.business.entity.order.Order;
 import com.dce.business.service.bank.IBankCardService;
 import com.dce.business.service.bank.IBankService;
+import com.dce.business.service.order.IOrderService;
 
 @RestController
 @RequestMapping("bank")
@@ -34,6 +33,9 @@ public class BankController extends BaseController {
     
     @Resource
     private IBankCardService bankCardService;
+    
+    @Resource
+    private  IOrderService  orderService;
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result<?> getBankList() {
@@ -48,8 +50,31 @@ public class BankController extends BaseController {
     @RequestMapping("/toAddBankCard")
     public ModelAndView toAddBankCard(HttpServletRequest request,Model model){
     	
+    	BankCardDo bank = this.makeBankAndCommonParam(request, model);
+		//已绑卡
+		if(bank != null && bank.getCardStatus().intValue() == 1) {
+			return toBankCardManager(request,model);
+		}
+		
+		ModelAndView mav = new ModelAndView("bank/bindBankCard");
+    	//银行列表
+    	List<BankDo> list = bankService.getBankList();
+    	mav.addObject("bankCodes",list);
+    	return mav;
+    }
+    
+    
+   
+    private BankCardDo makeBankAndCommonParam(HttpServletRequest request,Model model){
+    	
     	//app 传来的参数
     	String userId = request.getParameter(TokenUtil.USER_ID);
+    	String ts = request.getParameter(TokenUtil.TS);
+        String sign = request.getParameter(TokenUtil.SIGN);
+        
+        request.setAttribute(TokenUtil.TS , ts);
+        request.setAttribute(TokenUtil.SIGN , sign);
+        request.setAttribute(TokenUtil.USER_ID , userId);
     	
     	//查询是否已绑卡
 		String isDefault = "1";
@@ -57,45 +82,45 @@ public class BankController extends BaseController {
 		BankCardDo bank = null;
 		if(bankLst != null && bankLst.size()>0  ) {
 			bank = bankLst.get(0);
+			request.setAttribute("bank", bank);
 		}
-		//已绑卡
-		if(bank != null && bank.getCardStatus().intValue() == 1) {
-			return toBankCardManager(request,model);
-		}
-		
-		ModelAndView mav = new ModelAndView("bank/bindBankCard");
-		mav.addObject("bank",bank);
-		
-		//app 传来的参数
-    	String ts = request.getParameter(TokenUtil.TS);
-        String sign = request.getParameter(TokenUtil.SIGN);
-        
-    	
-    	mav.addObject(TokenUtil.TS , ts);
-    	mav.addObject(TokenUtil.SIGN , sign);
-    	mav.addObject(TokenUtil.USER_ID , userId);
-    	
-    	//银行列表
-    	List<BankDo> list = bankService.getBankList();
-    	mav.addObject("bankCodes",list);
-    	return mav;
+		return bank;
     }
+    
     
     /**
      *	 去添加新的银行卡信息
      * @return
      */
     @RequestMapping("/bankCardPay")
-    public ModelAndView BankCardPay(HttpServletRequest request){
+    public ModelAndView BankCardPay(HttpServletRequest request,Model model){
     	
     	ModelAndView mav = new ModelAndView("bank/bankCardPay");
-    	
+    	BankCardDo bank = this.makeBankAndCommonParam(request,model);
+    	//未绑卡,去绑卡
+    	if(bank != null && bank.getCardStatus().intValue() != 1) {
+    		return toAddBankCard(request,model);
+    	}
     	//支付订单id
     	String orderId = request.getParameter("orderId");
-    	
-    	
+    	Order order = orderService.selectByPrimaryKey(Integer.valueOf(orderId));
+    	mav.addObject("order", order);    	
     	return mav;
     }
+    
+    
+    /**
+     *	 去添加新的银行卡信息
+     * @return
+     */
+    @RequestMapping("/submitPay")
+    public Result<?> submitPay(HttpServletRequest request,Model model){
+    	//支付订单id
+    	String orderId = request.getParameter("orderId");
+    	return bankCardService.pay(orderId);
+    }
+    
+    
     
     
     /**
@@ -158,21 +183,10 @@ public class BankController extends BaseController {
         	String idNo = getString("idNo");//
         	String token = getString("token");//
         	String tokenId = getString("externalRefNumber"); //协议支付号
-        	String userType = getString("userType");//0  主借款人   2 共同借款人  3 有房担保人
         	
         	String money = getString("payMoney");
         	String orderCode = getString("orderCode");
         	
-        	if(StringUtils.isBlank(userType)){
-        		userType="0";
-        	}
-        	if(("1").equals(userType)){
-        		userType = "2";
-    		}else if(("2").equals(userType)){
-    			userType = "3";
-    		}else{
-    			userType = "0";
-    		}
         	
         	if(StringUtils.isBlank(bankId)){
             	return Result.failureResult("所属银行不能为空");
