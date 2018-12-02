@@ -31,10 +31,15 @@ public class PayKJTServiceImpl implements IKJTPayService {
 	//公共配置
 	private static final String charset="UTF-8";
 	private static final String format="JSON";
+	/*
 	private final String partnerId ="200000151629";
 	private final String signType ="RSA";
 	private String kjtUrl = "https://c1gateway.kjtpay.com/recv.do";
+	*/
 	
+	private final String partnerId ="2791359869@qq.com";
+	private final String signType ="RSA";
+	private String kjtUrl = "https://gateway.kjtpay.com/recv.do";
 	
 
 	/**
