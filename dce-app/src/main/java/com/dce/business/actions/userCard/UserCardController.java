@@ -51,7 +51,7 @@ public class UserCardController  extends BaseController{
 	 *	@apiSuccess {java.lang.String}  remark 备注
 	 *	@apiSuccess {java.sql.Date}  createDate 创建时间
 	 *	@apiSuccess {java.sql.Date}  updateDate 修改时间
-	 *	@apiSuccess {java.lang.Integer}  status 状态
+	 *	@apiSuccess {java.lang.Integer}  status 状态  1 已激活，0待激活，2已赠送，3 已过期
 	 */
 	
 	/**

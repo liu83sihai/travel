@@ -174,7 +174,7 @@ public class UserController extends BaseController {
 	}
 	
 	 /** 
-	  * @api {POST} /userCard/activeUser.do 激活新用户
+	  * @api {POST} /user/activeUser.do 激活新用户
 	  * @apiName activeUser
 	  * @apiGroup userCard 
 	  * @apiVersion 1.0.0 
