@@ -26,10 +26,10 @@
 
 <div class="content" >
 	<input type="hidden" value="${fromPage}" id = "fromHidden"/>
-    <input type="hidden" value="" id = "tokenHidden"/>
+    <input type="hidden" value="${sign}" id = "sign"/>
     <input type="hidden" value="" id = "externalRefNumber"/>
-    <input type="hidden" value="0" id = "userType"/>
-    <input type="hidden" id="groupType" value="loan">
+    <input type="hidden" value="${userId }" id = "userId"/>
+    <input type="hidden" value="${ts}" id="ts" >
 	<div class="litem">
 		<span class="lright"><input type="text" id="cardUserName" value="${realName}" placeholder="请输入开卡人姓名" class="linput"></span>
 		<span class="ltext"><span style="color: red;">*</span>开卡人姓名</span>
@@ -177,7 +177,7 @@ $(function(){
   
   //全局变量===========================================
   var $getcode = $('.getmsgcode'),$submit = $('#submit');
-    	//验卡获取验证码=======================
+    	
   //获取验证码 ---1
   $getcode.on('click', function(){
    	checkCardInfo();
@@ -212,7 +212,8 @@ $(function(){
 			 	idNo = $('#idNo').val(),
 			 	cardNo = $('#cardNo').val(),
 			    mobile = $('#mobile').val(),
-			    userType = $('#userType').val();	
+			    userType = $('#userType').val();
+	    	
 	    	if(bankId == null || bankId == ''){
 				HHN.popup("请选择所属银行", 'danger');
 	    		return false;
@@ -246,7 +247,12 @@ $(function(){
 				 		 "cardNo":cardNo,
 				 		 "mobile":mobile,
 				 		 "idNo":idNo,
-				 		 "userType":userType};
+				 		 "userType":userType,
+				 		 "ts":$("#ts").val(),
+				 		 "sign":$("#sign").val(),
+				 		 "userId":$("#userId").val()				 		 
+				 		 };
+			
 			checkCardGetCode(param);
 
 	 }
@@ -255,7 +261,6 @@ $(function(){
     function checkCardGetCode(param){
     	$.post('<c:url value="/bank/getBankCardCode.do"/>', param, function(data) {
    			if(data.code == '0'){
-   				$('#tokenHidden').val(data.data.token);
    				$('#externalRefNumber').val(data.data.token);
    				HHN.popup(data.msg);
    			}else{
@@ -275,7 +280,6 @@ $(function(){
 		 	cardNo = $('#cardNo').val(),
 		    mobile = $('#mobile').val(),
 		    mobileCode = $('#mobileCode').val(),
-		    token = $('#tokenHidden').val(),
 		    externalRefNumber = $('#externalRefNumber').val(),
 		    addressInput = $('#addressInput').val(),
 		    fromHidden = $('#fromHidden').val(),
@@ -301,11 +305,7 @@ $(function(){
         		HHN.popup("请输入验证码", 'danger');
         		return false;
         	}
-			/*
-			if(!luhnCheck(cardNo)){
-					HHN.popup("银行卡号必须符合luhn校验", 'danger');
-   		    		return false;
-			}
+			
         	if(addressInput == null || addressInput == ''){
 				HHN.popup("请选择开户所在地", 'danger');
 	    		return false;
@@ -314,12 +314,17 @@ $(function(){
 				HHN.popup("请填写所属银行支行", 'danger');
   		    		return false;
 			}
+			/*
+			if(!luhnCheck(cardNo)){
+					HHN.popup("银行卡号必须符合luhn校验", 'danger');
+   		    		return false;
+			}
 			if(!HHN.checkChinese(branchBankName) || branchBankName.length >50){
 				HHN.popup("支行名称为长度50以内的汉字", 'danger');
  		    		return false;
 			}
 			*/
-			if(token == null || token == '' || externalRefNumber == null || externalRefNumber == ''){
+			if(externalRefNumber == null || externalRefNumber == ''){
 				HHN.popup('请获取验证码','danger');
 				countup();
    				return false;
@@ -333,10 +338,13 @@ $(function(){
 						 "mobile":mobile,
 						 "mobileCode":mobileCode,
 						 "idNo":idNo,
-						 "token":token,
 						 "externalRefNumber":externalRefNumber,
 						 "from":fromHidden,
-						 "userType":userType};
+						 "userType":userType,
+						 "ts":$("#ts").val(),
+				 		 "sign":$("#sign").val(),
+				 		 "userId":$("#userId").val()
+						 };
 			submitBindBankInfo(param);
   	});
    		
@@ -346,14 +354,12 @@ $(function(){
 		$.post("<c:url value='/bank/bindBankCard.do'/>", param, function(data) {
 			if(data.code == '0'){
 				HHN.popup(data.msg);
-				/*
 				var fromHidden = $('#fromHidden').val();
 				if(formHidden != ""){
 					window.location.href = fromHidden;					
 				}else{
-					window.location.href = "<c:url value='/bank/toBankCardManager.do'/>";
+					window.location.href = "<c:url value='/bank/toBindBankCard.do'/>";
 				}
-				*/
 			}else{
 				HHN.popup(data.msg);
 			}

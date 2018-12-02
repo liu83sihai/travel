@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.token.TokenUtil;
 import com.dce.business.entity.bank.BankCardDo;
 import com.dce.business.entity.bank.BankDo;
 import com.dce.business.service.bank.IBankCardService;
@@ -45,32 +46,41 @@ public class BankController extends BaseController {
      * @return
      */
     @RequestMapping("/toAddBankCard")
-    public ModelAndView toAddBankCard(HttpServletRequest request){
+    public ModelAndView toAddBankCard(HttpServletRequest request,Model model){
     	
-    	ModelAndView mav = new ModelAndView("bank/bindBankCard");
+    	//app 传来的参数
+    	String userId = request.getParameter(TokenUtil.USER_ID);
+    	
+    	//查询是否已绑卡
+		String isDefault = "1";
+		List<BankCardDo> bankLst = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault );
+		BankCardDo bank = null;
+		if(bankLst != null && bankLst.size()>0  ) {
+			bank = bankLst.get(0);
+		}
+		//已绑卡
+		if(bank != null && bank.getCardStatus().intValue() == 1) {
+			return toBankCardManager(request,model);
+		}
+		
+		ModelAndView mav = new ModelAndView("bank/bindBankCard");
+		mav.addObject("bank",bank);
+		
+		//app 传来的参数
+    	String ts = request.getParameter(TokenUtil.TS);
+        String sign = request.getParameter(TokenUtil.SIGN);
+        
+    	
+    	mav.addObject(TokenUtil.TS , ts);
+    	mav.addObject(TokenUtil.SIGN , sign);
+    	mav.addObject(TokenUtil.USER_ID , userId);
+    	
+    	//银行列表
     	List<BankDo> list = bankService.getBankList();
     	mav.addObject("bankCodes",list);
-    	
-    	String mobile = "";
-		String realName = "";
-		String idNo = "";
-		String bankCardNum = "";
-		
-//    	//查询是否已绑卡
-//    	//Integer userId = getUserId();
-//		Integer userId =1;
-//		String isDefault = "1";
-//		List<BankCardDo> bankLst = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault );
-//		if(bankLst != null && bankLst.size()>0) {
-//			
-//		}
-		
-		mav.addObject("realName",realName);
-		mav.addObject("idNo",idNo);
-		mav.addObject("mobile",mobile);
-		mav.addObject("bankCardNum",bankCardNum);
     	return mav;
     }
+    
     /**
      *	 去添加新的银行卡信息
      * @return
@@ -78,33 +88,12 @@ public class BankController extends BaseController {
     @RequestMapping("/bankCardPay")
     public ModelAndView BankCardPay(HttpServletRequest request){
     	
-    	ModelAndView mav = new ModelAndView("bank/bindBankCard");
+    	ModelAndView mav = new ModelAndView("bank/bankCardPay");
     	
     	//支付订单id
     	String orderId = request.getParameter("orderId");
     	
     	
-    	List<BankDo> list = bankService.getBankList();
-    	mav.addObject("bankCodes",list);
-    	
-    	String mobile = "";
-    	String realName = "";
-    	String idNo = "";
-    	String bankCardNum = "";
-    	
-//    	//查询是否已绑卡
-//    	//Integer userId = getUserId();
-//		Integer userId =1;
-//		String isDefault = "1";
-//		List<BankCardDo> bankLst = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault );
-//		if(bankLst != null && bankLst.size()>0) {
-//			
-//		}
-    	
-    	mav.addObject("realName",realName);
-    	mav.addObject("idNo",idNo);
-    	mav.addObject("mobile",mobile);
-    	mav.addObject("bankCardNum",bankCardNum);
     	return mav;
     }
     
