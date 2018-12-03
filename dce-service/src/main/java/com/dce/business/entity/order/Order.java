@@ -319,14 +319,14 @@ public class Order {
 		// 循环遍历出商品信息，计算商品总价格和商品总数量
 		for (OrderDetail orderDetail : this.orderDetailList) {
 			//积分商品,累计积分
-			if("2".equals(orderDetail.getGoodsFlag())){
+			if(2 == orderDetail.getGoodsFlag().intValue()){
 				walletTravel = BigDecimal.valueOf(orderDetail.getPrice() * orderDetail.getQuantity()).add(walletTravel);
 			}
 		}
 		
 		BigDecimal walletTravel2 = BigDecimal.ZERO; //积分
 		for(OrderPayDetail pDetail : payDetailList) {
-			if(AccountType.wallet_travel.equals(pDetail.getAccountType())) {
+			if(AccountType.wallet_travel.getAccountType().equals(pDetail.getAccountType())) {
 				walletTravel2.add(pDetail.getPayAmt());
 			}
 		}

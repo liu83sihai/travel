@@ -18,11 +18,12 @@ import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.dao.user.IUserRefereeDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.award.Awardlist;
+import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserRefereeDo;
 import com.dce.business.service.account.IAccountService;
-import com.dce.business.service.award.IAwardlistService;
+import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.groovy.GroovyParse;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserService;
@@ -39,7 +40,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	private Logger logger = Logger.getLogger(getClass());
 
 	@Resource
-	private IAwardlistService awardlistService;
+	private ILoanDictService dictService;
 
 	@Resource
 	private IUserService userService;
@@ -87,12 +88,17 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			return;
 		}
 		
-//		// 得到奖励配置
-//		Awardlist award = awardlistService.getAwardConfigByQtyAndBuyerLevel(buyer.getUserLevel(), order.getQty());
-//		if (award == null) {
-//			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
-//		}
-		
+		// 得到奖励配置
+		LoanDictDo awardDict = dictService.getLoanDict("zhidu-ref-total-rate");
+		if (awardDict == null) {
+			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
+		}
+		String[] awardArr=awardDict.getRemark().split(":");
+		if(awardArr.length<2) {
+			throw new BusinessException("查奖励配置项：zhidu-ref-total-rate异常", "error-refereeAward-002");
+		}
+		BigDecimal moneyRate = new BigDecimal(awardArr[0]);
+		BigDecimal travelRate = new BigDecimal(awardArr[1]);
 		
 		UserDo[] refUserArray = buildRefUser(list);
 		int[] rateArray = buildRate(refUserArray);
@@ -110,7 +116,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			wardAmount = wardAmount.multiply(rate);
 			
 			//50%现金账户， 50%积分账户
-			BigDecimal moneyAccount = wardAmount.multiply(new BigDecimal("0.5"));
+			BigDecimal moneyAccount = wardAmount.multiply(moneyRate);
 			BigDecimal otherAccount =  wardAmount.subtract(moneyAccount);
 			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
 				//现金账户
@@ -143,7 +149,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.05"));
 			
 			//50%现金账户， 50%积分账户
-			BigDecimal moneyAccount = dsAmt.multiply(new BigDecimal("0.5"));
+			BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
 			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
 			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
 				//现金账户
