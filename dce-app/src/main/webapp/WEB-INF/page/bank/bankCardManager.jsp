@@ -135,6 +135,11 @@
 </div>
  --%>
 <div class="content">
+		
+		    <input type="hidden" value="${sign}" id = "sign"/>
+		    <input type="hidden" value="${userId }" id = "userId"/>
+		    <input type="hidden" value="${ts}" id="ts" >
+    
 	    <!-- 有银行卡 -->
 	    <c:if test="${!empty bankCardList}">
 	    	
@@ -162,7 +167,7 @@
 		        <p>未绑定银行卡哦！</p>
 		    </div>
 	    </c:if>
-	    <a href="<c:url value='/bank/toAddBankCard.do'/>" class="add-bank-btn center">
+	    <a href="<c:url value='/bank/toAddBankCard.do'/>?ts=${ts}&sign=${sign}&userId=${userId}" class="add-bank-btn center">
 	        <div>
 	            <i></i>
 	            <p>添加新的银行卡</p>
