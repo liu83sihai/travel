@@ -117,7 +117,9 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			
 			//50%现金账户， 50%积分账户
 			BigDecimal moneyAccount = wardAmount.multiply(moneyRate);
+			moneyAccount = new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
 			BigDecimal otherAccount =  wardAmount.subtract(moneyAccount);
+			otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
 			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
 				//现金账户
 				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
@@ -150,7 +152,10 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			
 			//50%现金账户， 50%积分账户
 			BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
+			moneyAccount =  new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
 			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
+			otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
+			
 			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
 				//现金账户
 				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
@@ -180,8 +185,10 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.03"));
 			
 			//50%现金账户， 50%积分账户
-			BigDecimal moneyAccount = dsAmt.multiply(new BigDecimal("0.5"));
+			BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
 			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
+			moneyAccount =  new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
+			otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
 			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
 				//现金账户
 				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
