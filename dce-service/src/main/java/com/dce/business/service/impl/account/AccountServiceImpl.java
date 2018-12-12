@@ -180,7 +180,7 @@ public class AccountServiceImpl implements IAccountService {
 							  userAccountDo.getRelevantUser());
 		
 		//增加旅游卡
-		if(AccountType.wallet_active.getAccountType().equalsIgnoreCase(userAccountDo.getAccountType())) {
+		if(AccountType.wallet_active.getAccountType().equalsIgnoreCase(userAccountDo.getAccountType())&& userAccountDo.getAmount().intValue()> 0) {
 			userCardService.batchAddUserCard(userId,userAccountDo.getAmount().intValue());
 		}
 

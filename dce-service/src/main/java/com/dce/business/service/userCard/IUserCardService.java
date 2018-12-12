@@ -3,6 +3,7 @@ package com.dce.business.service.userCard;
 import java.util.List;
 import java.util.Map;
 
+import com.dce.business.common.result.Result;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.userCard.UserCardDo;
 
@@ -58,4 +59,11 @@ public interface IUserCardService{
 	 * @param intValue
 	 */
 	public void batchAddUserCard(Integer userId, int cardQty);
+
+	/**
+	 * 转赠卡
+	 * @param userCardDo
+	 * @return
+	 */
+	public Result<?> convertCard(UserCardDo userCardDo);
 }
