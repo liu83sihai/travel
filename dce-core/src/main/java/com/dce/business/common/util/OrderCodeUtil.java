@@ -6,7 +6,7 @@ import java.util.Random;
 public final class OrderCodeUtil {
 
     /** 
-     * 订单号
+     *	 订单号
      * @param userId
      * @return  
      */
@@ -15,6 +15,19 @@ public final class OrderCodeUtil {
         sb.append(userId).append(DateUtil.YYYYMMDDHHMMSS.format(new Date())).append(random());
         return sb.toString();
     }
+    
+
+    /** 
+     * 	卡号号
+     * @param userId
+     * @return  
+     */
+    public static String genUIDCode(Integer userId) {
+        StringBuffer sb = new StringBuffer("UID");
+        sb.append(userId).append(DateUtil.YYYYMMDDHHMMSS.format(new Date())).append(random());
+        return sb.toString();
+    }
+    
 
     /**
      * 产生随机的三位数
@@ -24,4 +37,6 @@ public final class OrderCodeUtil {
         Random rad = new Random();
         return rad.nextInt(1000) + "";
     }
+    
+    
 }

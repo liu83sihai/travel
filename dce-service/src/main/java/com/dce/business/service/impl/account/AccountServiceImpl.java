@@ -27,6 +27,7 @@ import com.dce.business.common.result.Result;
 import com.dce.business.common.util.Constants;
 import com.dce.business.common.util.DataDecrypt;
 import com.dce.business.common.util.DataEncrypt;
+import com.dce.business.common.util.OrderCodeUtil;
 import com.dce.business.common.util.PayUtil;
 import com.dce.business.dao.account.IUserAccountDao;
 import com.dce.business.dao.account.IUserAccountDetailDao;
@@ -34,20 +35,20 @@ import com.dce.business.dao.etherenum.IEthereumTransInfoDao;
 import com.dce.business.dao.trade.IWithdrawalsDao;
 import com.dce.business.dao.user.IUserDao;
 import com.dce.business.dao.user.IUserParentDao;
+import com.dce.business.dao.userCard.IUserCardDao;
 import com.dce.business.entity.account.UserAccountDetailDo;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.etherenum.EthereumAccountDo;
 import com.dce.business.entity.page.PageDo;
-import com.dce.business.entity.travel.TravelDoExample;
 import com.dce.business.entity.user.UserDo;
+import com.dce.business.entity.userCard.UserCardDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.third.IEthereumPlatformService;
 import com.dce.business.service.third.IEthereumService;
 import com.dce.business.service.user.IUserService;
 import com.dce.business.service.user.IUserStaticService;
-import com.dce.business.service.userCard.IUserCardService;
 
 /**
  * 用户资金账户
@@ -84,7 +85,7 @@ public class AccountServiceImpl implements IAccountService {
 	@Resource
 	private IWithdrawalsDao withdrawDao;
 	@Resource
-	private IUserCardService userCardService;
+    private IUserCardDao  userCardDao;
 
 	@Value("#{sysconfig['huishang.openAccount.url']}")
 	private String ethereum_blance_url;
@@ -181,10 +182,41 @@ public class AccountServiceImpl implements IAccountService {
 		
 		//增加旅游卡
 		if(AccountType.wallet_active.getAccountType().equalsIgnoreCase(userAccountDo.getAccountType())&& userAccountDo.getAmount().intValue()> 0) {
-			userCardService.batchAddUserCard(userId,userAccountDo.getAmount().intValue());
+			this.batchAddUserCard(userId,userAccountDo.getAmount().intValue());
 		}
 
 		return result;
+	}
+	
+	
+	/**
+	 * 状态  1 已激活，0待激活，2已赠送，3 已过期
+	 * 新增
+	 */
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	private int addUserCard(UserCardDo newUserCardDo){
+		logger.debug("addUserCard: "+newUserCardDo);
+		
+		//新增激活卡
+		if(StringUtils.isBlank(newUserCardDo.getCardNo())){
+			String cardNo = OrderCodeUtil.genUIDCode(newUserCardDo.getUserId());
+			newUserCardDo.setCardNo(cardNo);
+		}
+		newUserCardDo.setStatus(0);
+		newUserCardDo.setRemark("待激活");
+		newUserCardDo.setCreateDate(new Date());
+		return userCardDao.addUserCard(newUserCardDo);
+	}
+	
+	
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	private void batchAddUserCard(Integer userId, int qty) {
+		for(int i = 0 ; i < qty;i++) {
+			UserCardDo newUserCardDo = new UserCardDo();
+			newUserCardDo.setUserId(userId);
+			this.addUserCard(newUserCardDo );			
+		}
+		
 	}
 
 	/**

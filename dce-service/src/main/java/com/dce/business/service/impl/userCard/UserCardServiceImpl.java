@@ -19,8 +19,8 @@ import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.util.Constants;
-import com.dce.business.common.util.DateUtil;
 import com.dce.business.common.util.MeituLvUtil;
+import com.dce.business.common.util.OrderCodeUtil;
 import com.dce.business.dao.userCard.IUserCardDao;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.user.UserDo;
@@ -129,7 +129,7 @@ public class UserCardServiceImpl implements IUserCardService {
 		
 		//新增激活卡
 		if(StringUtils.isBlank(newUserCardDo.getCardNo())){
-			String cardNo = genUIDCode(newUserCardDo.getUserId());
+			String cardNo = OrderCodeUtil.genUIDCode(newUserCardDo.getUserId());
 			newUserCardDo.setCardNo(cardNo);
 		}
 		newUserCardDo.setStatus(0);
@@ -162,16 +162,6 @@ public class UserCardServiceImpl implements IUserCardService {
 		return  userCardDao.deleteById(id);		
 	}
 
-    /** 
-     * 卡号号
-     * @param userId
-     * @return  
-     */
-    public String genUIDCode(Integer userId) {
-        StringBuffer sb = new StringBuffer("UID");
-        sb.append(userId).append(DateUtil.YYYYMMDDHHMMSS.format(new Date())).append(random());
-        return sb.toString();
-    }
 
     /**
      * 产生随机的三位数
@@ -182,16 +172,6 @@ public class UserCardServiceImpl implements IUserCardService {
         return rad.nextInt(1000) + "";
     }
 
-	@Override
-	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	public void batchAddUserCard(Integer userId, int qty) {
-		for(int i = 0 ; i < qty;i++) {
-			UserCardDo newUserCardDo = new UserCardDo();
-			newUserCardDo.setUserId(userId);
-			this.addUserCard(newUserCardDo );			
-		}
-		
-	}
 
 	/**
 	  * 前提约束： 只有一张卡不允许转赠， 不能激活其他用户， 已激活的卡不能转赠

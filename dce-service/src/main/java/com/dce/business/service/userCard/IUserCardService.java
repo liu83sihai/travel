@@ -53,12 +53,7 @@ public interface IUserCardService{
 	 */
 	public int deleteById(int id);
 
-	/**
-	 * 批量添加卡
-	 * @param userId
-	 * @param intValue
-	 */
-	public void batchAddUserCard(Integer userId, int cardQty);
+
 
 	/**
 	 * 转赠卡
