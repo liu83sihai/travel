@@ -30,15 +30,15 @@
 			<td>
 				<select class="easyui-combobox" id="change_money_accountType" name="accountType" style="width:140px;" style="height:30px;">
 		       		<option value="">--请选择账户类型--</option>
-		       		<option value="wallet_money">账户余额 </option>
-					<option value="wallet_travel">奖励旅游 </option>
-					<option value="wallet_goods">奖励商品 </option>
-					<option value="wallet_active">奖励活动 </option>
+		       		<option value="wallet_money">现金券</option>
+					<option value="wallet_travel">积分 </option>
+					<option value="wallet_goods">抵扣券 </option>
+					<option value="wallet_active">旅游卡 </option>
 		       </select>
 			</td>
 		</tr>
 		<tr>
-			<td><c:if test="${type==0 }">划扣</c:if><c:if test="${type==1 }">充值</c:if></td>
+			<td><c:if test="${type==0 }">减少</c:if><c:if test="${type==1 }">添加</c:if></td>
 			<td><input class="easyui-validatebox" type="text" name="qty" id="change_money_qty" style="height:30px;" /></td>
 		</tr>
 	</table>

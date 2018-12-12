@@ -27,7 +27,7 @@ public class UserCardDo  implements java.io.Serializable{
 	private java.lang.String remark;
 	private Date createDate;
 	private Date updateDate;
-	private java.lang.Integer status;
+	private java.lang.Integer status; //状态  1 已激活，0待激活，2已赠送，3 已过期
 	
 
 

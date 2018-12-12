@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
@@ -139,7 +140,7 @@ public class UserAccountController extends BaseAction {
 	public void addAmount(HttpServletResponse response){
 		
 		String userId = getString("userId");
-		logger.info("修改用户等级:userId=" + userId);
+		logger.info("修改用户:userId=" + userId);
 		
 		String accountType = getString("accountType");
 		String qty = getString("qty");
@@ -162,6 +163,13 @@ public class UserAccountController extends BaseAction {
 		if(StringUtils.isBlank(qty)){
 			outPrint(response,  Result.failureResult("请输入充值金额!"));
 			return;
+		}
+		
+		if(AccountType.wallet_active.getAccountType().equalsIgnoreCase(accountType)) {
+			if("0".equals(type)){
+				outPrint(response,  Result.failureResult("旅游卡暂时不支持减少!"));
+				return;
+			}
 		}
 		
 		try{

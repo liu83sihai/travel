@@ -106,8 +106,10 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		userCardDo.setOrderNo(order.getOrdercode());
 		userCardDo.setUserName(buyer.getTrueName());
 		userCardDo.setSex(buyer.getSex());
-		//激活卡
-		userCardService.activeUserCard(userCardDo );
+		//增加旅游卡
+		UserAccountDo travelCardAccount = new UserAccountDo(new BigDecimal(order.getQty()), buyer.getId(), AccountType.wallet_active.name());
+		travelCardAccount.setAmount(new BigDecimal(order.getQty()));
+		accountService.updateUserAmountById(travelCardAccount,IncomeType.TYPE_PURCHASE_TRAVEL);
 
 	}
 

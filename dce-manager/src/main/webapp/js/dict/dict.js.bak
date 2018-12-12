@@ -2,45 +2,45 @@
 $(function(){
 /*#############################################search form begin#################################*/	
 		
-	$("#searchuserCardForm #searchButton").on("click",function(){
-		$("#tt_UserCard").datagrid('load',{
-			'userName': $("#searchuserCardForm #searchStr").val(),
-			'mobile':$("#searchuserCardForm #searchCodeStr").val()		
+	$("#searchloanDictForm #searchButton").on("click",function(){
+		$("#tt_LoanDict").datagrid('load',{
+			'searchStr': $("#searchloanDictForm #searchStr").val(),
+			'searchCodeStr':$("#searchloanDictForm #searchCodeStr").val()		
 		});
 	});
 	
-	$("#searchuserCardForm #resetButton").on("click",function(){
-		$("#searchuserCardForm").form('reset');
+	$("#searchloanDictForm #resetButton").on("click",function(){
+		$("#searchloanDictForm").form('reset');
 	});
 	
 /*#############################################search form end#################################*/		
 	
 /*##########################grid init begin####################################################*/
 /*##########################grid toolbar begin#################################################*/
-	var toolbar_tt = [];
+	var toolbar_tt = [
+					{
+						iconCls:"icon-edit",
+						text:"新增",
+						handler:to_addloanDict
+					}
+	          	];
 	
 /*######################grid toolbar end##############################*/
 /*######################grid columns begin##############################*/
 	var columns_tt = [
       			[	 				
 							{field:'id',title:'id',width:100,hidden:true},						
-								{field:"userId",title:"用户ID",width:180,align:"center"},
-								{field:"userName",title:"用户名",width:180,align:"center"},
-								{field:"mobile",title:"用户手机",width:180,align:"center"},
-								{field:"orderNo",title:"流水单号",width:180,align:"center"},
-								{field:"userLevel",title:"用户等级",width:180,align:"center"},
-								{field:"sex",title:"性别",width:180,align:"center"},
-								{field:"cardNo",title:"第三方卡号",width:180,align:"center"},
-								{field:"bankNo",title:"银行卡号",width:180,align:"center"},
-								{field:"idNumber",title:"身份证号",width:180,align:"center"},
-								{field:"remark",title:"备注",width:180,align:"center"},
-								{field:"createDate",title:"创建时间",width:180,align:"center",formatter:dateTimeFormatter},
-								{field:"updateDate",title:"修改时间",width:180,align:"center",formatter:dateTimeFormatter},
+								{field:"code",title:"编码",width:180,align:"center"},
+								{field:"name",title:"名称",width:180,align:"center"},
 								{field:"status",title:"状态",width:180,align:"center"},
+								{field:"remark",title:"备注",width:180,align:"center"},
+								{field:"createUserId",title:"创建用户ID",width:180,align:"center",hidden:true},
+								{field:"updateUserId",title:"修改用户ID",width:180,align:"center",hidden:true},
+								{field:"createTime",title:"创建时间",width:180,align:"center",formatter:dateTimeFormatter},
+								{field:"updateTime",title:"修改时间",width:180,align:"center",formatter:dateTimeFormatter},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
-	 					  var str= ' <a href="javascript:void(0);" onclick="to_activeUserCard(\''+row.id+'\',\''+row.status+'\');">激活</a>';
-	 					  var str= ' <a href="javascript:void(0);" onclick="to_adduserCard(\''+row.id+'\',\''+row.status+'\');">修改卡信息</a>';
+	 					  var str= '<a href="javascript:void(0);" onclick="to_editloanDict(\''+row.id+'\');">编辑</a>   ';
 	 					  return str;
 	 					}
 	 				}	 				
@@ -48,9 +48,9 @@ $(function(){
 	 	];
 /*######################grid columns end##############################*/
 	
-	$("#tt_UserCard").datagrid({
-		url:httpUrl+"/userCard/listUserCard.html?&rand=" + Math.random(),
-		height:$("#body").height()-$('#search_areaUserCard').height()-10,
+	$("#tt_LoanDict").datagrid({
+		url:httpUrl+"/loandict/listLoanDict.html?&rand=" + Math.random(),
+		height:$("#body").height()-$('#search_areaLoanDict').height()-10,
 		width:$("#body").width(),
 		rownumbers:true,
 		fitColumns:true,
@@ -75,8 +75,8 @@ $(function(){
 		columns:columns_tt,
 		toolbar:toolbar_tt,
 		queryParams:{
-			'searchStr': $("#searchuserCardForm #searchStr").val(),
-			'searchCodeStr':$("#searchuserCardForm #searchCodeStr").val()
+			'searchStr': $("#searchloanDictForm #searchStr").val(),
+			'searchCodeStr':$("#searchloanDictForm #searchCodeStr").val()
 		},
 		onLoadSuccess:function(data){//根据状态限制checkbox
 			
@@ -94,39 +94,31 @@ $(function(){
  * 新增
  * @param id
  */
-function to_adduserCard(id,status){
-	if (1 == status) {
-		$.messager.alert("消息", "当前卡号已激活不能修改");
-		return;
-	}
-	to_edituserCard(id);
+function to_addloanDict(){
+	to_editloanDict('');
 }
 
 /**
- * 激活
+ * 删除
  */
 
-function to_activeUserCard(id,status) {
+function to_delLoanDict(id) {
 	if (!id) {
 		$.messager.alert("消息", "id不能为空");
 		return;
 	}
-	if (1 == status) {
-		$.messager.alert("消息", "当前卡号已激活");
-		return;
-	}
-	$.messager.confirm("消息", "确认重新激活吗?", function(r) {
+	$.messager.confirm("消息", "确认删除吗，删除后不可恢复", function(r) {
 		if (r) {
 			$.ajax({
-				url : httpUrl + "/userCard/activeUserCard.html?id=" + id,
+				url : httpUrl + "/loandict/deleteLoanDict.html?id=" + id,
 				type : "post",
 				data : {},
 				success : function(data) {
 					if (data.ret == 1) {
-						$.messager.alert("消息", "激活成功");
-						$('#tt_UserCard').datagrid('reload');
+						$.messager.alert("消息", "删除成功");
+						$('#tt_LoanDict').datagrid('reload');
 					} else {
-						$.messager.alert("消息", "激活失败，请稍后再试");
+						$.messager.alert("消息", "删除失败，请稍后再试");
 					}
 				}
 			});
@@ -139,14 +131,10 @@ function to_activeUserCard(id,status) {
  * 编辑
  * @param id
  */
-function to_edituserCard(id){
-	if (!id) {
-		$.messager.alert("消息", "请选择一种旅游卡");
-		return false;
-	}
+function to_editloanDict(id){
 	
-	var url = httpUrl+"/userCard/addUserCard.html?&rand=" + Math.random()+"&id="+id;
-	$('#editUserCardDiv').dialog({
+	var url = httpUrl+"/loandict/addLoanDict.html?&rand=" + Math.random()+"&id="+id;
+	$('#editLoanDictDiv').dialog({
 		title: "新增",
 		width: 760,
 		height: 500,
@@ -158,31 +146,31 @@ function to_edituserCard(id){
 		toolbar:[
 				{
 					iconCls:"icon-save",text:"保存",
-					handler:save_UserCard
+					handler:save_LoanDict
 				},
 				{
 					iconCls:"icon-no",text:"关闭",
 					handler:function(){
-						$("#editUserCardDiv").dialog("close");
+						$("#editLoanDictDiv").dialog("close");
 				}
 		}]
 	});
 }
 
-function save_UserCard(){
-	var formdata = $("#editUserCardForm").serialize();
+function save_LoanDict(){
+	var formdata = $("#editLoanDictForm").serialize();
 	console.info("formdata");
 	console.info(formdata);
-	var  url =httpUrl+"/userCard/saveUserCard.html?&rand=" + Math.random();
+	var  url =httpUrl+"/loandict/saveLoanDict.html?&rand=" + Math.random();
 	 $.ajax({   
 		 type: 'POST',
 		 dataType: 'json',
 		 url: url,  
-		 data:$("#editUserCardForm").serialize(),
+		 data:formdata,
 		 success: function(data){ 
 			 if(data.code ==="0"){
-				 $("#editUserCardDiv").dialog("close");
-				 $('#tt_UserCard').datagrid('reload');
+				 $("#editLoanDictDiv").dialog("close");
+				 $('#tt_LoanDict').datagrid('reload');
 				 $.messager.alert("提示","操作成功","info");
 			 }else{
 				 $.messager.alert("提示","操作失败","error");
@@ -194,7 +182,7 @@ function save_UserCard(){
 
 function reloadDataGrid()
 {
-	$("tt_UserCard").datagrid("reload");
+	$("tt_LoanDict").datagrid("reload");
 }
 
 
@@ -208,11 +196,11 @@ window.onresize = function(){
 };
 //改变表格和查询表单宽高
 function domresize(){
-	$('tt_UserCard').datagrid('resize',{  
-		height:$("#body").height()-$('#search_areaUserCard').height()-5,
+	$('tt_LoanDict').datagrid('resize',{  
+		height:$("#body").height()-$('#search_areaLoanDict').height()-5,
 		width:$("#body").width()
 	});
-	$('#search_areaUserCard').panel('resize',{
+	$('#search_areaLoanDict').panel('resize',{
 		width:$("#body").width()
 	});
 	$('#detailLoanDiv').dialog('resize',{  

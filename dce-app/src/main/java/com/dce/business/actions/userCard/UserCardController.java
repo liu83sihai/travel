@@ -267,18 +267,24 @@ public class UserCardController  extends BaseController{
 			return Result.failureResult("当前激活卡已激活!不用再进行激活");
 		}
 		
-		String result = MeituLvUtil.virtualOpen(userCardDo.getUserName(), userCardDo.getMobile(), userCard.getCardNo());
-		int status = 0;
-		String remark = "激活卡失败,失败代码：" + result;
-		if ("1".equals(result)) {
-			status = 1;
+		String remark = "激活卡失败 code=001";
+		
+		int activeResult = userCardService.activeUserCard(userCardDo);
+		
+		if (1 == activeResult) {
 			remark = "激活卡成功";
+			return Result.successResult(remark, userCardDo);
+		}else if(2 == activeResult) {
+			remark = "此卡已激活，不能重复激活";
+			return Result.failureResult(remark);
+		}else if(4 == activeResult) {
+			remark = "缺少参数，激活失败";
+			return Result.failureResult(remark);
+		}else if(3 == activeResult) {
+			remark = "激活失败";
+			return Result.failureResult(remark);
 		}
-		userCardDo.setStatus(status);
-		userCardDo.setRemark(remark);
-		userCardDo.setUpdateDate(new Date(System.currentTimeMillis()));
-		userCardService.updateUserCardById(userCardDo);
-		return Result.successResult(remark, userCardDo);
+		return Result.failureResult(remark);
 	}
 	 
 	

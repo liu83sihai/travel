@@ -47,6 +47,7 @@ import com.dce.business.service.third.IEthereumPlatformService;
 import com.dce.business.service.third.IEthereumService;
 import com.dce.business.service.user.IUserService;
 import com.dce.business.service.user.IUserStaticService;
+import com.dce.business.service.userCard.IUserCardService;
 
 /**
  * 用户资金账户
@@ -82,6 +83,8 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Resource
 	private IWithdrawalsDao withdrawDao;
+	@Resource
+	private IUserCardService userCardService;
 
 	@Value("#{sysconfig['huishang.openAccount.url']}")
 	private String ethereum_blance_url;
@@ -175,6 +178,11 @@ public class AccountServiceImpl implements IAccountService {
 							  userAccountDo.getRemark(),
 							  userAccountDo.getSeqId(),
 							  userAccountDo.getRelevantUser());
+		
+		//增加旅游卡
+		if(AccountType.wallet_active.getAccountType().equalsIgnoreCase(userAccountDo.getAccountType())) {
+			userCardService.batchAddUserCard(userId,userAccountDo.getAmount().intValue());
+		}
 
 		return result;
 	}

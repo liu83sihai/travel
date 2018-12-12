@@ -39,7 +39,7 @@ $(function(){
 	 				{field:"wallet_money",title:"现金余额(元)",width:80,align:"center"},
 	 				{field:"wallet_travel",title:"积分",width:80,align:"center"},
 	 				{field:"wallet_goods",title:"抵用券",width:80,align:"center"},
-	 				{field:"wallet_active",title:"奖励活动(场)",width:80,align:"center",hidden:true}
+	 				{field:"wallet_active",title:"旅游卡",width:80,align:"center",hidden:true}
 	 				/*{field:"wallet_score",title:"流通币钱包",width:80,align:"center"},
 	 				{field:"wallet_cash",title:"现金币钱包",width:80,align:"center"},
 	 				{field:"wallet_release_release",title:"可提币钱包",width:80,align:"center"}

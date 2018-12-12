@@ -3,14 +3,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>字典管理</title>
+<title>订单</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache" />
 <jsp:include page="../common_easyui_cus.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/icons.css'/>" />
 <script type="text/javascript" src="<c:url value='/js/common/js/jquery-easyui-1.4.1/extension/jquery-easyui-datagridview/datagrid-detailview.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/dict/dict.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/common/formatter.js?v=1.0'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/dict/dict.js?v=${jsversion}'/>"></script>
+
 <style type="text/css">
 .tdfont{
 	font-size: 12px;
@@ -21,9 +21,9 @@
 
 <div id="body" region="center" > 
   <!-- 查询条件区域 -->
-	<div id="search_areaLoanDict"  class="easyui-panel" >
+	<div id="search_area"  class="easyui-panel" >
 		<div id="conditon" >
-			<form id="searchloanDictForm" style="margin-top:7px;margin-left:5px;" >
+			<form id="searchForm" style="margin-top:7px;margin-left:5px;" >
 			      <table border="0">
 			        <tr>
 			          <td class="tdfont">查询条件:
@@ -42,11 +42,11 @@
 	</div>
   
   	<!-- 数据表格区域 -->
-  <div id="tt_LoanDict"></div>
+  <div id="tt"></div>
   
 </div>
 
-  <div id="editLoanDictDiv"></div>  
+  <div id="editDiv"></div>  
 </body>
 
 </html>

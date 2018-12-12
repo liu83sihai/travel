@@ -57,57 +57,42 @@ public class UserCardServiceImpl implements IUserCardService {
 	}
 	
 	/**
+	 * @return 1 成功，2 已激活  3 激活失败，4 缺少参数
 	 * 激活卡
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public int activeUserCard(UserCardDo userCardDo){
-		logger.debug("addUserCard: "+userCardDo);
+		logger.debug("activeUserCard: "+userCardDo);
 		try {
-			//向第三方提交
-			String userName = userCardDo.getUserName();
-			String mobile = userCardDo.getMobile();
-			String orderNo = userCardDo.getOrderNo();
-			Integer userId =userCardDo.getUserId();
 			
-			if(StringUtils.isBlank(userName) || StringUtils.isBlank(mobile) 
-					|| StringUtils.isBlank(orderNo) || null == userId ){
+			if( null == userCardDo.getId() ){
 				return 4;
 			}
 			
-			
-			UserCardDo paramUserCard = new UserCardDo();
-			paramUserCard.setOrderNo(orderNo);
-			List<UserCardDo> userCardList = userCardDao.selectUserCard(paramUserCard);
-			//当前订单已存在
-			if(null != userCardList && userCardList.size() > 0){
-				UserCardDo userCard = userCardList.get(0);
-				int status = userCard.getStatus();
-				//已激活
-				if( 1 == status){
-					return 2;
-				}else{ //重新激活
-					
-					String cardNo=userCard.getCardNo();
-					String result = MeituLvUtil.virtualOpen(userName, mobile, cardNo);
-					if( "1".equals(result)){
-						//激活成功,更新用户卡表
-						userCard.setStatus(1);
-						userCard.setUpdateDate(new Date());
-						userCard.setRemark("用户卡激活成功");
-						userCardDao.updateUserCardById(userCard);
-						return 1;
-					}else{
-						userCard.setUpdateDate(new Date());
-						userCard.setRemark("用户卡激活失败,失败原因：" + result);
-						userCardDao.updateUserCardById(userCard);
-						return 3;
-					}
-					
-				}
+			UserCardDo tmpCard = userCardDao.getById(userCardDo.getId());
+			//已激活
+			if( 1 == tmpCard.getStatus().intValue()){
+				return 2;
 			}
 			
-			return userCardDao.addUserCard(userCardDo);
+			
+			String result = MeituLvUtil.virtualOpen(userCardDo.getUserName(), userCardDo.getMobile(), tmpCard.getCardNo());
+			int status = 0;
+			String remark = "激活卡失败,失败代码：" + result;
+			if ("1".equals(result)) {
+				status = 1;
+				remark = "激活卡成功";
+			}else {
+				remark="用户卡激活失败,失败原因：" + result;
+			}
+			
+			tmpCard.setStatus(status);
+			tmpCard.setRemark(remark);
+			tmpCard.setUpdateDate(new Date(System.currentTimeMillis()));
+			userCardDao.updateUserCardById(tmpCard);
+			return 1;
+			
 		}catch(Exception e) {
 			logger.error("激活卡失败:"+userCardDo);
 			logger.error(e);
@@ -117,28 +102,22 @@ public class UserCardServiceImpl implements IUserCardService {
 	
 	
 	/**
+	 * 状态  1 已激活，0待激活，2已赠送，3 已过期
 	 * 新增
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public int addUserCard(UserCardDo newUserCardDo){
 		logger.debug("addUserCard: "+newUserCardDo);
-		//向第三方提交
 		
 		//新增激活卡
-		String cardNo = genUIDCode(newUserCardDo.getUserId());
-		String result = MeituLvUtil.virtualOpen(newUserCardDo.getUserName(), newUserCardDo.getMobile(), cardNo);
-		int status = 0;
-		String remark = "激活卡失败,失败代码："+result;
-		if( "1".equals(result)){
-			status = 1;
-			remark = "激活卡成功";
+		if(StringUtils.isBlank(newUserCardDo.getCardNo())){
+			String cardNo = genUIDCode(newUserCardDo.getUserId());
+			newUserCardDo.setCardNo(cardNo);
 		}
-		newUserCardDo.setCardNo(cardNo);
-		newUserCardDo.setStatus(status);
-		newUserCardDo.setRemark(remark);
+		newUserCardDo.setStatus(0);
+		newUserCardDo.setRemark("待激活");
 		newUserCardDo.setCreateDate(new Date());
-		
 		return userCardDao.addUserCard(newUserCardDo);
 	}
 	
@@ -185,4 +164,15 @@ public class UserCardServiceImpl implements IUserCardService {
         Random rad = new Random();
         return rad.nextInt(1000) + "";
     }
+
+	@Override
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public void batchAddUserCard(Integer userId, int qty) {
+		for(int i = 0 ; i < qty;i++) {
+			UserCardDo newUserCardDo = new UserCardDo();
+			newUserCardDo.setUserId(userId);
+			this.addUserCard(newUserCardDo );			
+		}
+		
+	}
 }

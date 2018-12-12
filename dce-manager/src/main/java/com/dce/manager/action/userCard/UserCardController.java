@@ -101,6 +101,9 @@ public class UserCardController extends BaseAction{
                 UserCardDo usercardDo = userCardService.getById(Integer.valueOf(id));
                 if(null != usercardDo){
                     modelMap.addAttribute("usercard", usercardDo);
+                }else {
+                	logger.error("无效的卡id");
+                    throw new BusinessException("无效的卡id");
                 }
             }
             return "userCard/addUserCard";
@@ -125,17 +128,10 @@ public class UserCardController extends BaseAction{
         logger.info("----saveUserCard------");
         try{
             Integer id = usercardDo.getId();
-            Long userId = new Long(this.getUserId());
-            
             int i = 0;
             if (id != null && id.intValue()>0) {
-            	 //usercardDo.setModifyName(this.getUserName() + ":" + userId);
-            	//usercardDo.setModifyDate(new Date(System.currentTimeMillis()));;
                 i = userCardService.updateUserCardById(usercardDo);
             } else {
-//				usercardDo.setCreateName(this.getUserName() + ":" + userId);
-//				usercardDo.setCreateDate(new Date(System.currentTimeMillis()));
-//				usercardDo.setStatus(1);
                 i = userCardService.addUserCard(usercardDo);
             }
 
@@ -154,10 +150,10 @@ public class UserCardController extends BaseAction{
     /**
      * 删除
      */
-    @RequestMapping("/deleteUserCard")
-    public void deleteUserCard(String id,HttpServletRequest request,
+    @RequestMapping("/activeUserCard")
+    public void activeUserCard(String id,HttpServletRequest request,
             HttpServletResponse response) {
-        logger.info("----deleteusercard----");
+        logger.info("----activeUserCard----");
          try{
              if (StringUtils.isBlank(id) || !id.matches("\\d+")) {
             	 logger.info(id);
@@ -169,7 +165,7 @@ public class UserCardController extends BaseAction{
              int ret = userCardService.activeUserCard(uc);
              ResponseUtils.renderJson(response, null, "{\"ret\":" + ret + "}");
          }catch(Exception e){
-             logger.error("删除异常",e);
+             logger.error("激活失败",e);
              ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
          }
      }

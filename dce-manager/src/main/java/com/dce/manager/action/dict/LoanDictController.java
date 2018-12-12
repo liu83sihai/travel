@@ -1,130 +1,149 @@
-
 package com.dce.manager.action.dict;
 
-import java.util.Map;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
-import javax.annotation.Resource;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.ui.Model;
-
+import com.dce.business.common.exception.BusinessException;
+import com.dce.business.common.result.Result;
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.page.NewPagination;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.page.PageDoUtil;
 import com.dce.business.service.dict.ILoanDictService;
-import com.dce.business.common.result.Result;
-
-import com.dce.business.common.exception.BusinessException;
 import com.dce.manager.action.BaseAction;
-import com.dce.manager.util.ResponseUtils;
-
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
 @RequestMapping("/loandict")
 public class LoanDictController extends BaseAction{
-	@Resource
-	private ILoanDictService loandictService;
 
-	/**
-     * 去列表页面
+
+    @Autowired
+    private ILoanDictService loanDictService;
+
+    /**
+     * 去数据字典的列表页面
      * @param model
      * @return
      */
     @RequestMapping("/index")
-    public String index(Model model){
+    public String list(Model model){
+        logger.info("dict list");
         return "dict/listLoanDict";
     }
-	
-	@RequestMapping("/listLoanDict")
-    public void listLoanDict(NewPagination<LoanDictDo> pagination,
-    							  ModelMap model,
-    							  HttpServletResponse response) {
 
-        logger.info("----listLoanDict----");
+
+    /**
+     * 查询数据字典做页面的列表
+     * @param response
+     */
+    @RequestMapping("/combox")
+    public void agentTypeList( HttpServletRequest request,HttpServletResponse response){
         try{
-            PageDo<LoanDictDo> page = PageDoUtil.getPage(pagination);
-            String name = getString("name");
-            Map<String,Object> param = new HashMap<String,Object>();
-            if(StringUtils.isNotBlank(name)){
-                param.put("name",name);
-                model.addAttribute("name",name);
+            String code = this.getString(request, "dictCode");
+            LoanDictDtlDo chooseDtl = new LoanDictDtlDo();
+            chooseDtl.setCode("");
+            chooseDtl.setName("请选择");
+            chooseDtl.setRemark("请选择");
+            List<LoanDictDtlDo> dictDtlLst = null;
+            if(StringUtils.isNotBlank(code)){
+                dictDtlLst = loanDictService.queryDictDtlListByDictCode(code);
+            }else{
+                dictDtlLst = new ArrayList<LoanDictDtlDo>(1);
             }
-            
-            page = loandictService.queryListPage(param,page);
-            
-            pagination = PageDoUtil.getPageValue(pagination, page);
-            outPrint(response, JSONObject.toJSON(pagination));
+            dictDtlLst.add(0, chooseDtl);
+            outPrint(response, JSONObject.toJSON(dictDtlLst));
         }catch(Exception e){
-            logger.error("查询清单异常",e);
-            throw new BusinessException("系统繁忙，请稍后再试");
+            logger.error("查询数据字典做页面的列表异常",e);
         }
     }
-	
-	
-	  
+
     /**
-     * 编辑页面
+     * 查询数据字典明细
      *
      * @return
      */
-    @RequestMapping("/addLoanDict")
-    public String addLoanDict(String id, ModelMap modelMap, HttpServletResponse response) {
-        logger.info("----addLoanDict----");
+    @RequestMapping("/listDictDetail")
+    public void listDictDetail(ModelMap model,HttpServletResponse response) {
+
+        logger.info("----listDictDetail----");
+        try{
+            String dictId = getString("dictId");
+            if(StringUtils.isNotBlank(dictId)){
+                List<LoanDictDtlDo> dictDetaiList = loanDictService.getDictDetailByDictId(Long.valueOf(dictId));
+                outPrint(response, JSONObject.toJSON(dictDetaiList));
+            }else{
+                outPrint(response, JSONObject.toJSON(Collections.EMPTY_LIST));
+            }
+        }catch(Exception e){
+            logger.error("查询数据字典明细异常",e);
+            throw new BusinessException("系统繁忙，请稍后再试");
+        }
+    }
+
+    /**
+     * 查询清单
+     *
+     * @return
+     */
+    @RequestMapping("/listDict")
+    public void listDict(NewPagination<LoanDictDo> pagination,ModelMap model,HttpServletResponse response) {
+
+        logger.info("----listDict----");
+        try{
+            PageDo<LoanDictDo> page = PageDoUtil.getPage(pagination);
+            String dictName = getString("searchStr");
+            Map<String,Object> param = new HashMap<String,Object>();
+            if(StringUtils.isNotBlank(dictName)){
+                param.put("name", "%"+dictName+"%");
+                model.addAttribute("searchStr",dictName);
+            }
+            String dictCode = getString("searchCodeStr");
+            if(StringUtils.isNotBlank(dictCode)){
+                param.put("code", "%"+dictCode+"%");
+                model.addAttribute("searchCodeStr",dictCode);
+            }
+            page = loanDictService.queryListPage(param, page);
+            pagination = PageDoUtil.getPageValue(pagination, page);
+            outPrint(response, JSONObject.toJSON(pagination));
+        }catch(Exception e){
+            logger.error("数据字典 查询清单异常",e);
+            throw new BusinessException("系统繁忙，请稍后再试");
+        }
+    }
+
+    /**
+     * 数据字典编辑页面
+     *
+     * @return
+     */
+    @RequestMapping("/addDict")
+    public String addDict(String id, ModelMap modelMap, HttpServletResponse response) {
+        logger.info("----addDict----");
         try{
             if(StringUtils.isNotBlank(id)){
-                LoanDictDo loandictDo = loandictService.getDictById(Integer.valueOf(id));
-                if(null != loandictDo){
-                	
-                	 List<LoanDictDtlDo> ldDtl =loandictService.getDictDetailByDictId(Long.valueOf(id));
-                	 for (LoanDictDtlDo ldd : ldDtl) {
-						String name = ldd.getName();
-						String code = ldd.getCode();
-						if(name.equals("travelCard")){
-							 modelMap.addAttribute("travelCard", code);
-							 
-						}else if(name.equals("travelLine")){
-							modelMap.addAttribute("travelLine", code);
-							
-						}else if(name.equals("pointGood")){
-							modelMap.addAttribute("pointGood", code);
-							
-						}else if(name.equals("vipGood")){
-							modelMap.addAttribute("vipGood", code);
-							
-						}else if(name.equals("supplierSale")){
-							modelMap.addAttribute("supplierSale", code);
-						}
-					}
-                    modelMap.addAttribute("loandict", loandictDo);
+                LoanDictDo dictDo = loanDictService.getDictById(Long.valueOf(id));
+                if(null != dictDo){
+                    modelMap.addAttribute("dictDo", dictDo);
                 }
             }
-            return "dict/addLoanDict";
+            return "/dict/addLoanDict";
         }catch(Exception e){
             logger.error("跳转到数据字典编辑页面异常",e);
             throw new BusinessException("系统繁忙，请稍后再试");
@@ -133,104 +152,73 @@ public class LoanDictController extends BaseAction{
     }
 
     /**
-     * 保存更新
+     * 数据字典保存更新
      *
      * @return
-     * @date: 2018年10月21日 12:49:05
+     * @author: huangzlmf
+     * @date: 2015年4月21日 12:49:05
      */
-    @RequestMapping("/saveLoanDict")
+    @RequestMapping("/saveDict")
     @ResponseBody
-    public void saveLoanDict(LoanDictDo loandictDo, 
-    							  HttpServletRequest request, 
-    							  HttpServletResponse response) {
-    	logger.info("----saveLoanDict------");
-    	String travelCard = getString("travelCard");
-    	String travelLine = getString("travelLine");
-    	String pointGood = getString("pointGood");
-    	String vipGood = getString("vipGood");
-    	String supplierSale = getString("supplierSale");
+    public void saveDict(LoanDictDo dictDo, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("----saveDict------");
         try{
-        	Long id = loandictDo.getId();
-            Long userId = new Long(this.getUserId());
-            
             int i = 0;
+            Long id = dictDo.getId();
+            Long userId = new Long(this.getUserId());
+            dictDo.setCreateUserId(userId);
+            dictDo.setUpdateUserId(userId);
             if (id != null && id.intValue()>0) {
-            	 loandictDo.setUpdateUserId(userId);
-            	loandictDo.setUpdateTime(new Date(System.currentTimeMillis()));;
-                i = loandictService.updateDict(loandictDo);
+                i = loanDictService.updateDict(dictDo);
             } else {
-				loandictDo.setCreateUserId(userId);
-				loandictDo.setUpdateUserId(userId);
-	            loandictDo.setUpdateTime(new Date(System.currentTimeMillis()));
-				loandictDo.setCreateTime(new Date(System.currentTimeMillis()));
-				loandictDo.setStatus("T");
-                i = loandictService.addDict(loandictDo);
-                
-                LoanDictDo newLoandict = loandictService.getLoanDict(loandictDo.getCode());
-                id = newLoandict.getId();
+                i = loanDictService.addDict(dictDo);
             }
 
             if (i <= 0) {
-                outPrint(response,this.toJSONString(Result.failureResult("操作失败")));
+                outPrint(response, JSONObject.toJSON(Result.failureResult("保存出错")));
                 return;
             }
-            //写入明细表 先删后加
-           if(id >0){
-        	   loandictService.deleteByDictId(id);
-        	   LoanDictDtlDo ldDo = new LoanDictDtlDo();
-        	   ldDo.setCode(travelCard);
-        	   ldDo.setName("travelCard");
-        	   ldDo.setDictId(id);
-        	   ldDo.setStatus("T");
-        	   ldDo.setRemark("商品品类付款方式");
-        	   loandictService.addDictDtl(ldDo);
-        	   
-        	   ldDo.setCode(travelLine);
-        	   ldDo.setName("travelLine");
-        	   loandictService.addDictDtl(ldDo);
-        	   
-        	   ldDo.setCode(pointGood);
-        	   ldDo.setName("pointGood");
-        	   loandictService.addDictDtl(ldDo);
-        	   
-        	   ldDo.setCode(vipGood);
-        	   ldDo.setName("vipGood");
-        	   loandictService.addDictDtl(ldDo);
-        	   
-        	   ldDo.setCode(supplierSale);
-        	   ldDo.setName("supplierSale");
-        	   loandictService.addDictDtl(ldDo);
-           }
-            
-            
-            outPrint(response, this.toJSONString(Result.successResult("操作成功")));
+            outPrint(response, JSONObject.toJSON(Result.successResult("保存出错")));
         }catch(Exception e){
-            logger.error("保存更新失败",e);
-            outPrint(response, this.toJSONString(Result.failureResult("操作失败")));
+            logger.error("数据字典保存更新异常",e);
+            outPrint(response, JSONObject.toJSON(Result.failureResult("保存出错")));
         }
-        logger.info("----end saveLoanDict--------");
-    }
-    
-    /**
-     * 删除
-     */
-    @RequestMapping("/deleteLoanDict")
-    public void deleteLoanDict(String id,HttpServletRequest request,
-            HttpServletResponse response) {
-        logger.info("----deleteloandict----");
-         try{
-             if (StringUtils.isBlank(id) || !id.matches("\\d+")) {
-            	 logger.info(id);
-                 ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
-                 return;
-             }
-//             int ret = loandictService.deleteById(Integer.valueOf(id));
-             ResponseUtils.renderJson(response, null, "{\"ret\":" + 0 + "}");
-         }catch(Exception e){
-             logger.error("删除异常",e);
-             ResponseUtils.renderJson(response, null, "{\"ret\":-1}");
-         }
-     }
-    
-}
+        logger.info("----end saveDict--------");
 
+
+    }
+
+    /**
+     * 数据字典明细保存更新
+     *
+     * @return
+     * @author: huangzlmf
+     * @date: 2015年4月21日 12:49:05
+     */
+    @RequestMapping("/saveDictDetail")
+    @ResponseBody
+    public void saveDictDetail(LoanDictDtlDo dictDtlDo, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("----saveDictDetail------");
+        try{
+            Map<String, Object> parameterMap = new HashMap<String, Object>();
+            int i = 0;
+            Long id = dictDtlDo.getId();
+            if (id != null && id.intValue()>0) {
+                i = loanDictService.updateDictDtl(dictDtlDo);
+            } else {
+                i = loanDictService.addDictDtl(dictDtlDo);
+            }
+
+            if (i <= 0) {
+                outPrint(response, JSONObject.toJSON(Result.failureResult("字典明细保存出错")));
+                return;
+            }
+            outPrint(response, JSONObject.toJSON(Result.successResult("字典明细保存成功")));
+
+        }catch(Exception e){
+           logger.error("数据字典明细保存更新异常",e);
+            outPrint(response, JSONObject.toJSON(Result.failureResult("字典明细保存出错")));
+        }
+        logger.info("----end saveDictDetail--------");
+    }
+}
