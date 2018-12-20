@@ -130,7 +130,8 @@ public class BarcodeController  extends BaseController{
 		}
 		logger.info("========获取的订单号======：" + outTradeNo);
 
-		Integer userId = getUserId();
+		Integer userId = null;
+				//getUserId();
 		if(userId == null){
 			//throw new BusinessException("无效的用户id");
 			userId = 1;
@@ -170,7 +171,8 @@ public class BarcodeController  extends BaseController{
 		}
 		logger.info("========获取的订单号======：" + outTradeNo);
 		
-		Integer userId = getUserId();
+		Integer userId = null; 
+				//getUserId();
 		if(userId == null){
 			//throw new BusinessException("无效的用户id");
 			userId = 1;
