@@ -116,7 +116,7 @@ public class BarcodeController  extends BaseController{
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/doPay", method = RequestMethod.POST)
+	@RequestMapping(value = "/doPay", method = {RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView doPay() {
 		
 		ModelAndView mav = new ModelAndView("pay/callWxAPP");
