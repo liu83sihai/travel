@@ -444,7 +444,7 @@
 				#{goodsDetailImg},
 			</if>
 			<if test="goodsBanner != null">
-				#{goodsBanner}
+				#{goodsBanner},
 			</if>
 			<if test="postage != null">
 				#{postage}

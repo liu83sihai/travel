@@ -87,6 +87,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/commonIntf/sendMessage",
         												 "/commonIntf/uploadImg",
         												 "/imageCode/",
+        												 "/barcode/",
         												 "/order/notifyUrl" });
         for (String str : list) {
             if (uri.indexOf(str) != -1) {

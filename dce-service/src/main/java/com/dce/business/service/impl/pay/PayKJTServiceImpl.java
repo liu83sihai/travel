@@ -156,4 +156,22 @@ public class PayKJTServiceImpl implements IKJTPayService {
 	}
 	
 	
+	@Override
+	public Result<?> executeBarcodePay(String amount,Integer userId) throws Throwable{
+		
+		String payProductCode = "68";
+		String targetOrganization = "WECHAT";
+		String appId = "";
+		
+		IKJTCommand barcodePayCommand = new BarcodeTradeCommand(IKJTCommand.COMMAND_PAY_instant_trade
+				,"1.0"
+				,payProductCode
+				,amount
+				,appId
+				,targetOrganization
+				,userId);
+		return executeCommand(barcodePayCommand);
+	}
+	
+	
 }

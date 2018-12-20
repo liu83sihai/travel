@@ -46,4 +46,13 @@ public interface IKJTPayService {
 	      	  ,String idNo
 	      	  ,Integer userId) throws Throwable;
 
+	/**
+	 * 微信二维码支付
+	 * @param amount
+	 * @param userId
+	 * @return
+	 * @throws Throwable
+	 */
+	Result<?> executeBarcodePay(String amount, Integer userId) throws Throwable;
+
 }

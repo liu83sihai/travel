@@ -545,7 +545,8 @@ public class OrderServiceImpl implements IOrderService {
 		//现金支付
 		if(order.getCashAmt().compareTo(BigDecimal.ZERO)>0) {
 			// 获取加签后的订单
-			return getSignByPayType(request, response, order);
+			//return getSignByPayType(request, response, order);
+			return payByScanBarcode(request, response, order);
 		}else {
 			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
 			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
@@ -560,6 +561,44 @@ public class OrderServiceImpl implements IOrderService {
 
 	}
 
+	/**
+	 * 根据支付方式获取对应加签后的订单
+	 * payRet.put("payType", "H5");
+	 * payRet.put("payString", "http://app.zjzwly.com/dce-app/mall/paySucc.do");
+	 * 	//"payType" : payType   H5,WX,Ali
+	 * @param request
+	 * @param response
+	 * @param order
+	 * @return
+	 */
+	private Result<Map<String,String>> payByScanBarcode(HttpServletRequest request, 
+														HttpServletResponse response, 
+														Order order)throws Exception {
+		if (order.getOrdertype() == null) {
+			return Result.failureResult("获取的订单支付方式为空！！！");
+		}
+		Map<String,String> payRetMap = new HashMap<String,String>();
+		
+		// 判断支付方式，生成预支付订单
+		if (order.getOrdertype().equals("1")) {
+			// 微信支付
+			Map weixinMap = WeixiPayUtil.getWeixiPayInfo(order.getOrdercode(), "订单微信支付", order.getCashAmt(), 1);
+			payRetMap.put("payType", "WX");
+			payRetMap.put("payString", weixinMap.toString());
+		} else if (order.getOrdertype().equals("2")) { //支付宝支付
+			payRetMap.put("payType", "Ali");
+			String aliPayString =  getAlipayorderStr(order);
+			payRetMap.put("payString",aliPayString);
+		} else if (order.getOrdertype().equals("3")) {//银行卡支付
+			payRetMap.put("payType", "H5");
+			//payRetMap.put("payString","http://app.zjzwly.com/dce-app/bank/bankCardPay.do?orderId="+order.getOrderid());
+			payRetMap.put("payString","http://app.zjzwly.com/dce-app/barcode/toBarcodePay.do?orderId="+order.getOrderid());
+		}else {//账户支付
+			return Result.failureResult("订单需要现金支付，没有给出正确的现金支付方式");
+		}
+		return Result.successResult("支付订单成功", payRetMap);
+	}
+	
 	
 
 	/**

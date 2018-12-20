@@ -87,6 +87,12 @@
 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/gateway-domain-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		
+		<dependency>  
+           <groupId>com.google.zxing</groupId>  
+           <artifactId>javase</artifactId>  
+           <version>2.2</version>  
+       </dependency>
+		
         
 	</dependencies>
 	<build>
