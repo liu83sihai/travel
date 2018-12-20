@@ -1,6 +1,9 @@
 package com.dce.business.service.pay;
 
 import com.dce.business.common.result.Result;
+import com.dce.business.common.thirdpay.BarcodePayMethodBean;
+import com.dce.business.common.thirdpay.BizInfoBean;
+import com.dce.business.common.thirdpay.TradeInfoBean;
 
 public interface IKJTPayService {
 
@@ -53,6 +56,9 @@ public interface IKJTPayService {
 	 * @return
 	 * @throws Throwable
 	 */
-	Result<?> executeBarcodePay(String amount, Integer userId) throws Throwable;
+	Result<?> executeBarcodePay(BarcodePayMethodBean barcodePayBean, 
+								TradeInfoBean tradeInfo, 
+								BizInfoBean bizinfo,
+								Integer userId) throws Throwable;
 
 }

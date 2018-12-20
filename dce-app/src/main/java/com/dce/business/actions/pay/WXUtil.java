@@ -44,7 +44,7 @@ public class WXUtil {
             logger.info("请求微信获取openId返回:"+jsonObject.toJSONString());
             if (null != jsonObject) {
                 wat.setAccessToken(jsonObject.getString("access_token"));
-                wat.setExpiresIn(jsonObject.getInteger("expires_in"));
+                wat.setExpiresIn(jsonObject.getInteger("expires_in")==null?7200:jsonObject.getInteger("expires_in"));
                 wat.setRefeshToken(jsonObject.getString("refresh_token"));
                 wat.setOpenId(jsonObject.getString("openid"));
                 wat.setScope(jsonObject.getString("scope"));

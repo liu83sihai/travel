@@ -1,8 +1,5 @@
 package com.dce.business.actions.common;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,5 +44,28 @@ public class BaseController {
     protected HttpServletRequest getRequest() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return request;
+    }
+    
+    protected final String getIpAddr() {
+        HttpServletRequest request = getRequest();
+        if (request == null) {
+            return "";
+        }
+
+        String ipaddr = request.getHeader("Cdn-Src-Ip");
+        if (StringUtils.isNotBlank(ipaddr)) {
+            return ipaddr;
+        }
+
+        ipaddr = request.getHeader("X-Real-IP");
+        if (StringUtils.isNotBlank(ipaddr)) {
+            return ipaddr;
+        }
+
+        ipaddr = request.getHeader("HTTP_X_FORWARDED_FOR");
+        if (StringUtils.isBlank(ipaddr)) {
+            ipaddr = request.getRemoteAddr();
+        }
+        return ipaddr;
     }
 }

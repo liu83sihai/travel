@@ -102,4 +102,11 @@ public interface IOrderService {
 
 	// 获取订单总金额
 	List<Order> sumAmount();
+
+	/**
+	 * 第三方異步通知的處理
+	 * @param map
+	 * @return
+	 */
+	String thirdPayNotify(Map<String, Object> map);
 }

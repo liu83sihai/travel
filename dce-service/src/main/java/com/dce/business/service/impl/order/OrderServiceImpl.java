@@ -1219,7 +1219,32 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public List<Order> sumAmount() {
-
 		return orderDao.sumAmount();
+	}
+
+	@Override
+	public String thirdPayNotify(Map<String, Object> map) {
+		if(null == map || map.isEmpty()) {
+			return "fail";
+		}
+		/* TRADE_SUCCESS 交易成功，用户付款成功
+  		   TRADE_FINISHED 交易结束，付款金额已结算给商户
+		   TRADE_CLOSED	交易关闭，交易失败
+		*/
+		String tradeStatus = (String)map.get("trade_status");
+		String orderCode = (String) map.get("outer_trade_no");
+		if("TRADE_SUCCESS".equals(tradeStatus) ||"TRADE_FINISHED".equals(tradeStatus)) {
+			String payTime=(String)map.get("gmt_payment");
+			orderPay(orderCode,payTime);
+		}
+		/*
+		else if("TRADE_CLOSED".equals(tradeStatus)) {
+			Order order = new Order();
+			order.setOrdercode(orderCode);
+			order.setPaystatus("2");
+			orderDao.updateByOrderCodeSelective(order);
+		}
+		*/
+		return "success";
 	}
 }

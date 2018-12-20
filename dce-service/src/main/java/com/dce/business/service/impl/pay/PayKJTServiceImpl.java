@@ -12,6 +12,10 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.dce.business.common.result.Result;
+import com.dce.business.common.thirdpay.BarcodePayMethodBean;
+import com.dce.business.common.thirdpay.BizInfoBean;
+import com.dce.business.common.thirdpay.ThirdPayConfig;
+import com.dce.business.common.thirdpay.TradeInfoBean;
 import com.dce.business.common.util.DateUtil;
 import com.dce.business.common.util.HttpUtil;
 import com.dce.business.service.pay.IKJTPayService;
@@ -28,19 +32,6 @@ public class PayKJTServiceImpl implements IKJTPayService {
 	@Resource
 	private ICommandCall kjtCommandCall;
 	
-	//公共配置
-	private static final String charset="UTF-8";
-	private static final String format="JSON";
-	/*
-	private final String partnerId ="200000151629";
-	private final String signType ="RSA";
-	private String kjtUrl = "https://c1gateway.kjtpay.com/recv.do";
-	*/
-	
-	private final String partnerId ="2791359869@qq.com";
-	private final String signType ="RSA";
-	private String kjtUrl = "https://gateway.kjtpay.com/recv.do";
-	
 
 	/**
 	 * 执行 post请求
@@ -52,19 +43,19 @@ public class PayKJTServiceImpl implements IKJTPayService {
 		
 		Map<String, String> param = new HashMap<String,String>();
 		//url编码
-		param.put("biz_content", URLEncoder.encode(requestBase.getBizContent(), charset));
-		param.put("charset", URLEncoder.encode(requestBase.getCharset(), charset));
-		param.put("format", URLEncoder.encode(requestBase.getFormat(), charset));
-		param.put("partner_id", URLEncoder.encode(requestBase.getPartnerId(), charset));
-		param.put("request_no", URLEncoder.encode(requestBase.getRequestNo(), charset));
-		param.put("service", URLEncoder.encode(requestBase.getService(), charset));
-		param.put("sign_type", URLEncoder.encode(requestBase.getSignType(), charset));
-		param.put("timestamp", URLEncoder.encode(requestBase.getTimestamp(), charset));
-		param.put("version", URLEncoder.encode(requestBase.getVersion(), charset));
-		param.put("sign", URLEncoder.encode(requestBase.getSign(), charset));
+		param.put("biz_content", URLEncoder.encode(requestBase.getBizContent(), ThirdPayConfig.charset));
+		param.put("charset", URLEncoder.encode(requestBase.getCharset(), ThirdPayConfig.charset));
+		param.put("format", URLEncoder.encode(requestBase.getFormat(), ThirdPayConfig.charset));
+		param.put("partner_id", URLEncoder.encode(requestBase.getPartnerId(), ThirdPayConfig.charset));
+		param.put("request_no", URLEncoder.encode(requestBase.getRequestNo(), ThirdPayConfig.charset));
+		param.put("service", URLEncoder.encode(requestBase.getService(), ThirdPayConfig.charset));
+		param.put("sign_type", URLEncoder.encode(requestBase.getSignType(), ThirdPayConfig.charset));
+		param.put("timestamp", URLEncoder.encode(requestBase.getTimestamp(), ThirdPayConfig.charset));
+		param.put("version", URLEncoder.encode(requestBase.getVersion(), ThirdPayConfig.charset));
+		param.put("sign", URLEncoder.encode(requestBase.getSign(), ThirdPayConfig.charset));
 		
 		//post
-		String retVal = HttpUtil.httpPost(kjtUrl, param);
+		String retVal = HttpUtil.httpPost(ThirdPayConfig.kjtUrl, param);
 		logger.info("kjt return msg:"+retVal);
 		
 		return retVal;
@@ -76,17 +67,17 @@ public class PayKJTServiceImpl implements IKJTPayService {
 		RequestBase requestBase = kjtCommand.getRequestBase();
 		//加密bizContent字段
 		String bizContent = requestBase.getBizContent();
-		String encryptBizContent = payComponent.encrypt(bizContent, charset);
+		String encryptBizContent = payComponent.encrypt(bizContent, ThirdPayConfig.charset);
 		requestBase.setBizContent(encryptBizContent);
 		
 		//加签
 		String requestNo = UUID.randomUUID().toString();
 		requestNo = requestNo.replace("-", "");  
 		requestBase.setRequestNo(requestNo);
-		requestBase.setCharset(charset);
-		requestBase.setFormat(format);
-		requestBase.setPartnerId(partnerId);
-		requestBase.setSignType(signType);
+		requestBase.setCharset(ThirdPayConfig.charset);
+		requestBase.setFormat(ThirdPayConfig.format);
+		requestBase.setPartnerId(ThirdPayConfig.partnerId);
+		requestBase.setSignType(ThirdPayConfig.signType);
 		requestBase.setTimestamp(DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
 		String sign = payComponent.sign(requestBase);
 		requestBase.setSign(sign);
@@ -155,21 +146,21 @@ public class PayKJTServiceImpl implements IKJTPayService {
 		return executeCommand(instantTradeCommand );
 	}
 	
-	
+
 	@Override
-	public Result<?> executeBarcodePay(String amount,Integer userId) throws Throwable{
+	public Result<?> executeBarcodePay( BarcodePayMethodBean barcodePayBean, 
+										TradeInfoBean tradeInfo,
+										BizInfoBean bizinfo,
+										Integer userId) throws Throwable {
 		
-		String payProductCode = "68";
-		String targetOrganization = "WECHAT";
-		String appId = "";
 		
 		IKJTCommand barcodePayCommand = new BarcodeTradeCommand(IKJTCommand.COMMAND_PAY_instant_trade
 				,"1.0"
-				,payProductCode
-				,amount
-				,appId
-				,targetOrganization
+				, barcodePayBean
+				, tradeInfo
+				, bizinfo
 				,userId);
+		
 		return executeCommand(barcodePayCommand);
 	}
 	
