@@ -55,7 +55,7 @@
 			<input id="sId" type="hidden" value="${sId}"/>
 		</div>
 		<div class="btnbox"><button class="blockbtn" id="submit">确认注册</button></div>
-		<div class="otherbox clearfix"><a href="javascript:;" class="fr" id="toLogin">已有帐号去登录</a></div>
+		<div class="otherbox clearfix"><a href="http://app.zjzwly.com/dce-app/index.html#/login" class="fr" >已有帐号去登录</a></div>
 		<input id="chennelCode" type="hidden" value="${channelCode}" />
 	</div>
 </div>
