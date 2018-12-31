@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd     
+           http://www.springframework.org/schema/context     
+           http://www.springframework.org/schema/context/spring-context-4.0.xsd    
+           http://www.springframework.org/schema/mvc     
+           http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- scan the package and the sub package -->
+	<context:component-scan base-package="com.kjtpay.controller" />
+	
+	<!-- don't handle the static resource -->
+	<mvc:default-servlet-handler />
+	
+	<!-- 配置参数 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+        	<list>
+	            <value>classpath:config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+	<!-- if you use annotation you must configure following setting -->
+	<mvc:annotation-driven />
+	<!-- configure the InternalResourceViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		id="internalResourceViewResolver">
+		<!-- 前缀 -->
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+	<!-- start 编码转换 -->
+	<bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
+	    <property name="supportedMediaTypes">  
+	        <list>  
+	            <value>application/json;charset=UTF-8</value>  
+	        </list>  
+	    </property>  
+	</bean>
+	
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+		    	<constructor-arg value="UTF-8" />
+			</bean>
+			<ref bean="jsonHttpMessageConverter" />
+  		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+	    <property name="mediaTypes" >
+	        <value>
+	            json=application/json
+	            xml=application/xml
+	        </value>
+	    </property>
+	</bean>
+	<!-- end -->
+	
+	
+	
+	<bean name="securityService" class="com.kjtpay.gateway.common.util.security.SecurityService">
+	   <!-- 快捷通公钥 -->
+	   <constructor-arg index="0">
+	      <value>${demo.webapp.root}/cafiles/123.cer</value>
+	   </constructor-arg>
+	   <!-- 商户私钥 -->
+	   <constructor-arg index="1">
+	      <value>${pfxPath}</value>
+	   </constructor-arg>
+	   <!-- 商户私钥密码 -->
+	   <constructor-arg index="2">
+	      <value>${pfxKey}</value>
+	   </constructor-arg>
+	</bean>
+	
+	<bean name="securityService2" class="com.kjtpay.gateway.common.util.security.SecurityService">
+	   <!-- 商户私钥 -->
+	   <constructor-arg index="0">
+	      <value>${privateKey}</value>
+	   </constructor-arg>
+	   <!-- 快捷通公钥 -->
+	   <constructor-arg index="1">
+	      <value>${kjtPublicKey}</value>
+	   </constructor-arg>
+	</bean>
+
+</beans>

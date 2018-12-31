@@ -54,8 +54,13 @@
 			<input  id="suggest" type="text" placeholder="推荐人"   value="${refereeid}" >
 			<input id="sId" type="hidden" value="${sId}"/>
 		</div>
-		<div class="btnbox"><button class="blockbtn" id="submit">确认注册</button></div>
-		<div class="otherbox clearfix"><a href="http://app.zjzwly.com/dce-app/index.html#/login" class="fr" >已有帐号去登录</a></div>
+		<div class="inputbox" style="padding: 15px 15px 15px 0px;">
+			<input  type="checkbox" id="xieyi" style="vertical-align: bottom;padding-left:0px;width:18px;-webkit-appearance: checkbox;display: inline-block;">
+			<label style="margin-left:5px;font-size: 16px;line-height: 20px; height: 20px; display:inline-block;" onclick="javascript:window.location.href='<c:url value='/xieyi.html'/>';">查看推广佣金居间协议</label>
+		</div>
+		<div class="btnbox" style="padding: 0px 0 15px;"><button class="blockbtn" id="submit">确认注册</button></div>
+		<div class="otherbox clearfix"><a href="#" class="fr" >已有帐号去登录</a></div>
+		
 		<input id="chennelCode" type="hidden" value="${channelCode}" />
 	</div>
 </div>
@@ -238,6 +243,11 @@ $(function(){
    //提交注册信息----1
    $submit.on('click', function() {
    	var mobile = $mobile.val();
+   	if($('#xieyi').is(":checked") == false){
+   		HHN.popup("请勾选同意推广佣金居间协议", 'danger');
+   		return false;
+   	}
+   	
    	if(mobile_check(mobile)){
    		var mobileCode = $('#mobileCode').val();
        	if(mobileCode == null || mobileCode == "" || mobileCode.length == 0){//验证码

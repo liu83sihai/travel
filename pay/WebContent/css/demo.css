@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+div{
+	width:96%;
+	position: relative;
+	left: 2%;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+hr{
+	color: menu;
+}
+
+input[type="text"]{
+	width: 98%;
+}
+
+#payMethodSelect,#keyType,#length{
+	background-color: #cce4f9;
+}
+
+.red{
+	color: red;
+}

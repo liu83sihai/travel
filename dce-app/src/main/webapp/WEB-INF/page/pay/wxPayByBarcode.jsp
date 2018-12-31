@@ -14,28 +14,134 @@
 		<title>扫描支付</title>
 		
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="stylesheet" type="text/css" href="<c:url value ='/res/css/public.css' />">
 <link rel="stylesheet" type="text/css" href="<c:url value ='/res/css/modal.css' />">
-<link rel="stylesheet" type="text/css" href="<c:url value ='/res/css/litem.css' />">
 
 <style type="text/css">
-	.header{border: 1px solid #EDEFF2;}
-	.simg{background-size: 100% auto; 
-			background-repeat: no-repeat; 
-			background-image: url("<c:url value ='/barcode/paybarcode.do' />?userId=${userId}&orderId=${orderId}"); }
-	.simg:before{content: ""; 
-				display: block; 
-				padding-top: 200%;}
+	html {
+		font-size: 100%;
+		height: 100%;
+		word-break: break-all;
+	}
+
+	body {
+		font-size: 14px;
+		font-family: Helvetica;
+		margin: 0 auto;
+		max-width: 540px;
+		color: #666;
+		background: #fff;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-text-size-adjust: none;
+		cursor: pointer;
+	}
+	
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	.header, .navbar {
+		position: fixed;
+		left: 0;
+		right: 0;
+		z-index: 8;
+		border: 0 solid #d0cac2;
+	}
+
+	.header .title {
+		text-align: center;
+		font-size: 18px;
+		color: #48423b;
+		position: absolute;
+		left: 75px;
+		right: 75px;
+		top: 15px;
+	}
+	
+	.header {
+		top: 0;
+		background: #fff;
+		height: 20px;
+		line-height: 20px;
+		padding: 15px 20px 13px;
+		border-bottom-width: .5pt;
+		border: 1px solid #EDEFF2;
+    }
+
+	content .i-back, .header .i-back {
+		width: 9px;
+		height: 18px;
+		background-position: 0 0;
+		margin-top: 1px;
+	}
+
+	.content .icon, .header .icon {
+		background: url("");
+		background-size: auto 18px;
+	}
+	.icon {
+		display: inline-block;
+		vertical-align: top;
+	}
+	em, i {
+		font-style: normal;
+	}
+
+	.header .a-fl {
+		float: left;
+		font-size: 1pc;
+		color: #676157;
+	}
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	a:-webkit-any-link {
+		color: -webkit-link;
+		cursor: pointer;
+		text-decoration: underline;
+	}
+
+	.simg{background-size: 100% auto;}
+    .simg:before{content: "";
+                            display: block;
+                            padding-top: 15%;}
+				
+	.rec_btn {
+		width: 90%;
+		/* background: #F7931D; */
+		border-radius: 4px;
+		line-height: 3.5rem;
+		margin: 0px auto 0 auto;
+		text-align: center;
+		font-size: 1.2rem;
+		color: #fff;
+		box-shadow: 1px 8px 50px #F7931D, 1px 1px 1px #fff;
+	}
+	.rec_btn span:nth-child(1) {
+		float: left;
+		background: #F7931D;
+		width: 48%;
+	}
+	
+	.rec_btn span:nth-child(2) {
+		float: right;
+		background: #F7931D;
+		width: 48%;
+	}
+
 </style>
 </head>
 	
 <body>
 	
 		<div class="header">
-			<a class="a-fl" href="<c:url value='/agent/agentIndex.do'/>"><i class="icon i-back"></i></a>
+			<a class="a-fl" href="javascript:;"><i class="icon i-back"></i></a>
 			<p class="title">扫描支付</p>
 		</div>
 		<div id="shareImg" class="simg">
+			<img style="vertical-align: middle;display: inline-block;margin: auto;width: 100%;" src="<c:url value ='/barcode/paybarcode.do' />?userId=${userId}&orderId=${orderId}"></img>
 			<div class="rec_btn" style="position:fixed;bottom:0; width:100%;background: #F7931D;">
 	             	请用微信扫描支付
              </div>
