@@ -50,6 +50,9 @@
         <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
     
+     <!-- 从上下文中获取Bean -->
+    <bean id="springBeanUtil" class="com.dce.business.common.util.SpringBeanUtil" />
+    
     <bean id="exceptionHandler" class="com.dce.business.common.exception.DCEExceptionHandler"/> 
     <bean id="springBeanUtil" class="com.dce.business.common.util.SpringBeanUtil"></bean>
 

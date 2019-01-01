@@ -35,12 +35,6 @@
 		</property>
 	</bean>
 	
-	
-	<bean id="loginFilter" class="com.dce.business.common.filter.LoginFilter">
-	</bean>
-	
-	
-
 	<!-- Support JSON -->
 	<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="objectMapper">

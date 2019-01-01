@@ -12,10 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.alibaba.fastjson.JSON;
@@ -23,14 +19,13 @@ import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.Constants;
+import com.dce.business.common.util.SpringBeanUtil;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.user.IUserService;
 
-public class LoginFilter extends OncePerRequestFilter implements ApplicationContextAware {
+public class LoginFilter extends OncePerRequestFilter {
 	
     private final static Logger logger = Logger.getLogger(LoginFilter.class);
-    
-    private ApplicationContext applicationContext;
     
     private IUserService userService;
     
@@ -153,16 +148,10 @@ public class LoginFilter extends OncePerRequestFilter implements ApplicationCont
     }
 
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-		
-	}
-
 	private IUserService getUserService() {
 		if(userService == null) {
-			synchronized (applicationContext) {
-				this.userService = (IUserService)this.applicationContext.getBean("userService");
+			synchronized (this) {
+				this.userService = (IUserService)SpringBeanUtil.getBean("userService");
 			}
 		}
 		return userService;
