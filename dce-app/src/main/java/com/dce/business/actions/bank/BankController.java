@@ -72,9 +72,9 @@ public class BankController extends BaseController {
     	String ts = request.getParameter(TokenUtil.TS);
         String sign = request.getParameter(TokenUtil.SIGN);
         
-        request.setAttribute(TokenUtil.TS , ts);
-        request.setAttribute(TokenUtil.SIGN , sign);
-        request.setAttribute(TokenUtil.USER_ID , userId);
+        model.addAttribute(TokenUtil.TS , ts);
+        model.addAttribute(TokenUtil.SIGN , sign);
+        model.addAttribute(TokenUtil.USER_ID , userId);
     	
     	//查询是否已绑卡
 		String isDefault = "1";
@@ -82,7 +82,7 @@ public class BankController extends BaseController {
 		BankCardDo bank = null;
 		if(bankLst != null && bankLst.size()>0  ) {
 			bank = bankLst.get(0);
-			request.setAttribute("bank", bank);
+			model.addAttribute("bank", bank);
 		}
 		return bank;
     }
