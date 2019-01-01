@@ -37,7 +37,6 @@
 	
 	
 	<bean id="loginFilter" class="com.dce.business.common.filter.LoginFilter">
-		<property name="userService" ref="userService"></property>
 	</bean>
 	
 	
