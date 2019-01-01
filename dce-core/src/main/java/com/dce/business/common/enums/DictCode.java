@@ -28,7 +28,7 @@ public enum DictCode {
     /**
      * 客户级别
      */
-    KHJB("KHJB"),
+    KHJB("zhidu_ref_level_cfg"),
     /**
      * 以太坊手续费
      */

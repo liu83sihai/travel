@@ -1,7 +1,6 @@
 package com.dce.business.actions.user;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.alibaba.fastjson.JSON;
 import com.dce.business.actions.common.BaseController;
@@ -34,17 +34,18 @@ import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.Base64Coder;
 import com.dce.business.common.util.Constants;
 import com.dce.business.common.util.DataEncrypt;
-import com.dce.business.common.util.MeituLvUtil;
 import com.dce.business.common.util.NumberUtil;
 import com.dce.business.dao.sms.ISmsDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
+import com.dce.business.entity.order.Order;
 import com.dce.business.entity.sms.SmsDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.userCard.UserCardDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.message.INewsService;
+import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserService;
 import com.dce.business.service.user.UserAdressService;
 import com.dce.business.service.userCard.IUserCardService;
@@ -78,6 +79,8 @@ public class UserController extends BaseController {
 	@Resource
 	private IUserCardService userCardService;
 
+	@Resource
+	private IOrderService orderService;
 	
 	
 	/** 
@@ -831,7 +834,47 @@ public class UserController extends BaseController {
 		}
 		return (luhmSum % 10 == 0) ? '0' : (char) ((10 - luhmSum % 10) + '0');
 	}
+	
+	
+	/**
+	 * 个人中心我要升级
+	 * @return
+	 */
+	@RequestMapping(value = "upgrade", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView upgrade() {
+		ModelAndView mv = new ModelAndView("user/upgrade");
+		List<LoanDictDtlDo> KHJB = loanDictService.queryDictDtlListByDictCode(DictCode.KHJB.getCode());
+		UserDo user = (UserDo)this.getRequest().getSession().getAttribute(Constants.LOGIN_USER);
+		mv.addObject("user", user);
+		mv.addObject("upgradeLevelLst", KHJB);
+		return mv;
+	}
 
+	/**
+	 * 我要升级
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/submitUpgrade", method = { RequestMethod.GET, RequestMethod.POST })
+	public String submitUpgrade(HttpServletRequest request,RedirectAttributes redirectAttributes) {
+		String userId = getString("userId");
+		String userLevel = getString("userLevel");
+		logger.info("我要升级等级:userId=" + userId + ",userLevel=" + userLevel);
+		
+		Order order = new Order();
+		order.setRemark("升级");
+		order.setOrderstatus("0");
+		order.setOrdertype("3");
+		order.setProfit(BigDecimal.ZERO);
+		order.setTotalprice(new BigDecimal("5000"));
+		orderService.addOrder(order);
+		
+		redirectAttributes.addAttribute("userId", "userId");
+		redirectAttributes.addAttribute("orderId", order.getOrderid());
+		return "redirect:/barcode/toBarcodePay.do";
+	}
+
+	
 	@RequestMapping(value = "toLevel", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView tosetLevel() {
 		ModelAndView mv = new ModelAndView("jjzd/set_user_level");

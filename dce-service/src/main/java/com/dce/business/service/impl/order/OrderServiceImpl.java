@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,11 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public Integer addOrder(Order order) {
+		if(StringUtils.isBlank(order.getOrdercode())) {
+			// 产生订单编号
+			String orderCode = OrderCodeUtil.genOrderCode(order.getUserid());
+			order.setOrdercode(orderCode);
+		}
 		orderDao.insertSelective(order);
 		return order.getOrderid();
 	}
