@@ -44,14 +44,14 @@ public class TokenUtil {
         */
 
         String token = getToken(userId);
-        String checkSign = md5(userId, ts, uri, token);
+        String checkSign = md5(userId, ts, "", token);
         boolean result = checkSign.equals(sign);
         if (!result) { //记录日志，方便排查原因
         	logger.info("客户端地址："+uri);
             logger.info("用户登录失效， userId:" + userId);
             logger.info("token：" + token);
             logger.info("请求签名：" + sign);
-            logger.info("系统加签：" + checkSign);
+            logger.info("系统加签检查不通过，系统加签：" + checkSign);
         }
 
         return result;

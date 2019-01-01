@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.alibaba.fastjson.JSON;
@@ -19,10 +21,16 @@ import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.Constants;
+import com.dce.business.entity.user.UserDo;
+import com.dce.business.service.user.IUserService;
 
+@Component
 public class LoginFilter extends OncePerRequestFilter {
 	
     private final static Logger logger = Logger.getLogger(LoginFilter.class);
+    
+    @Autowired
+	private IUserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
@@ -36,9 +44,17 @@ public class LoginFilter extends OncePerRequestFilter {
                 return;
             }
 
+            //从session 获取登录用户
             boolean isLogin = checkLoginBySession(request);
+            
             if(isLogin == false) {
             	isLogin = checkLoginByToken(request, response, uri);
+            	//如果session里没有登录用户信息，维护到session
+            	if(isLogin) {
+            		String userId = request.getParameter(TokenUtil.USER_ID);
+            		UserDo loginUser = userService.getUser(Integer.valueOf(userId));
+            		request.getSession().setAttribute(Constants.LOGIN_USER, loginUser);
+            	}
             }
 
             if(isLogin == false) {
@@ -77,7 +93,7 @@ public class LoginFilter extends OncePerRequestFilter {
 		    return false;
 		}
 		//token判断，不加uri加签
-		if (!TokenUtil.checkToken("", Integer.valueOf(userId), ts, sign)) {
+		if (!TokenUtil.checkToken(uri, Integer.valueOf(userId), ts, sign)) {
 		    return false;
 		}
 		return true;
