@@ -29,6 +29,7 @@ public class TokenUtil {
 
     public static boolean checkToken(String uri, Integer userId, String ts, String sign) {
 
+    	/*
         long currentTime = System.currentTimeMillis();
         long requestTime = Long.valueOf(ts);
         System.out.println("currentTime:" + currentTime);
@@ -40,6 +41,7 @@ public class TokenUtil {
             logger.info("失效时间：" + TOKEN_TIMEOUT_TIME);
             return false;
         }
+        */
 
         String token = getToken(userId);
         String checkSign = md5(userId, ts, uri, token);

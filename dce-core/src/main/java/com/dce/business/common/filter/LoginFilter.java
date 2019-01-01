@@ -18,8 +18,10 @@ import com.alibaba.fastjson.JSON;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
+import com.dce.business.common.util.Constants;
 
 public class LoginFilter extends OncePerRequestFilter {
+	
     private final static Logger logger = Logger.getLogger(LoginFilter.class);
 
     @Override
@@ -34,22 +36,16 @@ public class LoginFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String ts = request.getParameter(TokenUtil.TS);
-            String sign = request.getParameter(TokenUtil.SIGN);
-            String userId = request.getParameter(TokenUtil.USER_ID);
-
-            logger.info("token校验， uri:" + uri + "; ts:" + ts + "; sign:" + sign + "; userId:" + userId);
-            if (StringUtils.isBlank(userId) || StringUtils.isBlank(ts) || StringUtils.isBlank(sign)) {
-                print(response, "8888", "用户未登录");
-                return;
-            }
-            //token判断，不加uri加签
-            if (!TokenUtil.checkToken("", Integer.valueOf(userId), ts, sign)) {
-                //未登录
-                print(response, "8888", "登录已过期，请重新登录");
-                return;
+            boolean isLogin = checkLoginBySession(request);
+            if(isLogin == false) {
+            	isLogin = checkLoginByToken(request, response, uri);
             }
 
+            if(isLogin == false) {
+            	print(response, "8888", "无效token,请重新登录");
+     		    return;
+            }
+            
             filterChain.doFilter(request, response);
         } catch (IllegalArgumentException | BusinessException e) {
             logger.error("业务异常：", e);
@@ -59,6 +55,33 @@ public class LoginFilter extends OncePerRequestFilter {
             print(response, Result.failureCode, "系统繁忙，请稍后再试");
         }
     }
+
+	private boolean checkLoginBySession(HttpServletRequest request) {
+		Object loginUser = request.getSession().getAttribute(Constants.LOGIN_USER);
+		if(null == loginUser) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean checkLoginByToken(HttpServletRequest request, 
+									  HttpServletResponse response, 
+									  String uri)throws IOException {
+		
+		String ts = request.getParameter(TokenUtil.TS);
+		String sign = request.getParameter(TokenUtil.SIGN);
+		String userId = request.getParameter(TokenUtil.USER_ID);
+
+		logger.info("token校验， uri:" + uri + "; ts:" + ts + "; sign:" + sign + "; userId:" + userId);
+		if (StringUtils.isBlank(userId) || StringUtils.isBlank(ts) || StringUtils.isBlank(sign)) {
+		    return false;
+		}
+		//token判断，不加uri加签
+		if (!TokenUtil.checkToken("", Integer.valueOf(userId), ts, sign)) {
+		    return false;
+		}
+		return true;
+	}
 
     /**
      * 不需要拦截的uri 

@@ -32,6 +32,7 @@ import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
 import com.dce.business.common.token.TokenUtil;
 import com.dce.business.common.util.Base64Coder;
+import com.dce.business.common.util.Constants;
 import com.dce.business.common.util.DataEncrypt;
 import com.dce.business.common.util.MeituLvUtil;
 import com.dce.business.common.util.NumberUtil;
@@ -263,6 +264,7 @@ public class UserController extends BaseController {
 		map.put("userId", userDo.getId());
 		map.put("certification", userDo.getCertification());
 		map.put("userType", userDo.getUserType());
+		this.getRequest().getSession().setAttribute(Constants.LOGIN_USER, userDo);
 		
 		return Result.successResult("登录成功", map);
 	}

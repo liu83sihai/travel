@@ -113,7 +113,7 @@ public class Constants {
     /**
      * 保存在session的用户对象
      */
-    public static final String USER_ACCOUNT = "userAccount";
+    public static final String LOGIN_USER = "userAccount";
 
     /**
      * 保存在session的第三方用户对象
