@@ -34,6 +34,13 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	<bean id="loginFilter" class="com.dce.business.common.filter.LoginFilter">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	
+	
 
 	<!-- Support JSON -->
 	<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
