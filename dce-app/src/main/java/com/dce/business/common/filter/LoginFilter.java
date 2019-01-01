@@ -107,6 +107,7 @@ public class LoginFilter extends OncePerRequestFilter {
     private boolean isNotFilterUri(String uri) {
         List<String> list = Arrays.asList(new String[] { "/user/login", 
         												 "/user/reg", 
+        												 "/user/logout", 
         												 "/user/toReg", 
         												 "/user/getRegUrl",
         												 "/user/resetpass",
