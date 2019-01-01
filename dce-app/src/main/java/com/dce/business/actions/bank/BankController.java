@@ -68,7 +68,7 @@ public class BankController extends BaseController {
     private BankCardDo makeBankAndCommonParam(HttpServletRequest request,Model model){
     	
     	//app 传来的参数
-    	String userId = request.getParameter(TokenUtil.USER_ID);
+    	Integer userId = this.getUserId();
     	String ts = request.getParameter(TokenUtil.TS);
         String sign = request.getParameter(TokenUtil.SIGN);
         

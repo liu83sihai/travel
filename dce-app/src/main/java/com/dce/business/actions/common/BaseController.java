@@ -7,7 +7,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.dce.business.common.token.TokenUtil;
+import com.dce.business.common.util.Constants;
 import com.dce.business.common.util.StringUtil;
+import com.dce.business.entity.user.UserDo;
 
 public class BaseController {
 	
@@ -38,7 +40,25 @@ public class BaseController {
 
     protected Integer getUserId() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return Integer.valueOf(request.getParameter(TokenUtil.USER_ID));
+        UserDo loginUser = getUserFromSession();
+        if(loginUser != null ) {
+        	return loginUser.getId();
+        }
+        
+        String userId =request.getParameter(TokenUtil.USER_ID);
+        if(StringUtils.isNotBlank(userId)) {
+        	return Integer.valueOf(userId);
+        }
+        return null;
+    }
+    
+    protected UserDo getUserFromSession() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Object  user =   request.getSession().getAttribute(Constants.LOGIN_USER);
+        if(user != null) {
+        	return (UserDo) user;
+        }
+        return null;
     }
     
     protected HttpServletRequest getRequest() {
