@@ -54,7 +54,6 @@
     <bean id="springBeanUtil" class="com.dce.business.common.util.SpringBeanUtil" />
     
     <bean id="exceptionHandler" class="com.dce.business.common.exception.DCEExceptionHandler"/> 
-    <bean id="springBeanUtil" class="com.dce.business.common.util.SpringBeanUtil"></bean>
 
 	<import resource="classpath*:/config/spring-jdbc.xml" />
 	<import resource="classpath*:/config/spring-redis.xml" />
