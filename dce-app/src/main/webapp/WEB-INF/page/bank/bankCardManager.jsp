@@ -167,6 +167,7 @@
 		        <p>未绑定银行卡哦！</p>
 		    </div>
 	    </c:if>
+	    <c:url value='/bank/toAddBankCard.do'/>?ts=${ts}&sign=${sign}&userId=${userId}
 	    <a href="<c:url value='/bank/toAddBankCard.do'/>?ts=${ts}&sign=${sign}&userId=${userId}" class="add-bank-btn center">
 	        <div>
 	            <i></i>

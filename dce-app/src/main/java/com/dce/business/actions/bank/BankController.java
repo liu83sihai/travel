@@ -237,9 +237,9 @@ public class BankController extends BaseController {
     	String ts = request.getParameter(TokenUtil.TS);
         String sign = request.getParameter(TokenUtil.SIGN);
         
-        request.setAttribute(TokenUtil.TS , ts);
-        request.setAttribute(TokenUtil.SIGN , sign);
-        request.setAttribute(TokenUtil.USER_ID , userId);
+        model.addAttribute(TokenUtil.TS , ts);
+        model.addAttribute(TokenUtil.SIGN , sign);
+        model.addAttribute(TokenUtil.USER_ID , userId);
         
     	
     	String isDefault = "1";

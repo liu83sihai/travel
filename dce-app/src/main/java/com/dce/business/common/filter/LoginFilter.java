@@ -12,8 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.alibaba.fastjson.JSON;
@@ -24,13 +26,13 @@ import com.dce.business.common.util.Constants;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.user.IUserService;
 
-@Component
-public class LoginFilter extends OncePerRequestFilter {
+public class LoginFilter extends OncePerRequestFilter implements ApplicationContextAware {
 	
     private final static Logger logger = Logger.getLogger(LoginFilter.class);
     
-    @Autowired
-	private IUserService userService;
+    private ApplicationContext applicationContext;
+    
+    private IUserService userService;
     
     
 
@@ -54,7 +56,7 @@ public class LoginFilter extends OncePerRequestFilter {
             	//如果session里没有登录用户信息，维护到session
             	if(isLogin) {
             		String userId = request.getParameter(TokenUtil.USER_ID);
-            		UserDo loginUser = userService.getUser(Integer.valueOf(userId));
+            		UserDo loginUser = getUserService().getUser(Integer.valueOf(userId));
             		request.getSession().setAttribute(Constants.LOGIN_USER, loginUser);
             	}
             }
@@ -150,11 +152,19 @@ public class LoginFilter extends OncePerRequestFilter {
         pw.close();
     }
 
-    
-    //配置的时候注入需要
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+		
 	}
-    
-    
+
+	private IUserService getUserService() {
+		if(userService != null) {
+			synchronized (userService) {
+				this.userService = (IUserService)this.applicationContext.getBean("userService");
+			}
+		}
+		return userService;
+	}
 }
