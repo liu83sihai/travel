@@ -31,6 +31,8 @@ public class LoginFilter extends OncePerRequestFilter {
     
     @Autowired
 	private IUserService userService;
+    
+    
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
@@ -147,4 +149,12 @@ public class LoginFilter extends OncePerRequestFilter {
         pw.print(JSON.toJSONString(result));
         pw.close();
     }
+
+    
+    //配置的时候注入需要
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+    
+    
 }
