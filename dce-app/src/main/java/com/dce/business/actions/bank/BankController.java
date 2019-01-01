@@ -231,7 +231,16 @@ public class BankController extends BaseController {
     public ModelAndView toBankCardManager(HttpServletRequest request,Model model){
     	
     	ModelAndView mav = new ModelAndView("bank/bankCardManager");
+    	
+    	//app 传来的参数
     	Integer userId = this.getUserId();
+    	String ts = request.getParameter(TokenUtil.TS);
+        String sign = request.getParameter(TokenUtil.SIGN);
+        
+        request.setAttribute(TokenUtil.TS , ts);
+        request.setAttribute(TokenUtil.SIGN , sign);
+        request.setAttribute(TokenUtil.USER_ID , userId);
+        
     	
     	String isDefault = "1";
     	List<BankCardDo>  list = bankCardService.getByUserIdAndIsDefault(Long.valueOf(userId), isDefault);
