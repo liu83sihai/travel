@@ -161,7 +161,7 @@ public class LoginFilter extends OncePerRequestFilter implements ApplicationCont
 
 	private IUserService getUserService() {
 		if(userService == null) {
-			synchronized (userService) {
+			synchronized (applicationContext) {
 				this.userService = (IUserService)this.applicationContext.getBean("userService");
 			}
 		}
