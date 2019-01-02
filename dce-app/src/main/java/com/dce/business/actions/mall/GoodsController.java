@@ -69,7 +69,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {String} hotGoodsList.cateName 商品类别名称
 	 * @apiSuccess {Decimal} hotGoodsList.profit 商品利润
 	 * @apiSuccess {String} hotGoodsList.detailLink 商品详情连接
-	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金
+	 * @apiSuccess {String} hotGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金 6 用户升级
 	 * @apiSuccess {String} hotGoodsList.postage //邮费
 	 * 
 	 * @apiSuccess {Object[]} normalGoodsList  正常商品      
@@ -86,7 +86,7 @@ public class GoodsController extends BaseController {
 	 * @apiSuccess {String} normalGoodsList.cateName 商品类别名称 
 	 * @apiSuccess {Decimal} normalGoodsList.profit 商品利润
 	 * @apiSuccess {String} normalGoodsList.detailLink 商品详情连接
-	 * @apiSuccess {String} normalGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金
+	 * @apiSuccess {String} normalGoodsList.goodsFlag //商品类别 1： 旅游卡， 2： 积分商品， 3： 会员商品 ，4 旅游路线  5 代理商保证金 6 用户升级
 	 * @apiSuccess {String} normalGoodsList.postage //邮费
 	 * @apiSuccessExample Success-Response: 
 	 *  HTTP/1.1 200 OK 

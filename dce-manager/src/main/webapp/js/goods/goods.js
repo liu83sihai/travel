@@ -7,6 +7,7 @@ $(function(){
 		$("#tt_Goods").datagrid('options').url = dataUrl;
 		$("#tt_Goods").datagrid('load',{
 			'title': $("#searchgoodsForm #title").val(),
+			'searchGoodsFlag': $("#searchgoodsForm #searchGoodsFlag").val(),
 			'startDate':$("#searchgoodsForm #startDate").datebox('getValue'),
 			'endDate':$("#searchgoodsForm #endDate").datebox('getValue'),	
 		});
@@ -115,6 +116,7 @@ $(function(){
 		toolbar:toolbar_tt,
 		queryParams:{
 			'title': $("#searchgoodsForm #title").val(),
+			'searchGoodsFlag': $("#searchgoodsForm #searchGoodsFlag").val(),
 			'startDate':$("#searchgoodsForm #startDate").datebox('getValue'),
 			'endDate':$("#searchgoodsForm #endDate").datebox('getValue'),
 		},

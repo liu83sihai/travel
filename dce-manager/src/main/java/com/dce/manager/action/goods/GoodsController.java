@@ -67,6 +67,11 @@ public class GoodsController extends BaseAction {
 	 */
 	@RequestMapping("/index")
 	public String index(Model model) {
+		String goodsFlag = this.getString("goodsFlag");
+		if(StringUtils.isBlank(goodsFlag)) {
+			throw new BusinessException("无效的url");
+		}
+		model.addAttribute("searchGoodsFlag", goodsFlag);
 		return "goods/listGoods";
 	}
 
@@ -84,6 +89,11 @@ public class GoodsController extends BaseAction {
 				param.put("title", title);
 				model.addAttribute("title", title);
 			}
+			String searchGoodsFlag = getString("searchGoodsFlag");
+			if (StringUtils.isNotBlank(searchGoodsFlag)) {
+				param.put("goodsFlag", searchGoodsFlag);
+				model.addAttribute("searchGoodsFlag", searchGoodsFlag);
+			}
 			String startDate = getString("startDate");
 			if (StringUtils.isNotBlank(startDate)) {
 				param.put("startDate", startDate);
@@ -95,8 +105,10 @@ public class GoodsController extends BaseAction {
 				param.put("endDate", endDate);
 				model.addAttribute("endDate", endDate);
 			}
-			page = goodsService.getGoodsPage(param, page);
-			pagination = PageDoUtil.getPageValue(pagination, page);
+			if (StringUtils.isNotBlank(searchGoodsFlag)) {
+				page = goodsService.getGoodsPage(param, page);
+				pagination = PageDoUtil.getPageValue(pagination, page);
+			}
 			outPrint(response, JSONObject.toJSON(pagination));
 		} catch (Exception e) {
 			logger.error("查询清单异常", e);
