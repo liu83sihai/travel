@@ -866,6 +866,7 @@ public class UserController extends BaseController {
 		order.setOrderstatus("0");
 		order.setOrdertype("3");
 		order.setProfit(BigDecimal.ZERO);
+		order.setUserid(Integer.valueOf(userId));
 		order.setTotalprice(new BigDecimal("5000"));
 		orderService.addOrder(order);
 		
