@@ -29,6 +29,7 @@ import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.dce.business.common.alipay.util.AlipayConfig;
+import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
@@ -459,6 +460,34 @@ public class OrderServiceImpl implements IOrderService {
 		orderAdressService.insertSelective(orderAddressDo);
 		return orderAddressDo.getAddressid();
 	}
+	
+	
+	/**
+	 * 	积分商品转换支付方式：改成从积分支付
+	 * @param payLst
+	 * @param chooseGoodsLst
+	 * @return
+	 */
+	private List<OrderPayDetail> getJFPayLst(List<OrderPayDetail> payLst, 
+											 List<OrderDetail> chooseGoodsLst,
+											 Order order) {
+		OrderDetail orderDetail = chooseGoodsLst.get(0);
+		CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
+		if( 2 == goods.getGoodsFlag().intValue()) {
+			if(payLst == null) {
+				payLst = new ArrayList<OrderPayDetail>();
+			}
+			payLst.clear();
+			
+			OrderPayDetail orderPayDetail = new OrderPayDetail();
+			orderPayDetail.setAccountType(AccountType.wallet_travel.name());
+			BigDecimal jifei = order.getTotalprice().subtract(goods.getPostage());
+			orderPayDetail.setPayAmt(jifei);
+			orderPayDetail.setRemark("积分商品用积分兑换");
+			payLst.add(orderPayDetail );			
+		}
+		return payLst;
+	}
 
 	/**
 	 * 若传过来的订单id为空，则重新生成订单
@@ -512,14 +541,20 @@ public class OrderServiceImpl implements IOrderService {
 		order.setOrderstatus("0"); // 未发货状态
 		order.setPaystatus("0"); // 未支付状态
 		order.setOrderDetailList(chooseGoodsLst); // 订单商品明细
-		order.setPayDetailList(payLst);
 		//计算订单，订单总金额，商品总数量，订单利润
 		order.calOrderProfit();
 		
+		//积分商品支付
+		payLst = getJFPayLst(payLst,chooseGoodsLst,order);
+		order.setPayDetailList(payLst);		
+		order.calNonCashAmt();
+		
+		/*
 		Result checkRet =  order.checkPayAmt();
 		if(checkRet.isSuccess() == false) {
 			return checkRet;
 		}
+		*/
 		
 		// 添加订单
 		if(order.getOrderid() != null) {
@@ -536,6 +571,8 @@ public class OrderServiceImpl implements IOrderService {
 		// 添加商品明细
 		order = buyOrder(order, 1, chooseGoodsLst);
 		order = savePayDetail(order, 1, payLst);
+		
+		
 
 		//扣其他支付账户的金额
 		for( OrderPayDetail pDetail : payLst) {
@@ -551,8 +588,8 @@ public class OrderServiceImpl implements IOrderService {
 		//现金支付
 		if(order.getCashAmt().compareTo(BigDecimal.ZERO)>0) {
 			// 获取加签后的订单
-			//return getSignByPayType(request, response, order);
-			return payByScanBarcode(request, response, order);
+			return getSignByPayType(request, response, order);
+			//return payByScanBarcode(request, response, order);
 		}else {
 			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
 			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
@@ -1252,5 +1289,10 @@ public class OrderServiceImpl implements IOrderService {
 		}
 		*/
 		return "success";
+	}
+
+	@Override
+	public List<Order> selectOrderAndDetail(Map<String, Object> queryMap) {
+		return orderDao.selectOrderAndDetail(queryMap);
 	}
 }

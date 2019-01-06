@@ -71,4 +71,11 @@ public interface IOrderDao {
 	
 	//获取订单总金额
 	List<Order> sumAmount();
+
+	/**
+	 *	  订单主从连接查询
+	 * @param queryMap
+	 * @return
+	 */
+	List<Order> selectOrderAndDetail(Map<String, Object> queryMap);
 }

@@ -109,4 +109,11 @@ public interface IOrderService {
 	 * @return
 	 */
 	String thirdPayNotify(Map<String, Object> map);
+
+	/**
+	 *	  订单主从连接查询
+	 * @param queryMap
+	 * @return
+	 */
+	List<Order> selectOrderAndDetail(Map<String, Object> queryMap);
 }

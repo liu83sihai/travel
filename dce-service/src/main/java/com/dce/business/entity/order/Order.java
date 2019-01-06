@@ -358,16 +358,14 @@ public class Order {
 		this.qty = quantity;
 		this.goodsprice = totalprice;
 		this.totalprice = totalprice.add(postage);
-		
-		this.calNonCashAmt();
-		
+				
 	}
 	
 	public BigDecimal getCashAmt() {
 		return this.cashAmt;
 	}
 
-	private void calNonCashAmt() {
+	public void calNonCashAmt() {
 		if(null == this.payDetailList||this.payDetailList.size()<1) {
 			cashAmt = this.totalprice;
 			return;

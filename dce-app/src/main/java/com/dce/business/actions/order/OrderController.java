@@ -37,7 +37,6 @@ import com.dce.business.common.wxPay.util.XMLUtil;
 import com.dce.business.dao.account.IUserAccountDetailDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
-import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
@@ -50,6 +49,7 @@ import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.business.service.impl.order.AlipaymentOrderService;
 import com.dce.business.service.order.IOrderService;
+import com.dce.business.service.order.OrderDetailService;
 import com.dce.business.service.user.IUserService;
 import com.dce.business.service.user.UserAdressService;
 
@@ -60,6 +60,7 @@ public class OrderController extends BaseController {
 
 	@Resource
 	private IOrderService orderService;
+	
 	@Resource
 	private AccountRecordService accountRecordService;
 	@Resource
@@ -167,6 +168,12 @@ public class OrderController extends BaseController {
 		List<Map<String, Object>> cashPayTypeLst = new ArrayList<Map<String,Object>>();
 		OrderDetail orderDetail = chooseGoodsLst.get(0);
 		CTGoodsDo gDo = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
+		
+		//积分商品支付方式
+		if(2 == gDo.getGoodsFlag().intValue()) {
+			return getGoodsPayForJifeng(userId,chooseGoodsLst);
+		}
+		
 		String  payType = gDo.getPayType();
 		if(StringUtils.isNotBlank(payType)) {
 			String[] payArr = payType.split(",");
@@ -198,9 +205,9 @@ public class OrderController extends BaseController {
 		}
 		
 		//含邮费需要添加现金支付
-		if(gDo.getPostage().compareTo(BigDecimal.ZERO)>0 && !payType.contains(AccountType.wallet_bank.getAccountType())) {
+		if(gDo.getPostage().compareTo(BigDecimal.ZERO)>0 && !payType.contains(AccountType.wallet_ALI.getAccountType())) {
 			Map<String, Object> payMap1 = new HashMap<String,Object>();
-			payMap1.put("payCode", AccountType.wallet_bank.getAccountType());
+			payMap1.put("payCode", AccountType.wallet_ALI.getAccountType());
 			payMap1.put("totalAmt", 0);
 			payMap1.put("useableAmt", 0);
 			cashPayTypeLst.add(payMap1);
@@ -213,6 +220,35 @@ public class OrderController extends BaseController {
 		return Result.successResult("获取订单支付方式成功", ret);
 		
 	}
+	
+	/**
+	 * 	积分只支付邮费
+	 * @param userId
+	 * @param chooseGoodsLst
+	 * @return
+	 */
+	private Result<?>  getGoodsPayForJifeng(Integer userId, List<OrderDetail> chooseGoodsLst) {
+		
+		if(null == chooseGoodsLst || chooseGoodsLst.size()<1) {
+			return Result.failureResult("请选择商品");
+		}
+		
+		List<Map<String, Object>> cashPayTypeLst = new ArrayList<Map<String,Object>>();
+		//含邮费需要添加现金支付
+		Map<String, Object> payMap1 = new HashMap<String,Object>();
+		payMap1.put("payCode", AccountType.wallet_ALI.getAccountType());
+		payMap1.put("totalAmt", 0);
+		payMap1.put("useableAmt", 0);
+		cashPayTypeLst.add(payMap1);
+
+		Map<String ,Object> ret = new HashMap<String,Object>();
+		ret.put("remark", "");
+		ret.put("accountPayList", Collections.emptyList());
+		ret.put("cashPayList", cashPayTypeLst);
+		return Result.successResult("获取订单支付方式成功", ret);
+		
+	}
+	
 	
 	/**
 	 * 下单的时候检查支付方式
@@ -533,18 +569,25 @@ public class OrderController extends BaseController {
 		//支付明细
 		List<OrderPayDetail> payLst = convertPayJson(payList);
 		
-		LoanDictDo dictDo = dictService.getLoanDict("checkPay");
-		if(null != dictDo) {
-			if("T".equalsIgnoreCase(dictDo.getRemark())) {
-				boolean isOk = checkPay(Long.valueOf(userId),chooseGoodsLst,payLst);
-				if(false == isOk) {
-					return Result.failureResult("不正确的支付方式！");
-				}
-			}
+//		LoanDictDo dictDo = dictService.getLoanDict("checkPay");
+//		if(null != dictDo) {
+//			if("T".equalsIgnoreCase(dictDo.getRemark())) {
+//				
+//			}
+//		}
+
+		boolean isOk = checkPay(Long.valueOf(userId),chooseGoodsLst,payLst);
+		if(false == isOk) {
+			return Result.failureResult("不正确的支付方式！");
 		}
-
 		
-
+		//如果是爆款的积分商品领过了不能再领
+		boolean isBuy = checkIsBuy(userId,chooseGoodsLst);
+		if(true == isBuy) {
+			return Result.failureResult("已经领过，不能再领！");
+		}
+		
+		
 		// 生成预付单，保存订单和订单明显
 		try {
 			return orderService.saveOrder(payLst,chooseGoodsLst, order, request, response);
@@ -553,7 +596,35 @@ public class OrderController extends BaseController {
 		}
 	}
 
-	
+
+	private boolean checkIsBuy(Integer userId, List<OrderDetail> chooseGoodsLst) {
+		OrderDetail orderDetail = chooseGoodsLst.get(0);
+		
+		CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
+		if( 2 != goods.getGoodsFlag().intValue()) {
+			return false;
+		}
+		//爆款
+		if( 1 != goods.getShopCatId1().intValue()) {
+			return false;
+		}
+		
+		Map<String,Object> queryMap= new HashMap<String,Object>();
+		queryMap.put("goodsId", orderDetail.getGoodsId());
+		queryMap.put("userId", userId);
+		List<Order> orderLst = orderService.selectOrderAndDetail( queryMap);		
+		if(orderLst != null && orderLst.size()>0) {
+			
+			for(Order ord : orderLst) {
+				//已领取，支付成功代表已支付
+				if( "1".equals(ord.getPaystatus())) {
+					return true;
+				}
+			}
+			
+		}
+		return false;
+	}
 
 
 	/**

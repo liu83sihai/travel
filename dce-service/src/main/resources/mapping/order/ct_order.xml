@@ -799,6 +799,8 @@
 		where b.orderId =
 		#{orderId,jdbcType=INTEGER}
 	</select>
+	
+	
 
 	<select id="selectGuadanAmount" parameterType="Map" resultType="Long">
 		SELECT sum(qty) as qty
@@ -842,4 +844,13 @@
 			from ct_order a where a.userId = #{userId} and a.payStatus=1
 		)as tt
 	</select>
+	
+	<select id="selectOrderAndDetail" parameterType="Map" resultMap="orderMapper">
+		select a.*
+			from ct_order a  left join ct_orderdetail d on a.orderId = d.orderId 	
+            where a.payStatus = #{payStatus}
+			  and d.goods_id = #{goodsId}
+			  and a.userId = #{userId}
+	</select>
+	
 </mapper>
