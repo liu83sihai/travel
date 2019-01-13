@@ -70,23 +70,33 @@ public class LoginNoticeController extends BaseController {
     }
 	
 	
+
+	@RequestMapping(value = "/loginNoticeResult", method = { RequestMethod.GET, RequestMethod.POST })
+    public ModelAndView loginNoticeResult() {
+        
+        ModelAndView mav = new ModelAndView("user/loginNoticeResult");
+        String hongbao = this.getString("hongbao");
+        mav.addObject("hongbao", hongbao);
+        return mav;
+    }
+	
+	
 	
 	@RequestMapping(value = "/click", method = RequestMethod.POST)
-	public ModelAndView click() {
+	public Result<?> click() {
 		
-		ModelAndView  noticeresult = new ModelAndView("user/loginNoticeResult");
-		noticeresult.addObject("hongbao", 0);
+		
+		int amt = 0; 
 		Integer userId = this.getUserId();
 		if(userId != null) {
 			UserAccountDo userAccountDo = new UserAccountDo();
 			userAccountDo.setUserId(userId);
-			int amt = getRandAmount();
-			noticeresult.addObject("hongbao", amt);
+			amt = getRandAmount();
 			userAccountDo.setAmount(new BigDecimal(amt));
 			userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
 			accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_SHARED);
 		}
-		return noticeresult ;
+		return Result.successResult("ok", amt) ;
 	}
 	
 	
