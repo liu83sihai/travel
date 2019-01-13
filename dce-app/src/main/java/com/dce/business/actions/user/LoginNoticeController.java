@@ -72,21 +72,23 @@ public class LoginNoticeController extends BaseController {
 	
 	
 	@RequestMapping(value = "/click", method = RequestMethod.POST)
-	public Result<?> login() {
+	public ModelAndView click() {
 		
+		ModelAndView  noticeresult = new ModelAndView("user/loginNoticeResult");
+		noticeresult.addObject("hongbao", 0);
 		Integer userId = this.getUserId();
-		if(userId == null) {
-			return Result.failureResult("请先登录");
+		if(userId != null) {
+			UserAccountDo userAccountDo = new UserAccountDo();
+			userAccountDo.setUserId(userId);
+			int amt = getRandAmount();
+			noticeresult.addObject("hongbao", amt);
+			userAccountDo.setAmount(new BigDecimal(amt));
+			userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
+			accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_SHARED);
 		}
-		UserAccountDo userAccountDo = new UserAccountDo();
-		userAccountDo.setUserId(userId);
-		int amt = getRandAmount();
-		userAccountDo.setAmount(new BigDecimal(amt));
-		userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
-		accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_SHARED);
-		
-		return Result.successResult("恭喜你获得红包:"+amt+"元");
+		return noticeresult ;
 	}
+	
 	
 	private int getRandAmount(){
         Date date = new Date();

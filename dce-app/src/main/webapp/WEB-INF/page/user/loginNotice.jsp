@@ -74,7 +74,7 @@
 	}
 
 	.content .icon, .header .icon {
-		background: url(<c:url value ='/res/images/icon-common.png' />);
+		background: url(<c:url value ='/res/images/icon-common.png?v=11' />);
 		background-size: auto 18px;
 	}
 	.icon {
@@ -131,23 +131,17 @@
 </head>
 	
 <body>
-		<img style="width:100%;height:100%" src="<c:url value ='/images/${imgname}'/>"  onclick="javascript:submitData();">
+		<img style="width:100%;height:100%" src="<c:url value ='/images/${imgname}'/>?v=23"  onclick="javascript:submitData();">
 </body>
 <script type="text/javascript">
        
        function submitData(){
-       	$.ajax({
+       		$.ajax({
                url :'<c:url value="/loginNotice/click.do"/>',
                type : 'post',
                dataType : 'json', //返回数据类型
                success : function(data){
-                   /*请求成功后*/
-                   if(data.code == '0'){	                    	
-                	   HHN.popup(data.msg);
-                	   window.open("about:blank","_self").close();
-                   }else{
-                       HHN.popup(data.msg);
-                   }
+            	   window.open("http://www.baidu.com","_self");
                },
                error : function(){
             	   HHN.popup(data.msg);               
