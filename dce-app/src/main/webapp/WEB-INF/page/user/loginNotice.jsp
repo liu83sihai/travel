@@ -140,8 +140,8 @@
                url :'<c:url value="/loginNotice/click.do"/>',
                type : 'post',
                dataType : 'json', //返回数据类型
-               success : function(data){
-            	   window.open("<c:url value="/loginNotice/loginNotice.do"/>?hongbao=${data.data}","_self");
+               success : function(data){            	   
+            	   window.open("<c:url value="/loginNotice/loginNoticeResult.do"/>?hongbao="+data.data,"_self");
                },
                error : function(){
             	   HHN.popup(data.msg);               
