@@ -111,6 +111,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/user/getRegUrl",
         												 "/user/resetpass",
         												 "/user/shareList",
+        												 "/loginNotice",
         												 "/mall/",
         												 "/travelPath/",
         												 "/aboutUs/",
