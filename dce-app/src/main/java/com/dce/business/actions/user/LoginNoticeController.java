@@ -93,8 +93,11 @@ public class LoginNoticeController extends BaseController {
 			userAccountDo.setUserId(userId);
 			amt = getRandAmount();
 			userAccountDo.setAmount(new BigDecimal(amt));
+			
 			userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
-			accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_SHARED);
+			if(amt > 0 ) {
+				accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_SHARED);
+			}
 		}
 		return Result.successResult("ok", amt) ;
 	}

@@ -480,7 +480,11 @@ public class OrderServiceImpl implements IOrderService {
 			payLst.clear();
 			
 			OrderPayDetail orderPayDetail = new OrderPayDetail();
-			orderPayDetail.setAccountType(AccountType.wallet_travel.name());
+			if(goods.getShopCatId1().intValue() == 1) { //积分商城爆品用红包
+				orderPayDetail.setAccountType(AccountType.wallet_goods.name());
+			}else {
+				orderPayDetail.setAccountType(AccountType.wallet_travel.name());
+			}
 			BigDecimal jifei = order.getTotalprice().subtract(goods.getPostage());
 			orderPayDetail.setPayAmt(jifei);
 			orderPayDetail.setRemark("积分商品用积分兑换");
@@ -579,7 +583,7 @@ public class OrderServiceImpl implements IOrderService {
 			if(pDetail.getPayAmt().compareTo(BigDecimal.ZERO)>0) {
 				UserAccountDo userAccountDo = new UserAccountDo();
 				userAccountDo.setAccountType(pDetail.getAccountType());
-				userAccountDo.setAmount(pDetail.getPayAmt());
+				userAccountDo.setAmount(pDetail.getPayAmt().negate());
 				userAccountDo.setUserId(order.getUserid());
 				accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_GOODS_BUY);
 			}
