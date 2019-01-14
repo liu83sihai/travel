@@ -3,6 +3,7 @@ package com.dce.business.actions.user;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -10,7 +11,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,16 +20,11 @@ import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.result.Result;
-import com.dce.business.dao.sms.ISmsDao;
+import com.dce.business.entity.account.UserAccountDetailDo;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
-import com.dce.business.service.dict.ILoanDictService;
-import com.dce.business.service.message.INewsService;
-import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserService;
-import com.dce.business.service.user.UserAdressService;
-import com.dce.business.service.userCard.IUserCardService;
 
 /**
  * 领红包，签到，广告
@@ -47,22 +42,8 @@ public class LoginNoticeController extends BaseController {
 	private IUserService userService;
 	@Resource
 	private IAccountService accountService;
-	@Resource
-	private INewsService newsService;
-	@Resource
-	private ILoanDictService loanDictService;
-	@Resource
-	private UserAdressService addressService;
-	@Resource 
-	private ISmsDao smsDao;
-	@Value("${regUrl}")
-	private  String regUrl;
-	@Resource
-	private IUserCardService userCardService;
 
-	@Resource
-	private IOrderService orderService;
-	
+
 	/**
 	 * 	随机奖励范围
 	 */
@@ -90,7 +71,7 @@ public class LoginNoticeController extends BaseController {
         mav.addObject("hongbao", hongbao);
         String incomeType = this.getString("incomeType");
         String msg = "恭喜你获得红包";
-        if(IncomeType.TYPE_REGISTER.name().equals(incomeType)) {
+        if(String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType)) {
         	msg="恭喜你获得新人奖红包";
         }
         mav.addObject("msg", msg);
@@ -110,7 +91,7 @@ public class LoginNoticeController extends BaseController {
 		if(userId != null) {
 			UserAccountDo userAccountDo = new UserAccountDo();
 			userAccountDo.setUserId(userId);
-			//如果是当前给他新人奖
+			//如果是当前注册给他新人奖
 			UserDo user = userService.getUser(userId);
 			Date regTime = new Date (user.getRegTime());
 			Date currentDay = new Date();
@@ -119,8 +100,12 @@ public class LoginNoticeController extends BaseController {
 			currentDay = DateUtils.setSeconds(currentDay, 0);
 			currentDay = DateUtils.setMilliseconds(currentDay, 0);
 			
+			Map<String,Object> paraMap = new HashMap<String,Object>();
+			paraMap.put("userId", userId);
+			paraMap.put("incomeType", inTyp.getIncomeType());
+			List<UserAccountDetailDo> accDtlLst = accountService.selectUserAccountDetailByUserId(paraMap);
 			
-			if(regTime.after(currentDay)) {
+			if(regTime.after(currentDay) && accDtlLst.size()<1) {
 				amt = getRandAmount(range2);
 				inTyp = IncomeType.TYPE_REGISTER;
 			}else {
@@ -145,6 +130,5 @@ public class LoginNoticeController extends BaseController {
         Random rand = new Random(timeMill);
         return rand.nextInt(range);
     }
-	
 
 }
