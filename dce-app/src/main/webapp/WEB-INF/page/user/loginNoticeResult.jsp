@@ -54,7 +54,7 @@
 <div class="content">
 	     <div class="empty-tip">
 	        <i></i>
-	        <p>恭喜你获得红包 ：${hongbao }元</p>
+	        <p>${msg} ：${hongbao }元</p>
 	    </div>
 </div>
 </body>

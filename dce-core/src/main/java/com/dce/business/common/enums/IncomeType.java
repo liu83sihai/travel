@@ -124,9 +124,17 @@ public enum IncomeType {
      */
     TYPE_INTEREST(1001, "持币生息"),
     /**
-     * 分享奖
+     * 	分享奖
      */
     TYPE_SHARED(1002, "分享奖"),
+    /**
+     * 	分享奖
+     */
+    TYPE_REGISTER(10021, "新人注册奖励"),
+    /**
+     * 	分享奖
+     */
+    TYPE_HONGBAO(10022, "抢红包"),
     /**
      * 奖金钱包释放
      */

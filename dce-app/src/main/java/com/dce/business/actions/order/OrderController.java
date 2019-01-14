@@ -584,7 +584,7 @@ public class OrderController extends BaseController {
 		//如果是爆款的积分商品领过了不能再领
 		boolean isBuy = checkIsBuy(userId,chooseGoodsLst);
 		if(true == isBuy) {
-			return Result.failureResult("已经领过，不能再领！");
+			return Result.failureResult("不是vip会员，不能再领！");
 		}
 		
 		
@@ -601,7 +601,7 @@ public class OrderController extends BaseController {
 		OrderDetail orderDetail = chooseGoodsLst.get(0);
 		
 		CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
-		if( 2 != goods.getGoodsFlag().intValue()) {
+		if( 3 != goods.getGoodsFlag().intValue()) {
 			return false;
 		}
 		//爆款
@@ -610,18 +610,10 @@ public class OrderController extends BaseController {
 		}
 		
 		Map<String,Object> queryMap= new HashMap<String,Object>();
-		queryMap.put("goodsId", orderDetail.getGoodsId());
 		queryMap.put("userId", userId);
-		List<Order> orderLst = orderService.selectOrderAndDetail( queryMap);		
-		if(orderLst != null && orderLst.size()>0) {
-			
-			for(Order ord : orderLst) {
-				//已领取，支付成功代表已支付
-				if( "1".equals(ord.getPaystatus())) {
-					return true;
-				}
-			}
-			
+		UserDo user = userService.getUser(userId);
+		if(user.getUserLevel().intValue()<1) {
+			return true;
 		}
 		return false;
 	}
