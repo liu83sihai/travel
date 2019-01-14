@@ -494,6 +494,10 @@ function editUser() {
 			iconCls : "icon-save",
 			text : "保存",
 			handler : save_edit
+		},{
+			iconCls : "icon-save",
+			text : "修改推荐人",
+			handler : save_edit_ref
 		}, {
 			iconCls : "icon-no",
 			text : "关闭",
@@ -511,7 +515,6 @@ function save_edit() {
 	var userName = $("#edit_user_login_name").val();
 	var userPassword = $("#edit_user_login_password").val();
 	var twoPassword = $("#edit_user_two_password").val();
-	var refereeUserMobile = $("#edit_user_refereeUserMobile").val();
 	var trueName = $("#edit_trueName").val();
 	var mobile = $("#edit_user_mobile").val();
 	var idnumber = $("#edit_user_idnumber").val();
@@ -529,7 +532,6 @@ function save_edit() {
 			"userName" : userName,
 			"userPassword" : userPassword,
 			"twoPassword" : twoPassword,
-			"refereeUserMobile" : refereeUserMobile,
 			"trueName" : trueName,
 			"mobile" : mobile,
 			"idnumber" : idnumber,
@@ -537,6 +539,32 @@ function save_edit() {
 			"banktype" : banktype,
 			"sex" : sex,
 			"userLevel" : userLevel
+		},
+		success : function(ret) {
+			if (ret.code == 0) {
+				$.messager.alert("成功", ret.msg);
+				$("#editLevelDiv").dialog("close");
+				reloadDataGrid();// 重新加载数据网格
+			} else {
+				$.messager.alert("失败", ret.msg);
+			}
+		}
+	});
+}
+/**
+ * 把页面修改推荐人
+ */
+function save_edit_ref() {
+	var userId = $("#change_level_userId").val();
+	var refereeUserMobile = $("#edit_user_refereeUserMobile").val();
+	
+	$.ajax({
+		url : basePath + "/user/updateUserReferee.html",
+		type : "post",
+		dataType : 'json',
+		data : {
+			"userId" : userId,
+			"refereeUserMobile" : refereeUserMobile
 		},
 		success : function(ret) {
 			if (ret.code == 0) {

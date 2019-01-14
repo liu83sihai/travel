@@ -23,6 +23,10 @@
 		delete from ct_user_parent
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from ct_user_parent
+		where userid = #{userid,jdbcType=INTEGER}
+	</delete>
 	<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dce.business.entity.user.UserParentDo"
 		useGeneratedKeys="true">
 		insert into ct_user_parent (userid, parentid, distance,

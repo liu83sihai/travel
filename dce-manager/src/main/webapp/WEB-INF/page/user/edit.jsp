@@ -38,7 +38,7 @@
 			<td>推荐人:</td>
 			<td><input id="edit_user_refereeUserMobile"
 				class="easyui-validatebox" type="text" name="trueName"
-				value="${user.refereeUserMobile }" readonly="readonly" style="height: 30px;" /></td>
+				value="${user.refereeUserMobile }"  style="height: 30px;" /></td>
 		</tr>
 		<tr>
 			<td>真实姓名:</td>

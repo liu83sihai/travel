@@ -54,4 +54,10 @@ public interface IUserRefereeDao {
 	 */
 	List<UserDo> selectRefUserByUserLevel(@Param("userid") Integer userId,@Param("userLevel") int level);
 
+	/**
+	 * 删除原来的
+	 * @param currentUserId
+	 */
+	void deleteByUserId(Integer userid);
+
 }

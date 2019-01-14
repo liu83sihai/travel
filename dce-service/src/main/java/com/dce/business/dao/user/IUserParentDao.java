@@ -56,4 +56,6 @@ public interface IUserParentDao {
 	Map<String, Object> getYJ(Map<String, Object> params);
 	
 	Map<String, Object> getTodayYJ(Map<String, Object> params);
+
+	void deleteByUserId(Integer userid);
 }

@@ -312,7 +312,8 @@ public class UserController extends BaseAction {
 		String userPassword = getString("userPassword");// 登录密码
 		String twoPassword = getString("twoPassword");// 支付密码
 		String userLevel = getString("userLevel");// 用户等级
-		String refereeUserMobile = getString("refereeUserMobile");// 用户的推荐人
+		//推荐单独修改
+		//String refereeUserMobile = getString("refereeUserMobile");// 用户的推荐人
 		String sex = getString("sex"); // 性别
 		String idnumber = getString("idnumber");// 身份证号
 		String banknumber = getString("banknumber");// 银行卡号
@@ -331,9 +332,7 @@ public class UserController extends BaseAction {
 		logger.info("修改用户信息:banktype=" + banktype);
 
 		UserDo user = new UserDo();
-		if(StringUtils.isNotBlank(refereeUserMobile)){
-			user.setRefereeUserMobile(refereeUserMobile);
-		}
+		
 		user.setId(Integer.parseInt(userId));
 		
 		if (StringUtils.isBlank(userId)) {
@@ -361,24 +360,6 @@ public class UserController extends BaseAction {
 			user.setSex(Integer.valueOf(sex));
 		}
 		
-		// 推荐人关系
-		UserDo ref = null;
-		if (StringUtils.isNotBlank(user.getRefereeUserMobile())) {
-
-			Map<String, Object> referrer = new HashMap<String, Object>();
-			referrer.put("mobile", user.getRefereeUserMobile());
-			List<UserDo> refUserLst = this.userService.selectMobile(referrer);
-			if (refUserLst == null || refUserLst.size() < 1) {
-				outPrint(response, JSON.toJSONString(Result.failureResult("推荐人不存在！")));
-				return;
-			}
-			if(refUserLst.size()>1){
-				outPrint(response, JSON.toJSONString(Result.failureResult("查出多个推荐人！")));
-				return;
-			}
-			ref = refUserLst.get(0);
-			user.setRefereeid(ref.getId());
-		}
 
 		user.setTrueName(trueName);// 姓名
 		user.setMobile(mobile); // 手机号
@@ -411,10 +392,43 @@ public class UserController extends BaseAction {
 	 * 
 	 * @param response
 	 */
-	@RequestMapping(value = "/", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/updateUserReferee", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public void updateUserReferee(Integer userId, Integer refereeId, BindingResult bindingResult) {
+	public void updateUserReferee(HttpServletResponse response) {
+		
+		String userId = getString("userId");// 用户id
+		String refereeUserMobile = getString("refereeUserMobile");// 用户的推荐人
 
+		logger.info("修改用户信息:userId=" + userId);
+		logger.info("新推荐人:refereeUserMobile=" + refereeUserMobile);
+
+		try {
+			// 推荐人关系
+			UserDo ref = null;
+			if (StringUtils.isNotBlank(refereeUserMobile)) {
+	
+				Map<String, Object> referrer = new HashMap<String, Object>();
+				referrer.put("mobile", refereeUserMobile);
+				List<UserDo> refUserLst = this.userService.selectMobile(referrer);
+				if (refUserLst == null || refUserLst.size() < 1) {
+					outPrint(response, JSON.toJSONString(Result.failureResult("推荐人不存在！")));
+					return;
+				}
+				if(refUserLst.size()>1){
+					outPrint(response, JSON.toJSONString(Result.failureResult("查出多个推荐人！")));
+					return;
+				}
+				ref = refUserLst.get(0);
+			}
+			userService.changeRef(Integer.valueOf(userId), refereeUserMobile);
+			outPrint(response, JSON.toJSONString(Result.successResult("推荐人修改成功")));
+		} catch (BusinessException e) {
+			logger.info("充值报错BusinessException:", e);
+			outPrint(response, JSON.toJSONString(Result.failureResult("推荐人修改失败!")));
+		} catch (Exception e) {
+			logger.info("充值报错Exception:", e);
+			outPrint(response, JSON.toJSONString(Result.failureResult("推荐人修改失败!")));
+		}
 	}
 
 	/**

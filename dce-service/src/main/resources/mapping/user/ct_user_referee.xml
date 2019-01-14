@@ -22,6 +22,11 @@
 		ct_user_referee
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from
+		ct_user_referee
+		where userid = #{userid,jdbcType=INTEGER}
+	</delete>
 	<insert id="insert" keyColumn="id" keyProperty="id"
 		parameterType="com.dce.business.entity.user.UserRefereeDo"
 		useGeneratedKeys="true">

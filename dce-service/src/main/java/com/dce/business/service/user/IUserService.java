@@ -199,4 +199,11 @@ public interface IUserService {
 	 */
 	int updateUserByBuy(UserDo userDo);
 
+	/**
+	 * 修改推荐人
+	 * @param currentUserId
+	 * @param newRefUserMobile
+	 */
+	void changeRef(Integer currentUserId, String newRefUserMobile);
+
 }

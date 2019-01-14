@@ -163,6 +163,42 @@ public class UserServiceImpl implements IUserService {
 		return userDao.selectByPrimaryKey(userId);
 	}
 
+	
+	/**
+	 * 维护父节点关系表
+	 * 
+	 * @param userId
+	 * @param parentId
+	 */
+	private void changeUserParent(Integer userId, Integer parentId, Byte lr) {
+
+		// 2、直接父级
+		UserParentDo userParentDo = new UserParentDo();
+		userParentDo.setParentid(parentId);
+		userParentDo.setUserid(userId);
+		userParentDo.setDistance(1);
+		// userParentDo.setPosition(lr.toString());
+		userParentDo.setNetwork(null);
+		userParentDo.setLrDistrict(lr);
+		userParentDao.insertSelective(userParentDo);
+
+		// 3、间接父级
+		Map<String, Object> params = new HashMap<>();
+		params.put("userid", parentId);
+		List<UserParentDo> list = userParentDao.select(params);
+		for (UserParentDo temp : list) {
+			UserParentDo up = new UserParentDo();
+			up.setUserid(userId);
+			up.setParentid(temp.getParentid());
+			up.setDistance(temp.getDistance() + 1);
+			// up.setPosition(getPosition(temp.getPosition(), lr));
+			up.setNetwork(null);
+			up.setLrDistrict(temp.getLrDistrict());
+			userParentDao.insertSelective(up);
+		}
+	}
+	
+	
 	/**
 	 * 维护父节点关系表
 	 * 
@@ -217,6 +253,36 @@ public class UserServiceImpl implements IUserService {
 
 		return "0";
 	}
+	
+	
+	/**
+	 * 维护推荐人关系表
+	 * 
+	 * @param userId
+	 * @param parentId
+	 */
+	private void changeUserReferee(Integer userId, Integer refereeId) {
+
+		// 2、直接推荐人
+		UserRefereeDo userRefereeDo = new UserRefereeDo();
+		userRefereeDo.setUserid(userId);
+		userRefereeDo.setRefereeid(refereeId);
+		userRefereeDo.setDistance(1); // 直接推荐人
+		userRefereeDao.insertSelective(userRefereeDo);
+		
+		// 3、间接推荐人
+		Map<String, Object> params = new HashMap<>();// userid
+		params.put("userid", refereeId);
+		List<UserRefereeDo> list = userRefereeDao.select(params);
+		for (UserRefereeDo temp : list) {
+			UserRefereeDo ur = new UserRefereeDo();
+			ur.setUserid(userId);
+			ur.setRefereeid(temp.getRefereeid()); // 间接推荐人
+			ur.setDistance(temp.getDistance() + 1);
+			userRefereeDao.insertSelective(ur);
+		}
+	}
+	
 
 	/**
 	 * 维护推荐人关系表
@@ -680,6 +746,57 @@ public class UserServiceImpl implements IUserService {
 		// 维护賬戶
 		maintainUserAccount(userDo.getId());
 		return result > 0 ? Result.successResult("service：新增成功!") : Result.failureResult("service：新增失败");
+	}
+
+	
+	@Override
+	public void changeRef(Integer currentUserId, String newRefUserMobile){
+		
+		if (StringUtils.isBlank(newRefUserMobile)) {
+			return;
+		}
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("mobile", newRefUserMobile);
+		List<UserDo> refUserLst = this.selectMobile(params);
+		if (refUserLst == null || refUserLst.size() < 1) {
+			return ;
+		}
+		UserDo ref = refUserLst.get(0);
+		if (ref == null) {
+			return;
+		}
+		
+		// 维护推荐人关系
+		UserDo  currentUser = new UserDo();
+		currentUser.setRefereeid(ref.getId());// 获取用户推荐人id
+		currentUser.setParentid(ref.getId());// 获取上级id
+		currentUser.setId(currentUserId);
+		currentUser.setRefereeUserMobile(newRefUserMobile);
+		this.update(currentUser);
+		
+		changeRef(currentUserId,ref.getId());
+	}
+	
+	public void changeRef(Integer currentUserId, Integer parentId){
+		//删除原来的数据
+		userRefereeDao.deleteByUserId(currentUserId);
+		userParentDao.deleteByUserId(currentUserId);
+		// 维护父节点关系
+		changeUserParent(currentUserId, parentId, Byte.valueOf("0"));
+		// 维护推荐人关系
+		changeUserReferee(currentUserId, parentId);
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("refereeid", currentUserId);
+		List<UserDo> childLst = this.selectUserCondition(map );
+		if(childLst == null || childLst.size()<1) {
+			return;
+		}
+		for(UserDo user :childLst) {
+			changeRef(user.getId(),currentUserId);
+		}
+				
 	}
 
 
