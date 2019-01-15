@@ -20,6 +20,7 @@ import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.DateUtil;
 import com.dce.business.entity.account.UserAccountDetailDo;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.user.UserDo;
@@ -47,7 +48,7 @@ public class LoginNoticeController extends BaseController {
 	/**
 	 * 	随机奖励范围
 	 */
-	private int range1 = 20;
+	private int range1 = 30;
 	private int range2 = 200;
 	
 	
@@ -100,20 +101,27 @@ public class LoginNoticeController extends BaseController {
 			currentDay = DateUtils.setSeconds(currentDay, 0);
 			currentDay = DateUtils.setMilliseconds(currentDay, 0);
 			
-			Map<String,Object> paraMap = new HashMap<String,Object>();
-			paraMap.put("userId", userId);
-			paraMap.put("incomeType", inTyp.getIncomeType());
-			List<UserAccountDetailDo> accDtlLst = accountService.selectUserAccountDetailByUserId(paraMap);
 			
-			if(regTime.after(currentDay) && accDtlLst.size()<1) {
-				amt = getRandAmount(range2);
+			if(regTime.after(currentDay) ) {
 				inTyp = IncomeType.TYPE_REGISTER;
-			}else {
-				amt = getRandAmount(range1);				
+				List<UserAccountDetailDo> accDtlLst = checkClaim(userId, inTyp,null);
+				if(accDtlLst.size()<1) {
+					amt = getRandAmount(range2);
+				}
 			}
-			userAccountDo.setAmount(new BigDecimal(amt));
-			userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
+			
+			if(amt == 0) {
+				inTyp = IncomeType.TYPE_HONGBAO;
+				String currentTime = DateUtil.YYYY_MM_DD.format(currentDay);
+				List<UserAccountDetailDo> accDtlLst = checkClaim(userId, inTyp,currentTime);
+				if(accDtlLst.size()<1) {
+					amt = getRandAmount(range1);
+				}
+			}
+			
 			if(amt > 0 ) {
+				userAccountDo.setAmount(new BigDecimal(amt));
+				userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
 				accountService.updateUserAmountById(userAccountDo , inTyp);
 			}
 		}
@@ -121,6 +129,19 @@ public class LoginNoticeController extends BaseController {
 		ret.put("incomeType", inTyp.getIncomeType());
 		ret.put("amt",amt);
 		return Result.successResult("ok", ret) ;
+	}
+
+
+
+	private List<UserAccountDetailDo> checkClaim(Integer userId, IncomeType inTyp,String date) {
+		Map<String,Object> paraMap = new HashMap<String,Object>();
+		paraMap.put("userId", userId);
+		paraMap.put("incomeType", inTyp.getIncomeType());
+		if(null != date) {
+			paraMap.put("startTime", date);
+		}
+		List<UserAccountDetailDo> accDtlLst = accountService.selectUserAccountDetailByUserId(paraMap);
+		return accDtlLst;
 	}
 	
 	
