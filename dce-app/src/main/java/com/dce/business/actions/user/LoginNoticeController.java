@@ -58,7 +58,13 @@ public class LoginNoticeController extends BaseController {
     public ModelAndView toReg() {
         
         ModelAndView mav = new ModelAndView("user/loginNotice");
-        mav.addObject("imgname", "timg.jpg");
+        String imgname = "timg.png";
+        Integer userId = this.getUserId();
+        if(isNewUser(userId)) {
+        	imgname = "newUser.png";
+        }
+        
+        mav.addObject("imgname", imgname);
         return mav;
     }
 	
@@ -75,9 +81,15 @@ public class LoginNoticeController extends BaseController {
         if(String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType)) {
         	msg="恭喜你获得新人奖红包";
         }
+        
+        if("0".equals(hongbao)) {
+        	msg = "谢谢参与！";
+        }
         mav.addObject("msg", msg);
         return mav;
     }
+	
+	
 	
 	
 	
@@ -93,16 +105,7 @@ public class LoginNoticeController extends BaseController {
 			UserAccountDo userAccountDo = new UserAccountDo();
 			userAccountDo.setUserId(userId);
 			//如果是当前注册给他新人奖
-			UserDo user = userService.getUser(userId);
-			Date regTime = new Date (user.getRegTime());
-			Date currentDay = new Date();
-			currentDay = DateUtils.setHours(currentDay, 0);
-			currentDay = DateUtils.setMinutes(currentDay, 0);
-			currentDay = DateUtils.setSeconds(currentDay, 0);
-			currentDay = DateUtils.setMilliseconds(currentDay, 0);
-			
-			
-			if(regTime.after(currentDay) ) {
+			if(isNewUser(userId)) {
 				inTyp = IncomeType.TYPE_REGISTER;
 				List<UserAccountDetailDo> accDtlLst = checkClaim(userId, inTyp,null);
 				if(accDtlLst.size()<1) {
@@ -112,7 +115,7 @@ public class LoginNoticeController extends BaseController {
 			
 			if(amt == 0) {
 				inTyp = IncomeType.TYPE_HONGBAO;
-				String currentTime = DateUtil.YYYY_MM_DD.format(currentDay);
+				String currentTime = DateUtil.YYYY_MM_DD.format(getCurrentDay());
 				List<UserAccountDetailDo> accDtlLst = checkClaim(userId, inTyp,currentTime);
 				if(accDtlLst.size()<1) {
 					amt = getRandAmount(range1);
@@ -130,9 +133,57 @@ public class LoginNoticeController extends BaseController {
 		ret.put("amt",amt);
 		return Result.successResult("ok", ret) ;
 	}
+	
+	
+	@RequestMapping(value = "/isDisplayHongBao", method = {RequestMethod.GET, RequestMethod.POST})
+	public Result<?> isDisplayHongBao() {	
+		
+		Integer userId = this.getUserId();
+		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
+		
+		if(userId != null) {
+			UserAccountDo userAccountDo = new UserAccountDo();
+			userAccountDo.setUserId(userId);
+			//如果是当前注册给他新人奖
+			if(isNewUser(userId)) {
+				inTyp = IncomeType.TYPE_REGISTER;
+				List<UserAccountDetailDo> accDtlLst = checkClaim(userId, inTyp,null);
+				if(accDtlLst.size()<1) {
+					return Result.successResult("ok");
+				}
+			}
+			
+			 
+			inTyp = IncomeType.TYPE_HONGBAO;
+			String currentTime = DateUtil.YYYY_MM_DD.format(getCurrentDay());
+			List<UserAccountDetailDo> accDtlLst = checkClaim(userId, inTyp,currentTime);
+			if(accDtlLst.size()<1) {
+				return Result.successResult("ok");
+			}
+		}
+		
+		return Result.failureResult("no") ;
+	}
+
+
+	private boolean isNewUser(Integer userId) {
+		UserDo user = userService.getUser(userId);
+		Date regTime = new Date (user.getRegTime());
+		Date currentDay = getCurrentDay();
+		return regTime.after(currentDay);
+	}
 
 
 
+	private Date getCurrentDay() {
+		Date currentDay = new Date();
+		currentDay = DateUtils.setHours(currentDay, 0);
+		currentDay = DateUtils.setMinutes(currentDay, 0);
+		currentDay = DateUtils.setSeconds(currentDay, 0);
+		currentDay = DateUtils.setMilliseconds(currentDay, 0);
+		return currentDay;
+	}
+	
 	private List<UserAccountDetailDo> checkClaim(Integer userId, IncomeType inTyp,String date) {
 		Map<String,Object> paraMap = new HashMap<String,Object>();
 		paraMap.put("userId", userId);

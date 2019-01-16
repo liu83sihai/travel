@@ -54,7 +54,8 @@
 <div class="content">
 	     <div class="empty-tip">
 	        <i></i>
-	        <p>${msg} ：${hongbao }元</p>
+	        <c:if test="${ hongbao eq '0' }"> <p>${msg}</p> </c:if>
+	        <c:if test="${ hongbao ne '0' }"> <p>${msg} ：${hongbao }元</p> </c:if>
 	    </div>
 </div>
 </body>
