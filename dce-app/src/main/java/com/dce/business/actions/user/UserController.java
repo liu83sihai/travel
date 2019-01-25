@@ -161,6 +161,7 @@ public class UserController extends BaseController {
 			return Result.failureResult(errors.get(0).getDefaultMessage());
 		}
 
+		/*
 		//判断验证码
 		SmsDo codeDo = smsDao.getLastIdentifyCode(userDo.getMobile(), "code");
 		if( null == codeDo){
@@ -170,9 +171,9 @@ public class UserController extends BaseController {
 			if(!smsCode.equals(codeDo.getMessage())){
 				return Result.failureResult("验证码错误");
 			}
-			
-			
 		}
+		*/
+		
 		Result<?> result = userService.reg(userDo);
 
 		logger.info("用户注册结果:" + JSON.toJSONString(result));
