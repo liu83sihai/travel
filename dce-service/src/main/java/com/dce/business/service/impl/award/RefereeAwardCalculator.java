@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -19,6 +20,7 @@ import com.dce.business.dao.user.IUserRefereeDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.award.Awardlist;
 import com.dce.business.entity.dict.LoanDictDo;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserRefereeDo;
@@ -78,33 +80,55 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		contextMap.put("order", order);
 		awardContextMap.set(contextMap);
 
+		
+		
+		// 得到奖励配置
+		LoanDictDo awardDict = dictService.getLoanDict("zhidu-ref-total-rate");
+		if (awardDict == null) {
+			throw new BusinessException("没有直推和团队奖现金账户跟积分账户比例配置", "error-refereeAward-001");
+		}
+		String[] awardArr=awardDict.getRemark().split(":");
+		if(awardArr.length<2) {
+			throw new BusinessException("直推和团队奖现金账户跟积分账户比例配置项：zhidu-ref-total-rate异常", "error-refereeAward-002");
+		}
+		BigDecimal moneyRate = new BigDecimal(awardArr[0]);
+		//计算推荐奖和团队奖
+		calRefAndGroupAward(buyer, order, moneyRate);
+		
+		//读加权平均配置
+		List<LoanDictDtlDo> awardAvgDictLst = dictService.queryDictDtlListByDictCode("zhidu-avg-rate");
+		if (awardAvgDictLst == null || awardAvgDictLst.isEmpty()) {
+			throw new BusinessException("加权平均奖金比例配置", "error-refereeAward-002");
+		}
+		Map<String,LoanDictDtlDo> avgRateMap  = awardAvgDictLst.stream().collect(Collectors.toMap(LoanDictDtlDo::getCode, a -> a,(k1,k2)->k1));
+			
+		//董事加权平均
+		dsavgAward(buyer, order, moneyRate,avgRateMap);
+		//总监加权平均
+		zjAvgAward(buyer, order, moneyRate, avgRateMap);
+		
+		logger.warn("结束计算推荐人奖励"+order);
+		
+	}
+
+	//计算推荐奖和团队奖
+	private void calRefAndGroupAward(UserDo buyer, Order order, BigDecimal moneyRate) {
 		// 获取推荐人,5代推荐人
 		Map<String, Object> params = new HashMap<>();// userid
 		params.put("userid", buyer.getId());
 		params.put("maxDistance", 5);
 		List<UserRefereeDo> list = userRefereeDao.select(params);
-		if(list == null || list.size()<1) {
+		if(list == null || list.isEmpty()) {
 			logger.info("找不到推荐人, buyer:"+buyer.getId());
 			return;
 		}
-		
-		// 得到奖励配置
-		LoanDictDo awardDict = dictService.getLoanDict("zhidu-ref-total-rate");
-		if (awardDict == null) {
-			throw new BusinessException("找不到购买者对应的奖励办法，请检查奖励办法的配置", "error-refereeAward-001");
-		}
-		String[] awardArr=awardDict.getRemark().split(":");
-		if(awardArr.length<2) {
-			throw new BusinessException("查奖励配置项：zhidu-ref-total-rate异常", "error-refereeAward-002");
-		}
-		BigDecimal moneyRate = new BigDecimal(awardArr[0]);
-		BigDecimal travelRate = new BigDecimal(awardArr[1]);
-		
+				
+		//推荐人列表
 		UserDo[] refUserArray = buildRefUser(list);
-		int[] rateArray = buildRate(refUserArray);
+		//推荐人对应的分红比例
+		float[] rateArray = buildRate(refUserArray);
 		
 		for (int i = 0 ; i <refUserArray.length;i++) {
-
 			if(rateArray[i] == 0) {
 				logger.info("用户分润比例=0 userId:"+refUserArray[i].getId());
 				continue;
@@ -112,103 +136,110 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 			
 			// 计算奖励金额
 			BigDecimal wardAmount = order.getProfit();
-			BigDecimal rate = new BigDecimal(rateArray[i]/100d);
+			BigDecimal rate = new BigDecimal(rateArray[i]);
 			wardAmount = wardAmount.multiply(rate);
+			if (wardAmount.compareTo(BigDecimal.ZERO) <= 0) {
+				continue;
+			}
 			
-			//50%现金账户， 50%积分账户
+			//奖励金额 按现金账户， 积分账户分
 			BigDecimal moneyAccount = wardAmount.multiply(moneyRate);
 			moneyAccount = new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
 			BigDecimal otherAccount =  wardAmount.subtract(moneyAccount);
 			otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
-			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
-				//现金账户
-				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
-														refUserArray[i].getId(), 
-														AccountType.wallet_money.name());
-				buildAccountRemark(accontMoney);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN);
-				
-				UserAccountDo accont = new UserAccountDo(otherAccount, 
-														 refUserArray[i].getId(), 
-														 AccountType.wallet_travel.name());
-				buildAccountRemark(accont);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
+			IncomeType incomeTp = IncomeType.TYPE_AWARD_JIAJIN;
+			if(i == 0 ) {
+				incomeTp = IncomeType.TYPE_AWARD_REFEREE;
 			}
-		
+			//现金账户
+			UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
+													refUserArray[i].getId(), 
+													AccountType.wallet_money.name());
+			buildAccountRemark(accontMoney);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accontMoney, incomeTp);
+			
+			UserAccountDo accont = new UserAccountDo(otherAccount, 
+													 refUserArray[i].getId(), 
+													 AccountType.wallet_travel.name());
+			buildAccountRemark(accont);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accont, incomeTp);
 			
 		}
+		//end 计算推荐奖和团队奖
+	}
 
+	//计算总监加权平均
+	private void zjAvgAward(UserDo buyer, Order order, BigDecimal moneyRate, Map<String, LoanDictDtlDo> avgRateMap) {
+		//给总监加权平均奖金
+		List<UserDo> dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),7);
+		if(null == dsUserLst||dsUserLst.isEmpty()) {
+			return;
+		}
 		
-		//找董事
+		BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal(avgRateMap.get("7") ==null? "0" : avgRateMap.get("7").getRemark()));
+		if(dsAmt.compareTo(BigDecimal.ZERO) <= 0) {
+			return;
+		}
+		//现金账户，积分账户
+		BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
+		BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
+		moneyAccount =  new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
+		otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
+		
+		for(UserDo ds : dsUserLst) {
+			//现金账户
+			UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
+													ds.getId(), 
+													AccountType.wallet_money.name());
+			buildAccountRemark(accontMoney);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN_AVG);
+			
+			UserAccountDo accont = new UserAccountDo(otherAccount, 
+													 ds.getId(), 
+													 AccountType.wallet_travel.name());
+			buildAccountRemark(accont);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN_AVG);
+		}
+	}
+
+	//计算董事加权平均
+	private void dsavgAward(UserDo buyer, Order order, BigDecimal moneyRate,Map<String,LoanDictDtlDo> avgRateMap) {
+		//給董事加权平均
 		List<UserDo> dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),8);
-		if(null == dsUserLst) {
+		if(null == dsUserLst|| dsUserLst.isEmpty()) {
 			return;
 		}
-		
-		for(UserDo ds : dsUserLst) {
-			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.05"));
-			
-			//50%现金账户， 50%积分账户
-			BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
-			moneyAccount =  new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
-			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
-			otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
-			
-			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
-				//现金账户
-				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
-														ds.getId(), 
-														AccountType.wallet_money.name());
-				buildAccountRemark(accontMoney);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN);
-				
-				UserAccountDo accont = new UserAccountDo(otherAccount, 
-														 ds.getId(), 
-														 AccountType.wallet_travel.name());
-				buildAccountRemark(accont);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
-			}
-		}
-		
-		
-		//找总监
-		dsUserLst = userRefereeDao.selectRefUserByUserLevel(buyer.getId(),7);
-		if(null == dsUserLst) {
+		//总的奖金
+		BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal(avgRateMap.get("8") ==null? "0" : avgRateMap.get("8").getRemark()));
+		if(dsAmt.compareTo(BigDecimal.ZERO) <= 0) {
 			return;
 		}
-		
-		for(UserDo ds : dsUserLst) {
-			BigDecimal dsAmt = order.getProfit().multiply(new BigDecimal("0.03"));
+		//总的奖金按现金账户， 积分账户分
+		BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
+		moneyAccount =  new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
+		BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
+		otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
+		for(UserDo ds : dsUserLst) {		
+			//现金账户
+			UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
+													ds.getId(), 
+													AccountType.wallet_money.name());
+			buildAccountRemark(accontMoney);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN_AVG);
 			
-			//50%现金账户， 50%积分账户
-			BigDecimal moneyAccount = dsAmt.multiply(moneyRate);
-			BigDecimal otherAccount =  dsAmt.subtract(moneyAccount);
-			moneyAccount =  new BigDecimal(CalculateUtils.round(moneyAccount.doubleValue(), 2));
-			otherAccount =  new BigDecimal(CalculateUtils.round(otherAccount.doubleValue(), 2));
-			if (moneyAccount.compareTo(BigDecimal.ZERO) > 0) {
-				//现金账户
-				UserAccountDo accontMoney = new UserAccountDo(moneyAccount, 
-														ds.getId(), 
-														AccountType.wallet_money.name());
-				buildAccountRemark(accontMoney);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accontMoney, IncomeType.TYPE_AWARD_JIAJIN);
-				
-				UserAccountDo accont = new UserAccountDo(otherAccount, 
-														 ds.getId(), 
-														 AccountType.wallet_travel.name());
-				buildAccountRemark(accont);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN);
-			}
+			UserAccountDo accont = new UserAccountDo(otherAccount, 
+													 ds.getId(), 
+													 AccountType.wallet_travel.name());
+			buildAccountRemark(accont);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accont, IncomeType.TYPE_AWARD_JIAJIN_AVG);
 		}
-		
-		logger.warn("结束计算推荐人奖励"+order);
-		
+		//end 董事加权平均
 	}
 
 	private UserDo[] buildRefUser(List<UserRefereeDo> refArray) {
@@ -221,161 +252,112 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		return refUserArray;
 	}
 
-	private int[] buildRate(UserDo[] refArray) {
-		//默认推荐分红比率
-		int[] rateArray  = {49,8,5,4,3};
+	private float[] buildRate(UserDo[] refUserArray) {
+		//团队奖金比例
+		List<LoanDictDtlDo> awardGroupDictLst = dictService.queryDictDtlListByDictCode("zhidu_group_level_cfg");
+		if (awardGroupDictLst == null || awardGroupDictLst.isEmpty()) {
+			throw new BusinessException("团队奖金比例没有配置", "error-refereeAward-002");
+		}
+		Map<String,LoanDictDtlDo> groupRateMap  = awardGroupDictLst.stream().collect(Collectors.toMap(LoanDictDtlDo::getCode, a -> a,(k1,k2)->k1));
+		
 		//普通 0 , vip  1, 商家 2, 设区合伙人 3， 城市合伙人 4， 省级合伙人 5， 股东 6  总监 7 董事 8
-		int[] firstRefRateArray  = {0,49,49,57,62,66,69,69,69};
-		//分润用户等级
-		byte[] userLevelArray = new byte[refArray.length];
-		for (int i = 0 ; i <refArray.length;i++) {
-			byte currentUserLevel = refArray[i].getUserLevel();
-			//商家跟社区合伙人平级，先处理成一致
-			if(currentUserLevel == 2) {
-				currentUserLevel =3;
-			}
-			//董事跟股东一样处理
-			if(currentUserLevel == 7) {
-				currentUserLevel = 6;
-			}
-			
-			//总监跟股东一样处理
-			if(currentUserLevel == 8) {
-				currentUserLevel = 6;
-			}
-			
-			userLevelArray[i] = currentUserLevel;
+		//直推奖比率
+		List<LoanDictDtlDo> awardRefDictLst = dictService.queryDictDtlListByDictCode("zhidu_ref_level_cfg");
+		if (awardRefDictLst == null || awardRefDictLst.isEmpty()) {
+			throw new BusinessException("直推奖金比例没有配置", "error-refereeAward-003");
 		}
+		Map<String,LoanDictDtlDo> refRateMap  = awardRefDictLst.stream().collect(Collectors.toMap(LoanDictDtlDo::getCode, a -> a,(k1,k2)->k1));
 		
-		//推荐用户的分润比例数组
-		int[] retArray  = new int[refArray.length];
 		
+		//平级团队奖比例
+		List<LoanDictDtlDo> awardSameLevelDictLst = dictService.queryDictDtlListByDictCode("zhidu_same_level_cfg");
+		if (awardSameLevelDictLst == null || awardSameLevelDictLst.isEmpty()) {
+			throw new BusinessException("团队奖金同级比例没有配置", "error-refereeAward-005");
+		}
+		Map<String,LoanDictDtlDo> sameLevelRateMap  = awardSameLevelDictLst.stream().collect(Collectors.toMap(LoanDictDtlDo::getCode, a -> a,(k1,k2)->k1));
+		
+		
+		//返回结果： 推荐用户的分润比例数组
+		float[] retArray  = new float[refUserArray.length];
 		//直推
-		int f= firstRefRateArray[refArray[0].getUserLevel()];
-		retArray[0] = f;
+		retArray[0] = refRateMap.get(String.valueOf(refUserArray[0].getUserLevel())) == null? 0 :Float.parseFloat(refRateMap.get(String.valueOf(refUserArray[0].getUserLevel())).getRemark());
 		
-		for (int i = 1 ; i <userLevelArray.length;i++) {
-			int idx1 = i -1;
-			int idx2 = i -2;
-			byte currentUser = userLevelArray[i];
-			byte  idx1User = 0;
-			byte idx2User = 0;
-			if(idx1>=0) {
-				idx1User = userLevelArray[idx1];
-			}
-			if(idx2>=0) {
-				idx2User = userLevelArray[idx2];
-			}
-			
-			//普通用户和vip不参与
-			if(currentUser == 0 || currentUser == 1 ) {
-				retArray[i] = 0 ;
-				continue;
-			}
-			
-			//不能比前面的等级低
-			if(currentUser < idx1User) {
-				retArray[i] = 0 ;
-				continue;
-			}
-			
-			//平级只分一代
-			if(currentUser == idx1User && idx1User == idx2User) {
-				retArray[i]=0;
-				continue;
-			}
-			
-			//平级处理
-			if(currentUser == idx1User && idx1User != idx2User) {
-				retArray[i]= 1;
-				//如果是股东 
-				if(currentUser == 6 && retArray[i] == 1d) {
-					retArray[i]= 2;
-				}
-				continue;
-			}
-			//不相邻的平级， 如果前一个是0，继续查看前面
-			boolean findNext = false;
-			if(retArray[i-1] ==0) {
-				findNext =true;
-			}
-			boolean isSamelevel = false;
-			if(findNext) {
-				for(int k = i-2; k>=0;k--) {
-					if(retArray[k] != 0) {
-						if(userLevelArray[k]> currentUser) {
-							retArray[i] = 0;
-							isSamelevel = true;
-							break;
-						}
-						//等于 1,2，表示上一个已经是平级
-						if(userLevelArray[k]==currentUser &&  retArray[k]==1) {
-							retArray[i] = 0;
-							isSamelevel = true;
-							break;
-						}
-						if(userLevelArray[k]==currentUser &&  retArray[k]==2) {
-							retArray[i] = 0;
-							isSamelevel = true;
-							break;
-						}
-					}
-				}
-				if(isSamelevel) {
-					continue;
-				}
-			}
-			retArray[i] = rateArray[i];
+		for (int i = 1 ; i <refUserArray.length;i++) {
+			byte currentUser = refUserArray[i].getUserLevel();
+			retArray[i] =  groupRateMap.get(String.valueOf(currentUser))==null? 0 :Float.parseFloat(groupRateMap.get(String.valueOf(currentUser)).getRemark());
 		}
 		
-		//计算 股东差级
-		int total = 0;
-		for(int j = 0; j < retArray.length ;j++) {
-			if(userLevelArray[j]==6 ) {
-				int remainRate = 69-total;
-				if(remainRate>=0) {
-					retArray[j] = remainRate;
-				}else {
-					retArray[j] = 0;
-				}
-				
-				break;
+		//不能比前面的等级低
+		for (int i = refUserArray.length-1 ; i > 0 ;i--) {
+			byte currentUser = refUserArray[i].getUserLevel();
+			byte idx1User = refUserArray[i-1].getUserLevel();
+			if(compareLevel(currentUser, idx1User)<0) {
+				retArray[i] = 0 ;
 			}
-			total=total+retArray[j];
-			 
+			//平级处理
+			if(compareLevel(currentUser , idx1User) ==0) {
+				retArray[i] = sameLevelRateMap.get(String.valueOf(currentUser))==null? 0:Float.parseFloat(sameLevelRateMap.get(String.valueOf(currentUser)).getRemark());
+			}
+		}
+		
+		//平级，多代同级 只分一代 ： 两种情况 1. 连续评级，2 非连续平级（中间隔低等级的）
+		for (int i = refUserArray.length-1 ; i > 0 ;i--) {
+			byte currentUser = refUserArray[i].getUserLevel();
+			int foundSameCnt = 0;
+			//往前找平级
+			for (int k = i-1 ; k > 0 ;k--) {
+				byte idx1User = refUserArray[k].getUserLevel();
+				if(compareLevel(currentUser, idx1User)==0) {
+					foundSameCnt++;
+				}
+			}
+			
+			if(foundSameCnt>=2) {
+				//多代同级 只分一代处理
+				retArray[i] = 0 ;
+			}
 		}
 		return retArray;
 	}
 
-	/**
-	 * 逐个奖励处理
-	 * 
-	 * @param buyUserId
-	 * @param bAwardLst
-	 */
-	private void oneAward(int buyUserId, String[] bAwardLst, Order order, IncomeType awardsShow) {
-		// 获取购买者信息
-		for (String oneAward : bAwardLst) {
-			if (StringUtils.isBlank(oneAward)) {
-				return;
-			}
-			// 解析单个奖励配置
-			String[] awds = oneAward.split(",");
-			// 计算奖励金额
-			BigDecimal wardAmount = getAmtByAward(awds, order);
-			// 获取奖励账户
-			String accountType = Awardlist.getAccountTypeByAward(awds);
-			if (wardAmount.compareTo(BigDecimal.ZERO) > 0) {
-				UserAccountDo accont = new UserAccountDo(wardAmount, buyUserId, accountType);
-				buildAccountRemark(accont);
-				// 账户对象增加金额
-				accountService.updateUserAmountById(accont, awardsShow);
-			}
+	private int compareLevel(byte currentUser, byte idx1User) {
+		
+		//商家跟社区合伙人平级
+		if(currentUser == 2) {
+			currentUser =3;
 		}
+		
+		//董事跟股东平级
+		if(currentUser == 7) {
+			currentUser = 6;
+		}
+		
+		//总监跟股东平级
+		if(currentUser == 8) {
+			currentUser = 6;
+		}
+		
+		
+		//商家跟社区合伙人平级
+		if(idx1User == 2) {
+			currentUser =3;
+		}
+		
+		//董事跟股东平级
+		if(idx1User == 7) {
+			currentUser = 6;
+		}
+		
+		//总监跟股东平级
+		if(idx1User == 8) {
+			currentUser = 6;
+		}
+		return currentUser - idx1User;
 	}
 
+
 	/**
-	 * 创建奖励备注
+	 * 	创建奖励备注
 	 * 
 	 * @param account
 	 */
@@ -394,23 +376,5 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	}
 
 	
-	/**
-	 * 根据配置 用 - 分隔 ，获取奖励次数或金额，如果没有配置报错 配置格式： 1-wallet_travel-4人港澳游 表示 1次，旅游账户 奖励
-	 * 4人港澳游 ， wallet_travel 查看{@link AccountType}
-	 * 
-	 * @param oneAward
-	 * @return
-	 */
-	private BigDecimal getAmtByAward(String[] awds, Order order) {
-
-		if (awds.length < 2) {
-			throw new BusinessException("购买者对应的奖励办法没有正确配置，请检查奖励办法的配置", "error-refereeAward-003");
-		}
-		String formula = awds[0].trim();
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("profit", order.getProfit());
-		//map.put("rate", getRate());
-		return new BigDecimal(String.valueOf(GroovyParse.executeScript(formula, map)));
-	}
+	
 }

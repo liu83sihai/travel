@@ -29,9 +29,9 @@ $(function(){
 	var columns_tt = [
       			[
 	 			 	{field:'id',title:'id',width:100,halign:"center", align:"left",hidden:true},
-	 				{field:"code",title:"编码",width:180,align:"center"},
-	 				{field:"name",title:"名称",width:100,align:"center"},
-	 				{field:"remark",title:"备注",width:100,align:"center"},
+	 				{field:"code",title:"编码",width:180,align:"right"},
+	 				{field:"name",title:"名称",width:100,align:"right"},
+	 				{field:"remark",title:"备注",width:100,align:"right"},
 	 				{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
 	 					  var str= '<a href="javascript:void(0);" onclick="to_edit(\''+row.id+'\');">编辑</a>';

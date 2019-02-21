@@ -99,7 +99,7 @@ public class LoginFilter extends OncePerRequestFilter {
 	}
 
     /**
-     * 不需要拦截的uri 
+     * 	不需要拦截的uri 
      * @param uri
      * @return  
      */
@@ -127,6 +127,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/commonIntf/uploadImg",
         												 "/imageCode/",
         												 "/barcode/",
+        												 "/appdown/down",
         												 "/bank/",
         												 "/order/notifyUrl" });
         for (String str : list) {

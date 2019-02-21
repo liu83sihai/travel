@@ -22,7 +22,7 @@
         	<label for="code">字典编码:</label>
         </td>
         <td > 
-        	<input type="text" id="code" name="code" value="${dictDo.code}" />
+        	<input type="text" id="code" name="code" readonly="readonly" value="${dictDo.code}" />
         </td>
       
         <td align="right">
@@ -86,7 +86,7 @@
 	    url:httpUrl+'/loandict/listDictDetail.html?dictId=${dictDo.id }',
 	    columns:[[
 	        {field:'dictId',title:'Item ID',hidden:true},
-	        {field:'code',title:'编码',width:150, editor:'text',align:'center'},
+	        {field:'code',title:'编码',width:150, editor:{type:'textbox',options:{editable: false}},align:'center' },
 	        {field:'name',title:'名称',width:200,editor:'text',align:'center'},
 	        {field:'status',title:'是否有效',width:150,align:'center',
 	        	formatter:function(value,row,index){
@@ -106,7 +106,7 @@
 	                }
 	            }	            
 	        },
-	        {field:'remark',title:'备注',width:240,editor:'text',align:'center'}	        
+	        {field:'remark',title:'比例',width:240,editor:'text',align:'center'}	        
 	    ]],
 	    
 	    toolbar:[{
