@@ -129,6 +129,10 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/barcode/",
         												 "/appdown/down",
         												 "/bank/",
+        												 "/banner/",
+        												 "/mall/list",
+        												 "/news/list",
+        												 "/notice/list",
         												 "/order/notifyUrl" });
         for (String str : list) {
             if (uri.indexOf(str) != -1) {
