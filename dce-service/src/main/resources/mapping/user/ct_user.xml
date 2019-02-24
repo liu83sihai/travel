@@ -2038,7 +2038,7 @@
 	</select>
 	<!-- 分享排榜  -->
 	<select id="shareList" parameterType="java.util.Map" resultType="java.util.HashMap" >
-		select id,user_name userName,(case when ifnull(true_name,mobile) ='' then mobile end)  trueName,mobile,referee_number refereeNumber
+		select id,user_name userName,(case when true_Name is null  then mobile  when true_name = '' then mobile else true_name end)  trueName,mobile,referee_number refereeNumber
 		from ct_user
 		order by  referee_number desc
 		<if test="offset != null">

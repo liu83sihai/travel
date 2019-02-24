@@ -130,6 +130,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/appdown/down",
         												 "/bank/",
         												 "/banner/",
+        												 "/beatufyspot/",
         												 "/mall/list",
         												 "/news/list",
         												 "/notice/list",
