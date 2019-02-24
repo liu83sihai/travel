@@ -60,7 +60,8 @@ public class LoginNoticeController extends BaseController {
         ModelAndView mav = new ModelAndView("user/loginNotice");
         String imgname = "timg.png";
         Integer userId = this.getUserId();
-        if(isNewUser(userId)) {
+        
+        if(userId != null || isNewUser(userId)) {
         	imgname = "newUser.png";
         }
         
@@ -78,12 +79,19 @@ public class LoginNoticeController extends BaseController {
         mav.addObject("hongbao", hongbao);
         String incomeType = this.getString("incomeType");
         String msg = "恭喜你获得红包";
-        if(String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType)) {
-        	msg="恭喜你获得新人奖红包";
-        }
         
-        if("0".equals(hongbao)) {
-        	msg = "谢谢参与！";
+        if(!String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType) &&
+        		!String.valueOf(IncomeType.TYPE_HONGBAO.getIncomeType()).equals(incomeType)	) {
+        	mav.addObject("hongbao", "0");
+        	msg = "请登录后再领取红包";
+        }else {
+	        if(String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType)) {
+	        	msg="恭喜你获得新人奖红包";
+	        }
+	        
+	        if("0".equals(hongbao)) {
+	        	msg = "谢谢参与！";
+	        }
         }
         mav.addObject("msg", msg);
         return mav;
@@ -127,6 +135,8 @@ public class LoginNoticeController extends BaseController {
 				userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
 				accountService.updateUserAmountById(userAccountDo , inTyp);
 			}
+		}else {
+			return Result.failureResult("请登录领取红包") ;
 		}
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("incomeType", inTyp.getIncomeType());
@@ -160,6 +170,9 @@ public class LoginNoticeController extends BaseController {
 			if(accDtlLst.size()<1) {
 				return Result.successResult("ok");
 			}
+		}else {
+			inTyp = IncomeType.TYPE_HONGBAO;
+			return Result.successResult("ok");
 		}
 		
 		return Result.failureResult("no") ;
