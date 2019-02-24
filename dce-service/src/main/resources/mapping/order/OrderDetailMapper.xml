@@ -274,6 +274,11 @@
     </trim>
   </insert>
   
+  <select id="selectPayDetailByOrderId" parameterType="java.lang.Integer" resultType="com.dce.business.entity.order.OrderPayDetail" >
+  	select * from ct_order_pay_detail
+  	where orderId = #{orderid,jdbcType=INTEGER}
+  </select>
+  
 	<delete id="deletePayDetailByOrderId" parameterType="java.lang.Integer">
 	    delete from ct_order_pay_detail
 	    where orderId = #{orderid,jdbcType=INTEGER}

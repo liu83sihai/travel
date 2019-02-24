@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+    	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+   
+
+    <bean id="defaultScheduler"	class="com.hehenian.scheduling.quartzweb.SchedulerFactoryBean">
+        <property name="schedulerName" value="defaultScheduler" />
+        <property name="autoStartup" value="true" />
+        <property name="disableDataSource" value="true" />
+        <property name="overwriteExistingJobs" value="true" />
+        <property name="waitForJobsToCompleteOnShutdown" value="true" />
+        <property name="jobFactory">
+        	<bean class="com.hehenian.scheduling.quartzweb.SpringBeanAutowireJobFactory" />
+        </property>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.plugin.shutdownhook.class">org.quartz.plugins.management.ShutdownHookPlugin</prop>
+                <prop key="org.quartz.plugin.shutdownhook.cleanShutdown">true</prop>
+                <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">20</prop>
+            </props>
+        </property>
+        <property name="jobDetails">
+            <list>
+                <ref bean="capitalTask" />
+            </list>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <ref bean="capitalTaskTrigger" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="capitalTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="capitalTask" />
+        <property name="cronExpression"  value="0 0/2 * * * ?" />
+    </bean>
+	 
+    <bean name="capitalTask" class="com.hehenian.scheduling.quartzweb.JobDetailBean">
+        <property name="jobClass" value="com.hehenian.scheduling.task.job.CapitalTask" />
+        <property name="description" value="更新资金数据缓存" />
+        <property name="name" value="capitalTask" />
+        <property name="group" value="loanModule" />
+        <property name="durability" value="true" />
+    </bean>
+    <bean id="schedulerAccessorBean" class="org.springframework.scheduling.quartz.SchedulerAccessorBean">
+        <property name="scheduler" ref="defaultScheduler" />
+    </bean>
+
+
+    <!--
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="jobDetail" />
+        <property name="cronExpression"  value="0 46 10 * * ?" />
+    </bean>
+
+    <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="jobDetail" />
+        <property name="cronExpression"  value="10 45 10 * * ?" />
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger" />
+                <ref bean="cronTrigger2" />
+            </list>
+        </property>
+    </bean>
+    -->
+
+
+</beans>

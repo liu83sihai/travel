@@ -577,24 +577,14 @@ public class OrderServiceImpl implements IOrderService {
 		order = savePayDetail(order, 1, payLst);
 		
 		
-
-		//扣其他支付账户的金额
-		for( OrderPayDetail pDetail : payLst) {
-			if(pDetail.getPayAmt().compareTo(BigDecimal.ZERO)>0) {
-				UserAccountDo userAccountDo = new UserAccountDo();
-				userAccountDo.setAccountType(pDetail.getAccountType());
-				userAccountDo.setAmount(pDetail.getPayAmt().negate());
-				userAccountDo.setUserId(order.getUserid());
-				accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_GOODS_BUY);
-			}
-		}
-		
 		//现金支付
 		if(order.getCashAmt().compareTo(BigDecimal.ZERO)>0) {
 			// 获取加签后的订单
 			return getSignByPayType(request, response, order);
 			//return payByScanBarcode(request, response, order);
 		}else {
+			//扣其他支付账户的金额		
+			subAccountAmt(payLst, order);
 			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
 			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
 		}
@@ -606,6 +596,18 @@ public class OrderServiceImpl implements IOrderService {
 		//"payString": payString //唤起支付json字符串
 		return Result.successResult("支付成功", payRet);
 
+	}
+
+	private void subAccountAmt(List<OrderPayDetail> payLst, Order order) {
+		for( OrderPayDetail pDetail : payLst) {
+			if(pDetail.getPayAmt().compareTo(BigDecimal.ZERO)>0) {
+				UserAccountDo userAccountDo = new UserAccountDo();
+				userAccountDo.setAccountType(pDetail.getAccountType());
+				userAccountDo.setAmount(pDetail.getPayAmt().negate());
+				userAccountDo.setUserId(order.getUserid());
+				accountService.updateUserAmountById(userAccountDo , IncomeType.TYPE_GOODS_BUY);
+			}
+		}
 	}
 
 	/**
@@ -834,24 +836,26 @@ public class OrderServiceImpl implements IOrderService {
 		System.out.println("==================支付宝异步通知逻辑处理=1============");
 
 		// 签名验证(对支付宝返回的数据验证，确定是支付宝返回的)
+		/*
 		boolean signVerified = false;
 
-//		try {
-//			// 调用SDK验证签名
-//			signVerified = AlipaySignature.rsaCheckV1(conversionParams, AlipayConfig.ALIPAY_PUBLIC_KEY,
-//					AlipayConfig.CHARSET, AlipayConfig.SIGNTYPE);
-//
-//		} catch (AlipayApiException e) {
-//			e.printStackTrace();
-//			logger.error("支付回调验签失败", e);
-//			throw new BusinessException("验签失败", "alipay001");
-//		}
+		try {
+			// 调用SDK验证签名
+			signVerified = AlipaySignature.rsaCheckV1(conversionParams, AlipayConfig.ALIPAY_PUBLIC_KEY,
+					AlipayConfig.CHARSET, AlipayConfig.SIGNTYPE);
+
+		} catch (AlipayApiException e) {
+			e.printStackTrace();
+			logger.error("支付回调验签失败", e);
+			throw new BusinessException("验签失败", "alipay001");
+		}
 
 		// 对验签进行处理
-//		if (!signVerified) {
-//			logger.debug("============验签不通过 ！");
-//			return "fail";
-//		}
+		if (!signVerified) {
+			logger.debug("============验签不通过 ！");
+			return "fail";
+		}
+		*/
 
 		// 验签通过
 		// 获取需要保存的数据
@@ -870,6 +874,13 @@ public class OrderServiceImpl implements IOrderService {
 		// 支付成功做业务逻辑
 		if ("TRADE_FINISHED".equals(tradeStatus) || "TRADE_SUCCESS".equals(tradeStatus)) {
 			String outTradeNo = conversionParams.get("out_trade_no");// 获取商户之前传给支付宝的订单号（商户系统的唯一订单号）
+			/**
+			 * 	扣其他账户金额,由原来的支付前，改成支付后
+			 */
+			Order order = orderDao.selectByOrderCode(outTradeNo);
+			List<OrderPayDetail> payLst= orderDetailDao.selectPayDetailByOrderId(order.getOrderid());
+			this.subAccountAmt(payLst, order);
+			//end 扣其他账户金额
 			orderPay(outTradeNo, gmtPayment);
 		}
 		return "success";
@@ -896,11 +907,11 @@ public class OrderServiceImpl implements IOrderService {
 
 		// 支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）
 		// 目前测试中totalAmount.equals(order.getTotalprice())，totalAmount先暂时设置为0.01
-//		if (order == null || order.getTotalprice().compareTo(new BigDecimal(totalAmount))!=0 || !sellerId.equals(AlipayConfig.seller_id)
-//				|| !AlipayConfig.APPID.equals(appId)) {
-//			logger.debug("==========支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
-//			return false;
-//		}
+		if (order == null || order.getTotalprice().compareTo(new BigDecimal(totalAmount))!=0 || !sellerId.equals(AlipayConfig.seller_id)
+				|| !AlipayConfig.APPID.equals(appId)) {
+			logger.debug("==========支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
+			return false;
+		}
 		return true;
 	}
 

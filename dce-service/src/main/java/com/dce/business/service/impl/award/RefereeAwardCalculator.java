@@ -116,7 +116,7 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 		// 获取推荐人,5代推荐人
 		Map<String, Object> params = new HashMap<>();// userid
 		params.put("userid", buyer.getId());
-		params.put("maxDistance", 5);
+		params.put("maxDistance", 1000);
 		List<UserRefereeDo> list = userRefereeDao.select(params);
 		if(list == null || list.isEmpty()) {
 			logger.info("找不到推荐人, buyer:"+buyer.getId());

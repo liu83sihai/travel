@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+		http://www.springframework.org/schema/jee 
+		http://www.springframework.org/schema/jee/spring-jee-4.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd"
+	default-lazy-init="false">
+	
+	<description>Spring scan</description>
+	
+	<!-- IOC注解 -->
+	<context:component-scan base-package="com.hehenian">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+    <bean id="sysconfig"
+        class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>file:${catalina.home}/conf/job.properties</value>
+            </list>
+        </property>
+    </bean>
+
+ 	<!-- 从上下文中获取Bean -->
+    <bean id="springBeanUtil" class="com.dce.business.common.util.SpringBeanUtil" />
+    
+    
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="sysconfig" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+    </bean>
+
+	<import resource="classpath*:/config/spring-jdbc.xml" />
+	<import resource="classpath:/config/spring-scheduling.xml" />
+</beans>

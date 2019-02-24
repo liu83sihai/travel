@@ -39,6 +39,12 @@ public interface OrderDetailMapper {
 	 * @param detail
 	 */
 	void insertPayDetail(OrderPayDetail detail);
+	
+	/**
+	 * 	查询支付明细
+	 * @param detail
+	 */
+	List<OrderPayDetail> selectPayDetailByOrderId(Integer orderid);
 
 	/**
 	 * 删除支付明细

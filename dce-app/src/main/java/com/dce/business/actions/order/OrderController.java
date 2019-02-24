@@ -569,13 +569,6 @@ public class OrderController extends BaseController {
 		//支付明细
 		List<OrderPayDetail> payLst = convertPayJson(payList);
 		
-//		LoanDictDo dictDo = dictService.getLoanDict("checkPay");
-//		if(null != dictDo) {
-//			if("T".equalsIgnoreCase(dictDo.getRemark())) {
-//				
-//			}
-//		}
-
 		boolean isOk = checkPay(Long.valueOf(userId),chooseGoodsLst,payLst);
 		if(false == isOk) {
 			return Result.failureResult("不正确的支付方式！");
@@ -670,8 +663,6 @@ public class OrderController extends BaseController {
 			out.close();
 			System.out.println("支付宝异步通知返回：" + ret);
 			logger.debug("==========最终返回给支付宝的验签结果==========" + ret);
-
-			// return ret;
 		}
 	}
 

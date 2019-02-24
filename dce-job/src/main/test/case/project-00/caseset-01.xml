@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<templates>
+		<startTime>'2013-05-24 15:10:10'</startTime>
+		<endTime>'2013-05-23 11:10:10'</endTime>
+		<tableDemo>Leads</tableDemo>
+		<cities>110,112,113</cities>
+		<memberids>110,112,113</memberids>
+		<leadsOrder>1000</leadsOrder>
+	</templates>
+	
+	<case>
+		<caseId>1</caseId>
+		<type>找资源</type>
+		<desc>测试xxx，预期结果集大于100...</desc>
+		<sql>select count(*) from Leads where leadsOrder = ${leadsOrder};</sql>
+	</case>
+	
+	<case>
+		<caseId>2</caseId>
+		<type>分配</type>
+		<desc>预期分配量xxx...</desc>
+		<sql>select caseId,memberId,allotTime,workerId from SaleCase where allotTime > ${startTime};</sql>
+	</case>
+	
+	
+</root>

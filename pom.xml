@@ -14,7 +14,8 @@
 		<module>dce-app</module>
 		<module>dce-core</module>
 		<module>dce-service</module>
-    <module>dce-manager</module>
+		<module>dce-manager</module>
+		<module>dce-job</module>
   </modules>
 	<profiles>
 		<profile>
