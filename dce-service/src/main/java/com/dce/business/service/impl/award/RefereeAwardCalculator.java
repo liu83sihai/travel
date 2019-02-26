@@ -321,37 +321,6 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	}
 
 	private int compareLevel(byte currentUser, byte idx1User) {
-		
-		//商家跟社区合伙人平级
-		if(currentUser == 2) {
-			currentUser =3;
-		}
-		
-		//董事跟股东平级
-		if(currentUser == 7) {
-			currentUser = 6;
-		}
-		
-		//总监跟股东平级
-		if(currentUser == 8) {
-			currentUser = 6;
-		}
-		
-		
-		//商家跟社区合伙人平级
-		if(idx1User == 2) {
-			currentUser =3;
-		}
-		
-		//董事跟股东平级
-		if(idx1User == 7) {
-			currentUser = 6;
-		}
-		
-		//总监跟股东平级
-		if(idx1User == 8) {
-			currentUser = 6;
-		}
 		return currentUser - idx1User;
 	}
 
