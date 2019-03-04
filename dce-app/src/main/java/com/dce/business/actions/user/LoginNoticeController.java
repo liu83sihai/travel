@@ -80,8 +80,10 @@ public class LoginNoticeController extends BaseController {
         String incomeType = this.getString("incomeType");
         String msg = "恭喜你获得红包";
         
-        if(!String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType) &&
-        		!String.valueOf(IncomeType.TYPE_HONGBAO.getIncomeType()).equals(incomeType)	) {
+        Integer userId = this.getUserId();
+		logger.info("loginNoticeResult userId:"+userId);
+		
+        if(userId == null && userId.intValue() <= 0) {
         	mav.addObject("hongbao", "0");
         	msg = "请登录后再领取红包";
         }else {
@@ -107,7 +109,7 @@ public class LoginNoticeController extends BaseController {
 		
 		int amt = 0; 
 		Integer userId = this.getUserId();
-		logger.info("红本click userId:"+userId);
+		logger.info("红包click userId:"+userId);
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
 		if(userId != null && userId.intValue() > 0) {
@@ -136,9 +138,8 @@ public class LoginNoticeController extends BaseController {
 				userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
 				accountService.updateUserAmountById(userAccountDo , inTyp);
 			}
-		}else {
-			return Result.failureResult("请登录领取红包") ;
 		}
+		
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("incomeType", inTyp.getIncomeType());
 		ret.put("amt",amt);
