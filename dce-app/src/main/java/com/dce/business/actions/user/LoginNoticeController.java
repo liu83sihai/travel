@@ -83,7 +83,7 @@ public class LoginNoticeController extends BaseController {
         Integer userId = this.getUserId();
 		logger.info("loginNoticeResult userId:"+userId);
 		
-        if(userId == null && userId.intValue() <= 0) {
+        if(userId == null || userId.intValue() <= 0) {
         	mav.addObject("hongbao", "0");
         	msg = "请登录后再领取红包";
         }else {
