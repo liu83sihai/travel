@@ -109,7 +109,7 @@ public class LoginNoticeController extends BaseController {
 		Integer userId = this.getUserId();
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
-		if(userId != null) {
+		if(userId != null && userId.intValue() > 0) {
 			UserAccountDo userAccountDo = new UserAccountDo();
 			userAccountDo.setUserId(userId);
 			//如果是当前注册给他新人奖
@@ -181,6 +181,9 @@ public class LoginNoticeController extends BaseController {
 
 	private boolean isNewUser(Integer userId) {
 		UserDo user = userService.getUser(userId);
+		if(user == null) {
+			return false;
+		}
 		Date regTime = new Date (user.getRegTime());
 		Date currentDay = getCurrentDay();
 		return regTime.after(currentDay);
