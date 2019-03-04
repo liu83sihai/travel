@@ -134,7 +134,7 @@ public class LoginFilter extends OncePerRequestFilter {
         												 "/mall/list",
         												 "/news/list",
         												 "/notice/list",
-        												 "/loginNotice/",
+        												 "/loginNotice",
         												 "/order/notifyUrl" });
         for (String str : list) {
             if (uri.indexOf(str) != -1) {
