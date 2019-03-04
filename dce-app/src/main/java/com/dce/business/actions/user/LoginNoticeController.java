@@ -107,6 +107,7 @@ public class LoginNoticeController extends BaseController {
 		
 		int amt = 0; 
 		Integer userId = this.getUserId();
+		logger.info("红本click userId:"+userId);
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
 		if(userId != null && userId.intValue() > 0) {
