@@ -137,7 +137,7 @@
        
        function submitData(){
        		$.ajax({
-               url :'<c:url value="/loginNotice/click.do"/>',
+               url :'<c:url value="/loginNotice/click.do?userId=${userId}"/>',
                type : 'post',
                dataType : 'json', //返回数据类型
                success : function(data){            	   

@@ -30,7 +30,7 @@ import com.dce.business.service.user.IUserService;
 /**
  * 领红包，签到，广告
  * 
- * @author parudy
+ * @author harry
  * @date 2018年3月24日
  * @version v1.0
  */
@@ -55,14 +55,15 @@ public class LoginNoticeController extends BaseController {
 	
 
 	@RequestMapping(value = "", method = { RequestMethod.GET, RequestMethod.POST })
-    public ModelAndView toReg() {
-        
+    public ModelAndView index() {
         ModelAndView mav = new ModelAndView("user/loginNotice");
         String imgname = "timg.png";
         Integer userId = this.getUserId();
+        System.out.println("红包index请求：==========================userId:"+userId);
         
         if(userId != null || isNewUser(userId)) {
         	imgname = "newUser.png";
+        	mav.addObject("userId", userId);
         }
         
         mav.addObject("imgname", imgname);
@@ -109,7 +110,7 @@ public class LoginNoticeController extends BaseController {
 		
 		int amt = 0; 
 		Integer userId = this.getUserId();
-		logger.info("红包click userId:"+userId);
+		logger.info("===================红包click userId:"+userId);
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
 		if(userId != null && userId.intValue() > 0) {
@@ -151,6 +152,7 @@ public class LoginNoticeController extends BaseController {
 	public Result<?> isDisplayHongBao() {	
 		
 		Integer userId = this.getUserId();
+		System.out.println("判断红包是否显示的请求：==========================userId:"+userId);
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
 		if(userId != null) {
@@ -182,6 +184,7 @@ public class LoginNoticeController extends BaseController {
 
 
 	private boolean isNewUser(Integer userId) {
+		System.out.println("红包isNewUser：==========================userId:"+userId);
 		UserDo user = userService.getUser(userId);
 		if(user == null) {
 			return false;
