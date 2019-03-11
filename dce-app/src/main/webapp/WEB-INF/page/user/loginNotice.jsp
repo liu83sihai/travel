@@ -141,7 +141,7 @@
                type : 'post',
                dataType : 'json', //返回数据类型
                success : function(data){            	   
-            	   window.open("<c:url value="/loginNotice/loginNoticeResult.do"/>?hongbao="+data.data.amt+"&incomeType="+data.data.incomeType,"_self");
+            	   window.open("<c:url value="/loginNotice/loginNoticeResult.do"/>?hongbao="+data.data.amt+"&incomeType="+data.data.incomeType+"&userId=${userId}","_self");
                },
                error : function(){
             	   HHN.popup(data.msg);               
