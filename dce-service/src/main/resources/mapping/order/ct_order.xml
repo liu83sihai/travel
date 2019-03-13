@@ -104,7 +104,8 @@
 		from ct_order a left join 
 		ct_orderdetail b on a.orderId=b.orderId
 		where
-		a.userId = #{userId,jdbcType=INTEGER} 		
+		a.userId = #{userId,jdbcType=INTEGER} 	
+		and b.goods_id is not null
 		order by
 		a.createTime
 		desc
