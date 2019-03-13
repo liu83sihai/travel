@@ -30,7 +30,7 @@ import com.dce.business.service.user.IUserService;
 /**
  * 领红包，签到，广告
  * 
- * @author parudy
+ * @author harry
  * @date 2018年3月24日
  * @version v1.0
  */
@@ -55,14 +55,15 @@ public class LoginNoticeController extends BaseController {
 	
 
 	@RequestMapping(value = "", method = { RequestMethod.GET, RequestMethod.POST })
-    public ModelAndView toReg() {
-        
+    public ModelAndView index() {
         ModelAndView mav = new ModelAndView("user/loginNotice");
         String imgname = "timg.png";
         Integer userId = this.getUserId();
+        System.out.println("红包index请求：==========================userId:"+userId);
         
         if(userId != null || isNewUser(userId)) {
         	imgname = "newUser.png";
+        	mav.addObject("userId", userId);
         }
         
         mav.addObject("imgname", imgname);
@@ -80,8 +81,10 @@ public class LoginNoticeController extends BaseController {
         String incomeType = this.getString("incomeType");
         String msg = "恭喜你获得红包";
         
-        if(!String.valueOf(IncomeType.TYPE_REGISTER.getIncomeType()).equals(incomeType) &&
-        		!String.valueOf(IncomeType.TYPE_HONGBAO.getIncomeType()).equals(incomeType)	) {
+        Integer userId = this.getUserId();
+		logger.info("loginNoticeResult userId:"+userId);
+		
+        if(userId == null || userId.intValue() <= 0) {
         	mav.addObject("hongbao", "0");
         	msg = "请登录后再领取红包";
         }else {
@@ -107,9 +110,10 @@ public class LoginNoticeController extends BaseController {
 		
 		int amt = 0; 
 		Integer userId = this.getUserId();
+		logger.info("===================红包click userId:"+userId);
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
-		if(userId != null) {
+		if(userId != null && userId.intValue() > 0) {
 			UserAccountDo userAccountDo = new UserAccountDo();
 			userAccountDo.setUserId(userId);
 			//如果是当前注册给他新人奖
@@ -135,9 +139,8 @@ public class LoginNoticeController extends BaseController {
 				userAccountDo.setAccountType(AccountType.wallet_goods.getAccountType());
 				accountService.updateUserAmountById(userAccountDo , inTyp);
 			}
-		}else {
-			return Result.failureResult("请登录领取红包") ;
 		}
+		
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("incomeType", inTyp.getIncomeType());
 		ret.put("amt",amt);
@@ -149,6 +152,7 @@ public class LoginNoticeController extends BaseController {
 	public Result<?> isDisplayHongBao() {	
 		
 		Integer userId = this.getUserId();
+		System.out.println("判断红包是否显示的请求：==========================userId:"+userId);
 		IncomeType inTyp = IncomeType.TYPE_HONGBAO;
 		
 		if(userId != null) {
@@ -180,7 +184,11 @@ public class LoginNoticeController extends BaseController {
 
 
 	private boolean isNewUser(Integer userId) {
+		System.out.println("红包isNewUser：==========================userId:"+userId);
 		UserDo user = userService.getUser(userId);
+		if(user == null) {
+			return false;
+		}
 		Date regTime = new Date (user.getRegTime());
 		Date currentDay = getCurrentDay();
 		return regTime.after(currentDay);
