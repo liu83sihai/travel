@@ -807,7 +807,7 @@ public class OrderServiceImpl implements IOrderService {
 			// 【必填】销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
 			model.setProductCode("QUICK_MSECURITY_PAY");
 			// 【必填】商品的标题/交易标题/订单标题/订单关键字等
-			model.setSubject("乐游环球消费");
+			model.setSubject("无界新零售消费");
 
 			ali_request.setBizModel(model);
 			// 设置后台异步通知的地址，在手机端支付成功后支付宝会通知后台，手机端的真实支付结果依赖于此地址
