@@ -75,6 +75,8 @@ public class CTGoodsDo implements Serializable {
 	  private Float score; //路线评分
 	  private BigDecimal postage; //邮寄费
 	  
+	  private Integer memberLevel; //购买后会员等级
+	  
 	public String getPayTypeName() {
 		if(StringUtils.isBlank(payType)) {
 			return "";
@@ -387,6 +389,16 @@ public class CTGoodsDo implements Serializable {
 	}
 	
 	
+	public Integer getMemberLevel() {
+		return memberLevel;
+	}
+
+
+	public void setMemberLevel(Integer memberLevel) {
+		this.memberLevel = memberLevel;
+	}
+
+
 	public String getShowDetailUrl(String goodsDetailUrl) {
 		StringBuffer sb  = new StringBuffer();
 		sb.append(goodsDetailUrl).append("?goodsId=").append(this.getGoodsId()).append("&page=goods");

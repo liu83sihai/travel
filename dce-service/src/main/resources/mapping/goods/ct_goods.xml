@@ -51,6 +51,8 @@
 		<result column="score" property="score" />
 		<result column="starLevel" property="starLevel" />
 		<result column="postage" property="postage" />
+		<result column="memberLevel" property="memberLevel" />
+		
 		
 	</resultMap>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
@@ -105,7 +107,8 @@
 		goodsFlag,
 		statusRemarks,
 		profit,
-		postage
+		postage,
+		memberLevel
 		)
 		values (
 		#{goodsSn},
@@ -148,7 +151,8 @@
 		#{goodsFlag},
 		#{statusRemarks},
 		#{profit},
-		#{postage}
+		#{postage},
+		#{memberLevel}
 		)
 	</insert>
 
@@ -303,6 +307,9 @@
 			<if test="postage != null">
 				postage,
 			</if>
+			<if test="memberLevel != null">
+				memberLevel,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -447,7 +454,10 @@
 				#{goodsBanner},
 			</if>
 			<if test="postage != null">
-				#{postage}
+				#{postage},
+			</if>
+			<if test="memberLevel != null">
+				#{memberLevel}
 			</if>
 		</trim>
 	</insert>
@@ -538,6 +548,9 @@
 			</if>
 			<if test="postage != null">
 				postage = #{postage},
+			</if>
+			<if test="memberLevel != null">
+				memberLevel = #{memberLevel},
 			</if>
 		</trim>
 		where goodsId = #{goodsId}

@@ -76,10 +76,12 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		//购买旅游卡才可以升级
 		boolean isBuyCard = false; 
 		List<OrderDetail> orderDetailLst = orderDetailDao.selectByOrderId(order.getOrderid());
+		CTGoodsDo goods = null;
 		for(OrderDetail od : orderDetailLst) {
-			CTGoodsDo goods = goodsService.selectById(Long.valueOf(od.getGoodsId()));
+			goods = goodsService.selectById(Long.valueOf(od.getGoodsId()));
 			if(goods.getGoodsFlag().intValue() == 1) {
 				isBuyCard = true;
+				break;
 			}
 			
 		}
@@ -88,7 +90,7 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 			UserDo userDo = new UserDo();
 			userDo.setId(buyer.getId());
 			userDo.setStatus((byte)0);
-			userDo.setUserLevel((byte)1);//vip
+			userDo.setUserLevel(goods.getMemberLevel()==null? (byte)1:goods.getMemberLevel().byteValue());//vip
 			userService.updateUserByBuy(userDo );
 		}
 
@@ -97,6 +99,7 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		buildAccountRemark(accont);
 		// 账户对象增加金额
 		accountService.updateUserAmountById(accont, IncomeType.TYPE_PURCHASE_TRAVEL);
+		
 		
 		UserCardDo userCardDo = new UserCardDo();
 		userCardDo.setMobile(buyer.getUserName());
@@ -110,7 +113,8 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		UserAccountDo travelCardAccount = new UserAccountDo(new BigDecimal(order.getQty()), buyer.getId(), AccountType.wallet_active.name());
 		travelCardAccount.setAmount(new BigDecimal(order.getQty()));
 		accountService.updateUserAmountById(travelCardAccount,IncomeType.TYPE_PURCHASE_TRAVEL);
-
+		
+		
 	}
 
 	/**

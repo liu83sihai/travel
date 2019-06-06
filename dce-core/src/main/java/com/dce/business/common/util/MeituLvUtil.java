@@ -53,7 +53,8 @@ public class MeituLvUtil {
 		 param.put("SINGS", sings);
 		 
 		 try {
-			 result =  HttpUtil.httpCertPostNotSSl(MEITU_LOGIN, param);
+			 //result =  HttpUtil.httpCertPostNotSSl(MEITU_LOGIN, param);
+			 result = "1";
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -85,7 +86,8 @@ public class MeituLvUtil {
 			param.put("DAYS", "365");
 			String sings = SHA1Tools
 					.encode(PRIVATEKEY + userName + QIUCODE + mobile);
-			String retStr =HttpClientUtil.doPost("https://qiuapi.meitulv.com/virtual_open",  param, sings);
+			//String retStr =HttpClientUtil.doPost("https://qiuapi.meitulv.com/virtual_open",  param, sings);
+			String retStr = "1";
 		 
 		 return retStr;
 	 }
