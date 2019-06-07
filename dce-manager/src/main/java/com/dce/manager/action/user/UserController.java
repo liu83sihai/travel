@@ -30,10 +30,12 @@ import com.dce.business.common.util.DataDecrypt;
 import com.dce.business.common.util.DataEncrypt;
 import com.dce.business.common.util.DateUtil;
 import com.dce.business.common.util.ExeclTools;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.page.PageDoUtil;
 import com.dce.business.entity.page.Pagination;
 import com.dce.business.entity.user.UserDo;
+import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.user.IUserService;
 import com.dce.manager.action.BaseAction;
 
@@ -43,6 +45,9 @@ public class UserController extends BaseAction {
 
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+    private ILoanDictService loanDictService;
 
 	@RequestMapping("/index")
 	public String index() {
@@ -127,13 +132,19 @@ public class UserController extends BaseAction {
 			}
 			PageDo<Map<String, Object>> userPage = userService.selectUserByPage(page, params);
 
-			Long amount = userService.selectBaoDanAmount(params);
+			//Long amount = userService.selectBaoDanAmount(params);
 
 			if (!CollectionUtils.isEmpty(userPage.getModelList())) {
 				List<Map<String, Object>> userLst = userPage.getModelList();
 				for (Map<String, Object> user : userLst) {
 					user.put("user_password", DataDecrypt.decrypt(String.valueOf(user.get("user_password"))));
 					user.put("two_password", DataDecrypt.decrypt(String.valueOf(user.get("two_password"))));
+					if(user.get("user_level") != null && StringUtils.isNotBlank( user.get("user_level").toString())) {
+						LoanDictDtlDo dict =  loanDictService.getLoanDictDtl("member_type", user.get("user_level").toString());
+						user.put("user_level_name", dict==null?"":dict.getName());
+					}else {
+						user.put("user_level_name","");
+					}
 				}
 			}
 

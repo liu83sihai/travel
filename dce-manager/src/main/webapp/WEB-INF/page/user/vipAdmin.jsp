@@ -82,28 +82,14 @@
 		</tr>
 		<tr>
 			<td>会员等级:</td>
-			<td><select class="easyui-combobox" id="vip_change_level"
-				name="levelType" style="width: 140px;" style="height:30px;">
-					<option value="">--请选择用户级别--</option>
-					<option value="0"
-						<c:if test="${user.userLevel==0 }">selected="selected"</c:if>>普通会员</option>
-					<option value="1"
-						<c:if test="${user.userLevel==1 }">selected="selected"</c:if>>VIP</option>
-					<option value="2"
-						<c:if test="${user.userLevel==2 }">selected="selected"</c:if>>商家</option>
-					<option value="3"
-						<c:if test="${user.userLevel==3 }">selected="selected"</c:if>>社区合伙人</option>
-					<option value="4"
-						<c:if test="${user.userLevel==4 }">selected="selected"</c:if>>城市合伙人</option>
-					<option value="5"
-						<c:if test="${user.userLevel==5 }">selected="selected"</c:if>>省级合伙人</option>
-					<option value="6"
-						<c:if test="${user.userLevel==6 }">selected="selected"</c:if>>股东</option>
-					<option value="7"
-						<c:if test="${user.userLevel==7 }">selected="selected"</c:if>>总监</option>
-					<option value="8"
-						<c:if test="${user.userLevel==7 }">selected="selected"</c:if>>董事</option>
-			</select></td>
+			<td>
+			<input id="vip_change_level" 
+						   class="easyui-combobox"  
+						   name="levelType" 
+						   value="${user.userLevel}"
+						   data-options="valueField: 'code',textField: 'name', url: '<c:url value='/loandict/combox.action?dictCode=member_type'/>' ,editable : false" />
+						   
+			</td>
 		</tr>
 		<tr>
 			<td colspan='2' style="word-wrap: break-word; word-break: break-all;"><font

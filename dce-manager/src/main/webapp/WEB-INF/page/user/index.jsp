@@ -16,7 +16,7 @@
 <script type="text/javascript"
 	src="<c:url value='/js/common/js/jquery-easyui-1.4.1/extension/jquery-easyui-datagridview/datagrid-detailview.js'/>"></script>
 <script type="text/javascript"
-	src="<c:url value='/js/user/index.js?v=${jsversion}'/>"></script>
+	src="<c:url value='/js/user/index.js?v=${jsversion}23'/>"></script>
 <script type="text/javascript"
 	src="<c:url value='/js/jquery.flexslider-min.js'/>"></script>
 <script type="text/javascript"

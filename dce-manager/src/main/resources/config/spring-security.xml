@@ -14,6 +14,7 @@
 	<!-- 登录页面和忘记密码页面不过滤 -->
 	<http pattern="/auth/loginfailed.action" security="none" />
 	<http pattern="/auth/login.action" security="none" />
+	<http pattern="/loandict/combox.action" security="none" />
 	<http pattern="/auth/sendMobileCode.action" security="none" />
 	<http pattern="/auth/accessDenied.action" security="none" />
 	<http pattern="/supplier/protocolLink.html" security="none" />
