@@ -78,6 +78,7 @@ $(function(){
 								{field:"createTime",title:"商品创建时间",width:80,align:"center",formatter:dateTimeFormatter},
 								{field:"payTypeName",title:"支付方式",width:80,align:"center"},
 								{field:"postage",title:"邮费",width:80,align:"center"},
+								{field:"memberLevelName",title:"升级级别",width:80,align:"center"},
 					{field:"操作",title:"操作",width:80,align:"left",
 	 					formatter:function(value,row,index){
 	 					  var str= '<a href="javascript:void(0);" onclick="to_editgoods(\''+row.goodsId+'\');">编辑</a> <a href="javascript:void(0);" onclick="deleteNotice(\''+row.goodsId+'\');">删除</a>';

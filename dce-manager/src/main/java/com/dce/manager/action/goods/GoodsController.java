@@ -6,9 +6,9 @@
 
 package com.dce.manager.action.goods;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,22 +16,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.page.NewPagination;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.page.PageDoUtil;
+import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.manager.action.BaseAction;
 import com.dce.manager.util.ResponseUtils;
@@ -58,7 +59,9 @@ public class GoodsController extends BaseAction {
 	@Value("#{sysconfig['goodsDetailUrl']}")
 	private String goodsDetailUrl;
 	
-		
+	@Autowired
+    private ILoanDictService loanDictService;
+	
 	/**
 	 * 去列表页面
 	 * 
@@ -107,6 +110,15 @@ public class GoodsController extends BaseAction {
 			}
 			if (StringUtils.isNotBlank(searchGoodsFlag)) {
 				page = goodsService.getGoodsPage(param, page);
+				List<CTGoodsDo> lst = page.getModelList();
+				if(lst != null) {
+					for(CTGoodsDo g : lst) {
+						if(g.getMemberLevel() != null && StringUtils.isNotBlank(g.getMemberLevel().toString())) {
+						LoanDictDtlDo dict =  loanDictService.getLoanDictDtl("member_type", g.getMemberLevel().toString());
+						g.setMemberLevelName(dict==null?"":dict.getName());
+						}
+					}
+				}
 				pagination = PageDoUtil.getPageValue(pagination, page);
 			}
 			outPrint(response, JSONObject.toJSON(pagination));
@@ -126,9 +138,13 @@ public class GoodsController extends BaseAction {
 		logger.info("----addGoods----");
 		try {
 			if (StringUtils.isNotBlank(id)) {
-				CTGoodsDo CTGoodsDo = goodsService.selectById(Long.valueOf(id));
-				if (null != CTGoodsDo) {
-					modelMap.addAttribute("goods", CTGoodsDo);
+				CTGoodsDo goodsDo = goodsService.selectById(Long.valueOf(id));
+				if (null != goodsDo) {
+					if(goodsDo.getMemberLevel() != null && StringUtils.isNotBlank(goodsDo.getMemberLevel().toString())) {
+						LoanDictDtlDo dict =  loanDictService.getLoanDictDtl("member_type", goodsDo.getMemberLevel().toString());
+						goodsDo.setMemberLevelName(dict==null?"":dict.getName());
+					}
+					modelMap.addAttribute("goods", goodsDo);
 				}
 			}
 			return "goods/addGoods";

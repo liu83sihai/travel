@@ -76,6 +76,7 @@ public class CTGoodsDo implements Serializable {
 	  private BigDecimal postage; //邮寄费
 	  
 	  private Integer memberLevel; //购买后会员等级
+	  private String memberLevelName; //购买后会员等级
 	  
 	public String getPayTypeName() {
 		if(StringUtils.isBlank(payType)) {
@@ -396,6 +397,18 @@ public class CTGoodsDo implements Serializable {
 
 	public void setMemberLevel(Integer memberLevel) {
 		this.memberLevel = memberLevel;
+	}
+
+
+
+
+	public String getMemberLevelName() {
+		return memberLevelName;
+	}
+
+
+	public void setMemberLevelName(String memberLevelName) {
+		this.memberLevelName = memberLevelName;
 	}
 
 

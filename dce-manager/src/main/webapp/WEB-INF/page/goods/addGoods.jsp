@@ -153,7 +153,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="right"><label for="name">购买后升到级别：</label></td>
+					<td align="right"><label for="name">购买后升到级别：${goods.memberLevelName}</label></td>
 					<td>
 					<input id="memberLevel" 
 						   class="easyui-combobox"  
