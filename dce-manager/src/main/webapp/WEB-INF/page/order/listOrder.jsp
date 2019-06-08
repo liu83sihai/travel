@@ -48,6 +48,13 @@
 									<option value="1">已发货</option>
 							</select>
 							</td>
+							<td class="tdfont">支付状态: 
+								<select id="payStatus" class="easyui-combobox" style="width: 90px; cursor: pointer;">
+										<option value="">全部</option>
+										<option value="0">未完成支付</option>
+										<option value="1">已支付成功</option>
+								</select>
+							</td>
 							<td><a href="javascript:void(0)" id="searchButton"
 								class="easyui-linkbutton" iconCls="icon-search" plain="true">查询</a>
 								<a href="javascript:void(0)" id="resetButton"

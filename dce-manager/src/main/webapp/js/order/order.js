@@ -9,7 +9,8 @@ $(function(){
 			'userName': $("#searchorderForm #userName").val(),
 			'startDate':$("#searchorderForm #startDate").datebox('getValue'),
 			'endDate':$("#searchorderForm #endDate").datebox('getValue'),
-			'orderStatus':$("#searchorderForm #orderStatus").datebox('getValue'),
+			'orderStatus':$("#searchorderForm #orderStatus").combobox('getValue'),
+			'payStatus':$("#searchorderForm #payStatus").combobox('getValue')
 		});
 		
 	});
@@ -116,9 +117,10 @@ $(function(){
 		/*toolbar:toolbar_tt,*/
 		queryParams:{
 			'userName': $("#searchorderForm #userName").val(),
-			'startDate':$("#searchorderForm #startDate").val(),
-			'endDate':$("#searchorderForm #endDate").val(),
-			'orderStatus':$("#searchorderForm #orderStatus").val()
+			'startDate':$("#searchorderForm #startDate").datebox('getValue'),
+			'endDate':$("#searchorderForm #endDate").datebox('getValue'),
+			'orderStatus':$("#searchorderForm #orderStatus").combobox('getValue'),
+			'payStatus':$("#searchorderForm #payStatus").combobox('getValue')
 		},
 		onLoadSuccess:function(data){//根据状态限制checkbox
 			
@@ -135,12 +137,13 @@ $(function(){
  * 导出Excel
  */
 function export_excel() {
-	var orderStatus = $("#orderStatus").datebox('getValue');
+	var orderStatus = $("#orderStatus").combobox('getValue');
+	var payStatus = $("#payStatus").combobox('getValue');
 	var userName= $("#searchorderForm #userName").val();
 	var startDate=$("#searchorderForm #startDate").datebox('getValue');
 	var endDate=$("#searchorderForm #endDate").datebox('getValue');
 	var exportIframe = document.createElement('iframe');
-	exportIframe.src = httpUrl + "/order/export.html?orderStatus="+orderStatus+"&userName="+userName+"&startDate="+startDate+"&endDate="+endDate;
+	exportIframe.src = httpUrl + "/order/export.html?orderStatus="+orderStatus+"&userName="+userName+"&startDate="+startDate+"&endDate="+endDate+"&payStatus="+payStatus;
 	exportIframe.style.display = 'none';
 	document.body.appendChild(exportIframe);
 }

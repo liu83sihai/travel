@@ -105,7 +105,11 @@ public class OrderController extends BaseAction {
 				model.addAttribute("orderStatus", orderStatus);
 			}
 			//支付成功的订单
-			param.put("payStatus", 1);
+			String payStatus = getString("payStatus");
+			if (StringUtils.isNotBlank(payStatus)) {
+				param.put("payStatus", payStatus);
+				model.addAttribute("payStatus", payStatus);
+			}
 
 			//本页合计
 			PageDo<Map<String,Object>> orderList = orderService.selectOrderByPage(page, param);
