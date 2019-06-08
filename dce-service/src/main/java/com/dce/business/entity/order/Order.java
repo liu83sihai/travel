@@ -386,7 +386,13 @@ public class Order {
 		for(OrderPayDetail pay : payDetailList){
 			tmpPrice = tmpPrice.add(pay.getPayAmt()); // 商品总金额
 		}
-		cashAmt = this.totalprice.subtract(tmpPrice);
+		//邮费必须是现金
+		if(tmpPrice.compareTo(this.totalprice)>0) {
+			this.cashAmt = this.postage;
+		}else {
+			this.cashAmt = this.totalprice.subtract(tmpPrice);
+			this.cashAmt = cashAmt.add(this.postage);
+		}
 	}
 
 	@Override
