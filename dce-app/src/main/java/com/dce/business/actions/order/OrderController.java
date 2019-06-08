@@ -569,10 +569,12 @@ public class OrderController extends BaseController {
 		//支付明细
 		List<OrderPayDetail> payLst = convertPayJson(payList);
 		
+		/*
 		boolean isOk = checkPay(Long.valueOf(userId),chooseGoodsLst,payLst);
 		if(false == isOk) {
 			return Result.failureResult("不正确的支付方式！");
 		}
+		*/
 		
 		//如果是爆款的积分商品领过了不能再领
 		/*

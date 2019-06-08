@@ -476,23 +476,21 @@ public class OrderServiceImpl implements IOrderService {
 											 Order order) {
 		OrderDetail orderDetail = chooseGoodsLst.get(0);
 		CTGoodsDo goods = ctGoodsService.selectById(Long.valueOf(orderDetail.getGoodsId()));
-		if( 2 == goods.getGoodsFlag().intValue()) {
-			if(payLst == null) {
-				payLst = new ArrayList<OrderPayDetail>();
-			}
-			payLst.clear();
-			
-			OrderPayDetail orderPayDetail = new OrderPayDetail();
-			if(goods.getShopCatId1().intValue() == 1) { //积分商城爆品用红包
-				orderPayDetail.setAccountType(AccountType.wallet_goods.name());
-			}else {
-				orderPayDetail.setAccountType(AccountType.wallet_travel.name());
-			}
-			BigDecimal jifei = order.getTotalprice().subtract(goods.getPostage());
-			orderPayDetail.setPayAmt(jifei);
-			orderPayDetail.setRemark("积分商品用积分兑换");
-			payLst.add(orderPayDetail );			
+		if(payLst == null) {
+			payLst = new ArrayList<OrderPayDetail>();
 		}
+		payLst.clear();
+		
+		OrderPayDetail orderPayDetail = new OrderPayDetail();
+		if(goods.getShopCatId1().intValue() == 1) { //积分商城爆品用红包
+			orderPayDetail.setAccountType(AccountType.wallet_goods.name());
+		}else {
+			orderPayDetail.setAccountType(AccountType.wallet_travel.name());
+		}
+		BigDecimal jifei = order.getTotalprice().subtract(goods.getPostage());
+		orderPayDetail.setPayAmt(jifei);
+		orderPayDetail.setRemark("积分商品用积分兑换");
+		payLst.add(orderPayDetail );
 		return payLst;
 	}
 
@@ -552,14 +550,19 @@ public class OrderServiceImpl implements IOrderService {
 		order.calOrderProfit();
 		
 		//积分商品支付
-		payLst = getJFPayLst(payLst,chooseGoodsLst,order);
+		/*
+		payLst = getJFPayLst(chooseGoodsLst,order);
+		*/
+		
 		order.setPayDetailList(payLst);		
 		order.calNonCashAmt();
 		
+		/*
 		Result checkRet =  order.checkPayAmt();
 		if(checkRet.isSuccess() == false) {
 			return checkRet;
 		}
+		*/
 		
 		// 添加订单
 		if(order.getOrderid() != null) {

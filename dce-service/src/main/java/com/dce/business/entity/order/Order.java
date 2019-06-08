@@ -377,7 +377,7 @@ public class Order {
 	}
 
 	public void calNonCashAmt() {
-		/*
+		
 		if(null == this.payDetailList||this.payDetailList.size()<1) {
 			cashAmt = this.totalprice;
 			return;
@@ -387,9 +387,6 @@ public class Order {
 			tmpPrice = tmpPrice.add(pay.getPayAmt()); // 商品总金额
 		}
 		cashAmt = this.totalprice.subtract(tmpPrice);
-		*/
-		
-		this.cashAmt = this.postage;
 	}
 
 	@Override
