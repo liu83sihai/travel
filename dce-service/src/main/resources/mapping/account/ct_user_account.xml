@@ -342,7 +342,7 @@
 				userId = #{userId}
 			</if>
 			<if test="id != null">
-				AND id = #{orderStatus}
+				AND id = #{id}
 			</if>
 			<if test="accountType != null">
 				AND accountType = #{accountType}

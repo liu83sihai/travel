@@ -69,7 +69,17 @@ public class Order {
 	private List<OrderPayDetail> payDetailList;
 
 	private BigDecimal cashAmt = BigDecimal.ZERO;
+
+	private BigDecimal postage; //邮费
 	
+
+	public BigDecimal getPostage() {
+		return postage;
+	}
+
+	public void setPostage(BigDecimal postage) {
+		this.postage = postage;
+	}
 
 	public BigDecimal getProfit() {
 		return profit;
@@ -349,7 +359,7 @@ public class Order {
 			totalprice = BigDecimal.valueOf(orderDetail.getPrice() * (orderDetail.getQuantity())).add(totalprice); // 商品总金额
 			BigDecimal oneGoodsProfit = orderDetail.getProfit().multiply(new BigDecimal(orderDetail.getQuantity()));
 			profit = profit.add(oneGoodsProfit);
-			postage = orderDetail.getPostage();
+			postage = postage.add(orderDetail.getPostage().multiply(new BigDecimal(orderDetail.getQuantity())));
 		}
 		
 		
@@ -358,6 +368,7 @@ public class Order {
 		this.qty = quantity;
 		this.goodsprice = totalprice;
 		this.totalprice = totalprice.add(postage);
+		this.postage = postage;
 				
 	}
 	
@@ -366,6 +377,7 @@ public class Order {
 	}
 
 	public void calNonCashAmt() {
+		/*
 		if(null == this.payDetailList||this.payDetailList.size()<1) {
 			cashAmt = this.totalprice;
 			return;
@@ -375,6 +387,9 @@ public class Order {
 			tmpPrice = tmpPrice.add(pay.getPayAmt()); // 商品总金额
 		}
 		cashAmt = this.totalprice.subtract(tmpPrice);
+		*/
+		
+		this.cashAmt = this.postage;
 	}
 
 	@Override

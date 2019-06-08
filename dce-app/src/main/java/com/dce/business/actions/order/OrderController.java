@@ -575,11 +575,12 @@ public class OrderController extends BaseController {
 		}
 		
 		//如果是爆款的积分商品领过了不能再领
+		/*
 		boolean isBuy = checkIsBuy(userId,chooseGoodsLst);
 		if(true == isBuy) {
 			return Result.failureResult("不是vip会员，不能再领！");
 		}
-		
+		*/
 		
 		// 生成预付单，保存订单和订单明显
 		try {

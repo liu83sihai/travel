@@ -271,21 +271,6 @@ public class OrderServiceImpl implements IOrderService {
 			Order order = orderDao.selectByOrderCode(ordercode);
 			logger.debug("根据订单编号查询出的订单：" + order);
 			logger.debug("=============订单支付成功，开始处理逻辑业务=========》》》：更新订单表状态，奖励计算，激活用户状态");
-			logger.debug("获取的订单支付状态========》》》》》" + order.getPaystatus());
-			// 如果订单状态为支付失败状态才进行更新
-			Map<String, Object> paraMap = new HashMap<String, Object>();
-			// 付款状态为已支付
-			paraMap.put("newStatus", 1);
-			paraMap.put("oldStatus", 0);
-			// 支付时间
-			paraMap.put("payTime", gmtPayment);
-			paraMap.put("orderId", order.getOrderid());
-			logger.debug("更新订单状态的参数=======》》》》》" + paraMap);
-			// 更新订单表状态,从未付改成已付
-			int i = orderDao.updateOrderStatusByOldStatus(paraMap);
-			if (i <= 0) {
-				throw new BusinessException("重复通知，order：" + order, "lipay002");
-			}
 
 			// 激活用户状态
 			UserDo buyer = userService.getUser(order.getUserid());
@@ -310,6 +295,23 @@ public class OrderServiceImpl implements IOrderService {
 			e.printStackTrace();
 			logger.error("订单支付成功，处理逻辑业务失败！", e);
 			throw e;
+		}
+	}
+
+	private void changeOrderPayStep(String gmtPayment, Order order ,Integer newStatus, Integer oldStatus) {
+		// 如果订单状态为支付失败状态才进行更新
+		Map<String, Object> paraMap = new HashMap<String, Object>();
+		// 付款状态为已支付
+		paraMap.put("newStatus", newStatus);
+		paraMap.put("oldStatus", oldStatus);
+		// 支付时间
+		paraMap.put("payTime", gmtPayment);
+		paraMap.put("orderId", order.getOrderid());
+		logger.debug("更新订单状态的参数=======》》》》》" + paraMap);
+		// 更新订单表状态,从未付改成已付
+		int i = orderDao.updateOrderStatusByOldStatus(paraMap);
+		if (i <= 0) {
+			throw new BusinessException("重复通知，order：" + order, "lipay002");
 		}
 	}
 
@@ -416,6 +418,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * 
 	 * @param chooseGoodsLst
 	 */
+	@Transactional
 	public Result<Map<String,String>> saveOrder( List<OrderPayDetail> payLst,List<OrderDetail> chooseGoodsLst, Order order,
 			HttpServletRequest request, HttpServletResponse response)throws Exception {
 
@@ -533,7 +536,7 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setGoodsName(goods.getTitle()); // 获取商品名称
 			orderDetail.setProfit(goods.getProfit());
 			orderDetail.setPrice(goods.getShopPrice().doubleValue());
-			orderDetail.setPostage(goods.getPostage());
+			orderDetail.setPostage(goods.getPostage() ==null? BigDecimal.ZERO:goods.getPostage());
 			orderDetail.setGoodsFlag(goods.getGoodsFlag());
 		}
 		
@@ -553,12 +556,10 @@ public class OrderServiceImpl implements IOrderService {
 		order.setPayDetailList(payLst);		
 		order.calNonCashAmt();
 		
-		/*
 		Result checkRet =  order.checkPayAmt();
 		if(checkRet.isSuccess() == false) {
 			return checkRet;
 		}
-		*/
 		
 		// 添加订单
 		if(order.getOrderid() != null) {
@@ -576,9 +577,14 @@ public class OrderServiceImpl implements IOrderService {
 		order = buyOrder(order, 1, chooseGoodsLst);
 		order = savePayDetail(order, 1, payLst);
 		
+		//检查积分是否足够
+		if(checkAccountAmt(payLst, order)) {
+			Result.failureResult("积分不够");
+		}
 		
 		//现金支付
 		if(order.getCashAmt().compareTo(BigDecimal.ZERO)>0) {
+			
 			// 获取加签后的订单
 			return getSignByPayType(request, response, order);
 			//return payByScanBarcode(request, response, order);
@@ -586,6 +592,7 @@ public class OrderServiceImpl implements IOrderService {
 			//扣其他支付账户的金额		
 			subAccountAmt(payLst, order);
 			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
+			changeOrderPayStep(DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()), order,1,0);
 			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
 		}
 		
@@ -598,6 +605,28 @@ public class OrderServiceImpl implements IOrderService {
 
 	}
 
+	
+	private boolean checkAccountAmt(List<OrderPayDetail> payLst, Order order) {
+		if(null == payLst || payLst.size()<1) {
+			return true;
+		}
+		
+		for( OrderPayDetail pDetail : payLst) {
+			Map<String, Object> parameterMap = new HashMap<String,Object>();
+			parameterMap.put("userId", order.getUserid());
+			parameterMap.put("accountType", pDetail.getAccountType());
+			UserAccountDo accountDo = accountService.selectAmountByAccountType(parameterMap );
+			if(null ==accountDo) {
+				return false;
+			}
+			
+			if(pDetail.getPayAmt().compareTo(accountDo.getAmount())>0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private void subAccountAmt(List<OrderPayDetail> payLst, Order order) {
 		for( OrderPayDetail pDetail : payLst) {
 			if(pDetail.getPayAmt().compareTo(BigDecimal.ZERO)>0) {
@@ -879,9 +908,12 @@ public class OrderServiceImpl implements IOrderService {
 			 */
 			Order order = orderDao.selectByOrderCode(outTradeNo);
 			List<OrderPayDetail> payLst= orderDetailDao.selectPayDetailByOrderId(order.getOrderid());
+			changeOrderPayStep(gmtPayment, order,2,0);
 			this.subAccountAmt(payLst, order);
-			//end 扣其他账户金额
+			changeOrderPayStep(gmtPayment, order,1,2);
+			
 			orderPay(outTradeNo, gmtPayment);
+			//end 扣其他账户金额
 		}
 		return "success";
 	}
