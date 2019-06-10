@@ -404,6 +404,11 @@ public class Order {
 			this.cashAmt = cashAmt.add(this.postage);
 		}
 		
+		//如果是积分商品，支付方式 现金支付邮费， 抵扣积分
+		if("2".equals(this.goodsFlag) ) {
+			pay.setPayAmt(this.goodsprice);
+			this.cashAmt = this.postage;
+		}
 		if("2".equals(this.goodsFlag) && "2".equals(shopCatId1)) {
 			pay.setAccountType(AccountType.wallet_travel.getAccountType());
 		}
