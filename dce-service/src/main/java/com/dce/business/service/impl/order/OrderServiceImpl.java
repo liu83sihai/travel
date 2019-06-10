@@ -942,7 +942,7 @@ public class OrderServiceImpl implements IOrderService {
 
 		// 支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）
 		// 目前测试中totalAmount.equals(order.getTotalprice())，totalAmount先暂时设置为0.01
-		if (order == null || order.getTotalprice().compareTo(new BigDecimal(totalAmount))!=0 || !sellerId.equals(AlipayConfig.seller_id)
+		if (order == null || !sellerId.equals(AlipayConfig.seller_id)
 				|| !AlipayConfig.APPID.equals(appId)) {
 			logger.debug("==========支付宝官方建议校验的值（out_trade_no、total_amount、sellerId、app_id）,不一致！返回fail");
 			return false;
