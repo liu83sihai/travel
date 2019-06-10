@@ -72,6 +72,17 @@ public class Order {
 
 	private BigDecimal postage; //邮费
 	
+	private String goodsFlag; // 1 旅游卡 2 积分商品 3 会员商品 4 旅游路线 5 代理商保证金
+
+	private String shopCatId1; //  1 爆款商品, 2 常规商品
+	
+	public String getGoodsFlag() {
+		return goodsFlag;
+	}
+
+	public void setGoodsFlag(String goodsFlag) {
+		this.goodsFlag = goodsFlag;
+	}
 
 	public BigDecimal getPostage() {
 		return postage;
@@ -384,9 +395,6 @@ public class Order {
 		}
 		OrderPayDetail pay = payDetailList.get(0);
 		BigDecimal tmpPrice = pay.getPayAmt(); 
-		//for(OrderPayDetail pay : payDetailList){
-		//	tmpPrice = tmpPrice.add(pay.getPayAmt()); // 商品总金额
-		//}
 		//邮费必须是现金
 		if(tmpPrice.compareTo(this.totalprice)>0) {
 			this.cashAmt = this.postage;
@@ -395,6 +403,15 @@ public class Order {
 			this.cashAmt = this.goodsprice.subtract(tmpPrice);
 			this.cashAmt = cashAmt.add(this.postage);
 		}
+		
+		if("2".equals(this.goodsFlag) && "2".equals(shopCatId1)) {
+			pay.setAccountType(AccountType.wallet_travel.getAccountType());
+		}
+		
+		if("2".equals(this.goodsFlag) && "1".equals(shopCatId1)) {
+			pay.setAccountType(AccountType.wallet_goods.getAccountType());
+		}
+		
 	}
 
 	@Override
