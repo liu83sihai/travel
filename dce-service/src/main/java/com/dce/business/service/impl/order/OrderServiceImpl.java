@@ -536,6 +536,8 @@ public class OrderServiceImpl implements IOrderService {
 			orderDetail.setPrice(goods.getShopPrice().doubleValue());
 			orderDetail.setPostage(goods.getPostage() ==null? BigDecimal.ZERO:goods.getPostage());
 			orderDetail.setGoodsFlag(goods.getGoodsFlag());
+			order.setGoodsFlag(goods.getGoodsFlag().toString());
+			order.setShopCatId1(goods.getShopCatId1().toString());
 		}
 		
 

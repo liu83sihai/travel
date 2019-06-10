@@ -76,6 +76,14 @@ public class Order {
 
 	private String shopCatId1; //  1 爆款商品, 2 常规商品
 	
+	public String getShopCatId1() {
+		return shopCatId1;
+	}
+
+	public void setShopCatId1(String shopCatId1) {
+		this.shopCatId1 = shopCatId1;
+	}
+
 	public String getGoodsFlag() {
 		return goodsFlag;
 	}
