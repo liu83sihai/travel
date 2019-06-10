@@ -392,7 +392,7 @@ public class Order {
 			this.cashAmt = this.postage;
 			pay.setPayAmt(this.totalprice.subtract(this.postage));
 		}else {
-			this.cashAmt = this.totalprice.subtract(tmpPrice);
+			this.cashAmt = this.goodsprice.subtract(tmpPrice);
 			this.cashAmt = cashAmt.add(this.postage);
 		}
 	}

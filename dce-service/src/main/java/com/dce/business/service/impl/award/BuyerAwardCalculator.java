@@ -90,7 +90,10 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 			UserDo userDo = new UserDo();
 			userDo.setId(buyer.getId());
 			userDo.setStatus((byte)0);
-			userDo.setUserLevel(goods.getMemberLevel()==null? (byte)1:goods.getMemberLevel().byteValue());//vip
+			UserDo u = userService.getUser(buyer.getId());
+			if(u.getUserLevel().byteValue()<(goods.getMemberLevel()==null? (byte)1:goods.getMemberLevel().byteValue() )) {
+				userDo.setUserLevel(goods.getMemberLevel()==null? (byte)1:goods.getMemberLevel().byteValue());//vip
+			}
 			userService.updateUserByBuy(userDo );
 		}
 
