@@ -1,11 +1,11 @@
 package com.dce.business.entity.order;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.result.Result;
-import com.dce.business.entity.goods.CTGoodsDo;
 
 public class Order {
 
@@ -417,7 +417,9 @@ public class Order {
 		
 		//如果是积分商品，支付方式 现金支付邮费， 抵扣积分
 		}else{
-			OrderPayDetail pay = payDetailList.get(0);
+			this.payDetailList = new ArrayList<OrderPayDetail>();
+			OrderPayDetail pay = new OrderPayDetail();
+			this.payDetailList.add(pay);
 			pay.setPayAmt(this.goodsprice);
 			this.cashAmt = this.postage;
 			
