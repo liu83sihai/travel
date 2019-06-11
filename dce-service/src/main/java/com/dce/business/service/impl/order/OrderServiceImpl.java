@@ -423,8 +423,8 @@ public class OrderServiceImpl implements IOrderService {
 			HttpServletRequest request, HttpServletResponse response)throws Exception {
 
 		// 维护订单地址
-		//Integer orderAddressId = mainOrderAddress(order);
-		//order.setAddressid(orderAddressId);
+		Integer orderAddressId = mainOrderAddress(order);
+		order.setAddressid(orderAddressId);
 		return this.createOrderToPay(payLst,chooseGoodsLst, order, request, response);
 		
 	}
@@ -580,10 +580,10 @@ public class OrderServiceImpl implements IOrderService {
 		logger.info("==========》》》》》插入的订单信息：" + order);
 		// 添加商品明细
 		order = buyOrder(order, 1, chooseGoodsLst);
-		order = savePayDetail(order, 1, payLst);
+		order = savePayDetail(order, 1, order.getPayDetailList());
 		
 		//检查积分是否足够
-		if(checkAccountAmt(payLst, order)) {
+		if(checkAccountAmt(order.getPayDetailList(), order)) {
 			Result.failureResult("积分不够");
 		}
 		
@@ -595,7 +595,7 @@ public class OrderServiceImpl implements IOrderService {
 			//return payByScanBarcode(request, response, order);
 		}else {
 			//扣其他支付账户的金额		
-			subAccountAmt(payLst, order);
+			subAccountAmt(order.getPayDetailList(), order);
 			//如果不需要现金支付，其他账户扣款成功，更新订单支付状态
 			changeOrderPayStep(DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()), order,1,0);
 			orderPay(order.getOrdercode(),DateUtil.YYYY_MM_DD_MM_HH_SS.format(new Date()));
