@@ -423,8 +423,8 @@ public class OrderServiceImpl implements IOrderService {
 			HttpServletRequest request, HttpServletResponse response)throws Exception {
 
 		// 维护订单地址
-		Integer orderAddressId = mainOrderAddress(order);
-		order.setAddressid(orderAddressId);
+		//Integer orderAddressId = mainOrderAddress(order);
+		//order.setAddressid(orderAddressId);
 		return this.createOrderToPay(payLst,chooseGoodsLst, order, request, response);
 		
 	}

@@ -397,33 +397,39 @@ public class Order {
 
 	public void calNonCashAmt() {
 		
-		if(null == this.payDetailList||this.payDetailList.size()<1) {
-			cashAmt = this.totalprice;
-			return;
-		}
-		OrderPayDetail pay = payDetailList.get(0);
-		BigDecimal tmpPrice = pay.getPayAmt(); 
-		//邮费必须是现金
-		if(tmpPrice.compareTo(this.totalprice)>0) {
-			this.cashAmt = this.postage;
-			pay.setPayAmt(this.totalprice.subtract(this.postage));
-		}else {
-			this.cashAmt = this.goodsprice.subtract(tmpPrice);
-			this.cashAmt = cashAmt.add(this.postage);
-		}
+		//如果非积分商品，计算规则
+		if(!"2".equals(this.goodsFlag) ) {
+			if(null == this.payDetailList||this.payDetailList.size()<1) {
+				cashAmt = this.totalprice;
+				return;
+			}
+			
+			OrderPayDetail pay = payDetailList.get(0);
+			BigDecimal tmpPrice = pay.getPayAmt(); 
+			//邮费必须是现金
+			if(tmpPrice.compareTo(this.totalprice)>0) {
+				this.cashAmt = this.postage;
+				pay.setPayAmt(this.totalprice.subtract(this.postage));
+			}else {
+				this.cashAmt = this.goodsprice.subtract(tmpPrice);
+				this.cashAmt = cashAmt.add(this.postage);
+			}
 		
 		//如果是积分商品，支付方式 现金支付邮费， 抵扣积分
-		if("2".equals(this.goodsFlag) ) {
+		}else{
+			OrderPayDetail pay = payDetailList.get(0);
 			pay.setPayAmt(this.goodsprice);
 			this.cashAmt = this.postage;
-		}
-		if("2".equals(this.goodsFlag) && "2".equals(shopCatId1)) {
-			pay.setAccountType(AccountType.wallet_travel.getAccountType());
-		}
+			
+			if("2".equals(shopCatId1)) {
+				pay.setAccountType(AccountType.wallet_travel.getAccountType());
+			}
+			
+			if("1".equals(shopCatId1)) {
+				pay.setAccountType(AccountType.wallet_goods.getAccountType());
+			}
+		}	
 		
-		if("2".equals(this.goodsFlag) && "1".equals(shopCatId1)) {
-			pay.setAccountType(AccountType.wallet_goods.getAccountType());
-		}
 		
 	}
 

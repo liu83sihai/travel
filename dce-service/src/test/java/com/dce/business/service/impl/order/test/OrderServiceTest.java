@@ -28,7 +28,7 @@ public class OrderServiceTest  extends BaseTest{
 	@Test
 	public void testInsertOrder() throws Exception{
 		String gmtPayment = "2018-08-23";
-		String orderCode = "XX4520190608172943356";
+		String orderCode = "XX79120190610234307658";
 		Order order = orderService.selectByOrderCode(orderCode);
 		Order newOrder = new Order();
 		BeanUtils.copyProperties(order, newOrder);
@@ -42,14 +42,14 @@ public class OrderServiceTest  extends BaseTest{
 		List<OrderDetail> chooseGoodsLst = new ArrayList<OrderDetail>();
 		
 		OrderDetail orderDetail = new OrderDetail();
-		orderDetail.setGoodsId(1159);
+		orderDetail.setGoodsId(1102);
 		orderDetail.setQuantity(1);
 		chooseGoodsLst.add(orderDetail);
 		
 		OrderPayDetail p = new OrderPayDetail();
 		p.setAccountType("wallet_money");
 		p.setPayAmt(new BigDecimal("508"));
-		payLst.add(p);
+		//payLst.add(p);
 		
 		orderService.saveOrder(payLst, chooseGoodsLst, newOrder, null, null);
 	}
