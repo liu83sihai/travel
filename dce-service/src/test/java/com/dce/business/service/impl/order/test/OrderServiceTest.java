@@ -43,7 +43,7 @@ public class OrderServiceTest  extends BaseTest{
 		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail.setGoodsId(1102);
-		orderDetail.setQuantity(1);
+		orderDetail.setQuantity(2);
 		chooseGoodsLst.add(orderDetail);
 		
 		OrderPayDetail p = new OrderPayDetail();

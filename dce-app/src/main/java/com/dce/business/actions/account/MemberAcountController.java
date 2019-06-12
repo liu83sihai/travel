@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
-import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.common.util.DateUtil;
-import com.dce.business.common.util.NumberUtil;
 import com.dce.business.common.util.OrderCodeUtil;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.order.OrderDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserParentDo;
 import com.dce.business.entity.user.UserRefereeDo;
+import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.grade.IGradeService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserParentService;
@@ -61,6 +62,9 @@ public class MemberAcountController extends BaseController {
 	
 	@Resource
 	private IGradeService gradeService;
+	
+    @Autowired
+    private ILoanDictService loanDictService;
 
 	/**
 	 * 团队成员详情
@@ -182,7 +186,8 @@ public class MemberAcountController extends BaseController {
 			for (int j = 0; j <= 8; j++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				List<Map> maplist = new ArrayList<Map>();
-				map.put("user_level", UserDo.getUserLevelName(j));
+				LoanDictDtlDo memberLevelDict = loanDictService.getLoanDictDtl("member_type", String.valueOf(j));
+				map.put("user_level", memberLevelDict == null?"" : memberLevelDict.getName());
 				List<Map<String,Object>> levelLst = levelMap.get((byte)j);
 				map.put("user", levelLst == null? Collections.emptyList(): levelLst);
 				listone.add(map);
