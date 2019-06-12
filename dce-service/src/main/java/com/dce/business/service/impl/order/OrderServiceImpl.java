@@ -440,6 +440,10 @@ public class OrderServiceImpl implements IOrderService {
 	 */
 	public Integer mainOrderAddress(Order order) {
 		UserAddressDo userAddressDo = userAdressService.selectByPrimaryKey(order.getAddressid());
+		if (userAddressDo==null || userAddressDo.getUserid().intValue() != order.getUserid().intValue()) {
+			throw new BusinessException("从用户地址中获取收货人信息为空！！！");
+		}
+		
 		String address = userAddressDo.getAddress();
 		String userName = userAddressDo.getUsername();
 		String userPhone = userAddressDo.getUserphone();
@@ -454,7 +458,7 @@ public class OrderServiceImpl implements IOrderService {
 		orderAddressDo.setAddressDetails(userAddressDo.getAddressDetails());
 		orderAddressDo.setUsername(userName);
 		orderAddressDo.setUserphone(userPhone);
-		orderAddressDo.setUserid(userId);
+		orderAddressDo.setUserid(order.getUserid());
 
 		
 	    //BeanUtils.copyProperties(userAddressDo, orderAddressDo );
