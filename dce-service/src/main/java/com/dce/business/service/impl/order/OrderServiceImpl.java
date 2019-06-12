@@ -583,8 +583,8 @@ public class OrderServiceImpl implements IOrderService {
 		order = savePayDetail(order, 1, order.getPayDetailList());
 		
 		//检查积分是否足够
-		if(checkAccountAmt(order.getPayDetailList(), order)) {
-			Result.failureResult("积分不够");
+		if(checkAccountAmt(order.getPayDetailList(), order) == false) {
+			return Result.failureResult("积分不够");
 		}
 		
 		//现金支付
