@@ -125,7 +125,7 @@ public class UserServiceImpl implements IUserService {
 		userDo.setTwoPassword(DataEncrypt.encrypt(userDo.getTwoPassword())); // 支付密码
 
 		// 用户注册
-		userDo.setUserLevel((byte)1);
+		userDo.setUserLevel((byte)0);
 		int result = userDao.insertSelective(userDo);
 
 		if (ref != null) {
