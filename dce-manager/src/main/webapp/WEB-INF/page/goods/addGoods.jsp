@@ -164,7 +164,17 @@
 					
 					</td>
 				</tr>
-		
+				
+				<tr>
+					<td align="right"><label for="name">购买赠送积分：</label></td>
+					<td><input type="text" id="jf" name="jf"
+						value="${goods.jf}" /></td>
+				</tr>
+				<tr>
+					<td align="right"><label for="name">购买赠卡：</label></td>
+					<td><input type="text" id="sendCard" name="sendCard"
+						value="${goods.sendCard}" /></td>
+				</tr>
 			</table>
 		</div>
 	</form>

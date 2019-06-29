@@ -19,7 +19,6 @@ import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.user.UserDo;
-import com.dce.business.entity.userCard.UserCardDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.goods.ICTGoodsService;
 import com.dce.business.service.user.IUserService;
@@ -96,27 +95,20 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 			}
 			userService.updateUserByBuy(userDo );
 		}
-
 		//送199 积分
-		UserAccountDo accont = new UserAccountDo(order.getProfit(), buyer.getId(), AccountType.wallet_travel.name());
-		buildAccountRemark(accont);
-		// 账户对象增加金额
-		accountService.updateUserAmountById(accont, IncomeType.TYPE_PURCHASE_TRAVEL);
+		if(goods.getJf() != null && goods.getJf().intValue()>0) {
+			UserAccountDo accont = new UserAccountDo(new BigDecimal(goods.getJf()), buyer.getId(), AccountType.wallet_travel.name());
+			buildAccountRemark(accont);
+			// 账户对象增加金额
+			accountService.updateUserAmountById(accont, IncomeType.TYPE_PURCHASE_TRAVEL);
+		}
 		
-		
-		UserCardDo userCardDo = new UserCardDo();
-		userCardDo.setMobile(buyer.getUserName());
-		userCardDo.setIdNumber(buyer.getIdnumber());
-		userCardDo.setUserId(buyer.getId());
-		userCardDo.setBankNo(buyer.getBanknumber());
-		userCardDo.setOrderNo(order.getOrdercode());
-		userCardDo.setUserName(buyer.getTrueName());
-		userCardDo.setSex(buyer.getSex());
 		//增加旅游卡
-		UserAccountDo travelCardAccount = new UserAccountDo(new BigDecimal(order.getQty()), buyer.getId(), AccountType.wallet_active.name());
-		travelCardAccount.setAmount(new BigDecimal(order.getQty()));
-		accountService.updateUserAmountById(travelCardAccount,IncomeType.TYPE_PURCHASE_TRAVEL);
-		
+		if(goods.getSendCard() != null && goods.getSendCard().intValue()>0) {
+			UserAccountDo travelCardAccount = new UserAccountDo(new BigDecimal(order.getQty()), buyer.getId(), AccountType.wallet_active.name());
+			travelCardAccount.setAmount(new BigDecimal(goods.getSendCard()));
+			accountService.updateUserAmountById(travelCardAccount,IncomeType.TYPE_PURCHASE_TRAVEL);
+		}
 		
 	}
 

@@ -78,6 +78,31 @@ public class CTGoodsDo implements Serializable {
 	  private Integer memberLevel; //购买后会员等级
 	  private String memberLevelName; //购买后会员等级
 	  
+	  private Integer sendCard; //赠送卡
+	  private Integer jf; //赠送积分
+	  
+	  
+	  
+	public Integer getSendCard() {
+		return sendCard;
+	}
+
+
+	public void setSendCard(Integer sendCard) {
+		this.sendCard = sendCard;
+	}
+
+
+	public Integer getJf() {
+		return jf;
+	}
+
+
+	public void setJf(Integer jf) {
+		this.jf = jf;
+	}
+
+
 	public String getPayTypeName() {
 		if(StringUtils.isBlank(payType)) {
 			return "";

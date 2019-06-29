@@ -52,6 +52,8 @@
 		<result column="starLevel" property="starLevel" />
 		<result column="postage" property="postage" />
 		<result column="memberLevel" property="memberLevel" />
+		<result column="sendCard" property="sendCard" />
+		<result column="jf" property="jf" />
 		
 		
 	</resultMap>
@@ -108,7 +110,9 @@
 		statusRemarks,
 		profit,
 		postage,
-		memberLevel
+		memberLevel,
+		jf,
+		sendCard,
 		)
 		values (
 		#{goodsSn},
@@ -152,7 +156,9 @@
 		#{statusRemarks},
 		#{profit},
 		#{postage},
-		#{memberLevel}
+		#{memberLevel},
+		#{jf},
+		#{sendCard}
 		)
 	</insert>
 
@@ -310,6 +316,12 @@
 			<if test="memberLevel != null">
 				memberLevel,
 			</if>
+			<if test="jf != null">
+				jf,
+			</if>
+			<if test="sendCard != null">
+				sendCard,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="goodsId != null">
@@ -457,7 +469,13 @@
 				#{postage},
 			</if>
 			<if test="memberLevel != null">
-				#{memberLevel}
+				#{memberLevel},
+			</if>
+			<if test="jf != null">
+				#{jf},
+			</if>
+			<if test="sendCard != null">
+				#{sendCard},
 			</if>
 		</trim>
 	</insert>
@@ -551,6 +569,12 @@
 			</if>
 			<if test="memberLevel != null">
 				memberLevel = #{memberLevel},
+			</if>
+			<if test="jf != null">
+				jf = #{jf},
+			</if>
+			<if test="sendCard != null">
+				sendCard = #{sendCard},
 			</if>
 		</trim>
 		where goodsId = #{goodsId}
