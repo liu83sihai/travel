@@ -29,7 +29,7 @@ import com.dce.business.service.account.IAccountService;
 @RequestMapping("accountRecord")
 public class AccountRecordController extends BaseController {
 
-	private final static Logger logger = Logger.getLogger(AccountController.class);
+	private final static Logger logger = Logger.getLogger(AccountRecordController.class);
 	
 	@Resource
 	private IAccountService accountService;
