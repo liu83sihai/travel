@@ -24,6 +24,7 @@ import com.dce.business.common.util.NumberUtil;
 import com.dce.business.entity.account.UserAccountDetailDo;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.etherenum.EthereumAccountDo;
+import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.account.IPayService;
@@ -69,7 +70,14 @@ public class AccountController extends BaseController {
 		if (StringUtils.isNotBlank(endTime)) {
 			params.put("endTime", endTime);
 		}
-		List<UserAccountDetailDo> list = accountService.selectUserAccountDetail(params);
+		
+		PageDo<UserAccountDetailDo> paraPage  = new  PageDo<UserAccountDetailDo> (); 
+		paraPage.setCurrentPage(1L);
+		paraPage.setPageSize(100L);
+		PageDo<UserAccountDetailDo> page= accountService.selectUserAccountDetailByPage(paraPage,params);
+		
+		List<UserAccountDetailDo> list  = page.getModelList();
+		
 		List<Map<String, Object>> result = new ArrayList<>();
 		for (UserAccountDetailDo detail : list) {
 			Map<String, Object> map = new HashMap<>();
