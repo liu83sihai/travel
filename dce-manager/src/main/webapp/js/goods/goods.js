@@ -232,6 +232,8 @@ function save_Goods(){
     var shopCatId1 =$("#editGoodsForm #shopCatId1").combobox('getValue');
     var payType =$("#editGoodsForm #payType").val();
     var postage =$("#editGoodsForm #postage").val();
+    var jf =$("#editGoodsForm #jf").val();
+    var sendCard =$("#editGoodsForm #sendCard").val();
     var memberLevel =$("#editGoodsForm #memberLevel").combobox('getValue');
     
     //var file = document.getElementById("goodsImg").files[0];
@@ -272,8 +274,8 @@ function save_Goods(){
     obj.append("postage", postage);
     obj.append("payType", payType);
     obj.append("memberLevel", memberLevel);
-    
-    
+    obj.append("jf", jf);
+    obj.append("sendCard", sendCard);
     
     
     $.ajax({   
