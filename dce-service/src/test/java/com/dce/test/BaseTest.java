@@ -9,7 +9,8 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
     static {
 
-        System.setProperty("catalina.home", "G:\\run_time\\tomcat\\apache-tomcat-7.0.62");
+        //System.setProperty("catalina.home", "G:\\run_time\\tomcat\\apache-tomcat-7.0.62");
+        System.setProperty("catalina.home", "D:\\apache-tomcat-7.0.79");
     }
     
     

@@ -25,7 +25,7 @@ public class AlipayConfig {
 	public static String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuVt/Q2iOC+qKLIyvtNKNwtPmzmwVmpVYULmLhoIANNA0GwMiJXoV0cLvnsKsXcnqh7hzVpQpUGM3GCko3e1GcGaGlcTJSYaND9/GeQyB1gn0zbhcf0M0d8YnK9q19saoAoZqfVN8fOAjquAvQEhs1kvZVysSLJfLdU21nD9C9oqrAJH1rDhWgRZJxjnmFKJ7buDkhS3vF2yjDdmRrLUx4v+WsCbzsDN7wvBwgNJCW6F0rIew7BVxCD5aGq+36rolSMrFnYHUltl2cT6uHPTSHmtHzqVgiteMAaX4c69r28JMnHkSgkWv2GY/2Xq4+6JdpvMlANFuvzoGmL1GIistEQIDAQAB";
 
 	// 请求支付宝的网关地址
-	public static String URL = "https://openapi.alipaydev.com/gateway.do";
+	public static String URL = "https://openapi.alipay.com/gateway.do";
 
 	// 服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
 	public static String notify_url = "http://app.zjzwly.com/dce-app/order/notifyUrl.do";

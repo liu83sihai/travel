@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.result.Result;
-import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.common.util.DateUtil;
-import com.dce.business.common.util.NumberUtil;
 import com.dce.business.common.util.OrderCodeUtil;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.order.OrderDo;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserParentDo;
 import com.dce.business.entity.user.UserRefereeDo;
+import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.grade.IGradeService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserParentService;
@@ -61,6 +62,9 @@ public class MemberAcountController extends BaseController {
 	
 	@Resource
 	private IGradeService gradeService;
+	
+    @Autowired
+    private ILoanDictService loanDictService;
 
 	/**
 	 * 团队成员详情
@@ -125,8 +129,7 @@ public class MemberAcountController extends BaseController {
 	*   "success": true
 	* }
 	**/
-	@RequestMapping(value = "/teamDetails", method = RequestMethod.POST)
-	public Result<Map<String, Object>> teamDetails() {
+	public Result<Map<String, Object>> teamDetailsOld() {
 
 		int userId = getUserId();
 		Assert.hasText("userId", "用户为空");
@@ -182,7 +185,8 @@ public class MemberAcountController extends BaseController {
 			for (int j = 0; j <= 8; j++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				List<Map> maplist = new ArrayList<Map>();
-				map.put("user_level", UserDo.getUserLevelName(j));
+				LoanDictDtlDo memberLevelDict = loanDictService.getLoanDictDtl("member_type", String.valueOf(j));
+				map.put("user_level", memberLevelDict == null?"" : memberLevelDict.getName());
 				List<Map<String,Object>> levelLst = levelMap.get((byte)j);
 				map.put("user", levelLst == null? Collections.emptyList(): levelLst);
 				listone.add(map);
@@ -230,6 +234,95 @@ public class MemberAcountController extends BaseController {
 
 		return Result.successResult("查询成功", map1);
 
+	}
+	
+	
+	@RequestMapping(value = "/teamDetails", method = RequestMethod.POST)
+	public Result<Map<String, Object>> teamDetails() {
+		
+		int userId = getUserId();
+		Assert.hasText("userId", "用户为空");
+		
+		
+		logger.info("用户id----->>" + userId);
+		UserDo userdo = userService.getUser(userId);
+		if (userdo == null) {
+			return Result.failureResult("用户不存在");
+		}
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("refereeid", userId);
+		params.put("distance", 1);
+		List<UserRefereeDo> refUserLst = userRefereeService.select(params);
+		Map<String, Object> map1 = new HashMap<String, Object>();
+		
+		List<Object> listone = new ArrayList<>();
+		try {
+			
+			
+			Map<String, Object> paraMap = new HashMap<String,Object>();
+			List<Map<String,Object>> levelLst = new ArrayList<Map<String,Object>>();//整合在一起显示
+			for (UserRefereeDo refUser :refUserLst ) {
+				UserDo myUser = userService.getUser(refUser.getUserid());
+				if(null == myUser) {
+					continue;
+				}
+				
+				Map<String,Object> person = new HashMap<String,Object>();
+				person.put("true_name", myUser.getTrueName());
+				person.put("user_name", myUser.getUserName());
+				
+				paraMap.clear();
+				paraMap.put("userId", myUser.getId());
+				Map<String, Object> totalMap = orderService.selectSum(paraMap);
+				if(null != totalMap && totalMap.get("Totalperformance") != null) {
+					person.put("mobile",totalMap.get("Totalperformance"));
+				}else {
+					person.put("mobile",0);
+				}
+				person.put("refereeid", myUser.getRefereeid());
+				person.put("user_level", 0);
+				person.put("id", myUser.getId());
+				levelLst.add(person);
+			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("user_level", "我的粉丝");
+			map.put("user", levelLst);
+			listone.add(map);
+			
+			map1.put("tuanduilist", listone);
+			
+			//团队总业绩
+			paraMap.clear();
+			paraMap.put("userId", userdo.getId());
+			Map<String, Object> totalMap = orderService.selectSum(paraMap);
+			if(null != totalMap && totalMap.get("Totalperformance") != null) {
+				map1.put("totalYJ",totalMap.get("Totalperformance"));
+			}else {
+				map1.put("totalYJ","0");
+			}
+			//总推荐人数
+			paraMap.clear();
+			paraMap.put("refereeid", userId);
+			List<UserRefereeDo> refUserLst2 = userRefereeService.select(paraMap);
+			map1.put("personCount", refUserLst2==null? 0 : refUserLst2.size());
+			//计算小区业绩
+			BigDecimal totalYj = BigDecimal.ZERO;
+			BigDecimal maxYj = BigDecimal.ZERO;
+			//除最大一个数的和=小区业绩
+			map1.put("communityYJ", totalYj.subtract(maxYj));
+			
+		} catch (IllegalArgumentException t) {
+			t.printStackTrace();
+			return Result.failureResult(t.getMessage());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.failureResult("查询失败");
+		}
+		
+		return Result.successResult("查询成功", map1);
+		
 	}
 
 	@RequestMapping(value = "/recharge", method = RequestMethod.POST)

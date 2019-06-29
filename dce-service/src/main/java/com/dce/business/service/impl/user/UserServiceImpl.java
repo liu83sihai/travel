@@ -92,21 +92,27 @@ public class UserServiceImpl implements IUserService {
 		
 		
 		//推荐人不能为空
+		/*
 		if (StringUtils.isBlank(userDo.getRefereeUserMobile())) {
 			return Result.failureResult("填写推荐人的手机号");
 		}
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("mobile", userDo.getRefereeUserMobile());
-		List<UserDo> refUserLst = this.selectMobile(params);
-		if (refUserLst == null || refUserLst.size() < 1) {
-			return Result.failureResult("推荐人不存在");
-		}
-		if ( refUserLst.size() != 1) {
-			return Result.failureResult("查找到多个推荐人");
-		}
+		*/
+		
 		// 推荐用户
-		UserDo ref = refUserLst.get(0);
+		UserDo ref = null;
+		if(StringUtils.isNotBlank(userDo.getRefereeUserMobile())) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("mobile", userDo.getRefereeUserMobile());
+			List<UserDo> refUserLst = this.selectMobile(params);
+			if (refUserLst == null || refUserLst.size() < 1) {
+				return Result.failureResult("无效的推荐人");
+			}
+			if ( refUserLst.size() != 1) {
+				return Result.failureResult("无效的推荐人");
+			}
+			ref = refUserLst.get(0);
+		}
+		
 
 		// 判断注册用户名是否为空
 		userDo.setUserName(userDo.getUserName().trim());
@@ -125,7 +131,7 @@ public class UserServiceImpl implements IUserService {
 		userDo.setTwoPassword(DataEncrypt.encrypt(userDo.getTwoPassword())); // 支付密码
 
 		// 用户注册
-		userDo.setUserLevel((byte)1);
+		userDo.setUserLevel((byte)0);
 		int result = userDao.insertSelective(userDo);
 
 		if (ref != null) {
