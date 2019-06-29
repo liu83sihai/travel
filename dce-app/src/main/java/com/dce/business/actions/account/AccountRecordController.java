@@ -17,6 +17,7 @@ import com.dce.business.actions.common.BaseController;
 import com.dce.business.common.util.DateUtil;
 import com.dce.business.entity.account.UserAccountDetailDo;
 import com.dce.business.entity.account.UserAccountDo;
+import com.dce.business.entity.page.PageDo;
 import com.dce.business.service.account.IAccountService;
 
 /**
@@ -94,7 +95,7 @@ public class AccountRecordController extends BaseController {
 		
 		Integer userId = getUserId();
 		String accountType = getString("accountType"); 
-		logger.info("获取当前用户的id："+userId);
+		logger.info("流水查询 获取当前用户的id："+userId);
 		
 		
 		//当前账户总额度
@@ -106,7 +107,17 @@ public class AccountRecordController extends BaseController {
 		Map<String,Object> paraMap = new HashMap<String,Object>();
 		paraMap.put("userId", userId);
 		paraMap.put("accountType", accountType);
+		/*
+		 * 一次查询出来，页面记录数据太大， 死掉
 		List<UserAccountDetailDo> list = accountService.selectUserAccountDetailByUserId(paraMap);
+		*/
+		PageDo<UserAccountDetailDo> paraPage  = new  PageDo<UserAccountDetailDo> (); 
+		paraPage.setCurrentPage(1L);
+		paraPage.setPageSize(100L);
+		PageDo<UserAccountDetailDo> page= accountService.selectUserAccountDetailByPage(paraPage,paraMap);
+		
+		List<UserAccountDetailDo> list  = page.getModelList();
+		
 		
 		if(list.isEmpty() || list.size() ==0){
 			map.put("code", "0");
