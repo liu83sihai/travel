@@ -222,6 +222,7 @@ function save_Banner(){
     obj.append("modifyDate", modifyDate);
     obj.append("modifyName", modifyName);
     obj.append("status", status);
+    var url = httpUrl+"/banner/saveBanner.html";
     debugger;
 	 $.ajax({   
 		 type: 'POST',
