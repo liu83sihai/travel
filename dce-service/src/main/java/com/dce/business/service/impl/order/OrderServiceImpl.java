@@ -315,6 +315,7 @@ public class OrderServiceImpl implements IOrderService {
 		FeiHongOrder  feiHongOrder = new FeiHongOrder();
 		BeanUtils.copyProperties(order, feiHongOrder);
 		feiHongOrder.setUserid(refUserId);
+		feiHongOrder.setOrderstatus("1");
 		feiHongOrder.setBuyerid(order.getUserid());
 		feiHongOrder.setStartdate(new Date());
 		LoanDictDo dictWeeksDo = loanDictService.getLoanDict("FeiHong-weeks");
