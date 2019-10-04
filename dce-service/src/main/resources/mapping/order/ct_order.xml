@@ -1018,7 +1018,7 @@
 		select
 			*
 		from ct_feihong_order
-		where orderId = #{orderid}
+		where orderId = #{orderid}  AND lastRunDate is null
 	</select>
 	
 	

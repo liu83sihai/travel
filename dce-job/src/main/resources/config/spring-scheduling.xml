@@ -42,7 +42,7 @@
     
     <bean id="feiHongTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="feiHongTask" />
-        <property name="cronExpression"  value="0 0/2 * * * ?" />
+        <property name="cronExpression"  value="0 50 23 * * ?" />
     </bean>
 	 
     <bean name="feiHongTask" class="com.dce.scheduling.quartzweb.JobDetailBean">
