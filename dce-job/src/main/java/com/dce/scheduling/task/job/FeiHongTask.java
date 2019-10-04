@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
+import com.dce.business.common.util.DateUtil;
 import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.service.order.IFeiHongService;
 import com.dce.business.service.order.IOrderService;
@@ -44,6 +45,11 @@ public class FeiHongTask extends QuartzJobBean  {
 		List<FeiHongOrder> fhOrderLst = orderService.selectFeiHongOrder(paraMap );
         for(FeiHongOrder fhOrder : fhOrderLst) {
         	try {
+        		boolean canFeiHong =chkFeiHongDate(fhOrder);
+        		if(canFeiHong == false) {
+        			continue;
+        		}
+        		
         		feiHongService.doFeiHong(fhOrder);
         	}catch(Exception e) {
         		logger.error("分红出错:"+fhOrder);
@@ -54,6 +60,18 @@ public class FeiHongTask extends QuartzJobBean  {
         logger.info("完成分红定时任务");
     }
 
+    /**
+	 * 	是否是能整除7
+	 * @param fhorder
+	 * @return
+	 */
+	private  boolean chkFeiHongDate(FeiHongOrder fhorder) {
+		 Date startDate = DateUtils.ceiling(fhorder.getStartdate(), Calendar.DAY_OF_MONTH);
+		 Date endDate = DateUtils.ceiling(new Date(), Calendar.DAY_OF_MONTH);
+		 int diffDays = DateUtil.diffdays(startDate, endDate);
+		return diffDays%7 == 0;
+	}
+	
     protected String getJobName() {
         return "分红定时任务";
     }

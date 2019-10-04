@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dce.business.common.enums.AccountType;
@@ -21,12 +22,14 @@ import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.award.Awardlist;
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.dict.LoanDictDtlDo;
+import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.entity.user.UserRefereeDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.groovy.GroovyParse;
+import com.dce.business.service.order.IFeiHongService;
 import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserService;
 
@@ -55,6 +58,9 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	private IOrderService orderService;
 	
 	@Resource IUserRefereeDao userRefereeDao;
+	
+	@Autowired
+    private IFeiHongService feiHongService;
 
 	private ThreadLocal<Map<String, Object>> awardContextMap = new ThreadLocal<Map<String, Object>>();
 
@@ -69,6 +75,12 @@ public class RefereeAwardCalculator implements IAwardCalculator {
 	 */
 	@Override
 	public void doAward(UserDo buyer, Order order) {
+		//分红
+		FeiHongOrder fhorder = orderService.selectFeiHongOrderByOrderId(order.getOrderid());
+		if(null != fhorder) {
+			feiHongService.doFeiHong(fhorder);
+		}
+		
 		logger.warn("开始计算推荐人奖励"+order);
 		if(order.getProfit() == null || BigDecimal.ZERO.compareTo(order.getProfit()) == 0) {
 			logger.warn("订单利润等于0 不计算分润"+order.getOrderid());

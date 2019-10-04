@@ -45,10 +45,6 @@ public class FeiHongServiceImpl implements IFeiHongService {
 		String errMsg = "";
 		BigDecimal wardAmount = BigDecimal.ZERO;
 		//check
-		boolean canFeiHong =chkFeiHongDate(fhorder);
-		if(canFeiHong == false) {
-			return;
-		}
 		if( !"1".equals(fhorder.getOrderstatus())) {
 			logger.warn("分红订单状态无效："+fhorder.toString());
 			errMsg = "分红订单状态无效";
@@ -61,7 +57,7 @@ public class FeiHongServiceImpl implements IFeiHongService {
 			logger.warn("用户没有购买订单不能参与分红:"+fhorder.getUserid());
 			return;
 		}
-		canFeiHong = checkFeiHongMaxAmt(userFeiHong);
+		boolean canFeiHong = checkFeiHongMaxAmt(userFeiHong);
 		if(canFeiHong == true) {
 			errMsg = "已超出分红上限";
 			logger.warn("已超出分红上限:"+fhorder.getOrderid());
@@ -157,17 +153,6 @@ public class FeiHongServiceImpl implements IFeiHongService {
 	}
 
 
-	/**
-	 * 	是否是能整除7
-	 * @param fhorder
-	 * @return
-	 */
-	private  boolean chkFeiHongDate(FeiHongOrder fhorder) {
-		 Date startDate = DateUtils.ceiling(fhorder.getStartdate(), Calendar.DAY_OF_MONTH);
-		 Date endDate = DateUtils.ceiling(new Date(), Calendar.DAY_OF_MONTH);
-		 int diffDays = DateUtil.diffdays(startDate, endDate);
-		return diffDays%7 == 0;
-	}
 
 	/**
 	 * 	创建奖励备注

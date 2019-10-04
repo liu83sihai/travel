@@ -1434,4 +1434,10 @@ public class OrderServiceImpl implements IOrderService {
 	public void updateUserFeiHongAmt(Integer userid, BigDecimal wardAmount) {
 		orderDao.updateUserFeiHongAmt(userid, wardAmount.doubleValue());
 	}
+
+	@Override
+	public FeiHongOrder selectFeiHongOrderByOrderId(Integer orderid) {
+		Assert.notNull(orderid,"订单id为空");
+		return orderDao.selectFeiHongOrderByOrderId(orderid);
+	}
 }

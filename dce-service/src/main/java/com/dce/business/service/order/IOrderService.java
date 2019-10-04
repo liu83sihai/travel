@@ -136,4 +136,7 @@ public interface IOrderService {
 	UserFeiHong selectFeiHongUser(Integer userid);
 
 	void updateUserFeiHongAmt(Integer userid, BigDecimal wardAmount);
+
+	//根据订单id 查找分红订单
+	FeiHongOrder selectFeiHongOrderByOrderId(Integer orderid);
 }

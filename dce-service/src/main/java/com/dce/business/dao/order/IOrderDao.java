@@ -106,4 +106,6 @@ public interface IOrderDao {
 	void updateUserFeiHongAmt(@Param("userid") Integer buyerUserId, @Param("feihongamt") Double feihongamt);
 	
 	void insertUserFeiHongTotalAmt(UserFeiHong userFeiHong);
+
+	FeiHongOrder selectFeiHongOrderByOrderId(@Param("orderid")Integer orderid);
 }

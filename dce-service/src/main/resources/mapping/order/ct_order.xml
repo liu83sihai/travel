@@ -1013,6 +1013,22 @@
 		</trim>
 	</select>
 	
+	<select id="selectFeiHongOrderByOrderId" parameterType="java.util.Map"
+		resultType="com.dce.business.entity.order.FeiHongOrder">
+		select
+			*
+		from ct_feihong_order
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userid != null">
+				AND userId = #{userid}
+			</if>
+			<if test="orderid != null">
+				AND orderId = #{orderid}
+			</if>				
+		</trim>
+	</select>
+	
+	
 	<update id="updateFeiHong" parameterType="com.dce.business.entity.order.FeiHongOrder">
 		update
 		ct_feihong_order
