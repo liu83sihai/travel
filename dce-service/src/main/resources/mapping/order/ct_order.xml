@@ -854,4 +854,170 @@
 			  and a.userId = #{userId}
 	</select>
 	
+	
+	<!-- 生成一个分红订单 -->
+	<insert id="insertFeiHongOrder" parameterType="com.dce.business.entity.order.FeiHongOrder" >
+		insert into ct_feihong_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderid != null">
+				orderId,
+			</if>
+			<if test="ordercode != null">
+				orderCode,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="qty != null">
+				qty,
+			</if>
+			<if test="totalprice != null">
+				totalPrice,
+			</if>
+			<if test="orderstatus != null">
+				orderStatus,
+			</if>
+			<if test="feihongrate != null">
+				feiHongRate,
+			</if>
+			<if test="startdate != null">
+				startDate,
+			</if>
+			<if test="enddate != null">
+				endDate,
+			</if>
+			<if test="ordertype != null">
+				orderType,
+			</if>
+			<if test="lastrundate != null">
+				lastRunDate,
+			</if>
+			<if test="totalfeihongamt != null">
+				totalFeiHongAmt,
+			</if>
+			<if test="createtime != null">
+				createTime,
+			</if>
+			<if test="buyerid != null">
+				buyerId,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderid != null">
+				#{orderid,jdbcType=INTEGER},
+			</if>
+			<if test="ordercode != null">
+				#{ordercode,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="qty != null">
+				#{qty,jdbcType=DECIMAL},
+			</if>
+			<if test="totalprice != null">
+				#{totalprice,jdbcType=DECIMAL},
+			</if>
+			<if test="orderstatus != null">
+				#{orderstatus,jdbcType=INTEGER},
+			</if>
+			<if test="feihongrate != null">
+				#{feihongrate,jdbcType=DECIMAL},
+			</if>
+			<if test="startdate != null">
+				#{startdate,jdbcType=DATE},
+			</if>
+			<if test="enddate != null">
+				#{enddate,jdbcType=DATE},
+			</if>
+			<if test="ordertype != null">
+				#{ordertype,jdbcType=INTEGER},
+			</if>
+			<if test="lastrundate != null">
+				#{lastrundate,jdbcType=DATETIME},
+			</if>
+			<if test="totalfeihongamt != null">
+				#{totalfeihongamt,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="buyerid != null">
+				#{buyerid,jdbcType=INTEGER},
+			</if>
+			
+		</trim>
+	</insert>
+	
+	<!-- 分红记录 -->
+	<insert id="logFeiHong" parameterType="com.dce.business.entity.order.FeiHongLog" >
+		insert into ct_feihong_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderid != null">
+				orderId,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="feihongrate != null">
+				feiHongRate,
+			</if>
+			<if test="feihongamt != null">
+				feiHongAmt,
+			</if>
+			<if test="createtime != null">
+				createTime,
+			</if>
+			<if test="msg != null">
+				msg,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderid != null">
+				#{orderid,jdbcType=INTEGER},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="feihongrate != null">
+				#{feihongrate,jdbcType=DECIMAL},
+			</if>
+			<if test="feihongamt != null">
+				#{feihongamt,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="msg != null">
+				#{msg,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<select id="selectFeiHongOrder" parameterType="java.util.Map"
+		resultType="com.dce.business.entity.order.FeiHongOrder">
+		select
+			*
+		from ct_feihong_order
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userid != null">
+				AND userId = #{userid}
+			</if>
+			<if test="orderid != null">
+				AND orderId = #{orderid}
+			</if>
+				AND orderStatus = '1'
+				AND endDate &gt;= #{currentDate}
+				AND startDate &lt;=  #{currentDate}
+		</trim>
+	</select>
+	
+	<update id="updateFeiHong" parameterType="com.dce.business.entity.order.FeiHongOrder">
+		update
+		ct_feihong_order
+		set orderStatus = #{orderstatus}, lastRunDate = #{lastrundate},totalFeiHongAmt=#{totalfeihongamt}
+		where orderId =
+		#{orderid,jdbcType=INTEGER}
+	</update>
+	
 </mapper>

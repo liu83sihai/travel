@@ -31,7 +31,7 @@ public class JobController {
 	/**   
 	 * 持币生息，每天凌晨0点
 	 */
-	@Scheduled(cron = "0 0 0 * * *")
+	//@Scheduled(cron = "0 0 0 * * *")
 	public void calInterest() {
 		//awardJobService.calInterest();
 	}
@@ -39,7 +39,7 @@ public class JobController {
 	/**   
 	 * 每5分钟查询以太坊，看用户数据是否已确认
 	 */
-	@Scheduled(cron = "0 0/1 * * * *")
+	//@Scheduled(cron = "0 0/1 * * * *")
 	public void comfirmEthTransResult() {
 		//ethereumJobService.comfirmEthTransResult();
 	}
@@ -47,7 +47,7 @@ public class JobController {
 	/**   
 	 * 钱包释放，每天凌晨2点释放
 	 */
-	@Scheduled(cron = "0 0 2 * * *")
+	//@Scheduled(cron = "0 0 2 * * *")
 	public void release() {
 		//1、原始仓钱包释放，按照原来金额的百分之四
 		//awardJobService.calRelease();
@@ -65,7 +65,7 @@ public class JobController {
 	/**   
 	 * 计算分享奖，每天凌晨一点
 	 */
-	@Scheduled(cron = "0 0 1 * * *")
+	//@Scheduled(cron = "0 0 1 * * *")
 	public void calShared() {
 		//awardJobService.calShared();
 	}

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.dce.business.common.result.Result;
+import com.dce.business.entity.order.FeiHongLog;
+import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.order.OrderPayDetail;
@@ -116,4 +118,12 @@ public interface IOrderService {
 	 * @return
 	 */
 	List<Order> selectOrderAndDetail(Map<String, Object> queryMap);
+
+	List<FeiHongOrder> selectFeiHongOrder(Map<String,Object> selectParaMap);
+
+	void logFeiHong(FeiHongLog fhlog);
+
+	void updateFeiHong(FeiHongOrder fhorder);
+	
+	void insertFeiHongOrder(Order order, Integer refUserId);
 }

@@ -9,14 +9,14 @@
 
    
 
-    <bean id="defaultScheduler"	class="com.hehenian.scheduling.quartzweb.SchedulerFactoryBean">
+    <bean id="defaultScheduler"	class="com.dce.scheduling.quartzweb.SchedulerFactoryBean">
         <property name="schedulerName" value="defaultScheduler" />
         <property name="autoStartup" value="true" />
         <property name="disableDataSource" value="true" />
         <property name="overwriteExistingJobs" value="true" />
         <property name="waitForJobsToCompleteOnShutdown" value="true" />
         <property name="jobFactory">
-        	<bean class="com.hehenian.scheduling.quartzweb.SpringBeanAutowireJobFactory" />
+        	<bean class="com.dce.scheduling.quartzweb.SpringBeanAutowireJobFactory" />
         </property>
         <property name="quartzProperties">
             <props>
@@ -29,54 +29,31 @@
         </property>
         <property name="jobDetails">
             <list>
-                <ref bean="capitalTask" />
+                <ref bean="feiHongTask" />
             </list>
         </property>
 
         <property name="triggers">
             <list>
-                <ref bean="capitalTaskTrigger" />
+                <ref bean="feiHongTaskTrigger" />
             </list>
         </property>
     </bean>
     
-    <bean id="capitalTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="capitalTask" />
+    <bean id="feiHongTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="feiHongTask" />
         <property name="cronExpression"  value="0 0/2 * * * ?" />
     </bean>
 	 
-    <bean name="capitalTask" class="com.hehenian.scheduling.quartzweb.JobDetailBean">
-        <property name="jobClass" value="com.hehenian.scheduling.task.job.CapitalTask" />
+    <bean name="feiHongTask" class="com.dce.scheduling.quartzweb.JobDetailBean">
+        <property name="jobClass" value="com.dce.scheduling.task.job.FeiHongTask" />
         <property name="description" value="更新资金数据缓存" />
-        <property name="name" value="capitalTask" />
-        <property name="group" value="loanModule" />
+        <property name="name" value="feiHongTask" />
+        <property name="group" value="feiHongModule" />
         <property name="durability" value="true" />
     </bean>
     <bean id="schedulerAccessorBean" class="org.springframework.scheduling.quartz.SchedulerAccessorBean">
         <property name="scheduler" ref="defaultScheduler" />
     </bean>
-
-
-    <!--
-    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="jobDetail" />
-        <property name="cronExpression"  value="0 46 10 * * ?" />
-    </bean>
-
-    <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="jobDetail" />
-        <property name="cronExpression"  value="10 45 10 * * ?" />
-    </bean>
-
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="cronTrigger" />
-                <ref bean="cronTrigger2" />
-            </list>
-        </property>
-    </bean>
-    -->
-
 
 </beans>

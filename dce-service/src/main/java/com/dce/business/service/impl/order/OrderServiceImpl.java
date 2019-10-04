@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
@@ -46,7 +46,11 @@ import com.dce.business.dao.order.OrderDetailMapper;
 import com.dce.business.dao.trade.IKLineDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
+import com.dce.business.entity.dict.LoanDictDo;
+import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.goods.CTGoodsDo;
+import com.dce.business.entity.order.FeiHongLog;
+import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderAddressDo;
 import com.dce.business.entity.order.OrderDetail;
@@ -265,6 +269,7 @@ public class OrderServiceImpl implements IOrderService {
 	 * 
 	 * @return 处理出错抛异常
 	 */
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public void orderPay(String ordercode, String gmtPayment) {
 		try {
 			// 根据订单编号查询出订单
@@ -274,6 +279,12 @@ public class OrderServiceImpl implements IOrderService {
 
 			// 激活用户状态
 			UserDo buyer = userService.getUser(order.getUserid());
+			
+			//加一个订单来分红
+			Integer refUserId = buyer.getRefereeid();
+			insertFeiHongOrder(order,refUserId);
+			
+			
 			logger.debug("根据支付宝回调返回的信息获取用户状态=======》》》》》" + buyer.isActivated());
 			// 未激活的用户去激活
 			if (buyer.getIsActivated().intValue() != 1) {
@@ -296,6 +307,31 @@ public class OrderServiceImpl implements IOrderService {
 			logger.error("订单支付成功，处理逻辑业务失败！", e);
 			throw e;
 		}
+	}
+
+	public void insertFeiHongOrder(Order order, Integer refUserId) {
+		FeiHongOrder  feiHongOrder = new FeiHongOrder();
+		BeanUtils.copyProperties(order, feiHongOrder);
+		feiHongOrder.setUserid(refUserId);
+		feiHongOrder.setBuyerid(order.getUserid());
+		feiHongOrder.setStartdate(new Date());
+		LoanDictDo dictWeeksDo = loanDictService.getLoanDict("FeiHong-weeks");
+		Integer feiHongWeeks = 20;
+		if(null != dictWeeksDo && StringUtils.isNotBlank(dictWeeksDo.getRemark()) ) {
+			feiHongWeeks = Integer.valueOf(dictWeeksDo.getRemark());
+		}
+		Date endDate = DateUtils.addWeeks(feiHongOrder.getStartdate(), feiHongWeeks);
+		feiHongOrder.setEnddate(endDate);
+		
+		LoanDictDo dictRateDo = loanDictService.getLoanDict("FeiHong-rate");
+		BigDecimal rate = new BigDecimal("0.13");
+		if(null != dictRateDo && StringUtils.isNotBlank(dictRateDo.getRemark()) ) {
+			rate = new BigDecimal(dictRateDo.getRemark());
+		}
+		feiHongOrder.setFeihongrate(rate);
+		
+		orderDao.insertFeiHongOrder(feiHongOrder);
+		
 	}
 
 	private void changeOrderPayStep(String gmtPayment, Order order ,Integer newStatus, Integer oldStatus) {
@@ -1350,5 +1386,20 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public List<Order> selectOrderAndDetail(Map<String, Object> queryMap) {
 		return orderDao.selectOrderAndDetail(queryMap);
+	}
+
+	@Override
+	public List<FeiHongOrder> selectFeiHongOrder(Map<String,Object> selectParaMap) {
+		return orderDao.selectFeiHongOrder(selectParaMap);
+	}
+
+	@Override
+	public void logFeiHong(FeiHongLog fhlog) {
+		orderDao.logFeiHong(fhlog);		
+	}
+
+	@Override
+	public void updateFeiHong(FeiHongOrder fhorder) {
+		orderDao.updateFeiHong(fhorder);		
 	}
 }

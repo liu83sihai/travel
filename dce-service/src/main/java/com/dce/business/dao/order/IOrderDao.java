@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dce.business.entity.order.FeiHongLog;
+import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderAddressDo;
 
@@ -78,4 +80,21 @@ public interface IOrderDao {
 	 * @return
 	 */
 	List<Order> selectOrderAndDetail(Map<String, Object> queryMap);
+
+	/**
+	 *   分红订单
+	 * @param feiHongOrder
+	 */
+	void insertFeiHongOrder(FeiHongOrder feiHongOrder);
+
+	/**
+	 * 	查询分红订单
+	 * @param selectParaMap
+	 * @return
+	 */
+	List<FeiHongOrder> selectFeiHongOrder(Map<String, Object> selectParaMap);
+
+	void logFeiHong(FeiHongLog fhlog);
+
+	void updateFeiHong(FeiHongOrder fhorder);
 }

@@ -1,4 +1,4 @@
-package com.hehenian.scheduling.quartzweb;
+package com.dce.scheduling.quartzweb;
 
 public class JobDetailBean extends org.springframework.scheduling.quartz.JobDetailFactoryBean {
 
