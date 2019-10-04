@@ -1009,6 +1009,7 @@
 				AND orderStatus = '1'
 				AND endDate &gt;= #{currentDate}
 				AND startDate &lt;=  #{currentDate}
+				AND ifnull(lastRunDate,startDate)  &lt;  #{currentDate}
 		</trim>
 	</select>
 	

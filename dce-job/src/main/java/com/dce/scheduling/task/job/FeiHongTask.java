@@ -44,7 +44,7 @@ public class FeiHongTask extends QuartzJobBean  {
 		List<FeiHongOrder> fhOrderLst = orderService.selectFeiHongOrder(paraMap );
         for(FeiHongOrder fhOrder : fhOrderLst) {
         	try {
-        	feiHongService.doFeiHong(fhOrder);
+        		feiHongService.doFeiHong(fhOrder);
         	}catch(Exception e) {
         		logger.error("分红出错:"+fhOrder);
         		logger.error(e);
