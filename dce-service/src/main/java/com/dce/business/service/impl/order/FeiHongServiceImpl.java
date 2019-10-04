@@ -84,7 +84,7 @@ public class FeiHongServiceImpl implements IFeiHongService {
 			BigDecimal newTotalFeiHongAmt = CalculateUtils.add(userFeiHong.getFeihongamt(),wardAmount);
 			if(newTotalFeiHongAmt.compareTo(userFeiHong.getOrderaward())>0) {
 				logger.warn("已超出订单收益:"+userFeiHong.getUserid());
-				wardAmount = new BigDecimal(CalculateUtils.sub(newTotalFeiHongAmt.doubleValue(), userFeiHong.getOrderaward().doubleValue()));
+				wardAmount = new BigDecimal(CalculateUtils.sub(userFeiHong.getOrderaward().doubleValue(), userFeiHong.getFeihongamt().doubleValue()));
 			}
 			orderService.updateUserFeiHongAmt(userFeiHong.getUserid(), wardAmount);
 			//按账户分配
