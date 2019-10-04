@@ -22,11 +22,17 @@ public class OrderServiceTest  extends BaseTest{
 	
 	@Test
 	@Rollback(false)
-	public void testInsertFeiHongOrder(){
-		Order order = orderService.selectByPrimaryKey(1);
-		orderService.insertFeiHongOrder(order, 1);
+	public void testInsertFeiHongUser(){
+		//orderService.updateUserFeiHongTotalAmt(1, 5);
+		orderService.updateUserFeiHongAmt(1, new BigDecimal(10));
 	}
 	
+//	@Test
+//	@Rollback(false)
+//	public void testInsertFeiHongOrder(){
+//		Order order = orderService.selectByPrimaryKey(1);
+//		orderService.insertFeiHongOrder(order, 1);
+//	}
 	
 //	@Test
 //	public void testOrderPay(){

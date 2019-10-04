@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -33,6 +34,7 @@ import com.dce.business.common.enums.AccountType;
 import com.dce.business.common.enums.IncomeType;
 import com.dce.business.common.exception.BusinessException;
 import com.dce.business.common.result.Result;
+import com.dce.business.common.util.CalculateUtils;
 import com.dce.business.common.util.Constants;
 import com.dce.business.common.util.DateUtil;
 import com.dce.business.common.util.OrderCodeUtil;
@@ -47,7 +49,6 @@ import com.dce.business.dao.trade.IKLineDao;
 import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.alipaymentOrder.AlipaymentOrder;
 import com.dce.business.entity.dict.LoanDictDo;
-import com.dce.business.entity.dict.LoanDictDtlDo;
 import com.dce.business.entity.goods.CTGoodsDo;
 import com.dce.business.entity.order.FeiHongLog;
 import com.dce.business.entity.order.FeiHongOrder;
@@ -57,6 +58,7 @@ import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.order.OrderDetailExample;
 import com.dce.business.entity.order.OrderPayDetail;
 import com.dce.business.entity.order.OrderSendOut;
+import com.dce.business.entity.order.UserFeiHong;
 import com.dce.business.entity.page.PageDo;
 import com.dce.business.entity.user.UserAddressDo;
 import com.dce.business.entity.user.UserDo;
@@ -1401,5 +1403,35 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public void updateFeiHong(FeiHongOrder fhorder) {
 		orderDao.updateFeiHong(fhorder);		
+	}
+
+	/**
+	 * 用户总的分红和总下单金额
+	 */
+	@Override
+	public void updateUserFeiHongTotalAmt(Integer buyerUserId, double buyAmt) {
+		Assert.notNull(buyerUserId, "用户id为空");
+		UserFeiHong userFeiHong = orderDao.selectUserFeiHongTotalAmt(buyerUserId);
+		if(userFeiHong != null && userFeiHong.getUserid() != null) {
+			userFeiHong.setOrderaward(new BigDecimal(CalculateUtils.round(buyAmt, 2)));
+			orderDao.updateUserFeiHongOrderAmt(buyerUserId,buyAmt);
+		}else {
+			userFeiHong = new UserFeiHong();
+			userFeiHong.setUserid(buyerUserId);
+			userFeiHong.setOrderaward(new BigDecimal(CalculateUtils.round(buyAmt, 2)));
+			userFeiHong.setFeihongamt(BigDecimal.ZERO);
+			orderDao.insertUserFeiHongTotalAmt(userFeiHong);
+		}
+		
+	}
+
+	@Override
+	public UserFeiHong selectFeiHongUser(Integer userid) {
+		return orderDao.selectUserFeiHongTotalAmt(userid);
+	}
+
+	@Override
+	public void updateUserFeiHongAmt(Integer userid, BigDecimal wardAmount) {
+		orderDao.updateUserFeiHongAmt(userid, wardAmount.doubleValue());
 	}
 }

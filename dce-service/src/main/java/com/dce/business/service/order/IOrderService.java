@@ -1,5 +1,6 @@
 package com.dce.business.service.order;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.order.OrderPayDetail;
+import com.dce.business.entity.order.UserFeiHong;
 import com.dce.business.entity.page.PageDo;
 
 public interface IOrderService {
@@ -119,6 +121,7 @@ public interface IOrderService {
 	 */
 	List<Order> selectOrderAndDetail(Map<String, Object> queryMap);
 
+	//分红订单api
 	List<FeiHongOrder> selectFeiHongOrder(Map<String,Object> selectParaMap);
 
 	void logFeiHong(FeiHongLog fhlog);
@@ -126,4 +129,11 @@ public interface IOrderService {
 	void updateFeiHong(FeiHongOrder fhorder);
 	
 	void insertFeiHongOrder(Order order, Integer refUserId);
+
+	//用户总的分红和总下单金额
+	void updateUserFeiHongTotalAmt(Integer buyerUserId, double buyAmt);
+	//查询用户分红
+	UserFeiHong selectFeiHongUser(Integer userid);
+
+	void updateUserFeiHongAmt(Integer userid, BigDecimal wardAmount);
 }

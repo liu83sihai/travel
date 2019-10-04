@@ -1020,4 +1020,71 @@
 		#{orderid,jdbcType=INTEGER}
 	</update>
 	
+	<select id="selectUserFeiHongTotalAmt" parameterType="java.util.Map"
+		resultType="com.dce.business.entity.order.UserFeiHong">
+		select
+			*
+		from ct_feihong_user
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="userid != null">
+				AND userId = #{userid}
+			</if>
+		</trim>
+	</select>
+	<update id="updateUserFeiHongOrderAmt" parameterType="java.util.Map">
+		update
+		ct_feihong_user
+		set orderAward = orderAward + #{orderaward}
+		where userId =
+		#{userid,jdbcType=INTEGER}
+	</update>
+	<update id="updateUserFeiHongAmt" parameterType="java.util.Map">
+		update
+		ct_feihong_user
+		set feiHongAmt = feiHongAmt + #{feihongamt}
+		where userId =
+		#{userid,jdbcType=INTEGER}
+	</update>
+	
+	<insert id="insertUserFeiHongTotalAmt" parameterType="com.dce.business.entity.order.UserFeiHong" >
+		insert into ct_feihong_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="orderaward != null">
+				orderAward,
+			</if>
+			<if test="feihongamt != null">
+				feiHongAmt,
+			</if>
+			<if test="createtime != null">
+				createTime,
+			</if>
+			<if test="updatetime != null">
+				updateTime,
+			</if>
+			<if test="status != null">
+				`status`,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="orderaward != null">
+				#{orderaward,jdbcType=DECIMAL},
+			</if>
+			<if test="feihongamt != null">
+				#{feihongamt,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	
 </mapper>

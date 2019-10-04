@@ -18,6 +18,7 @@ import com.dce.business.entity.account.UserAccountDo;
 import com.dce.business.entity.dict.LoanDictDo;
 import com.dce.business.entity.order.FeiHongLog;
 import com.dce.business.entity.order.FeiHongOrder;
+import com.dce.business.entity.order.UserFeiHong;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.dict.ILoanDictService;
 import com.dce.business.service.order.IFeiHongService;
@@ -54,12 +55,16 @@ public class FeiHongServiceImpl implements IFeiHongService {
 			return;
 		}
 		
-		canFeiHong = checkFeiHongMaxAmt(fhorder);
+		UserFeiHong userFeiHong = orderService.selectFeiHongUser(fhorder.getUserid());
+		if(null == userFeiHong) {
+			errMsg = "用户没有购买订单不能参与分红";
+			logger.warn("用户没有购买订单不能参与分红:"+fhorder.getUserid());
+			return;
+		}
+		canFeiHong = checkFeiHongMaxAmt(userFeiHong);
 		if(canFeiHong == true) {
-			fhorder.setOrderstatus("0");
 			errMsg = "已超出分红上限";
 			logger.warn("已超出分红上限:"+fhorder.getOrderid());
-			orderService.updateFeiHong(fhorder);
 			return;
 		}
 		
@@ -76,6 +81,12 @@ public class FeiHongServiceImpl implements IFeiHongService {
 				return;
 			}
 			
+			BigDecimal newTotalFeiHongAmt = CalculateUtils.add(userFeiHong.getFeihongamt(),wardAmount);
+			if(newTotalFeiHongAmt.compareTo(userFeiHong.getOrderaward())>0) {
+				logger.warn("已超出订单收益:"+userFeiHong.getUserid());
+				wardAmount = new BigDecimal(CalculateUtils.sub(newTotalFeiHongAmt.doubleValue(), userFeiHong.getOrderaward().doubleValue()));
+			}
+			orderService.updateUserFeiHongAmt(userFeiHong.getUserid(), wardAmount);
 			//按账户分配
 			for(String feihongAccountConfig : feiHongConfig) {
 				String[] oneAccountConfigs = feihongAccountConfig.split("-");
@@ -137,8 +148,11 @@ public class FeiHongServiceImpl implements IFeiHongService {
 	 * @param fhorder
 	 * @return
 	 */
-	private boolean checkFeiHongMaxAmt(FeiHongOrder fhorder) {
-		int compareResult = fhorder.getTotalfeihongamt().compareTo(new BigDecimal("2000"));
+	private boolean checkFeiHongMaxAmt(UserFeiHong userFeiHong) {
+		if(null == userFeiHong) {
+			return false;
+		}
+		int compareResult = userFeiHong.getFeihongamt().compareTo(userFeiHong.getOrderaward());
 		return compareResult>=0;
 	}
 

@@ -9,6 +9,7 @@ import com.dce.business.entity.order.FeiHongLog;
 import com.dce.business.entity.order.FeiHongOrder;
 import com.dce.business.entity.order.Order;
 import com.dce.business.entity.order.OrderAddressDo;
+import com.dce.business.entity.order.UserFeiHong;
 
 public interface IOrderDao {
 	int deleteByPrimaryKey(Long orderId);
@@ -97,4 +98,12 @@ public interface IOrderDao {
 	void logFeiHong(FeiHongLog fhlog);
 
 	void updateFeiHong(FeiHongOrder fhorder);
+
+	UserFeiHong selectUserFeiHongTotalAmt(@Param("userid") Integer buyerUserId);
+
+	void updateUserFeiHongOrderAmt(@Param("userid") Integer buyerUserId, @Param("orderaward") Double orderaward);
+
+	void updateUserFeiHongAmt(@Param("userid") Integer buyerUserId, @Param("feihongamt") Double feihongamt);
+	
+	void insertUserFeiHongTotalAmt(UserFeiHong userFeiHong);
 }

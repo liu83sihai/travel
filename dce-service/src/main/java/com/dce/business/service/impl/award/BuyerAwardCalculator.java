@@ -21,6 +21,7 @@ import com.dce.business.entity.order.OrderDetail;
 import com.dce.business.entity.user.UserDo;
 import com.dce.business.service.account.IAccountService;
 import com.dce.business.service.goods.ICTGoodsService;
+import com.dce.business.service.order.IOrderService;
 import com.dce.business.service.user.IUserService;
 import com.dce.business.service.userCard.IUserCardService;
 
@@ -52,6 +53,9 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 	@Resource
 	private IUserCardService userCardService;
 	
+	@Resource
+	private IOrderService orderService;
+	
 	private ThreadLocal<Map<String,Object>> awardContextMap = new ThreadLocal<Map<String,Object>>() ;
 	
 	/**
@@ -80,6 +84,8 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 			goods = goodsService.selectById(Long.valueOf(od.getGoodsId()));
 			if(goods.getGoodsFlag().intValue() == 1) {
 				isBuyCard = true;
+				//写分红订单
+				updateUserFeiHongTotalAmt(buyer.getId(),od.getPrice()*od.getQuantity());
 				break;
 			}
 			
@@ -104,14 +110,17 @@ public class BuyerAwardCalculator implements IAwardCalculator {
 		}
 		
 		//增加旅游卡
-		/*
 		if(goods.getSendCard() != null && goods.getSendCard().intValue()>0) {
 			UserAccountDo travelCardAccount = new UserAccountDo(new BigDecimal(order.getQty()), buyer.getId(), AccountType.wallet_active.name());
 			travelCardAccount.setAmount(new BigDecimal(goods.getSendCard()));
 			accountService.updateUserAmountById(travelCardAccount,IncomeType.TYPE_PURCHASE_TRAVEL);
 		}
-		*/
 		
+	}
+
+	//购买旅游卡参加分红
+	private void updateUserFeiHongTotalAmt(Integer buyerUserId, double buyAmt) {
+		orderService.updateUserFeiHongTotalAmt(buyerUserId,buyAmt*4);
 	}
 
 	/**
