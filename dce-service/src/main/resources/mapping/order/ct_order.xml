@@ -1018,14 +1018,7 @@
 		select
 			*
 		from ct_feihong_order
-		<trim prefix="WHERE" prefixOverrides="AND |OR ">
-			<if test="userid != null">
-				AND userId = #{userid}
-			</if>
-			<if test="orderid != null">
-				AND orderId = #{orderid}
-			</if>				
-		</trim>
+		where orderId = #{orderid}
 	</select>
 	
 	
