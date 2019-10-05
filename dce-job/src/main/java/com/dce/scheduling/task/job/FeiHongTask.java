@@ -40,7 +40,7 @@ public class FeiHongTask extends QuartzJobBean  {
         logger.info("开始执行分红定时任务");
 
         Map<String, Object> paraMap = new HashMap<String,Object>();
-        paraMap.put("currentDate", DateUtils.ceiling(new Date(), Calendar.DAY_OF_MONTH));
+        paraMap.put("currentDate", DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH));
         
 		List<FeiHongOrder> fhOrderLst = orderService.selectFeiHongOrder(paraMap );
         for(FeiHongOrder fhOrder : fhOrderLst) {
@@ -66,8 +66,8 @@ public class FeiHongTask extends QuartzJobBean  {
 	 * @return
 	 */
 	private  boolean chkFeiHongDate(FeiHongOrder fhorder) {
-		 Date startDate = DateUtils.ceiling(fhorder.getStartdate(), Calendar.DAY_OF_MONTH);
-		 Date endDate = DateUtils.ceiling(new Date(), Calendar.DAY_OF_MONTH);
+		 Date startDate = DateUtils.truncate(fhorder.getStartdate(), Calendar.DAY_OF_MONTH);
+		 Date endDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 		 int diffDays = DateUtil.diffdays(startDate, endDate);
 		return diffDays%7 == 0;
 	}
