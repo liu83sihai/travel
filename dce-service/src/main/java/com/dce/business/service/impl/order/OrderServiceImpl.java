@@ -284,6 +284,7 @@ public class OrderServiceImpl implements IOrderService {
 			
 			//加一个订单来分红
 			Integer refUserId = buyer.getRefereeid();
+			
 			insertFeiHongOrder(order,refUserId);
 			
 			
@@ -312,6 +313,24 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	public void insertFeiHongOrder(Order order, Integer refUserId) {
+		
+		
+		boolean isBuyCard = false; 
+		List<OrderDetail> orderDetailLst = orderDetailDao.selectByOrderId(order.getOrderid());
+		CTGoodsDo goods = null;
+		for(OrderDetail od : orderDetailLst) {
+			goods = ctGoodsService.selectById(Long.valueOf(od.getGoodsId()));
+			if(goods.getGoodsFlag().intValue() == 1) {
+				isBuyCard = true;
+				break;
+			}
+			
+		}
+		
+		if(isBuyCard == false) {
+			return;
+		}
+		
 		FeiHongOrder  feiHongOrder = new FeiHongOrder();
 		BeanUtils.copyProperties(order, feiHongOrder);
 		feiHongOrder.setUserid(refUserId);
