@@ -32,7 +32,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>4.3.7.RELEASE</org.springframework.version>
 		<servlet_version>2.5</servlet_version>
-		<httpclient_version>4.3.2</httpclient_version>
+		<httpclient_version>4.5.13</httpclient_version>
         <httpcore_version>4.3.1</httpcore_version>
         <log4j_version>1.2.16</log4j_version>
         <fastjson_version>1.2.28</fastjson_version>
